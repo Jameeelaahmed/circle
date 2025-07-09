@@ -1,5 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import store from "./features/store.js";
 // STYLESHEETS
 import "./index.css";
 import App from "./App.jsx";
@@ -11,14 +14,13 @@ import "@fontsource/poppins/700.css";
 import "@fontsource/poppins/800.css";
 import "@fontsource-variable/quicksand";
 // CONTEXTS
-import UserProvider from "./context/UserContext.jsx";
-import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
+    <Provider store={store}>
       <App />
-    </UserProvider>
-    <ToastContainer/>
+    </Provider>
+
+    <ToastContainer />
   </StrictMode>
 );

@@ -1,10 +1,11 @@
 // Libs
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { auth, GoogleProvider } from "../firebase-config";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 // Components
 import { Eye, EyeOff } from "../assets/icons";
@@ -14,9 +15,9 @@ import Button from "../components/ui/Button";
 import { COLORS } from "../constants";
 import AuthButton from "../components/ui/AuthButton";
 import GoogleIcon from "../assets/icons/google.svg";
+import { setUserInfo } from "../features/Slices/userSlice";
 
 // CONTEXTS
-import { useUserContext } from "../context/UserContext";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +27,18 @@ export default function Register() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const { setUserInfo } = useUserContext();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          navigate("/");
+        } else {
+          navigate("/login");
+        }
+      });
+    }, []);
 
   // Form validation
   const validateForm = () => {
@@ -101,7 +112,7 @@ export default function Register() {
         email,
         password
       );
-      setUserInfo(userCredential.user);
+      dispatch(setUserInfo(userCredential.user));
       toast.success("Account created successfully! Welcome to Circle!");
       navigate("/");
     } catch (error) {
@@ -117,7 +128,7 @@ export default function Register() {
 
     try {
       const result = await signInWithPopup(auth, GoogleProvider);
-      setUserInfo(result.user);
+      dispatch(setUserInfo(userCredential.user));
       toast.success("Account created successfully with Google!");
       navigate("/");
     } catch (error) {
@@ -203,7 +214,7 @@ export default function Register() {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyUp={handleKeyPress}
                   disabled={isLoading}
                   className="bg-white/10 border-gray-600 text-white placeholder:text-gray-400 outline-0 h-12 rounded-xl backdrop-blur-sm w-full ps-2 disabled:opacity-50"
                   style={{

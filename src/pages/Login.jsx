@@ -1,14 +1,15 @@
 // Libs
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, GoogleProvider } from "../firebase-config";
 import { toast } from "react-toastify";
-
-//CONTEXTS
-import { useUserContext } from "../context/UserContext";
-
+import { useDispatch } from "react-redux";
 // Components
 import FloatingAvatars from "../components/ui/authPages/FloatingAvatars";
 import IrregularCirclePaths from "../components/ui/authPages/IrregularCirclePaths";
@@ -17,6 +18,7 @@ import { COLORS } from "../constants";
 import Button from "../components/ui/Button";
 import AuthButton from "../components/ui/AuthButton";
 import GoogleIcon from "../assets/icons/google.svg";
+import { setUserInfo } from "../features/Slices/userSlice";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +27,17 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUserInfo } = useUserContext();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      } else {
+        navigate("/login");
+      }
+    });
+  }, []);
 
   // Form validation
   const validateForm = () => {
@@ -81,8 +93,9 @@ function Login() {
         email,
         password
       );
-      setUserInfo(userCredential.user);
+      dispatch(setUserInfo(userCredential.user));
       toast.success("Successfully logged in!");
+
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
@@ -97,7 +110,7 @@ function Login() {
 
     try {
       const result = await signInWithPopup(auth, GoogleProvider);
-      setUserInfo(result.user);
+      dispatch(setUserInfo(userCredential.user));
       toast.success("Successfully logged in with Google!");
       navigate("/");
     } catch (error) {
@@ -172,7 +185,7 @@ function Login() {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyUp={handleKeyPress}
                   disabled={isLoading}
                   className="bg-white/10 border-gray-600 text-white placeholder:text-gray-400 outline-0 h-12 rounded-xl backdrop-blur-sm w-full ps-2 disabled:opacity-50"
                   style={{
