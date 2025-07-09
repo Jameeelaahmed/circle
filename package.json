@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/quicksand": "^5.2.8",
+    "@fontsource/poppins": "^5.2.6",
     "@reduxjs/toolkit": "^2.8.2",
+    "@tailwindcss/vite": "^4.1.11",
+    "clsx": "^2.1.1",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.0",
     "i18next": "^25.3.1",
