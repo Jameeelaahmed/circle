@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+
 export default function IrregularCirclePaths() {
     // Generate irregular circular paths with organic variations
     const generateIrregularCirclePath = (
@@ -240,51 +241,41 @@ export default function IrregularCirclePaths() {
                     />
                 ))}
 
-                {/* Connecting orbital dots */}
                 {Array.from({ length: 12 }, (_, i) => {
                     const orbitRadius = 200 + Math.sin(i * 0.5) * 50;
                     const orbitSpeed = 12 + Math.random() * 6;
+                    const baseAngle = (i * Math.PI) / 6;
+
+                    // Pre-calculate all positions to avoid undefined values
+                    const positions = [
+                        {
+                            x: centerX + orbitRadius * Math.cos(baseAngle),
+                            y: centerY + orbitRadius * Math.sin(baseAngle)
+                        },
+                        {
+                            x: centerX + orbitRadius * Math.cos(baseAngle + Math.PI),
+                            y: centerY + orbitRadius * Math.sin(baseAngle + Math.PI)
+                        },
+                        {
+                            x: centerX + orbitRadius * Math.cos(baseAngle + Math.PI * 2),
+                            y: centerY + orbitRadius * Math.sin(baseAngle + Math.PI * 2)
+                        }
+                    ];
 
                     return (
                         <motion.circle
                             key={`orbit-${i}`}
                             r="2"
                             fill="rgba(255,255,255,0.5)"
-                            cx={centerX}
-                            cy={centerY}
-                            initial={{ opacity: 0 }}
+                            initial={{ 
+                                cx: positions[0].x,
+                                cy: positions[0].y,
+                                opacity: 0 
+                            }}
                             animate={{
                                 opacity: [0, 0.8, 0],
-                                cx: [
-                                    centerX +
-                                        orbitRadius *
-                                            Math.cos((i * Math.PI) / 6),
-                                    centerX +
-                                        orbitRadius *
-                                            Math.cos(
-                                                (i * Math.PI) / 6 + Math.PI
-                                            ),
-                                    centerX +
-                                        orbitRadius *
-                                            Math.cos(
-                                                (i * Math.PI) / 6 + Math.PI * 2
-                                            ),
-                                ],
-                                cy: [
-                                    centerY +
-                                        orbitRadius *
-                                            Math.sin((i * Math.PI) / 6),
-                                    centerY +
-                                        orbitRadius *
-                                            Math.sin(
-                                                (i * Math.PI) / 6 + Math.PI
-                                            ),
-                                    centerY +
-                                        orbitRadius *
-                                            Math.sin(
-                                                (i * Math.PI) / 6 + Math.PI * 2
-                                            ),
-                                ],
+                                cx: [positions[0].x, positions[1].x, positions[2].x],
+                                cy: [positions[0].y, positions[1].y, positions[2].y],
                             }}
                             transition={{
                                 duration: orbitSpeed,
