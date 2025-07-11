@@ -11,10 +11,10 @@ import { useDispatch } from "react-redux";
 import { Eye, EyeOff } from "../../assets/icons";
 import IrregularCirclePaths from "../../components/ui/authPages/IrregularCirclePaths";
 import FloatingAvatars from "../../components/ui/authPages/FloatingAvatars";
-import Button from "../../components/ui/Button";
+import Button from '../../components/ui/Buttons/Button';
 import { COLORS } from "../../constants";
-import AuthButton from "../../components/ui/AuthButton";
-import GoogleIcon from "../assets/icons/google.svg";
+import AuthButton from "../../components/ui/Buttons/AuthButton";
+import GoogleIcon from "../../assets/icons/google.svg";
 import { setUserInfo } from "../../features/Slices/userSlice";
 
 // CONTEXTS
