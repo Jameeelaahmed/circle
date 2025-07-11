@@ -15,9 +15,9 @@ import FloatingAvatars from "../../components/ui/authPages/FloatingAvatars";
 import IrregularCirclePaths from "../../components/ui/authPages/IrregularCirclePaths";
 import { Eye, EyeOff } from "../../assets/icons";
 import { COLORS } from "../../constants";
-import Button from "../../components/ui/Button";
-import AuthButton from "../../components/ui/AuthButton";
-import GoogleIcon from "../assets/icons/google.svg";
+import Button from "../../components/ui/Buttons/Button";
+import AuthButton from "../../components/ui/Buttons/AuthButton";
+import GoogleIcon from "../../assets/icons/google.svg";
 import { setUserInfo } from "../../features/Slices/userSlice";
 
 function Login() {

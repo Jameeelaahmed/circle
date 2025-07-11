@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { RADII } from "../../constants";
+import { RADII } from "../../../constants";
 
 export default function AuthButton({
   iconSrc,
