@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import RootLayout from "../layouts/RootLayout";
-import { LandingPage } from "../pages/Landing/Landing";
+import { LandingPage } from "../pages/Landing/LandingPage";
 
 const routes = createBrowserRouter([
     { path: "/login", element: <Login /> },
