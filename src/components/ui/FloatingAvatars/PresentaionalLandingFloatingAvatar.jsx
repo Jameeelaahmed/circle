@@ -1,8 +1,8 @@
 import { motion as Motion } from "framer-motion";
 import { useLayoutEffect, useRef, useState } from "react";
-import OrbContainer from "../Orb/OrbContainer";
+import OrbContainer from "../../ui/ReactBits/Orb/OrbContainer";
 
-function PresentaionalLandingContainer({ avatars, hoveredAvatar, setHoveredAvatar }) {
+function PresentaionalLandingFloatingAvatar({ avatars, hoveredAvatar, setHoveredAvatar }) {
     const [cardDirection, setCardDirection] = useState({});
     const avatarRefs = useRef({});
     const cardWidth = 260;
@@ -147,4 +147,4 @@ function PresentaionalLandingContainer({ avatars, hoveredAvatar, setHoveredAvata
     );
 }
 
-export default PresentaionalLandingContainer;
+export default PresentaionalLandingFloatingAvatar;

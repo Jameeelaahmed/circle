@@ -1,5 +1,3 @@
-import React from 'react'
-
 function OrbPersentational({ ctnDom, imageUrl }) {
     return (
         <div ref={ctnDom} className="w-full h-full relative">

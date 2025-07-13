@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PresentationalAuthFloatingAvatars from './PresentationalAuthFloatingAvatars';
 import { useLocation } from 'react-router';
-import PresentaionalLandingContainer from './PresentaionalLandingContainer';
+import PresentaionalLandingFloatingAvatar from './PresentaionalLandingFloatingAvatar';
 function FloatingAvatarContainer() {
     const [hoveredAvatar, setHoveredAvatar] = useState(null);
     const location = useLocation().pathname;
@@ -154,7 +154,7 @@ function FloatingAvatarContainer() {
                 <PresentationalAuthFloatingAvatars avatars={authAvatars} />
             }
             {(location === '/') &&
-                <PresentaionalLandingContainer
+                <PresentaionalLandingFloatingAvatar
                     avatars={orbPositions}
                     hoveredAvatar={hoveredAvatar}
                     setHoveredAvatar={setHoveredAvatar} />}
