@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 // import { Button } from "@/components/ui/button";
 import { Search, Bell, Mail, User } from "lucide-react";
 import { useState } from "react";
+<<<<<<< HEAD:src/pages/Landing/Landing.jsx
 import Orb from '../../components/ui/ReactBits/Orb/Orb';
 
 
@@ -67,6 +68,9 @@ function NavBar() {
         </div>
     );
 }
+=======
+import Orb from '../../components/ui/Orb/Orb';
+>>>>>>> e0ab35e032185f6d6f6c67e0d9e2567a92dacff9:src/pages/Landing/LandingPage.jsx
 
 function IrregularCirclePaths() {
     // Generate irregular circular paths with organic variations
@@ -505,7 +509,7 @@ export function LandingPage() {
     return (
         <div className="h-screen w-screen bg-black flex flex-col justify-center overflow-hidden">
             {/* Navigation Bar */}
-            <NavBar />
+            {/* <NavBar /> */}
 
             <div className="w-full h-screen relative flex-1 flex items-center justify-center px-4 pt-16">
                 {/* Irregular Circle Background Paths */}
