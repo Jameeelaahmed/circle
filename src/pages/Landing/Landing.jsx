@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 // import { Button } from "@/components/ui/button";
 import { Search, Bell, Mail, User } from "lucide-react";
 import { useState } from "react";
-import Orb from '../../components/ui/Orb/Orb';
-
+import Orb from '../../components/ui/ReactBits/Orb/Orb';
 
 
 function NavBar() {
