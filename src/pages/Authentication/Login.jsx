@@ -1,5 +1,5 @@
 // Libs
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion"
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import {
@@ -11,14 +11,15 @@ import { auth, GoogleProvider } from "../../firebase-config";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 // Components
-import FloatingAvatars from "../../components/ui/authPages/FloatingAvatars";
-import IrregularCirclePaths from "../../components/ui/authPages/IrregularCirclePaths";
+
+import IrregularCirclePaths from "../../components/ui/IrregularCirclePathes/IrregularCirclePaths";
 import { Eye, EyeOff } from "../../assets/icons";
 import { COLORS } from "../../constants";
 import Button from "../../components/ui/Buttons/Button";
 import AuthButton from "../../components/ui/Buttons/AuthButton";
 import GoogleIcon from "../../assets/icons/google.svg";
-import { setUserInfo } from "../../features/Slices/userSlice";
+import { setUserInfo } from "../../features/user/userSlice";
+import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -138,14 +139,14 @@ function Login() {
     <div className="h-screen w-screen bg-black flex overflow-hidden">
       <div className="w-1/2 relative overflow-hidden">
         <IrregularCirclePaths />
-        <FloatingAvatars />
+        <FloatingAvatarContainer />
       </div>
 
       {/* Right Half - Clean Login Form */}
       <div className="w-1/2 bg-black flex items-center justify-center">
         <div className="w-full max-w-md px-8">
           {/* Logo */}
-          <motion.div
+          <Motion.div
             className="text-center mb-8"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,10 +155,10 @@ function Login() {
             <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl flex items-center justify-center shadow-lg">
               <div className="w-8 h-8 bg-black rounded-lg transform rotate-45"></div>
             </div>
-          </motion.div>
+          </Motion.div>
 
           {/* Welcome Text */}
-          <motion.div
+          <Motion.div
             className="text-center mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -169,10 +170,10 @@ function Login() {
             <p className="text-sm" style={{ color: COLORS.text }}>
               Let's sign you in
             </p>
-          </motion.div>
+          </Motion.div>
 
           {/* Login Form */}
-          <motion.div
+          <Motion.div
             className="space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -260,7 +261,7 @@ function Login() {
                 Create an account
               </Link>
             </div>
-          </motion.div>
+          </Motion.div>
         </div>
       </div>
     </div>

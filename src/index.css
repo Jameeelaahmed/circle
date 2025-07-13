@@ -12,12 +12,37 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  outline: none;
+}
+
 body {
   margin: 0;
 
 }
 
-/* Remove all custom button styling to let Tailwind handle it */
-button {
-  all: unset;
+@theme {
+  /** colors */
+  --color-primary: #ff6b8b;
+  --color-secondary: #6a5acd;
+  --color-accent: #00c9b1;
+  --color-dark: #12131a;
+  --color-darker: #0b0c10;
+  --color-light: #f8f9fc;
+  --color-text: #c5c6c7;
+  --color-glass: rgba(22, 23, 30, 0.7);
+
+  /** shadows */
+  --shadow-softPrimary: 0 0 20px rgba(255, 107, 139, 0.5);
+  --shadow-btnPrimary: 0 0 25px rgba(255, 107, 139, 0.5);
+  --shadow-btnPrimaryHover: 0 5px 30px rgba(255, 107, 139, 0.7);
+  --shadow-btnSecondaryHover: 0 0 20px rgba(0, 201, 177, 0.3);
+  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.2);
+  --shadow-glassCard: 0 20px 50px rgba(0, 0, 0, 0.3);
+
+  /** border-radius */
+
+  --rounded-pill: 50px;
+  --rounded-rounded: 20px;
+  --rounded-largeRounded: 30px;
 }

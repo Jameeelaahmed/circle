@@ -1,6 +1,6 @@
 import { Users, Target, Heart, ArrowRight, Star, Globe, Zap, MessageCircle, Calendar, Camera, Users2, Sparkles, Shield, Link, Clock, CheckCircle } from "lucide-react";
 import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
-import Orb from "../../components/ui/ReactBits/Orb/Orb";
+import Orb from "../../components/ui/ReactBits/Orb/OrbContainer";
 import Hero from "./Hero";
 import Stats from "./Stats";
 import VisionAndMission from "./VisionAndMission";
@@ -13,9 +13,9 @@ const AboutUs = () => {
             <Hero />
             <Stats />
             <VisionAndMission />
-            <Team />   
+            <Team />
 
-                 
+
             <div className="absolute top-10 right-5 w-48 h-48 opacity-30 z-1">
                 <Orb hue={480} hoverIntensity={0.3} />
             </div>

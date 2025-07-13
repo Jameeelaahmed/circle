@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-
+import { motion as Motion } from "framer-motion"
 export default function IrregularCirclePaths() {
     // Generate irregular circular paths with organic variations
     const generateIrregularCirclePath = (
@@ -73,12 +72,11 @@ export default function IrregularCirclePaths() {
     return (
         <div className="absolute inset-0 overflow-hidden opacity-30">
             <svg
-                className="w-full h-full"
+                className="w-4/5 h-full"
                 viewBox="0 0 800 800"
                 fill="none"
                 preserveAspectRatio="xMidYMid slice"
             >
-                <title>Irregular Circle Paths</title>
                 <defs>
                     <filter id="circleGlow">
                         <feGaussianBlur
@@ -115,7 +113,7 @@ export default function IrregularCirclePaths() {
                 </defs>
 
                 {pathLayers.map((layer) => (
-                    <motion.path
+                    <Motion.path
                         key={layer.id}
                         d={generateIrregularCirclePath(
                             layer.radius,
@@ -179,7 +177,7 @@ export default function IrregularCirclePaths() {
                     const particleSpeed = 15 + Math.random() * 10;
 
                     return (
-                        <motion.circle
+                        <Motion.circle
                             key={`particle-${i}`}
                             r="1.5"
                             fill="rgba(255,255,255,0.7)"
@@ -219,7 +217,7 @@ export default function IrregularCirclePaths() {
 
                 {/* Central pulsing elements */}
                 {Array.from({ length: 5 }, (_, i) => (
-                    <motion.circle
+                    <Motion.circle
                         key={`center-${i}`}
                         r={8 + i * 4}
                         fill="none"
@@ -263,14 +261,14 @@ export default function IrregularCirclePaths() {
                     ];
 
                     return (
-                        <motion.circle
+                        <Motion.circle
                             key={`orbit-${i}`}
                             r="2"
                             fill="rgba(255,255,255,0.5)"
-                            initial={{ 
+                            initial={{
                                 cx: positions[0].x,
                                 cy: positions[0].y,
-                                opacity: 0 
+                                opacity: 0
                             }}
                             animate={{
                                 opacity: [0, 0.8, 0],

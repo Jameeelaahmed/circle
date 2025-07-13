@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
-import store from "./features/store.js";
+import store from "./app/store.js";
 // STYLESHEETS
 import "./index.css";
 import App from "./App.jsx";
