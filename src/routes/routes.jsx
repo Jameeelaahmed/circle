@@ -8,6 +8,9 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import RootLayout from "../layouts/RootLayout";
 import { LandingPage } from "../pages/Landing/LandingPage";
 
+import Events from "../pages/Events/Events";
+
+
 const routes = createBrowserRouter([
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
@@ -16,7 +19,7 @@ const routes = createBrowserRouter([
         element: <RootLayout />,
         children: [
             { index: true, element: <LandingPage /> },
-            { path: "events", element: "" },
+            { path: "events", element: <Events/> },
             { path: "payments", element: "" },
             { path: "about", element: <AboutUs /> },
         ]
