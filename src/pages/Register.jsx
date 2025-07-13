@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, GoogleProvider } from "../firebase-config";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -30,15 +34,15 @@ export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-    useEffect(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          navigate("/");
-        } else {
-          navigate("/login");
-        }
-      });
-    }, []);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      } else {
+        navigate("/login");
+      }
+    });
+  }, []);
 
   // Form validation
   const validateForm = () => {
