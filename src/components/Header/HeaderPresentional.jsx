@@ -1,61 +1,39 @@
+// libs
 import { motion as Motion } from "framer-motion"
-import { Link } from "react-router"
-import { useState } from "react"
+import { Link, NavLink } from "react-router";
+
+// icons
 import { ChevronDown } from "lucide-react"
-import GooeyNav from "./GooeyNav";
-import useClickOutside from "../../hooks/useClickOutside";
 
-function Header() {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    // Close dropdown when clicking outside
-    const dropdownRef = useClickOutside({
-        state: isDropdownOpen,
-        setState: setIsDropdownOpen
-    });
-
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    const dropdownItems = [
-        { label: 'Profile', href: '/profile' },
-        { label: 'Settings', href: '/settings' },
-        { label: 'Help', href: '/help' },
-        { label: 'Logout', href: '/logout' }
-    ];
-    // Convert to GooeyNav format (label, href)
-    const navItems = [
-        { label: 'Home', href: '/' },
-        { label: 'Events', href: '/events' },
-        { label: 'Payments', href: '/payments' },
-        { label: 'About Us', href: '/about' }
-    ];
-
+function HeaderPresentional({ isDropdownOpen, setIsDropdownOpen, currentLang, dropdownRef, toggleDropdown, dropdownItems, navItems, handleLanguageChange }) {
     return (
         <div className="w-full bg-black/80 backdrop-blur-sm border-b border-white/10 z-50 fixed top-0">
             <div className="w-full px-2 sm:px-4 lg:px-6 h-16 flex items-center ">
                 {/* <div className="flex items-center justify-between h-16"> */}
                 {/* Left - Navigation Items */}
                 <div className="flex items-center flex-1">
-                    <div className="hidden md:block">
-                        <GooeyNav
-                            items={navItems}
-                            particleCount={15}
-                            particleDistances={[90, 10]}
-                            particleR={100}
-                            initialActiveIndex={0}
-                            animationTime={600}
-                            timeVariance={300}
-                            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-                        />
+                    <div className="hidden md:flex items-center space-x-6">
+                        {navItems.map((item, index) => (
+                            <NavLink
+                                key={index}
+                                to={item.href}
+                                className={({ isActive }) =>
+                                    `transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/10 ${isActive
+                                        ? "text-primary bg-white/10"
+                                        : "text-white hover:text-primary"
+                                    }`
+                                }
+                            >
+                                {item.label}
+                            </NavLink>
+                        ))}
                     </div>
                 </div>
 
                 <Motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex-shrink-0 flex items-center absolute left-1/2 transform -translate-x-1/2"
+                    className="flex-shrink-0 flex items-center absolute ltr:left-1/2 rtl:right-1/2 transform -translate-x-1/2"
                 >
                     <Link to="/" className="flex items-center">
                         <svg
@@ -67,8 +45,8 @@ function Header() {
                             {/* Modern concentric circles with gradient */}
                             <defs>
                                 <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#6366F1" />
-                                    <stop offset="100%" stopColor="#8B5CF6" />
+                                    <stop offset="0%" stopColor="#ff6b8b" />
+                                    <stop offset="100%" stopColor="#00c9b1" />
                                 </linearGradient>
                             </defs>
 
@@ -96,7 +74,7 @@ function Header() {
                                 cx="50"
                                 cy="50"
                                 r="8"
-                                fill="#8B5CF6"
+                                fill="#ff6b8b"
                             />
                         </svg>
                     </Link>
@@ -105,17 +83,23 @@ function Header() {
                 {/* Right - Button with Dropdown */}
                 <div className="flex items-center space-x-4 flex-1 justify-end relative" ref={dropdownRef}>
                     <button
-                        onClick={toggleDropdown}
-                        className="flex items-center space-x-2 px-3 py-2 bg-gray-200/20 backdrop-blur-sm hover:bg-gray-200/30 rounded-lg transition-all duration-200 border border-white/10"
+                        className="flex items-center space-x-2 px-3 py-2 bg-white/10 text-primary hover:bg-primary/20 rounded-lg transition-all duration-200"
+                        onClick={() => handleLanguageChange(currentLang === "ar" ? "en" : "ar")}
                     >
-                        {/* Purple circular letter */}
-                        <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        {currentLang === "ar" ? "en" : "ar"}
+                    </button>
+                    <button
+                        onClick={toggleDropdown}
+                        className="flex items-center space-x-2 px-3 py-2 bg-white/10 text-primary hover:bg-primary/20 rounded-lg transition-all duration-200"
+                    >
+                        {/* Primary colored circular letter */}
+                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                             <span className="text-white text-sm font-bold">U</span>
                         </div>
 
                         {/* Dropdown icon */}
                         <ChevronDown
-                            className={`w-4 h-4 text-gray-300 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''
+                            className={`w-4 h-4 text-primary transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''
                                 }`}
                         />
                     </button>
@@ -129,14 +113,14 @@ function Header() {
                             y: isDropdownOpen ? 0 : -10
                         }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute top-full right-0 mt-2 w-48 bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'
+                        className={`absolute top-full ltr:right-0 rtl:left-0 mt-2 w-48 bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'
                             }`}
                     >
                         {dropdownItems.map((item, index) => (
                             <Link
                                 key={index}
                                 to={item.href}
-                                className="block px-4 py-3 text-white hover:bg-purple-600/20 transition-colors text-sm"
+                                className="block px-4 py-3 text-white hover:bg-primary/20 transition-colors text-sm"
                                 onClick={() => setIsDropdownOpen(false)}
                             >
                                 {item.label}
@@ -145,8 +129,8 @@ function Header() {
                     </Motion.div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
-export default Header
+export default HeaderPresentional
