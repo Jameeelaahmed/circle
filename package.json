@@ -21,6 +21,7 @@
     "@schedule-x/theme-default": "^2.36.0",
     "@tailwindcss/vite": "^4.1.11",
     "clsx": "^2.1.1",
+    "emoji-picker-react": "^4.13.1",
     "firebase": "^11.10.0",
     "framer-motion": "^12.23.0",
     "i18next": "^25.3.1",
@@ -33,6 +34,7 @@
     "react-router": "^7.6.3",
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
+    "styled-components": "^6.1.19",
     "universal-cookie": "^8.0.1"
   },
   "devDependencies": {

@@ -13,6 +13,7 @@ import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 import CalendarImg from "../../assets/images/calendar.png";
 
 import { COLORS } from '../../constants';
+import Poll from "../../components/Poll/Poll";
 
 const categoryColors = {
   Meeting: COLORS.primary,   // pink-ish
@@ -154,6 +155,10 @@ export default function Events() {
   });
 
   return (
+    <>
+    <div className="mt-15">
+    <Poll/>
+    </div>
     <div className="h-screen mt-15 w-full bg-gray-100 px-6 py-6 flex flex-col gap-6 overflow-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -191,5 +196,6 @@ export default function Events() {
         <ScheduleXCalendar calendarApp={calendar} />
       </div>
     </div>
+    </>
   );
 }
