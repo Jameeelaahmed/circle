@@ -1,19 +1,12 @@
 // libs
 import { motion as Motion } from "framer-motion";
-import { Search, Bell, Mail, User } from "lucide-react";
-import { useRef } from "react";
 // components
 import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
 import CreateCircleModal from "../../components/ui/Modal/CreateCircleModal/CreateCircleModal";
 import Modal from "../../components/ui/Modal/Modal";
+export function LandingPresentationalPage({ t, openCCircleModal, createCircleModalRef }) {
 
-export function LandingPage() {
-    const createCircleModalRef = useRef();
-
-    function openCCircleModal() {
-        createCircleModalRef.current.open();
-    }
     return (
         <div className="min-h-screen bg-black flex flex-col overflow-hidden">
 
@@ -33,9 +26,9 @@ export function LandingPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 0.8 }}
                         >
-                            <span className="text-white">From we should..</span>
-                            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                                to we did!
+                            <span className="text-white">{t("From we should..")}</span>
+                            <span className="block text-transparent bg-clip-text ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-primary to-accent">
+                                {t("to we did!")}
                             </span>
                         </Motion.h1>
 
@@ -45,9 +38,7 @@ export function LandingPage() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.4, duration: 0.8 }}
                         >
-                            Circle combats social drift by reducing the logistical friction of planning group activities.
-                            It provides a dedicated space for social circles to decide, plan, and relive their shared experiences,
-                            transforming intention into connection.
+                            {t("Circle combats social drift by reducing the logistical friction of planning group activities.It provides a dedicated space for social circles to decide, plan, and relive their shared experiences,transforming intention into connection.")}
                         </Motion.p>
 
                         <Motion.div
@@ -55,8 +46,8 @@ export function LandingPage() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.6, duration: 0.8 }}
                         >
-                            <button onClick={openCCircleModal} className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-700 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all">
-                                Create Circle
+                            <button onClick={openCCircleModal} className="px-6 py-3 bg-primary rounded-lg text-white font-medium hover:shadow-lg hover:shadow-primary/30 transition-all">
+                                {t("Create Circle")}
                             </button>
                             <Modal ref={createCircleModalRef}>
                                 <CreateCircleModal />
