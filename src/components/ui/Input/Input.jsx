@@ -1,9 +1,12 @@
 import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import EmojiPicker from 'emoji-picker-react';
 import { SmilePlus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Input = ({ label, value, onChange }) => {
+  const { i18n } = useTranslation();
+  const direction = i18n.dir(); // 'ltr' or 'rtl'
   const [showPicker, setShowPicker] = useState(false);
   const inputRef = useRef(null);
 
@@ -15,7 +18,7 @@ const Input = ({ label, value, onChange }) => {
   };
 
   return (
-    <StyledWrapper>
+    <StyledWrapper $dir={direction}>
       <div className="input-container">
         <input
           ref={inputRef}
@@ -23,12 +26,13 @@ const Input = ({ label, value, onChange }) => {
           id="input"
           value={value}
           onChange={onChange}
-          placeholder=" "  
+          placeholder=" "
+          dir={direction}
         />
         <label htmlFor="input" className="label">{label}</label>
         <div className="underline" />
         <span
-          className="emoji-icon"
+          className="emoji-icon text-white"
           onClick={() => setShowPicker(!showPicker)}
         >
           <SmilePlus />
@@ -36,7 +40,11 @@ const Input = ({ label, value, onChange }) => {
 
         {showPicker && (
           <div className="emoji-picker">
-            <EmojiPicker onEmojiClick={handleEmojiClick} height={300} width={250} />
+            <EmojiPicker
+              onEmojiClick={handleEmojiClick}
+              height={300}
+              width={250}
+            />
           </div>
         )}
       </div>
@@ -61,15 +69,31 @@ const StyledWrapper = styled.div`
     padding: 5px 35px 5px 0;
     background-color: transparent;
     outline: none;
+
+    ${({ $dir }) =>
+      $dir === 'rtl' &&
+      css`
+        padding: 5px 0 5px 35px;
+      `}
   }
 
   .input-container .label {
     position: absolute;
     top: 0;
-    left: 0;
     color: #ccc;
     transition: all 0.3s ease;
     pointer-events: none;
+
+    ${({ $dir }) =>
+      $dir === 'rtl'
+        ? css`
+            right: 0;
+            left: auto;
+          `
+        : css`
+            left: 0;
+            right: auto;
+          `}
   }
 
   .input-container input[type="text"]:focus ~ .label,
@@ -82,12 +106,22 @@ const StyledWrapper = styled.div`
   .input-container .underline {
     position: absolute;
     bottom: 0;
-    left: 0;
     height: 2px;
     width: 100%;
     background-color: #333;
     transform: scaleX(0);
     transition: all 0.3s ease;
+
+    ${({ $dir }) =>
+      $dir === 'rtl'
+        ? css`
+            right: 0;
+            left: auto;
+          `
+        : css`
+            left: 0;
+            right: auto;
+          `}
   }
 
   .input-container input[type="text"]:focus ~ .underline,
@@ -97,18 +131,38 @@ const StyledWrapper = styled.div`
 
   .emoji-icon {
     position: absolute;
-    right: 5px;
     top: 8px;
     font-size: 20px;
     cursor: pointer;
+    z-index: 10;
+
+    ${({ $dir }) =>
+      $dir === 'rtl'
+        ? css`
+            left: 5px;
+            right: auto;
+          `
+        : css`
+            right: 5px;
+            left: auto;
+          `}
   }
 
   .emoji-picker {
     position: absolute;
-    top: 40px;
-    right: 0;
+    top: 45px;
     z-index: 1000;
+
+    ${({ $dir }) =>
+      $dir === 'rtl'
+        ? css`
+            left: 0;
+            right: auto;
+          `
+        : css`
+            right: 0;
+            left: auto;
+          `}
   }
 `;
-
 export default Input;

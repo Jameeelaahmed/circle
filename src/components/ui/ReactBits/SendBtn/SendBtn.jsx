@@ -24,8 +24,7 @@ const Button = () => {
 const StyledWrapper = styled.div`
   button {
     font-family: inherit;
-    font-size: 18px;
-    background: linear-gradient(to bottom, var(--color-primary) 0%, var(--color-secondary) 100%);
+    font-size: 20px;
     color: white;
     padding: 0.8em 1.2em;
     display: flex;
@@ -82,7 +81,7 @@ const StyledWrapper = styled.div`
   }
 
   button:hover .svg-wrapper {
-    background-color: var(--color-secondary);
+    background-color: var(--color-primary);
     width: 54px;
     height: 54px;
   }

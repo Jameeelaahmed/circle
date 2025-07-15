@@ -1,6 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
+  const { i18n } = useTranslation();
+  const direction = i18n.dir(); // 'ltr' or 'rtl'
+
+  const animationName = direction === 'rtl' ? 'shine-rtl' : 'shine';
+
   const animationStyle = {
     backgroundImage:
       'linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 60%)',
@@ -9,7 +15,7 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     display: 'inline-block',
-    animation: disabled ? 'none' : `shine ${speed}s linear infinite`,
+    animation: disabled ? 'none' : `${animationName} ${speed}s linear infinite`,
   };
 
   return (
@@ -23,6 +29,15 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
               }
               100% {
                 background-position: -100%;
+              }
+            }
+
+            @keyframes shine-rtl {
+              0% {
+                background-position: -100%;
+              }
+              100% {
+                background-position: 100%;
               }
             }
           `}
