@@ -4,7 +4,7 @@ import { motion as Motion } from "framer-motion";
 function CircleDetailsCardPresentational({ positionClasses, isRTLState, orb }) {
     return (
         <Motion.div
-            className={`absolute ${positionClasses} w-64 bg-black/90 backdrop-blur-sm rounded-xl p-4 shadow-lg z-30 border border-white/10`}
+            className={`absolute ${positionClasses} w-64 bg-main/90 backdrop-blur-sm rounded-xl p-4 shadow-lg z-30 border border-white/10`}
             style={{ pointerEvents: 'none' }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}

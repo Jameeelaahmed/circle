@@ -8,7 +8,7 @@ import Modal from "../../components/ui/Modal/Modal";
 export function LandingPresentationalPage({ t, openCCircleModal, createCircleModalRef }) {
 
     return (
-        <div className="min-h-screen bg-black flex flex-col overflow-hidden">
+        <div className="min-h-screen bg-main flex flex-col overflow-hidden">
 
             {/* Main Content */}
             <div className="w-full h-screen flex flex-col md:flex-row items-center justify-center px-4 pt-16">

@@ -12,7 +12,7 @@ const Modal = forwardRef(function Modal(props, ref) {
         }
     }))
     return createPortal(
-        <dialog ref={modalRef} className="bg-darker m-auto backdrop:bg-black-90 backdrop:backdrop-blur-md rounded-4xl px-rounded-4xl p-5 animate-fade-slide-in" >
+        <dialog ref={modalRef} className="bg-main m-auto backdrop:bg-main-90 backdrop:backdrop-blur-md rounded-4xl px-rounded-4xl p-5 animate-fade-slide-in" >
             {props.children}
         </dialog>, document.getElementById('root')
     )

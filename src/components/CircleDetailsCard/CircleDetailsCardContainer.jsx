@@ -24,8 +24,6 @@ function CircleDetailsCardContainer({ orb, hoveredAvatar, isRTLState, avatarRefs
             const vw = window.innerWidth;
             const vh = window.innerHeight;
             const padding = 16;
-
-
             const space = {
                 right: vw - rect.right,
                 left: rect.left,
