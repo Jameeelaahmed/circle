@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // Components
 import Login from "../pages/Authentication/LoginContainer";
-import Register from "../pages/Authentication/Register";
+import Register from "../pages/Authentication/RegisterContainer";
 import AboutUs from "../pages/AboutUs/AboutUs";
 
 import RootLayout from "../layouts/RootLayout";
