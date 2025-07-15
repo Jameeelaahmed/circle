@@ -70,7 +70,7 @@ export default function IrregularCirclePaths() {
     }
 
     return (
-        <div className="absolute inset-0 overflow-hidden opacity-30">
+        <div className="absolute inset-0 overflow-hidden opacity-30 flex justify-center">
             <svg
                 className="w-4/5 h-full"
                 viewBox="0 0 800 800"
