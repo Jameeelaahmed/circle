@@ -1,5 +1,5 @@
 import { motion as Motion } from "framer-motion"
-export default function PresentationalAuthFloatingAvatars({ avatars }) {
+export default function AuthFloatingAvatarsPresentational({ avatars }) {
     return (
         <>
             {avatars.map((avatar) => (
