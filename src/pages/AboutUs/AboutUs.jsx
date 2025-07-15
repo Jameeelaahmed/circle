@@ -8,7 +8,7 @@ import Team from "./Team";
 
 const AboutUs = () => {
     return (
-        <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: COLORS.dark, color: COLORS.text }}>
+        <div className="min-h-screen relative overflow-hidden bg-main" style={{ color: COLORS.text }}>
 
             <Hero />
             <Stats />

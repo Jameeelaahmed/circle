@@ -4,7 +4,7 @@ import Select from 'react-select'
 function CreateModalPresentional({ t, uploadedImages, inputStyles, textareaStyles, customStyles, circleType, setCircleType, fileInputRef, memberOptions, interestOptions, circleTypeOptions, handleImageUpload, removeImage }) {
     return (
         <form className="space-y-6 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold text-center text-white">{t("Create Circle")}</h2>
+            <h2 className="text-2xl font-bold text-center text-white font-secondary">{t("Create Circle")}</h2>
 
             {/* Basic Information */}
             <div className="space-y-4">
@@ -124,7 +124,7 @@ function CreateModalPresentional({ t, uploadedImages, inputStyles, textareaStyle
 
                 {/* Upload Area */}
                 <div
-                    className={`${inputStyles} flex flex-col items-center justify-center cursor-pointer min-h-[100px] hover:bg-dark-700 transition-colors`}
+                    className={`${inputStyles} flex flex-col items-center justify-center cursor-pointer min-h-[100px] hover:bg-main-700 transition-colors`}
                     onClick={() => fileInputRef.current.click()}
                 >
                     <input

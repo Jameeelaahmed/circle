@@ -59,14 +59,14 @@ function CreateCircleModal() {
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
-            backgroundColor: 'black',
-            border: `${state.isFocused ? '3px' : '1px'} solid var(--primary)`,
+            backgroundColor: 'var(--color-main)',
+            border: `${state.isFocused ? '3px' : '1px'} solid var(--color-primary)`,
             borderRadius: '1rem',
             minHeight: '42px',
             boxShadow: 'none',
             transition: 'border-width 0.2s ease-in-out',
             '&:hover': {
-                borderColor: 'var(--primary)',
+                borderColor: 'var(--color-primary)',
             },
         }),
         valueContainer: (provided) => ({
@@ -81,7 +81,7 @@ function CreateCircleModal() {
         }),
         placeholder: (provided) => ({
             ...provided,
-            color: 'var(--primary)',
+            color: 'var(--color-primary)',
             fontSize: '12px',
             margin: '0',
             textTransform: 'lowercase',
@@ -92,7 +92,7 @@ function CreateCircleModal() {
         }),
         multiValue: (provided) => ({
             ...provided,
-            backgroundColor: 'var(--primary)',
+            backgroundColor: 'var(--color-primary)',
             borderRadius: '6px',
         }),
         multiValueLabel: (provided) => ({
@@ -109,21 +109,21 @@ function CreateCircleModal() {
         }),
         menu: (provided) => ({
             ...provided,
-            backgroundColor: 'black',
-            border: `3px solid var(--primary)`,
+            backgroundColor: "var(--color-main)",
+            border: `3px solid var(--color-primary)`,
             borderRadius: '1rem',
             marginTop: '4px',
         }),
         option: (provided, state) => ({
             ...provided,
             backgroundColor: state.isSelected
-                ? 'var(--primary)'
+                ? 'var(--color-primary)'
                 : state.isFocused
                     ? 'rgba(255, 107, 139, 0.2)'
                     : 'transparent',
             color: 'white',
             ':active': {
-                backgroundColor: 'var(--primary)',
+                backgroundColor: 'var(--color-primary)',
             },
         }),
         indicatorsContainer: (provided) => ({
@@ -132,21 +132,21 @@ function CreateCircleModal() {
         }),
         dropdownIndicator: (provided) => ({
             ...provided,
-            color: 'var(--primary)',
+            color: 'var(--color-primary)',
             ':hover': {
-                color: 'var(--primary)',
+                color: 'var(--color-primary)',
             },
         }),
         clearIndicator: (provided) => ({
             ...provided,
-            color: 'var(--primary)',
+            color: 'var(--color-primary)',
             ':hover': {
                 color: 'white',
             },
         }),
     };
 
-    const inputStyles = `bg-black border border-primary focus:border-[3px] focus:p-[6px] w-full p-2 rounded-2xl text-white placeholder-primary focus:outline-none focus:ring-0 transition-all duration-200 placeholder:opacity-100 placeholder:transition-opacity placeholder:duration-[400ms] placeholder:ease-in-out focus:placeholder:opacity-0 placeholder:text-xs placeholder:lowercase`;
+    const inputStyles = `bg-main border border-primary focus:border-[3px] focus:p-[6px] w-full p-2 rounded-2xl text-white placeholder-primary focus:outline-none focus:ring-0 transition-all duration-200 placeholder:opacity-100 placeholder:transition-opacity placeholder:duration-[400ms] placeholder:ease-in-out focus:placeholder:opacity-0 placeholder:text-xs placeholder:lowercase`;
     const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
     return (

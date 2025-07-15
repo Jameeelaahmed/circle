@@ -1,4 +1,4 @@
-// libs
+99// libs
 import { motion as Motion } from "framer-motion"
 import { Link, NavLink } from "react-router";
 
@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react"
 
 function HeaderPresentional({ isDropdownOpen, setIsDropdownOpen, currentLang, dropdownRef, toggleDropdown, dropdownItems, navItems, handleLanguageChange }) {
     return (
-        <div className="w-full bg-black/80 backdrop-blur-sm border-b border-white/10 z-50 fixed top-0">
+        <div className="w-full bg-main/90 backdrop-blur-sm border-b border-white/10 z-50 fixed top-0">
             <div className="w-full px-2 sm:px-4 lg:px-6 h-16 flex items-center ">
                 {/* <div className="flex items-center justify-between h-16"> */}
                 {/* Left - Navigation Items */}
@@ -113,7 +113,7 @@ function HeaderPresentional({ isDropdownOpen, setIsDropdownOpen, currentLang, dr
                             y: isDropdownOpen ? 0 : -10
                         }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute top-full ltr:right-0 rtl:left-0 mt-2 w-48 bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'
+                        className={`absolute top-full ltr:right-0 rtl:left-0 mt-2 w-48 bg-main/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg overflow-hidden z-50 ${isDropdownOpen ? 'pointer-events-auto' : 'pointer-events-none'
                             }`}
                     >
                         {dropdownItems.map((item, index) => (
