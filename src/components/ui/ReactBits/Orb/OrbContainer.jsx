@@ -190,7 +190,7 @@ function OrbContainer({
           value: new Vec3(
             gl.canvas.width,
             gl.canvas.height,
-            gl.canvas.width / gl.canvas.height
+            gl.canvas.width / gl.canvas.height,
           ),
         },
         hue: { value: hue },
@@ -213,7 +213,7 @@ function OrbContainer({
       program.uniforms.iResolution.value.set(
         gl.canvas.width,
         gl.canvas.height,
-        gl.canvas.width / gl.canvas.height
+        gl.canvas.width / gl.canvas.height,
       );
     }
     window.addEventListener("resize", resize);
@@ -260,7 +260,8 @@ function OrbContainer({
       program.uniforms.hoverIntensity.value = hoverIntensity;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
-      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;
+      program.uniforms.hover.value +=
+        (effectiveHover - program.uniforms.hover.value) * 0.1;
 
       if (rotateOnHover && effectiveHover > 0.5) {
         currentRot += dt * rotationSpeed;
@@ -286,7 +287,7 @@ function OrbContainer({
     <>
       <OrbPersentational ctnDom={ctnDom} imageUrl={imageUrl} />
     </>
-  )
+  );
 }
 
-export default OrbContainer
+export default OrbContainer;

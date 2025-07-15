@@ -6,6 +6,7 @@ import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/Floatin
 import Button from "../../components/ui/Buttons/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router";
+import { Logo } from "../../assets/icons/Logo";
 
 function PresentationalRegister({
   handleKeyPress,
@@ -22,7 +23,7 @@ function PresentationalRegister({
   setRepeatPassword,
   email,
   password,
-  repeatPassword
+  repeatPassword,
 }) {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-black">
@@ -37,14 +38,12 @@ function PresentationalRegister({
         <div className="w-full max-w-md px-8">
           {/* Logo */}
           <Motion.div
-            className="mb-8 text-center"
+            className="mb-8 flex justify-center text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-lg">
-              <div className="h-8 w-8 rotate-45 transform rounded-lg bg-black"></div>
-            </div>
+            <Logo />
           </Motion.div>
 
           {/* Welcome Text */}
@@ -77,7 +76,7 @@ function PresentationalRegister({
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyUp={handleKeyPress}
                   disabled={isLoading}
-                  className="bg-dark h-12 w-full rounded-xl border-gray-600  ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                  className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                   required
                 />
               </div>

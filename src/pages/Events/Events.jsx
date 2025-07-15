@@ -12,69 +12,68 @@ import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 
 import CalendarImg from "../../assets/images/calendar.png";
 
-import { COLORS } from '../../constants';
+import { COLORS } from "../../constants";
 import PollContainer from "../../components/Poll/PollContainer";
 
-
 const categoryColors = {
-  Meeting: COLORS.primary,   // pink-ish
-  Design: COLORS.secondary,  // purple-ish
-  Workshop: COLORS.accent,   // teal-ish
-  Deadline: COLORS.darker,   // very dark
+  Meeting: COLORS.primary, // pink-ish
+  Design: COLORS.secondary, // purple-ish
+  Workshop: COLORS.accent, // teal-ish
+  Deadline: COLORS.darker, // very dark
 };
 
 const config = {
   calendars: {
     Meeting: {
-      colorName: 'Meeting',
+      colorName: "Meeting",
       lightColors: {
-        main: COLORS.primary,       // pink-ish
-        container: '#ffe6eb',
-        onContainer: '#660024',
+        main: COLORS.primary, // pink-ish
+        container: "#ffe6eb",
+        onContainer: "#660024",
       },
       darkColors: {
         main: COLORS.primary,
-        container: '#330012',
-        onContainer: '#ffb3c6',
+        container: "#330012",
+        onContainer: "#ffb3c6",
       },
     },
     Design: {
-      colorName: 'Design',
+      colorName: "Design",
       lightColors: {
-        main: COLORS.secondary,     // purple-ish
-        container: '#e6e0ff',
-        onContainer: '#2a005c',
+        main: COLORS.secondary, // purple-ish
+        container: "#e6e0ff",
+        onContainer: "#2a005c",
       },
       darkColors: {
         main: COLORS.secondary,
-        container: '#1a0033',
-        onContainer: '#bfb3ff',
+        container: "#1a0033",
+        onContainer: "#bfb3ff",
       },
     },
     Workshop: {
-      colorName: 'Workshop',
+      colorName: "Workshop",
       lightColors: {
-        main: COLORS.accent,        // teal-ish
-        container: '#d0fff9',
-        onContainer: '#004d4d',
+        main: COLORS.accent, // teal-ish
+        container: "#d0fff9",
+        onContainer: "#004d4d",
       },
       darkColors: {
         main: COLORS.accent,
-        container: '#004d4d',
-        onContainer: '#b3ffff',
+        container: "#004d4d",
+        onContainer: "#b3ffff",
       },
     },
     Deadline: {
-      colorName: 'Deadline',
+      colorName: "Deadline",
       lightColors: {
-        main: COLORS.darker,        // very dark
-        container: '#666666',
-        onContainer: '#f0f0f0',
+        main: COLORS.darker, // very dark
+        container: "#666666",
+        onContainer: "#f0f0f0",
       },
       darkColors: {
         main: COLORS.darker,
-        container: '#333333',
-        onContainer: '#e0e0e0',
+        container: "#333333",
+        onContainer: "#e0e0e0",
       },
     },
   },
@@ -139,7 +138,6 @@ const config = {
   ],
 };
 
-
 export default function Events() {
   const events = config.events;
   const calendar = useCalendarApp({
@@ -157,44 +155,44 @@ export default function Events() {
 
   return (
     <>
-    <PollContainer/>
-    <div className="h-screen mt-15 w-full bg-gray-100 px-6 py-6 flex flex-col gap-6 overflow-hidden">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        {/* Title */}
-        <div className="flex items-center gap-4">
-          <img src={CalendarImg} alt="Calendar" className="w-10 h-10" />
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">Calendar</h1>
-            <p className="text-sm text-gray-500">12 Events in July</p>
+      <PollContainer />
+      <div className="mt-15 flex h-screen w-full flex-col gap-6 overflow-hidden bg-gray-100 px-6 py-6">
+        {/* Header */}
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          {/* Title */}
+          <div className="flex items-center gap-4">
+            <img src={CalendarImg} alt="Calendar" className="h-10 w-10" />
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800">Calendar</h1>
+              <p className="text-sm text-gray-500">12 Events in July</p>
+            </div>
+          </div>
+
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(categoryColors).map(([category, color]) => (
+              <span
+                key={category}
+                className="rounded-full border px-3 py-1 text-sm font-medium"
+                style={{
+                  backgroundColor: `${color}15`,
+                  borderColor: `${color}30`,
+                  color: color,
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                }}
+              >
+                {category}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(categoryColors).map(([category, color]) => (
-            <span
-              key={category}
-              className="px-3 py-1 text-sm rounded-full border font-medium"
-              style={{
-                backgroundColor: `${color}15`, 
-                borderColor: `${color}30`,
-                color: color,
-                borderStyle: 'solid',
-                borderWidth: '1px',
-              }}
-            >
-              {category}
-            </span>
-          ))}
+        {/* Calendar */}
+        <div className="relative z-10 flex-grow overflow-auto rounded-2xl border border-gray-200 bg-white shadow-md">
+          <ScheduleXCalendar calendarApp={calendar} />
         </div>
       </div>
-
-      {/* Calendar */}
-      <div className="flex-grow bg-white border border-gray-200 rounded-2xl shadow-md relative z-10 overflow-auto">
-        <ScheduleXCalendar calendarApp={calendar} />
-      </div>
-    </div>
     </>
   );
 }

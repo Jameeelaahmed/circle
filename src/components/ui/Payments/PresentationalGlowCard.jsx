@@ -1,4 +1,4 @@
-import {motion, useMotionTemplate} from "framer-motion"
+import { motion, useMotionTemplate } from "framer-motion";
 function GlowCardPresentational({
   handleMouseMove,
   handleMouseEnter,
@@ -9,7 +9,7 @@ function GlowCardPresentational({
   children,
   radius,
   color,
-  className
+  className,
 }) {
   return (
     <div

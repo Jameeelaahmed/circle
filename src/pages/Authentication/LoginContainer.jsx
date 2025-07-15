@@ -44,7 +44,7 @@ function Login() {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       dispatch(setUserInfo(userCredential.user));
       toast.success("Successfully logged in!");
