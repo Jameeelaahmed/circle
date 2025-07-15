@@ -19,5 +19,11 @@
   "Description": "الوصف",
   "Members": "الأعضاء",
   "Interests": "الاهتمامات",
-  "Circle Images": "صور الدائرة"
+  "Circle Images": "صور الدائرة",
+  "Create Poll": "إنشاء استطلاع",
+   "Question *":"السؤال *",
+  "Ask question": "اكتب سؤالك",
+  "Options *": "* الخيارات",
+  "Option": "الخيار",
+ "Allow multiple answers!": "السماح باختيار عدة إجابات!"
 }
