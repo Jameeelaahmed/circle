@@ -10,7 +10,7 @@ export default function AuthButton({
 }) {
   const finalClasses = clsx(
     "w-full justify-center flex items-center gap-6 bg-white text-black px-6 py-2 cursor-pointer",
-    classes
+    classes,
   );
   return (
     <button

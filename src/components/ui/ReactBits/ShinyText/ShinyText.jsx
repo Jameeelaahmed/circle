@@ -1,21 +1,21 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 
-const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
+const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
   const { i18n } = useTranslation();
   const direction = i18n.dir(); // 'ltr' or 'rtl'
 
-  const animationName = direction === 'rtl' ? 'shine-rtl' : 'shine';
+  const animationName = direction === "rtl" ? "shine-rtl" : "shine";
 
   const animationStyle = {
     backgroundImage:
-      'linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 60%)',
-    backgroundSize: '200% 100%',
-    backgroundPosition: '100%',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    display: 'inline-block',
-    animation: disabled ? 'none' : `${animationName} ${speed}s linear infinite`,
+      "linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 60%)",
+    backgroundSize: "200% 100%",
+    backgroundPosition: "100%",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    display: "inline-block",
+    animation: disabled ? "none" : `${animationName} ${speed}s linear infinite`,
   };
 
   return (

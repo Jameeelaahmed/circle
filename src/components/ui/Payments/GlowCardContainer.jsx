@@ -2,7 +2,12 @@ import { useMotionValue } from "framer-motion";
 import GlowCardPresentational from "./PresentationalGlowCard";
 import { useState } from "react";
 
-function GlowCardContainer({ children, radius = 350, color = "#262626",className }) {
+function GlowCardContainer({
+  children,
+  radius = 350,
+  color = "#262626",
+  className,
+}) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const [isHovering, setIsHovering] = useState(false);
