@@ -2,8 +2,8 @@
 import { motion as Motion } from "framer-motion";
 import { Link, NavLink } from "react-router";
 
-// icons
-import { ChevronDown } from "lucide-react";
+// components
+import UserDropdown from "../UserDropDown/UserDropdown";
 
 function HeaderPresentional({
   isDropdownOpen,
@@ -27,10 +27,9 @@ function HeaderPresentional({
                 key={index}
                 to={item.href}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white/10 ${
-                    isActive
-                      ? "text-primary bg-white/10"
-                      : "hover:text-primary text-white"
+                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white/10 ${isActive
+                    ? "text-primary bg-white/10"
+                    : "hover:text-primary text-white"
                   }`
                 }
               >
@@ -39,7 +38,6 @@ function HeaderPresentional({
             ))}
           </div>
         </div>
-
         <Motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,10 +90,7 @@ function HeaderPresentional({
         </Motion.div>
 
         {/* Right - Button with Dropdown */}
-        <div
-          className="relative flex flex-1 items-center justify-end space-x-4"
-          ref={dropdownRef}
-        >
+        <div className="relative flex flex-1 items-center justify-end space-x-4">
           <button
             className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200"
             onClick={() =>
@@ -104,47 +99,14 @@ function HeaderPresentional({
           >
             {currentLang === "ar" ? "en" : "ar"}
           </button>
-          <button
-            onClick={toggleDropdown}
-            className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200"
-          >
-            {/* Primary colored circular letter */}
-            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-              <span className="text-sm font-bold text-white">U</span>
-            </div>
 
-            {/* Dropdown icon */}
-            <ChevronDown
-              className={`text-primary h-4 w-4 transition-transform duration-200 ${
-                isDropdownOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-
-          {/* Dropdown Menu */}
-          <Motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
-            animate={{
-              opacity: isDropdownOpen ? 1 : 0,
-              scale: isDropdownOpen ? 1 : 0.95,
-              y: isDropdownOpen ? 0 : -10,
-            }}
-            transition={{ duration: 0.2 }}
-            className={`bg-main/90 absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-white/10 shadow-lg backdrop-blur-sm ltr:right-0 rtl:left-0 ${
-              isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"
-            }`}
-          >
-            {dropdownItems.map((item, index) => (
-              <Link
-                key={index}
-                to={item.href}
-                className="hover:bg-primary/20 block px-4 py-3 text-sm text-white transition-colors"
-                onClick={() => setIsDropdownOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </Motion.div>
+          <UserDropdown
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            dropdownRef={dropdownRef}
+            toggleDropdown={toggleDropdown}
+            dropdownItems={dropdownItems}
+          />
         </div>
       </div>
     </div>

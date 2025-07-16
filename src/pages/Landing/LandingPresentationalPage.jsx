@@ -3,7 +3,7 @@ import { motion as Motion } from "framer-motion";
 // components
 import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
-import CreateCircleModal from "../../components/ui/Modal/CreateCircleModal/CreateCircleModal";
+import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer";
 import Modal from "../../components/ui/Modal/Modal";
 export function LandingPresentationalPage({
   t,
@@ -57,7 +57,7 @@ export function LandingPresentationalPage({
                 {t("Create Circle")}
               </button>
               <Modal ref={createCircleModalRef}>
-                <CreateCircleModal />
+                <CreateCircleModalContainer />
               </Modal>
             </Motion.div>
           </div>
