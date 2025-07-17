@@ -122,15 +122,16 @@ function Payments() {
           <GlowCardContainer
             className={"bg-black/35 p-10 backdrop-blur-2xl"}
             color={card.color}
+            key={card.header}
           >
             <div className="mb-10 flex justify-center">{card.icon}</div>
             <p className="text-primary mb-10 text-center text-xl font-bold xl:text-2xl">
               {card.header}
             </p>
-            <p className="mb-10 text-center text-4xl">{card.price}</p>
+            {card.price}
             <ul className="mb-10 h-40 [&>*]:list-disc">
               {card.services.map((service) => (
-                <li>{service}</li>
+                <li key={service}>{service}</li>
               ))}
             </ul>
             {card.actionBtn}
