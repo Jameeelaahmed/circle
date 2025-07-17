@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
-import styled, { css } from 'styled-components';
-import EmojiPicker from 'emoji-picker-react';
-import { SmilePlus } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useRef } from "react";
+import styled, { css } from "styled-components";
+import EmojiPicker from "emoji-picker-react";
+import { SmilePlus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Input = ({ label, value, onChange }) => {
   const { i18n } = useTranslation();
@@ -29,7 +29,9 @@ const Input = ({ label, value, onChange }) => {
           placeholder=" "
           dir={direction}
         />
-        <label htmlFor="input" className="label">{label}</label>
+        <label htmlFor="input" className="label">
+          {label}
+        </label>
         <div className="underline" />
         <span
           className="emoji-icon text-white"
@@ -71,7 +73,7 @@ const StyledWrapper = styled.div`
     outline: none;
 
     ${({ $dir }) =>
-      $dir === 'rtl' &&
+      $dir === "rtl" &&
       css`
         padding: 5px 0 5px 35px;
       `}
@@ -85,7 +87,7 @@ const StyledWrapper = styled.div`
     pointer-events: none;
 
     ${({ $dir }) =>
-      $dir === 'rtl'
+      $dir === "rtl"
         ? css`
             right: 0;
             left: auto;
@@ -113,7 +115,7 @@ const StyledWrapper = styled.div`
     transition: all 0.3s ease;
 
     ${({ $dir }) =>
-      $dir === 'rtl'
+      $dir === "rtl"
         ? css`
             right: 0;
             left: auto;
@@ -137,7 +139,7 @@ const StyledWrapper = styled.div`
     z-index: 10;
 
     ${({ $dir }) =>
-      $dir === 'rtl'
+      $dir === "rtl"
         ? css`
             left: 5px;
             right: auto;
@@ -154,7 +156,7 @@ const StyledWrapper = styled.div`
     z-index: 1000;
 
     ${({ $dir }) =>
-      $dir === 'rtl'
+      $dir === "rtl"
         ? css`
             left: 0;
             right: auto;

@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Switch = () => {
   return (
@@ -10,7 +10,7 @@ const Switch = () => {
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .checkbox-apple {
@@ -37,7 +37,7 @@ const StyledWrapper = styled.div`
   }
 
   .checkbox-apple label:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 1px;
     left: 1px;
@@ -71,6 +71,7 @@ const StyledWrapper = styled.div`
     left: 0;
     width: 50px;
     height: 25px;
-  }`;
+  }
+`;
 
 export default Switch;

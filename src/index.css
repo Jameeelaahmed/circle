@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap");
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -21,7 +23,12 @@ body {
 }
 
 @theme {
+  /** fonts */
+  --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-secondary: "Kode Mono", monospace;
+
   /** colors */
+  --color-main: #0b0c10;
   --color-primary: #ff6b8b;
   --color-secondary: #6a5acd;
   --color-accent: #00c9b1;

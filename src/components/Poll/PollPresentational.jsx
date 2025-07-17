@@ -17,16 +17,16 @@ export default function PollPresentational({
   t,
 }) {
   return (
-    <div className="relative w-[500px] p-10 rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
+    <div className="bg-darker relative w-[500px] rounded-4xl p-10 shadow-2xl backdrop-blur-lg">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 mb-10">
-        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
+      <div className="mb-10 flex items-center justify-between gap-3">
+        <h2 className="from-secondary to-primary bg-gradient-to-b bg-clip-text text-4xl font-bold text-transparent">
           {t("Create Poll")}
         </h2>
         <X
           onClick={onClose}
           size={28}
-          className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
+          className="cursor-pointer rounded-full p-1 text-white transition-all hover:bg-white/30"
         />
       </div>
 
@@ -34,7 +34,7 @@ export default function PollPresentational({
       <form onSubmit={onSubmit} className="">
         {/* Question */}
         <div>
-          <label className="block text-lg mb-2 font-medium text-light">
+          <label className="text-light mb-2 block text-lg font-medium">
             {t("Question *")}
           </label>
           <Input
@@ -46,17 +46,9 @@ export default function PollPresentational({
 
         {/* Options */}
         <div>
-          <div className="flex items-center justify-between">
-            <label className="block text-lg mb-2 font-medium text-light">
-              {t("Options *")}
-            </label>
-
-            <div className="flex items-center gap-x-2 cursor-pointer">
-              <AiButton />
-              <span className="font-bold ps-2 py-1 text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">Ask AI</span>
-            </div>
-          </div>
-
+          <label className="text-light mb-2 block text-lg font-medium">
+            {t("Options *")}
+          </label>
           <div className="space-y-3">
             {options.map((option, index) => (
               <Input
@@ -70,7 +62,7 @@ export default function PollPresentational({
         </div>
 
         {/* Toggle */}
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <ShinyText
             text={t("Allow multiple answers!")}
             disabled={false}
@@ -85,7 +77,7 @@ export default function PollPresentational({
 
         {/* Submit */}
         <div className="pt-2">
-          <div className="flex justify-end relative translate-y-[50%] z-10">
+          <div className="relative z-10 flex translate-y-[50%] justify-end">
             <SendBtn />
           </div>
         </div>
