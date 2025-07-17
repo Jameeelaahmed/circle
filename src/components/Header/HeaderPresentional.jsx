@@ -1,17 +1,14 @@
-99; // libs
-import { motion as Motion } from "framer-motion";
-import { Link, NavLink } from "react-router";
-
 // components
-import UserDropdown from "../UserDropDown/UserDropdown";
+import UserDropDownContainer from "../UserDropDown/UserDropDownContainer";
+import Skeleton from '@mui/material/Skeleton';
+// libs
+import { motion as Motion } from "framer-motion";
+import { Link, NavLink } from "react-router-dom";
 
 function HeaderPresentional({
-  isDropdownOpen,
-  setIsDropdownOpen,
+  isAuthLoading,
+  isLoggedIn,
   currentLang,
-  dropdownRef,
-  toggleDropdown,
-  dropdownItems,
   navItems,
   handleLanguageChange,
 }) {
@@ -99,17 +96,18 @@ function HeaderPresentional({
           >
             {currentLang === "ar" ? "en" : "ar"}
           </button>
-
-          <UserDropdown
-            isDropdownOpen={isDropdownOpen}
-            setIsDropdownOpen={setIsDropdownOpen}
-            dropdownRef={dropdownRef}
-            toggleDropdown={toggleDropdown}
-            dropdownItems={dropdownItems}
-          />
+          {isAuthLoading ? (
+            <Skeleton sx={{ bgcolor: 'grey.900' }} animation="wave" variant="text" width={120} height={70} />
+          ) : (isLoggedIn === true ? (
+            <UserDropDownContainer />
+          ) : (isLoggedIn === false ? (
+            <Link to='/login'>
+              <button className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200 tracking-wide font-secondary">SignIn/Up</button>
+            </Link>
+          ) : null))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
