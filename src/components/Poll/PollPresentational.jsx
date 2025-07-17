@@ -3,6 +3,7 @@ import ShinyText from "../ui/ReactBits/ShinyText/ShinyText";
 import Input from "../ui/Input/Input";
 import Toggle from "../ui/ReactBits/Toggle/Toggle";
 import SendBtn from "../ui/ReactBits/SendBtn/SendBtn";
+import AiButton from "../ui/Buttons/AiButton";
 
 export default function PollPresentational({
   question,
@@ -19,7 +20,7 @@ export default function PollPresentational({
     <div className="relative w-[500px] p-10 rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 mb-10">
-        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-b from-secondary to-primary bg-clip-text">
+        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
           {t("Create Poll")}
         </h2>
         <X
@@ -45,9 +46,17 @@ export default function PollPresentational({
 
         {/* Options */}
         <div>
-          <label className="block text-lg mb-2 font-medium text-light">
-            {t("Options *")}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="block text-lg mb-2 font-medium text-light">
+              {t("Options *")}
+            </label>
+
+            <div className="flex items-center gap-x-2 cursor-pointer">
+              <AiButton />
+              <span className="font-bold ps-2 py-1 text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">Ask AI</span>
+            </div>
+          </div>
+
           <div className="space-y-3">
             {options.map((option, index) => (
               <Input
