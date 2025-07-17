@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 
 const Modal = forwardRef(function Modal(props, ref) {
   let modalRef = useRef();
+
   useImperativeHandle(ref, () => ({
     open: () => {
       modalRef.current.showModal();
@@ -11,9 +12,18 @@ const Modal = forwardRef(function Modal(props, ref) {
       modalRef.current.close();
     },
   }));
+
+  const handleBackdropClick = (e) => {
+    // Check if the click was on the backdrop (dialog element itself, not its children)
+    if (e.target === modalRef.current) {
+      modalRef.current.close();
+    }
+  };
+
   return createPortal(
     <dialog
       ref={modalRef}
+      onClick={handleBackdropClick}
       className="bg-main backdrop:bg-main-90 px-rounded-4xl animate-fade-slide-in m-auto rounded-4xl p-5 backdrop:backdrop-blur-md"
     >
       {props.children}

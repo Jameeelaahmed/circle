@@ -2,7 +2,7 @@ import { CrownIcon, UserIcon, ZapIcon } from "lucide-react";
 import GlowCardContainer from "../../components/ui/Payments/GlowCardContainer";
 import Button from "../../components/ui/Buttons/Button";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 function Payments() {
   const [particles, setParticles] = useState([]);
 
@@ -86,7 +86,7 @@ function Payments() {
 
         {/* Animated Particles */}
         {particles.map((particle) => (
-          <motion.div
+          <Motion.div
             key={particle.id}
             className="absolute rounded-full bg-white/10"
             style={{

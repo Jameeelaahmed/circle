@@ -1,7 +1,7 @@
 //libs
 import Select from "react-select";
 
-function CreateModalPresentional({
+export default function CreateCircleModalPresentional({
   t,
   uploadedImages,
   inputStyles,
@@ -18,7 +18,7 @@ function CreateModalPresentional({
 }) {
   return (
     <form className="mx-auto max-w-3xl space-y-6">
-      <h2 className="font-secondary text-center text-2xl font-bold text-white">
+      <h2 className="font-secondary text-center text-2xl font-bold text-primary">
         {t("Create Circle")}
       </h2>
 
@@ -190,5 +190,3 @@ function CreateModalPresentional({
     </form>
   );
 }
-
-export default CreateModalPresentional;

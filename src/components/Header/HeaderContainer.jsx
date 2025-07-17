@@ -1,36 +1,20 @@
 // libs
 import { useState, useEffect } from "react";
 import i18n from "../../../i18n";
-import useClickOutside from "../../hooks/useClickOutside";
 import { useTranslation } from "react-i18next";
-
+import { useAuth } from "../../hooks/useAuth";
+import { useSelector } from 'react-redux';
 //components
 import HeaderPresentional from "./HeaderPresentional";
 
 function Header() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const isAuthLoading = useSelector(state => state.user.isAuthLoading);
   const [currentLang, setCurrentLang] = useState(i18n.language);
   const { t } = useTranslation();
-
-  const dropdownRef = useClickOutside({
-    state: isDropdownOpen,
-    setState: setIsDropdownOpen,
-  });
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const dropdownItems = [
-    { label: t("Profile"), href: "/profile" },
-    { label: t("Settings"), href: "/settings" },
-    { label: t("Help"), href: "/help" },
-    { label: t("Logout"), href: "/logout" },
-  ];
-
+  const { isLoggedIn } = useAuth();
   const navItems = [
     { label: t("Home"), href: "/" },
-    { label: t("Events"), href: "/events" },
+    { label: t("Events"), href: "/" },
     { label: t("Payments"), href: "/payments" },
     { label: t("About Us"), href: "/about" },
   ];
@@ -49,12 +33,9 @@ function Header() {
   return (
     <>
       <HeaderPresentional
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
+        isAuthLoading={isAuthLoading}
+        isLoggedIn={isLoggedIn}
         currentLang={currentLang}
-        dropdownRef={dropdownRef}
-        toggleDropdown={toggleDropdown}
-        dropdownItems={dropdownItems}
         navItems={navItems}
         handleLanguageChange={handleLanguageChange}
       />

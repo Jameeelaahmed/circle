@@ -1,4 +1,3 @@
-import React from "react";
 import { useCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
 import {
   createViewDay,
