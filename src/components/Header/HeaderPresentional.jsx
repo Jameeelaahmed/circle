@@ -16,7 +16,8 @@ function HeaderPresentional({
   handleLanguageChange,
 }) {
   return (
-    <div className="bg-main/90 fixed top-0 z-50 w-full border-b border-white/10 backdrop-blur-sm">
+    // reaplaced static with sticky
+    <div className="bg-main/90 sticky top-0 z-50 w-full border-b border-white/10 backdrop-blur-sm">
       <div className="flex h-16 w-full items-center px-2 sm:px-4 lg:px-6">
         {/* <div className="flex items-center justify-between h-16"> */}
         {/* Left - Navigation Items */}

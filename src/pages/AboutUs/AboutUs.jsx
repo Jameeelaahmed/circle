@@ -1,27 +1,9 @@
-import {
-  Users,
-  Target,
-  Heart,
-  ArrowRight,
-  Star,
-  Globe,
-  Zap,
-  MessageCircle,
-  Calendar,
-  Camera,
-  Users2,
-  Sparkles,
-  Shield,
-  Link,
-  Clock,
-  CheckCircle,
-} from "lucide-react";
 import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import Orb from "../../components/ui/ReactBits/Orb/OrbContainer";
-import Hero from "./Hero";
-import Stats from "./Stats";
-import VisionAndMission from "./VisionAndMission";
-import Team from "./Team";
+import Hero from "../../components/AboutUs/Hero";
+import Stats from "../../components/AboutUs/Stats";
+import VisionAndMission from "../../components/AboutUs/VisionAndMission";
+import Team from "../../components/AboutUs/Team";
 
 const AboutUs = () => {
   return (
