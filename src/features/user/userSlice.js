@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-
 import { createSlice } from "@reduxjs/toolkit";
-import { auth } from "../../firebase-config";
 
 const INITIAL_STATE = {
-  userInfo: auth.currentUser,
+  userInfo: null,
+  token: null,
+  isAuthenticated: undefined,
+  isAuthLoading: true
 };
 
 const userSlice = createSlice({
@@ -12,14 +12,33 @@ const userSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     setUserInfo(state, action) {
-      state.userInfo = action.payload;
+      const { user, token } = action.payload;
+      // Store only serializable user data
+      state.userInfo = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified,
+      };
+      state.token = token;
+      state.isAuthenticated = true;
+      state.isAuthLoading = false;
     },
     clearUserInfo(state) {
       state.userInfo = null;
+      state.token = null;
+      state.isAuthenticated = false;
+      state.isAuthLoading = false;
     },
+    setAuthLoading(state, action) {
+      state.isAuthLoading = action.payload;
+    }
   },
 });
 
-export const { setUserInfo, clearUserInfo } = userSlice.actions;
-export const getUserInfo = () => useSelector((state) => state.userSlice.user);
+export const { setUserInfo, clearUserInfo, setAuthLoading } = userSlice.actions;
+export const getUserInfo = (state) => state.user.userInfo;
+export const getToken = (state) => state.user.token;
+export const getIsAuthenticated = (state) => state.user.isAuthenticated;
 export default userSlice.reducer;

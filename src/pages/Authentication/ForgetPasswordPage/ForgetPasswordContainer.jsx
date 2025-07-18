@@ -2,11 +2,11 @@ import { useState } from "react";
 
 import PresentationalForgetPassword from "./PresentationalForgetPassword";
 import { toast } from "react-toastify";
-import { getErrorMessage } from "../../utils/ErrorMessage";
+import { getErrorMessage } from "../../../utils/ErrorMessage";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { auth } from "../../../firebase-config";
 
-const ForgotPassword = () => {
+const ForgotPasswordContainer = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,4 +40,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordContainer;
