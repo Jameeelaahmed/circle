@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import Modal from "../ui/Modal/Modal";
+import Modal from "../Modal";
 import PollPresentational from "./PollPresentational";
 import { useTranslation } from "react-i18next";
 
 export default function PollContainer() {
-  const { t } = useTranslation();
+   const { t } = useTranslation();
   const modalRef = useRef();
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
@@ -47,10 +47,10 @@ export default function PollContainer() {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <button
           onClick={openModal}
-          className="bg-primary hover:bg-primary/80 rounded-xl px-6 py-3 text-white transition"
+          className="bg-primary text-white px-6 py-3 rounded-xl hover:bg-primary/80 transition"
         >
           Create Poll
         </button>

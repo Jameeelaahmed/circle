@@ -21,7 +21,6 @@ const routes = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <LandingPage /> },
-      { path: "events", element: "" },
       { path: "payments", element: <Payments /> },
       { path: "events", element: <Events /> },
       { path: "payments", element: "" },
