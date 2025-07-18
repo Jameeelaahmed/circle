@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
 import {
   createViewDay,
@@ -9,6 +10,7 @@ import { createEventModalPlugin } from "@schedule-x/event-modal";
 import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 import "@schedule-x/theme-shadcn/dist/index.css";
 
+
 import CalendarImg from "../../assets/images/calendar.png";
 import PollContainer from "../../components/ui/Modal/Poll/PollContainer";
 
@@ -17,9 +19,9 @@ export default function Events() {
 
   useEffect(() => {
     const getCSSVar = (name) => {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name);
-  return value ? value.trim() : "";
-};
+      const value = getComputedStyle(document.documentElement).getPropertyValue(name);
+      return value ? value.trim() : "";
+    };
 
     setCategoryColors({
       Meeting: getCSSVar("--color-primary") || "#ff6b8b",
