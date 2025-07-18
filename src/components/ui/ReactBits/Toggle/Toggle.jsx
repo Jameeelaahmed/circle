@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
     position: relative;
     width: 50px;
     height: 25px;
-    margin: 20px;
+    margin:20px 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

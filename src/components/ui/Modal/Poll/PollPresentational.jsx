@@ -17,9 +17,9 @@ export default function PollPresentational({
   t,
 }) {
   return (
-    <div className="relative w-[500px] p-10 rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
+    <div className="relative w-[500px] rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 mb-10">
+      <div className="flex items-center justify-between gap-3 mb-5">
         <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
           {t("Create Poll")}
         </h2>
@@ -85,7 +85,7 @@ export default function PollPresentational({
 
         {/* Submit */}
         <div className="pt-2">
-          <div className="flex justify-end relative translate-y-[50%] z-10">
+          <div className="flex justify-end relative z-10">
             <SendBtn />
           </div>
         </div>
