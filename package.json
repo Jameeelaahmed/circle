@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@fontsource-variable/quicksand": "^5.2.8",
     "@fontsource/poppins": "^5.2.6",
+    "@mui/material": "^7.2.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@schedule-x/calendar": "^2.36.0",
     "@schedule-x/drag-and-drop": "^2.36.0",
@@ -34,6 +37,7 @@
     "react-loading-skeleton": "^3.5.0",
     "react-redux": "^9.2.0",
     "react-router": "^7.6.3",
+    "react-router-dom": "^7.7.0",
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
     "styled-components": "^6.1.19",

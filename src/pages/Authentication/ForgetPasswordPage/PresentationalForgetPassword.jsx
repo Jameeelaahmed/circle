@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { Mail, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
 import { Link } from "react-router";
 
@@ -60,7 +60,7 @@ export default function PresentationalForgetPassword({
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(6)].map((_, i) => (
-          <motion.div
+          <Motion.div
             key={i}
             className="absolute h-2 w-2 rounded-full bg-white opacity-20"
             animate={{
@@ -81,7 +81,7 @@ export default function PresentationalForgetPassword({
         ))}
       </div>
 
-      <motion.div
+      <Motion.div
         className="w-full max-w-md rounded-2xl border border-white/20 bg-white/10 p-8 shadow-2xl backdrop-blur-lg"
         variants={containerVariants}
         initial="hidden"
@@ -89,7 +89,7 @@ export default function PresentationalForgetPassword({
       >
         <AnimatePresence mode="wait">
           {!isSubmitted ? (
-            <motion.div
+            <Motion.div
               key="form"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -97,33 +97,33 @@ export default function PresentationalForgetPassword({
               transition={{ duration: 0.3 }}
             >
               {/* Header */}
-              <motion.div className="mb-8 text-center" variants={itemVariants}>
-                <motion.div
+              <Motion.div className="mb-8 text-center" variants={itemVariants}>
+                <Motion.div
                   className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
                   variants={floatingVariants}
                   animate="animate"
                 >
                   <Mail className="h-8 w-8 text-white" />
-                </motion.div>
+                </Motion.div>
                 <h1 className="mb-2 text-2xl font-bold text-white">
                   Forgot Password?
                 </h1>
                 <p className="text-gray-300">
                   No worries! Enter your email and we'll send you a reset link
                 </p>
-              </motion.div>
+              </Motion.div>
 
               {/* Form */}
-              <motion.form onSubmit={handleSubmit} variants={itemVariants}>
-                <motion.div className="mb-6" variants={itemVariants}>
+              <Motion.form onSubmit={handleSubmit} variants={itemVariants}>
+                <Motion.div className="mb-6" variants={itemVariants}>
                   <label
                     htmlFor="email"
                     className="mb-2 block text-sm font-medium text-gray-300"
                   >
                     Email Address
                   </label>
-                  <motion.div className="relative">
-                    <motion.input
+                  <Motion.div className="relative">
+                    <Motion.input
                       type="email"
                       id="email"
                       value={email}
@@ -138,20 +138,20 @@ export default function PresentationalForgetPassword({
                         damping: 30,
                       }}
                     />
-                    <motion.div
+                    <Motion.div
                       className="absolute top-3 right-3"
                       animate={{ rotate: email ? 360 : 0 }}
                       transition={{ duration: 0.5 }}
                     >
                       <Mail className="h-5 w-5 text-gray-400" />
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
+                    </Motion.div>
+                  </Motion.div>
+                </Motion.div>
 
                 {/* Error message */}
                 <AnimatePresence>
                   {error && (
-                    <motion.div
+                    <Motion.div
                       className="mb-4 flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/20 p-3"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
@@ -160,12 +160,12 @@ export default function PresentationalForgetPassword({
                     >
                       <AlertCircle className="h-4 w-4 text-red-400" />
                       <span className="text-sm text-red-300">{error}</span>
-                    </motion.div>
+                    </Motion.div>
                   )}
                 </AnimatePresence>
 
                 {/* Submit button */}
-                <motion.button
+                <Motion.button
                   type="submit"
                   disabled={isLoading}
                   className="w-full rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-transparent focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -175,14 +175,14 @@ export default function PresentationalForgetPassword({
                 >
                   <AnimatePresence mode="wait">
                     {isLoading ? (
-                      <motion.div
+                      <Motion.div
                         key="loading"
                         className="flex items-center justify-center gap-2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
-                        <motion.div
+                        <Motion.div
                           className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white"
                           animate={{ rotate: 360 }}
                           transition={{
@@ -192,23 +192,23 @@ export default function PresentationalForgetPassword({
                           }}
                         />
                         Sending...
-                      </motion.div>
+                      </Motion.div>
                     ) : (
-                      <motion.span
+                      <Motion.span
                         key="submit"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
                         Send Reset Link
-                      </motion.span>
+                      </Motion.span>
                     )}
                   </AnimatePresence>
-                </motion.button>
-              </motion.form>
+                </Motion.button>
+              </Motion.form>
 
               {/* Back to login link */}
-              <motion.div className="mt-6 text-center" variants={itemVariants}>
+              <Motion.div className="mt-6 text-center" variants={itemVariants}>
                 <Link to={"/login"}>
                   <motion.button
                     className="inline-flex cursor-pointer items-center gap-2 text-gray-300 transition-colors duration-300 hover:text-white"
@@ -219,34 +219,34 @@ export default function PresentationalForgetPassword({
                     Back to Login
                   </motion.button>
                 </Link>
-              </motion.div>
-            </motion.div>
+              </Motion.div>
+            </Motion.div>
           ) : (
-            <motion.div
+            <Motion.div
               key="success"
               className="text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <motion.div
+              <Motion.div
                 className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20"
                 variants={pulseVariants}
                 animate="animate"
               >
                 <CheckCircle className="h-10 w-10 text-green-400" />
-              </motion.div>
+              </Motion.div>
 
-              <motion.h2
+              <Motion.h2
                 className="mb-4 text-2xl font-bold text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
                 Check Your Email
-              </motion.h2>
+              </Motion.h2>
 
-              <motion.p
+              <Motion.p
                 className="mb-6 text-gray-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -255,9 +255,9 @@ export default function PresentationalForgetPassword({
                 We've sent a password reset link to
                 <br />
                 <span className="font-semibold text-purple-300">{email}</span>
-              </motion.p>
+              </Motion.p>
 
-              <motion.button
+              <Motion.button
                 className="rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:outline-none"
                 onClick={() => setIsSubmitted(false)}
                 initial={{ opacity: 0, y: 20 }}
@@ -267,11 +267,11 @@ export default function PresentationalForgetPassword({
                 whileTap={{ scale: 0.95 }}
               >
                 Back to Form
-              </motion.button>
-            </motion.div>
+              </Motion.button>
+            </Motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </Motion.div>
     </div>
   );
 }

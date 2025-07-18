@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {
-  useCalendarApp,
-  ScheduleXCalendar,
-} from "@schedule-x/react";
+import { useCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
 import {
   createViewDay,
   createViewWeek,
