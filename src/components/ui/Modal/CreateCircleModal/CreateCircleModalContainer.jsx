@@ -1,9 +1,9 @@
 // libs
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import CreateModalPresentional from "./CreateModalPresentionalContainer";
+import CreateCircleModalPresentional from "./CreateCircleModalPresentional";
 
-function CreateCircleModal() {
+export default function CreateCircleModalContainer() {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [circleType, setCircleType] = useState("");
   const fileInputRef = useRef(null);
@@ -150,7 +150,7 @@ function CreateCircleModal() {
   const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
   return (
-    <CreateModalPresentional
+    <CreateCircleModalPresentional
       inputStyles={inputStyles}
       textareaStyles={textareaStyles}
       customStyles={customStyles}
@@ -167,5 +167,3 @@ function CreateCircleModal() {
     />
   );
 }
-
-export default CreateCircleModal;

@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
-import ShinyText from "../ui/ReactBits/ShinyText/ShinyText";
-import Input from "../ui/Input/Input";
-import Toggle from "../ui/ReactBits/Toggle/Toggle";
-import SendBtn from "../ui/ReactBits/SendBtn/SendBtn";
-import AiButton from "../ui/Buttons/AiButton";
+import ShinyText from "../../ReactBits/ShinyText/ShinyText";
+import Input from "../../Input/Input";
+import Toggle from "../../ReactBits/Toggle/Toggle";
+import SendBtn from "../../ReactBits/SendBtn/SendBtn";
+import AiButton from "../../Buttons/AiButton";
 
 export default function PollPresentational({
   question,
@@ -17,16 +17,16 @@ export default function PollPresentational({
   t,
 }) {
   return (
-    <div className="bg-darker relative w-[500px] rounded-4xl p-10 shadow-2xl backdrop-blur-lg">
+    <div className="relative w-[500px] rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
       {/* Header */}
-      <div className="mb-10 flex items-center justify-between gap-3">
-        <h2 className="from-secondary to-primary bg-gradient-to-b bg-clip-text text-4xl font-bold text-transparent">
+      <div className="flex items-center justify-between gap-3 mb-5">
+        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
           {t("Create Poll")}
         </h2>
         <X
           onClick={onClose}
           size={28}
-          className="cursor-pointer rounded-full p-1 text-white transition-all hover:bg-white/30"
+          className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
         />
       </div>
 
@@ -34,7 +34,7 @@ export default function PollPresentational({
       <form onSubmit={onSubmit} className="">
         {/* Question */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="block text-lg mb-2 font-medium text-light">
             {t("Question *")}
           </label>
           <Input
@@ -46,9 +46,17 @@ export default function PollPresentational({
 
         {/* Options */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
-            {t("Options *")}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="block text-lg mb-2 font-medium text-light">
+              {t("Options *")}
+            </label>
+
+            <div className="flex items-center gap-x-2 cursor-pointer">
+              <AiButton />
+              <span className="font-bold ps-2 py-1 text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">Ask AI</span>
+            </div>
+          </div>
+
           <div className="space-y-3">
             {options.map((option, index) => (
               <Input
@@ -62,7 +70,7 @@ export default function PollPresentational({
         </div>
 
         {/* Toggle */}
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between items-center">
           <ShinyText
             text={t("Allow multiple answers!")}
             disabled={false}
@@ -77,7 +85,7 @@ export default function PollPresentational({
 
         {/* Submit */}
         <div className="pt-2">
-          <div className="relative z-10 flex translate-y-[50%] justify-end">
+          <div className="flex justify-end relative z-10">
             <SendBtn />
           </div>
         </div>

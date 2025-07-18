@@ -3,13 +3,23 @@ import { motion as Motion } from "framer-motion";
 // components
 import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
-import CreateCircleModal from "../../components/ui/Modal/CreateCircleModal/CreateCircleModal";
-import Modal from "../../components/ui/Modal/Modal";
-export function LandingPresentationalPage({
+import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer";
+import Modal from "../../components/ui/Modal/Modal"
+import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
+import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
+import { useState } from "react";
+
+export default function LandingPresentational({
   t,
+  isLoggedIn,
   openCCircleModal,
   createCircleModalRef,
 }) {
+  const [authFormType, setAuthFormType] = useState("login"); // "login" or "register"
+
+  const handleSwitchToRegister = () => setAuthFormType("register");
+  const handleSwitchToLogin = () => setAuthFormType("login");
+
   return (
     <div className="bg-main flex min-h-screen flex-col overflow-hidden">
       {/* Main Content */}
@@ -51,13 +61,22 @@ export function LandingPresentationalPage({
               transition={{ delay: 0.6, duration: 0.8 }}
             >
               <button
-                onClick={openCCircleModal}
+                onClick={() => {
+                  setAuthFormType("login");
+                  openCCircleModal();
+                }}
                 className="bg-primary hover:shadow-primary/30 rounded-lg px-6 py-3 font-medium text-white transition-all hover:shadow-lg"
               >
                 {t("Create Circle")}
               </button>
               <Modal ref={createCircleModalRef}>
-                <CreateCircleModal />
+                {isLoggedIn ? (
+                  <CreateCircleModalContainer />
+                ) : authFormType === "login" ? (
+                  <LoginFormContainer onSwitchToRegister={handleSwitchToRegister} />
+                ) : (
+                  <RegisterFormContainer onSwitchToLogin={handleSwitchToLogin} />
+                )}
               </Modal>
             </Motion.div>
           </div>
