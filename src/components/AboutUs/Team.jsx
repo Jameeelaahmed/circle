@@ -1,5 +1,5 @@
 import React from "react";
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
+// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import {
   Heart,
   Target,
@@ -72,7 +72,7 @@ export default function Team() {
         <div className="mb-16 text-center">
           <h2
             className="mb-6 text-5xl font-bold"
-            style={{ color: COLORS.primary, fontFamily: FONTS.heading }}
+            style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
           >
             Our Team
           </h2>
@@ -90,7 +90,7 @@ export default function Team() {
               style={{
                 backgroundColor: member.cardColor,
                 border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: SHADOWS.glassCard,
+                boxShadow: "var(--shadow-glassCard)",
                 backdropFilter: "blur(10px)",
               }}
             >
@@ -98,8 +98,8 @@ export default function Team() {
                 <div
                   className="mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-offset-4 transition-all duration-300 group-hover:ring-offset-8"
                   style={{
-                    ringColor: COLORS.primary,
-                    ringOffsetColor: COLORS.dark,
+                    ringColor: "var(--color-primary)",
+                    ringOffsetColor: "var(--color-dark)",
                   }}
                 >
                   <img
@@ -112,7 +112,7 @@ export default function Team() {
               <div className="text-center">
                 <h3
                   className="mb-2 text-xl font-bold"
-                  style={{ color: COLORS.primary }}
+                  style={{ color: "var(--color-primary)" }}
                 >
                   {member.name}
                 </h3>
@@ -129,7 +129,7 @@ export default function Team() {
         <div className="mt-20 text-center">
           <h3
             className="mb-12 text-3xl font-bold"
-            style={{ color: COLORS.primary }}
+            style={{ color: "var(--color-primary)" }}
           >
             Our Team Values
           </h3>
@@ -165,11 +165,11 @@ export default function Team() {
                 }}
               >
                 <div className="mb-3 flex justify-center">
-                  <value.icon size={24} style={{ color: COLORS.primary }} />
+                  <value.icon size={24} style={{ color: "var(--color-primary)" }} />
                 </div>
                 <h4
                   className="mb-1 text-sm font-semibold"
-                  style={{ color: COLORS.primary }}
+                  style={{ color: "var(--color-primary)" }}
                 >
                   {value.title}
                 </h4>

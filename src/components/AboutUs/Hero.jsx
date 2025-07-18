@@ -1,11 +1,11 @@
 import React from "react";
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
+// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import { Link } from "react-router";
 
 const styles = {
   hero: {
-    color: COLORS.text,
-    background: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
+    color: "var(--color-text)",
+    background: `linear-gradient(to right, var(--color-primary), var(--color-secondary))`,
     height: "60vh",
   },
 };
@@ -17,13 +17,13 @@ const Hero = () => {
     >
       <h1
         className="mb-6 text-6xl font-bold text-shadow-lg md:text-8xl"
-        style={{ color: COLORS.primary, fontFamily: FONTS.heading }}
+        style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
       >
         About Circle
       </h1>
       <p
         className="mx-auto mb-8 max-w-4xl text-xl opacity-90 md:text-2xl"
-        style={{ fontFamily: FONTS.body }}
+        style={{ fontFamily: "var(--font-body)" }}
       >
         The essential platform for maintaining and strengthening real-world
         friendships in a digital age. We combat social drift by reducing the
@@ -32,7 +32,7 @@ const Hero = () => {
       <Link
         to="/login"
         className="p-7 text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:text-white"
-        style={{ backgroundColor: COLORS.secondary, borderRadius: "70%" }}
+        style={{ backgroundColor: "var(--color-secondary)", borderRadius: "70%" }}
       >
         Join <br />
         Circle

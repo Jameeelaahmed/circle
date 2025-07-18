@@ -1,5 +1,5 @@
 import React from "react";
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
+// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import { Heart, Target, Users2, Sparkles, Shield } from "lucide-react";
 
 const VisionAndMission = () => {
@@ -28,7 +28,7 @@ const VisionAndMission = () => {
           <div className="mb-16 text-center">
             <h2
               className="mb-6 text-5xl font-bold"
-              style={{ color: COLORS.primary, fontFamily: FONTS.heading }}
+              style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
             >
               Vision & Mission
             </h2>
@@ -44,20 +44,20 @@ const VisionAndMission = () => {
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: SHADOWS.glassCard,
+                boxShadow: "var(--shadow-glassCard)",
                 backdropFilter: "blur(10px)",
               }}
             >
               <div className="mb-6 flex items-center gap-4">
                 <div
                   className="rounded-full p-3"
-                  style={{ backgroundColor: `${COLORS.primary}20` }}
+                  style={{ backgroundColor: `${"var(--color-primary)"}20` }}
                 >
-                  <Target size={32} style={{ color: COLORS.primary }} />
+                  <Target size={32} style={{ color: "var(--color-primary)" }} />
                 </div>
                 <h3
                   className="text-2xl font-bold"
-                  style={{ color: COLORS.primary }}
+                  style={{ color: "var(--color-primary)" }}
                 >
                   Our Vision
                 </h3>
@@ -74,20 +74,20 @@ const VisionAndMission = () => {
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: SHADOWS.glassCard,
+                boxShadow: "var(--shadow-glassCard)",
                 backdropFilter: "blur(10px)",
               }}
             >
               <div className="mb-6 flex items-center gap-4">
                 <div
                   className="rounded-full p-3"
-                  style={{ backgroundColor: `${COLORS.secondary}20` }}
+                  style={{ backgroundColor: `${"var(--color-secondary)"}20` }}
                 >
-                  <Heart size={32} style={{ color: COLORS.secondary }} />
+                  <Heart size={32} style={{ color: "var(--color-secondary)" }} />
                 </div>
                 <h3
                   className="text-2xl font-bold"
-                  style={{ color: COLORS.secondary }}
+                  style={{ color: "var(--color-secondary)" }}
                 >
                   Our Mission
                 </h3>
@@ -105,7 +105,7 @@ const VisionAndMission = () => {
           <div className="mt-20 text-center">
             <h3
               className="mb-12 text-3xl font-bold"
-              style={{ color: COLORS.accent }}
+              style={{ color: "var(--color-accent)" }}
             >
               Our Core Values
             </h3>
@@ -120,11 +120,11 @@ const VisionAndMission = () => {
                   }}
                 >
                   <div className="mb-4 flex justify-center">
-                    <value.icon size={28} style={{ color: COLORS.accent }} />
+                    <value.icon size={28} style={{ color: "var(--color-accent)" }} />
                   </div>
                   <h4
                     className="mb-2 text-lg font-semibold"
-                    style={{ color: COLORS.accent }}
+                    style={{ color: "var(--color-accent)" }}
                   >
                     {value.title}
                   </h4>
