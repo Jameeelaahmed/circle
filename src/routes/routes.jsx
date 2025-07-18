@@ -9,6 +9,7 @@ import ForgetPassword from "../pages/Authentication/ForgetPasswordPage/ForgetPas
 import LoginPage from "../pages/Authentication/LoginPage/LoginPage";
 import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
 import EventsContainer from "../pages/Events/EventsContainer";
+import Explore from "../pages/Explore/Explore";
 
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -22,6 +23,7 @@ const routes = createBrowserRouter([
       { path: "payments", element: <Payments /> },
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
+      { path: "explore", element: <Explore /> },
     ],
   },
 ]);

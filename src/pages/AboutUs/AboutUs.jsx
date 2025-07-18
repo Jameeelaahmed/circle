@@ -1,4 +1,3 @@
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import Orb from "../../components/ui/ReactBits/Orb/OrbContainer";
 import Hero from "../../components/AboutUs/Hero";
 import Stats from "../../components/AboutUs/Stats";
@@ -9,7 +8,7 @@ const AboutUs = () => {
   return (
     <div
       className="bg-main relative min-h-screen overflow-hidden"
-      style={{ color: COLORS.text }}
+      style={{ color: "var(--color-text)" }}
     >
       <Hero />
       <Stats />
