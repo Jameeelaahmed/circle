@@ -59,7 +59,7 @@ const StyledWrapper = styled.div`
 
   .input-container {
     position: relative;
-    margin: 50px auto;
+    margin: 25px auto;
     width: 100%;
   }
 
@@ -73,8 +73,8 @@ const StyledWrapper = styled.div`
     outline: none;
 
     ${({ $dir }) =>
-      $dir === "rtl" &&
-      css`
+    $dir === "rtl" &&
+    css`
         padding: 5px 0 5px 35px;
       `}
   }
@@ -87,12 +87,12 @@ const StyledWrapper = styled.div`
     pointer-events: none;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             right: 0;
             left: auto;
           `
-        : css`
+      : css`
             left: 0;
             right: auto;
           `}
@@ -115,12 +115,12 @@ const StyledWrapper = styled.div`
     transition: all 0.3s ease;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             right: 0;
             left: auto;
           `
-        : css`
+      : css`
             left: 0;
             right: auto;
           `}
@@ -139,12 +139,12 @@ const StyledWrapper = styled.div`
     z-index: 10;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             left: 5px;
             right: auto;
           `
-        : css`
+      : css`
             right: 5px;
             left: auto;
           `}
@@ -156,12 +156,12 @@ const StyledWrapper = styled.div`
     z-index: 1000;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             left: 0;
             right: auto;
           `
-        : css`
+      : css`
             right: 0;
             left: auto;
           `}

@@ -4,11 +4,11 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import RootLayout from "../layouts/RootLayout";
 import Payments from "../pages/Payments/Payments";
-import Events from "../pages/Events/Events";
 import LandingPage from "../pages/Landing/LandingContainer";
 import ForgetPassword from "../pages/Authentication/ForgetPasswordPage/ForgetPasswordContainer";
 import LoginPage from "../pages/Authentication/LoginPage/LoginPage";
 import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
+import EventsContainer from "../pages/Events/EventsContainer";
 
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -20,7 +20,7 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: "payments", element: <Payments /> },
-      { path: "events", element: <Events /> },
+      { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
     ],
   },
