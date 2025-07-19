@@ -9,12 +9,10 @@ import ForgetPassword from "../pages/Authentication/ForgetPasswordPage/ForgetPas
 import LoginPage from "../pages/Authentication/LoginPage/LoginPage";
 import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
 import EventsContainer from "../pages/Events/EventsContainer";
-<<<<<<< HEAD
 import PaymentSuccess from "../pages/Payments/Success";
 import PaymentFailure from "../pages/Payments/Cancel";
-=======
+
 import Explore from "../pages/Explore/Explore";
->>>>>>> 5d77c6c26a663bc58de94e552f867f37758cc57d
 
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
