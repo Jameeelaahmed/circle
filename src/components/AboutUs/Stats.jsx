@@ -1,21 +1,21 @@
 import React from "react";
-import { COLORS, SHADOWS } from "../../constants";
+// import { COLORS, SHADOWS } from "../../constants";
 import { Users, Users2, Calendar, Camera } from "lucide-react";
 
 const Stats = () => {
   const stats = [
-    { icon: Users, value: 10000, label: "Active Users", color: COLORS.primary },
+    { icon: Users, value: 10000, label: "Active Users", color: "var(--color-primary)" },
     {
       icon: Users2,
       value: 2000,
       label: "Private Circles",
-      color: COLORS.secondary,
+      color: "var(--color-secondary)",
     },
     {
       icon: Calendar,
       value: 3000,
       label: "Events Created",
-      color: COLORS.accent,
+      color: "var(--color-accent)",
     },
     { icon: Camera, value: 5000, label: "Memories Shared", color: "#bad" },
   ];
@@ -29,12 +29,12 @@ const Stats = () => {
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
-            boxShadow: SHADOWS.glassCard,
+            boxShadow: "var(--shadow-glassCard)",
           }}
         >
           <stat.icon
             size={40}
-            style={{ color: stat.color }}
+            style={{ color: stat.color  }}
             className="mx-auto"
           />
           <p className="mb-2 text-3xl font-bold" style={{ color: stat.color }}>

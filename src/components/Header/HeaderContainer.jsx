@@ -4,6 +4,7 @@ import i18n from "../../../i18n";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/useAuth";
 import { useSelector } from 'react-redux';
+
 //components
 import HeaderPresentional from "./HeaderPresentional";
 
@@ -17,6 +18,7 @@ function Header() {
     { label: t("Events"), href: "/events" },
     { label: t("Payments"), href: "/payments" },
     { label: t("About Us"), href: "/about" },
+    { label: t("Explore"), href: "/explore" },
   ];
 
   const handleLanguageChange = (lang) => {
