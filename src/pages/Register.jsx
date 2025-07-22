@@ -19,7 +19,7 @@ import Button from "../components/ui/Button";
 import { COLORS } from "../constants";
 import AuthButton from "../components/ui/AuthButton";
 import GoogleIcon from "../assets/icons/google.svg";
-import { setUserInfo } from "../features/Slices/userSlice";
+import { setUserInfo } from "../features/userProfile/userSlice";
 
 // CONTEXTS
 
@@ -114,7 +114,7 @@ export default function Register() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       dispatch(setUserInfo(userCredential.user));
       toast.success("Account created successfully! Welcome to Circle!");
@@ -145,7 +145,7 @@ export default function Register() {
         error.code === "auth/account-exists-with-different-credential"
       ) {
         toast.error(
-          "An account with this email already exists. Please try signing in instead."
+          "An account with this email already exists. Please try signing in instead.",
         );
       } else {
         toast.error("Failed to sign up with Google. Please try again.");
@@ -166,36 +166,36 @@ export default function Register() {
   const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
   return (
-    <div className="h-screen w-screen bg-black flex overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden bg-black">
       {/* Left Half - Background Paths and Avatars */}
-      <div className="w-1/2 relative overflow-hidden">
+      <div className="relative w-1/2 overflow-hidden">
         <IrregularCirclePaths />
         <FloatingAvatars />
       </div>
 
       {/* Right Half - Clean Registration Form */}
-      <div className="w-1/2 bg-black flex items-center justify-center">
+      <div className="flex w-1/2 items-center justify-center bg-black">
         <div className="w-full max-w-md px-8">
           {/* Logo */}
           <motion.div
-            className="text-center mb-8"
+            className="mb-8 text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-              <div className="w-8 h-8 bg-black rounded-lg transform rotate-45"></div>
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-lg">
+              <div className="h-8 w-8 rotate-45 transform rounded-lg bg-black"></div>
             </div>
           </motion.div>
 
           {/* Welcome Text */}
           <motion.div
-            className="text-center mb-8"
+            className="mb-8 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <h1 className="text-white text-3xl font-bold mb-2 font-quick-sand">
+            <h1 className="font-quick-sand mb-2 text-3xl font-bold text-white">
               Welcome to Circle
             </h1>
             <p className="text-sm" style={{ color: COLORS.text }}>
@@ -220,7 +220,7 @@ export default function Register() {
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyUp={handleKeyPress}
                   disabled={isLoading}
-                  className="bg-white/10 border-gray-600 text-white placeholder:text-gray-400 outline-0 h-12 rounded-xl backdrop-blur-sm w-full ps-2 disabled:opacity-50"
+                  className="h-12 w-full rounded-xl border-gray-600 bg-white/10 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                   style={{
                     background: COLORS.dark,
                   }}
@@ -237,7 +237,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className="bg-white/10 border-gray-600 text-white placeholder:text-gray-400 outline-0 h-12 rounded-xl pr-12 backdrop-blur-sm w-full ps-2 disabled:opacity-50"
+                  className="h-12 w-full rounded-xl border-gray-600 bg-white/10 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                   style={{
                     background: COLORS.dark,
                   }}
@@ -248,7 +248,7 @@ export default function Register() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isLoading}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -263,7 +263,7 @@ export default function Register() {
                   onChange={(e) => setRepeatPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
                   disabled={isLoading}
-                  className={`bg-white/10 border-gray-600 text-white placeholder:text-gray-400 outline-0 h-12 rounded-xl pr-12 backdrop-blur-sm w-full ps-2 disabled:opacity-50 ${
+                  className={`h-12 w-full rounded-xl border-gray-600 bg-white/10 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
                     repeatPassword && !isPasswordMatch ? "border-red-500" : ""
                   }`}
                   style={{
@@ -275,7 +275,7 @@ export default function Register() {
                   type="button"
                   onClick={() => setShowRepeatPassword(!showRepeatPassword)}
                   disabled={isLoading}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
                 >
                   {showRepeatPassword ? (
                     <EyeOff size={20} />
@@ -287,7 +287,7 @@ export default function Register() {
 
               {/* Password Match Indicator */}
               {repeatPassword && !isPasswordMatch && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="mt-1 text-sm text-red-400">
                   Passwords don't match
                 </p>
               )}
@@ -309,7 +309,7 @@ export default function Register() {
             {/* Divider */}
             <div
               style={{ color: COLORS.text }}
-              className={`justify-center flex after:w-[45%] after:h-1 after:bg-white after:absolute relative after:top-1/2 after:right-[55%] after:-translate-y-1/2 before:w-[45%] before:h-1 before:bg-white before:absolute before:top-1/2 before:left-[55%] before:-translate-y-1/2 `}
+              className={`relative flex justify-center before:absolute before:top-1/2 before:left-[55%] before:h-1 before:w-[45%] before:-translate-y-1/2 before:bg-white after:absolute after:top-1/2 after:right-[55%] after:h-1 after:w-[45%] after:-translate-y-1/2 after:bg-white`}
             >
               OR
             </div>
@@ -325,12 +325,12 @@ export default function Register() {
             </AuthButton>
 
             {/* Redirect to sign in page */}
-            <div className="text-center pt-4">
+            <div className="pt-4 text-center">
               <span className="text-sm" style={{ color: COLORS.text }}>
                 Already have an account?
               </span>
               <Link
-                className="text-purple-400 text-sm hover:text-purple-300 transition-colors font-medium ps-2 cursor-pointer"
+                className="cursor-pointer ps-2 text-sm font-medium text-purple-400 transition-colors hover:text-purple-300"
                 style={{ color: COLORS.primary }}
                 to={"/login"}
               >
