@@ -13,6 +13,7 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import { ArcCard } from "../ui/3DCard/Card";
 
 export default function Team() {
   const team = [
@@ -72,7 +73,10 @@ export default function Team() {
         <div className="mb-16 text-center">
           <h2
             className="mb-6 text-5xl font-bold"
-            style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
+            style={{
+              color: "var(--color-primary)",
+              fontFamily: "var(--font-heading)",
+            }}
           >
             Our Team
           </h2>
@@ -82,46 +86,53 @@ export default function Team() {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-wrap justify-center lg:justify-between px-10 gap-10">
           {team.map((member, index) => (
-            <div
-              key={index}
-              className="group rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:scale-105"
-              style={{
-                backgroundColor: member.cardColor,
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: "var(--shadow-glassCard)",
-                backdropFilter: "blur(10px)",
-              }}
-            >
-              <div className="relative mb-6">
-                <div
-                  className="mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-offset-4 transition-all duration-300 group-hover:ring-offset-8"
-                  style={{
-                    ringColor: "var(--color-primary)",
-                    ringOffsetColor: "var(--color-dark)",
-                  }}
-                >
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <h3
-                  className="mb-2 text-xl font-bold"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  {member.name}
-                </h3>
-                <p className="mb-3 text-sm opacity-80">{member.role}</p>
-                <p className="text-xs leading-relaxed opacity-70">
-                  {member.description}
-                </p>
-              </div>
-            </div>
+            // <div
+            //   key={index}
+            //   className="group rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:scale-105"
+            //   style={{
+            //     backgroundColor: member.cardColor,
+            //     border: "1px solid rgba(255, 255, 255, 0.1)",
+            //     boxShadow: "var(--shadow-glassCard)",
+            //     backdropFilter: "blur(10px)",
+            //   }}
+            // >
+            //   <div className="relative mb-6">
+            //     <div
+            //       className="mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-offset-4 transition-all duration-300 group-hover:ring-offset-8"
+            //       style={{
+            //         ringColor: "var(--color-primary)",
+            //         ringOffsetColor: "var(--color-dark)",
+            //       }}
+            //     >
+            //       <img
+            //         src={member.image}
+            //         alt={member.name}
+            //         className="h-full w-full object-cover"
+            //       />
+            //     </div>
+            //   </div>
+            //   <div className="text-center">
+            //     <h3
+            //       className="mb-2 text-xl font-bold"
+            //       style={{ color: "var(--color-primary)" }}
+            //     >
+            //       {member.name}
+            //     </h3>
+            //     <p className="mb-3 text-sm opacity-80">{member.role}</p>
+            //     <p className="text-xs leading-relaxed opacity-70">
+            //       {member.description}
+            //     </p>
+            //   </div>
+            // </div>
+            <ArcCard
+              name={member.name}
+              title={member.role}
+              since={"2025"}
+              key={member.name}
+              imgSrc={member.image}
+            />
           ))}
         </div>
 
@@ -165,7 +176,10 @@ export default function Team() {
                 }}
               >
                 <div className="mb-3 flex justify-center">
-                  <value.icon size={24} style={{ color: "var(--color-primary)" }} />
+                  <value.icon
+                    size={24}
+                    style={{ color: "var(--color-primary)" }}
+                  />
                 </div>
                 <h4
                   className="mb-1 text-sm font-semibold"
