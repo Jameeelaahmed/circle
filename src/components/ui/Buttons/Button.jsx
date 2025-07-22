@@ -6,6 +6,7 @@ export default function Button({
   size = "small",
   classes,
   children,
+  handleClick= ()=>{},
 }) {
   const variants = {
     primary: COLORS.primary,
@@ -30,6 +31,7 @@ export default function Button({
     <button
       style={{ background: variants, borderRadius: RADII.rounded }}
       className={finalClasses}
+      onClick={handleClick}
     >
       {children}
     </button>
