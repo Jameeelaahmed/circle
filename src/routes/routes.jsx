@@ -11,7 +11,6 @@ import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
 import EventsContainer from "../pages/Events/EventsContainer";
 import PaymentSuccess from "../pages/Payments/Success";
 import PaymentFailure from "../pages/Payments/Cancel";
-
 import Explore from "../pages/Explore/Explore";
 
 const routes = createBrowserRouter([
