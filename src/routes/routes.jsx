@@ -24,7 +24,7 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/:profileId",
+    path: "/profile/:profileId",
     element: <RootLayout />,
     children: [{ index: true, element: <ProfilePage /> }],
   },

@@ -126,7 +126,8 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         location: "",
         joinDate: "",
         avatar: user.photoURL || null,
-        coverImage: "../../../assets/images/coverDeafault.jpg",
+        coverImage:
+          "https://images.unsplash.com/photo-1637775297458-7443ffd545b2?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         stats: {
           circles: 0,
           followers: 0,

@@ -75,7 +75,7 @@ const ProfilePage = () => {
         setShowMobileMenu={setShowMobileMenu}
       />
 
-      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6">
+      <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="relative">
           <ProfileCover coverImage={profileData.coverImage} />
 
