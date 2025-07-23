@@ -11,6 +11,7 @@ import "@schedule-x/theme-shadcn/dist/index.css";
 
 import CalendarImg from "../../assets/images/calendar.png";
 import PollContainer from "../../components/ui/Modal/Poll/PollContainer";
+import { useEffect, useState } from "react";
 
 export default function Events() {
   const [categoryColors, setCategoryColors] = useState({});
