@@ -13,18 +13,18 @@ const Modal = forwardRef(function Modal(props, ref) {
     },
   }));
 
-  const handleBackdropClick = (e) => {
-    // Check if the click was on the backdrop (dialog element itself, not its children)
-    if (e.target === modalRef.current) {
-      modalRef.current.close();
-    }
+  const handleCancel = (e) => {
+    e.preventDefault();
+    modalRef.current.close();
+    if (props.onClose) props.onClose();
   };
 
   return createPortal(
     <dialog
       ref={modalRef}
-      onClick={handleBackdropClick}
       className="bg-main backdrop:bg-main-90 px-rounded-4xl animate-fade-slide-in m-auto rounded-4xl p-5 backdrop:backdrop-blur-md"
+      onCancel={handleCancel}
+      modal="true"
     >
       {props.children}
     </dialog>,

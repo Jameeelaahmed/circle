@@ -38,7 +38,7 @@ const circles = [
     lat: 30,
     lng: 31,
   },
-  
+
 ];
 
 const Explore = () => {
@@ -53,7 +53,7 @@ const Explore = () => {
   }, [position]);
 
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-screen z-40 mt-16">
       <MapContainer
         center={myLocation}
         zoom={12}

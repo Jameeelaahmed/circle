@@ -1,12 +1,16 @@
 //libs
 import Select from "react-select";
+import { Loader } from "lucide-react";
+import ModalHeading from "../ModalHeading/ModalHeading";
 
 export default function CreateCircleModalPresentional({
   t,
-  uploadedImages,
+  uploadedImage,
   inputStyles,
   textareaStyles,
   customStyles,
+  circlePrivacyOptions,
+  setCirclePrivacy,
   circleType,
   setCircleType,
   fileInputRef,
@@ -15,38 +19,50 @@ export default function CreateCircleModalPresentional({
   circleTypeOptions,
   handleImageUpload,
   removeImage,
+  register,
+  handleSubmit,
+  setSelectedMembers,
+  setSelectedInterests,
+  errors,
+  isLoading,
+  onClose,
+  membersKey,
+  interestsKey
 }) {
   return (
-    <form className="mx-auto max-w-3xl space-y-6">
-      <h2 className="font-secondary text-center text-2xl font-bold text-primary">
-        {t("Create Circle")}
-      </h2>
+    <form className="mx-auto max-w-3xl space-y-6" onSubmit={handleSubmit}>
+      <ModalHeading onClose={onClose} title={t("Create Circle")} />
+      {/* <h2 className="font-secondary text-center text-2xl font-bold text-primary">
 
-      {/* Basic Information */}
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      </h2> */}
+
+      <div className="space-y-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-2">
           <div>
-            <label className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleName" className="text-light mb-1 block text-sm font-medium">
               {t("Circle Name")} *
             </label>
             <input
               type="text"
               placeholder="enter circle name"
+              name="circleName"
               className={inputStyles}
-              required
+              {...register("circleName")}
             />
+            {errors?.circleName && (
+              <span className="text-red-500 text-xs mt-1 block">{errors.circleName}</span>
+            )}
           </div>
 
           <div>
-            <label className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleType" className="text-light mb-1 block text-sm font-medium">
               {t("Circle Type")} *
             </label>
             <Select
               options={circleTypeOptions}
               styles={customStyles}
               placeholder="select type..."
-              className="react-select-container"
-              classNamePrefix="react-select"
+              name="circleType"
               value={
                 circleTypeOptions.find(
                   (option) => option.value === circleType,
@@ -57,88 +73,102 @@ export default function CreateCircleModalPresentional({
               }
               isClearable
             />
+            {errors?.type && (
+              <span className="text-red-500 text-xs mt-1 block">{errors.type}</span>
+            )}
           </div>
         </div>
 
-        {/* Due Date - Only show for private circles */}
-        {circleType === "private" && (
-          <div>
-            <label className="text-light mb-1 block text-sm font-medium">
+        {/* Due Date - Only show for Flash circles */}
+        {circleType === "Flash Circle" && (
+          <div className="mb-2">
+            <label htmlFor="expireDate" className="text-light mb-1 block text-sm font-medium">
               {t("Due Date")} *
             </label>
-            <input type="date" className={inputStyles} required />
+            <input type="date" className={inputStyles} {...register("expireDate")} />
+            {errors?.expireDate && (
+              <span className="text-red-500 text-xs mt-1 block">{errors.expireDate}</span>
+            )}
           </div>
         )}
 
+        <div className="mb-2">
+          <label htmlFor="privacy" className="text-light mb-1 block text-sm font-medium">
+            {t("Circle Privacy")}
+          </label>
+          <Select
+            options={circlePrivacyOptions}
+            styles={customStyles}
+            placeholder="select circle privacy..."
+            name="circlePrivacy"
+            onChange={(selectedOption) =>
+              setCirclePrivacy(selectedOption ? selectedOption.value : "")
+            }
+            isClearable
+          />
+          {errors?.circlePrivacy && (
+            <span className="text-red-500 text-xs mt-1 block">{errors.circlePrivacy}</span>
+          )}
+        </div>
         <div>
-          <label className="text-light mb-1 block text-sm font-medium">
+          <label htmlFor="description" className="text-light mb-1 block text-sm font-medium">
             {t("Description")}
           </label>
           <textarea
             placeholder="what's this circle about?"
             className={textareaStyles}
+            name="description"
+            {...register("description")}
             rows={3}
           />
+          {errors?.description && (
+            <span className="text-red-500 text-xs mt-1 block">{errors.description}</span>
+          )}
         </div>
       </div>
 
       {/* Members */}
-      <div>
+      <div className="mb-2">
         <label className="text-light mb-1 block text-sm font-medium">
           {t("Members")}
         </label>
         <Select
           isMulti
+          key={membersKey}
           options={memberOptions}
           styles={customStyles}
           placeholder="select members..."
-          className="react-select-container"
-          classNamePrefix="react-select"
+          onChange={setSelectedMembers}
         />
+        {errors?.members && (
+          <span className="text-red-500 text-xs mt-1 block">{errors.members}</span>
+        )}
       </div>
 
       {/* Interests */}
-      <div>
+      <div className="mb-2">
         <label className="text-light mb-1 block text-sm font-medium">
           {t("Interests")}
         </label>
         <Select
           isMulti
+          key={interestsKey}
           options={interestOptions}
           styles={customStyles}
           placeholder="select interests..."
-          className="react-select-container"
-          classNamePrefix="react-select"
+          onChange={setSelectedInterests}
         />
+        {errors?.interests && (
+          <span className="text-red-500 text-xs mt-1 block">{errors.interests}</span>
+        )}
       </div>
 
-      {/* Image Upload */}
-      <div>
-        <label className="text-light mb-1 block text-sm font-medium">
-          {t("Circle Images")}
-        </label>
 
-        {/* Image Previews */}
-        {uploadedImages.length > 0 && (
-          <div className="mb-3 grid grid-cols-3 gap-3">
-            {uploadedImages.map((image, index) => (
-              <div key={index} className="group relative">
-                <img
-                  src={image.preview}
-                  alt={`Preview ${index}`}
-                  className="border-primary h-24 w-full rounded-lg border-2 object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* Image Upload */}
+      <div className="mb-2">
+        <label htmlFor="circleImages" className="text-light mb-1 block text-sm font-medium">
+          {t("Circle Image")}
+        </label>
 
         {/* Upload Area */}
         <div
@@ -151,6 +181,60 @@ export default function CreateCircleModalPresentional({
             className="hidden"
             id="circle-images"
             accept="image/*"
+            name="circleImages"
+            onChange={handleImageUpload}
+          />
+          <svg
+            className="text-primary mb-2 h-8 w-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            ></path>
+          </svg>
+          <p className="text-primary text-center text-sm">
+            Click to upload or drag and drop
+          </p>
+          <p className="mt-1 text-xs text-gray-400">
+            Supports JPG, PNG (Max 5MB each)
+          </p>
+        </div>
+        {/* Image Preview (only one image) */}
+        {uploadedImage && (
+          <div className="mt-3 grid grid-cols-1 gap-3">
+            <div className="group relative">
+              <img
+                src={uploadedImage.preview}
+                alt="Preview"
+                className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
+              />
+              <button
+                type="button"
+                onClick={() => removeImage(0)}
+                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Upload Area */}
+        {/* <div
+          className={`${inputStyles} hover:bg-main-700 flex min-h-[100px] cursor-pointer flex-col items-center justify-center transition-colors`}
+          onClick={() => fileInputRef.current.click()}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            id="circle-images"
+            accept="image/*"
+            name="circleImages"
             multiple
             onChange={handleImageUpload}
           />
@@ -175,18 +259,22 @@ export default function CreateCircleModalPresentional({
           <p className="mt-1 text-xs text-gray-400">
             Supports JPG, PNG (Max 5MB each)
           </p>
-        </div>
-      </div>
+        </div> */}
+      </div >
 
       {/* Submit Button */}
       <div className="pt-2">
         <button
           type="submit"
-          className="bg-primary hover:bg-opacity-90 w-full rounded-2xl py-3 font-bold text-white transition-colors"
+          className="bg-main hover:bg-opacity-90 w-full rounded-2xl py-3 font-bold text-white transition-colors flex items-center justify-center shadow-[0_4px_12px_rgba(255,107,139,0.3)]"
+          disabled={isLoading}
         >
+          {isLoading && (
+            <Loader className="animate-spin h-5 w-5 mr-2 text-white" />
+          )}
           {t("Create Circle")}
         </button>
       </div>
-    </form>
+    </form >
   );
 }

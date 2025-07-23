@@ -3,7 +3,7 @@ import { motion as Motion } from "framer-motion";
 
 function PaymentPresentational({ particles, cards }) {
   return (
-    <section className="mt-[80px] mb-10">
+    <section className="mb-10 pt-paddingTop">
       <div className="fixed inset-0 -z-20 overflow-hidden">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />

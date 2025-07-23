@@ -26,9 +26,9 @@ body {
   /** fonts */
   --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-secondary: "Kode Mono", monospace;
-
   /** colors */
   --color-main: #0b0c10;
+  --color-inputsBg: rgb(255, 255, 255, 0.05);
   --color-primary: #ff6b8b;
   --color-secondary: #6a5acd;
   --color-accent: #00c9b1;
@@ -38,8 +38,12 @@ body {
   --color-text: #c5c6c7;
   --color-glass: rgba(22, 23, 30, 0.7);
 
+  /** padding */
+
+  --spacing-paddingTop: 68px;
+
   /** shadows */
-  --main-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  --shadow-main: 8px 16px 16px rgba(22, 23, 30, 0.7);
   --shadow-softPrimary: 0 0 20px rgba(255, 107, 139, 0.5);
   --shadow-btnPrimary: 0 0 25px rgba(255, 107, 139, 0.5);
   --shadow-btnPrimaryHover: 0 5px 30px rgba(255, 107, 139, 0.7);

@@ -14,6 +14,7 @@ export default function LandingPresentational({
   isLoggedIn,
   openCCircleModal,
   createCircleModalRef,
+  closeCCircleModal
 }) {
   const [authFormType, setAuthFormType] = useState("login"); // "login" or "register"
 
@@ -22,9 +23,7 @@ export default function LandingPresentational({
 
   return (
     <div className="bg-main flex min-h-screen flex-col overflow-hidden">
-      {/* Main Content */}
-      <div className="flex h-screen w-full flex-col items-center justify-center px-4 pt-16 md:flex-row">
-        {/* Left: Animated Intro Section */}
+      <div className="flex h-screen w-full flex-col items-center justify-center px-4  md:flex-row">
         <Motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -39,7 +38,7 @@ export default function LandingPresentational({
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <span className="text-white">{t("From we should..")}</span>
-              <span className="from-primary to-accent block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
+              <span className="from-secondary to-primary block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
                 {t("to we did!")}
               </span>
             </Motion.h1>
@@ -71,7 +70,7 @@ export default function LandingPresentational({
               </button>
               <Modal ref={createCircleModalRef}>
                 {isLoggedIn ? (
-                  <CreateCircleModalContainer />
+                  <CreateCircleModalContainer closeModal={closeCCircleModal} />
                 ) : authFormType === "login" ? (
                   <LoginFormContainer onSwitchToRegister={handleSwitchToRegister} />
                 ) : (

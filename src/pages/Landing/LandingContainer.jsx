@@ -14,11 +14,15 @@ function LandingContainer() {
   function openCCircleModal() {
     createCircleModalRef.current.open();
   }
+  function closeCCircleModal() {
+    createCircleModalRef.current.close();
+  }
   return (
     <LandingPresentational
       t={t}
       isLoggedIn={isLoggedIn}
       openCCircleModal={openCCircleModal}
+      closeCCircleModal={closeCCircleModal}
       createCircleModalRef={createCircleModalRef}
       authModalRef={authModalRef}
     />
