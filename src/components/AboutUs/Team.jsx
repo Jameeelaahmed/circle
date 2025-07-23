@@ -4,8 +4,8 @@ import { ArcCard } from "./Card";
 export default function Team() {
   const team = [
     {
-      name: "Hajer",
-      image: "/src/assets/images/aboutus/hager.jpg",
+      name: "Hajar Ali",
+      image: "/src/assets/images/aboutus/hager.webp",
       role: "full stack developer",
       description:
         "I am a full stack developer with a passion for building web applications.",
@@ -13,7 +13,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Refaat",
-      image: "/src/assets/images/aboutus/refaat.jpg",
+      image: "/src/assets/images/aboutus/refaat.webp",
       role: "full stack developer",
       description:
         "I am a quick learner and I am always looking to improve my skills.",
@@ -21,14 +21,14 @@ export default function Team() {
     },
     {
       name: "Ahmed Yasser",
-      image: "/src/assets/images/aboutus/yasser.jpg",
+      image: "/src/assets/images/aboutus/yasser.webp",
       role: "full stack developer",
       description:
         "I am a full stack developer with a passion for building web applications. I am a quick learner and I am always looking to improve my skills.",
       cardColor: "#923",
     },
     {
-      name: "Ahemd Jamal",
+      name: "Ahmed Gamal",
       image: "/src/assets/images/aboutus/gmal.jpg",
       role: "UX Designer",
       description:
@@ -36,7 +36,7 @@ export default function Team() {
       cardColor: "#635",
     },
     {
-      name: "Jameela",
+      name: "Jameela Abdel-rahman",
       image: "/src/assets/images/aboutus/jameela.jpg",
       role: "full stack developer",
       description:
@@ -117,6 +117,7 @@ export default function Team() {
               name={member.name}
               title={member.role}
               since={2025}
+              key={member.name}
             />
           ))}
         </div>
