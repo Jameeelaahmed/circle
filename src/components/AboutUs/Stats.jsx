@@ -21,7 +21,7 @@ const Stats = () => {
   ];
 
   return (
-    <section className="flex w-full flex-row flex-wrap items-start justify-center gap-8">
+    <section className="flex w-full flex-row flex-wrap items-start justify-center gap-8 mt-14">
       {stats.map((stat, index) => (
         <div
           key={index}

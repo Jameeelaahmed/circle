@@ -1,19 +1,5 @@
-import React from "react";
-// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
-import {
-  Heart,
-  Target,
-  Users2,
-  Sparkles,
-  Shield,
-  Globe,
-  Zap,
-  MessageCircle,
-  Camera,
-  Star,
-  Users,
-} from "lucide-react";
-import { ArcCard } from "../ui/3DCard/Card";
+import { Heart, Users2, Sparkles, Shield } from "lucide-react";
+import { ArcCard } from "./Card";
 
 export default function Team() {
   const team = [
@@ -86,7 +72,7 @@ export default function Team() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center lg:justify-between px-10 gap-10">
+        <div className="flex flex-wrap justify-center gap-10 px-10 lg:justify-between">
           {team.map((member, index) => (
             // <div
             //   key={index}
@@ -127,11 +113,10 @@ export default function Team() {
             //   </div>
             // </div>
             <ArcCard
+              imgSrc={member.image}
               name={member.name}
               title={member.role}
-              since={"2025"}
-              key={member.name}
-              imgSrc={member.image}
+              since={2025}
             />
           ))}
         </div>
