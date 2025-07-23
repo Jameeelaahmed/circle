@@ -1,4 +1,3 @@
-// Libs
 import { createBrowserRouter, RouterProvider } from "react-router";
 // Components
 import AboutUs from "../pages/AboutUs/AboutUs";
@@ -11,9 +10,8 @@ import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
 import EventsContainer from "../pages/Events/EventsContainer";
 import PaymentSuccess from "../pages/Payments/Success";
 import PaymentFailure from "../pages/Payments/Cancel";
-
 import Explore from "../pages/Explore/Explore";
-
+import ProfilePage from "../pages/profile/profile.jsx";
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -30,6 +28,11 @@ const routes = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "explore", element: <Explore /> },
     ],
+  },
+  {
+    path: "/profile/:profileId",
+    element: <RootLayout />,
+    children: [{ index: true, element: <ProfilePage /> }],
   },
 ]);
 
