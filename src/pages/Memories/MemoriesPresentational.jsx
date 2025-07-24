@@ -1,61 +1,173 @@
-import ImageCard from "../../components/Memories/ImageCard";
-import LightRays from "../../components/Memories/LightRays";
-
-function MemoriesPresentational({ imageList }) {
+import {
+  Calendar,
+  MapPin,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Upload,
+  Search,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+function MemoriesPresentational({
+    openLightbox,
+    closeLightbox,
+    navigateMemory,
+    selectedMemory,
+    searchTerm,
+    setSearchTerm,
+    filteredMemories,
+    isUploading,
+    handleFileUpload,
+    formatDate
+}) {
+  const {t} =useTranslation()
   return (
-    <div className="flex h-[calc(100vh-70px)] flex-col items-center justify-center">
-      <div
-        style={{
-          width: "100%",
-          height: "600px",
-          position: "absolute",
-          zIndex: -1,
-        }}
-      >
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#00c9b1"
-          raysSpeed={1.5}
-          lightSpread={0.8}
-          rayLength={2.2}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
-          className="custom-rays"
-        />
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="bg-gray sticky top-[64px] z-40 border-b border-gray-700 shadow-sm backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 py-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-4xl font-bold text-transparent">
+                {t("My Memories")}
+              </h1>
+              <p className="mt-1 text-gray-300">
+                Capturing life's beautiful moments
+              </p>
+            </div>
+            <label className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-white shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl">
+              <Upload size={20} />
+              {isUploading ? "Uploading..." : "Add Memories"}
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                disabled={isUploading}
+              />
+            </label>
+          </div>
+        </div>
       </div>
-      <div className="mx-auto mt-32 grid grid-cols-3 max-w-6xl gap-10 p-4">
-        {imageList.map((img) => (
-          <ImageCard imgSrc={img} />
-        ))}
 
-        <label class="custum-file-upload" for="file">
-          <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
-              <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-              <g
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                id="SVGRepo_tracerCarrier"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  fill=""
-                  d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
-                ></path>{" "}
-              </g>
-            </svg>
+      {/* Search & Filter */}
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row">
+          <div className="relative flex-1">
+            <Search
+              className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
+              size={20}
+            />
+            <input
+              type="text"
+              placeholder="Search memories..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="focus:ring-primary w-full rounded-full border border-gray-600 bg-[#1f1f1f] py-3 pr-4 pl-10 text-white placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
+            />
           </div>
-          <div class="text">
-            <span>Click to upload image</span>
+        </div>
+
+        <p className="mb-6 text-gray-300">
+          {filteredMemories.length}{" "}
+          {filteredMemories.length === 1 ? "memory" : "memories"} found
+        </p>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredMemories.map((memory, index) => (
+            <div
+              key={memory.id}
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#1f1f1f] shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-purple-500/20"
+              onClick={() => openLightbox(memory)}
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={memory.url}
+                  alt={memory.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="mb-2 line-clamp-1 font-semibold text-white">
+                  {memory.title}
+                </h3>
+                <div className="mb-3 flex items-center gap-2 text-sm text-gray-400">
+                  <Calendar size={14} />
+                  <span>{formatDate(memory.date)}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredMemories.length === 0 && (
+          <div className="py-16 text-center text-gray-500">
+            <Search size={64} className="mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-gray-400">
+              No memories found
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Try adjusting your search or filters
+            </p>
           </div>
-          <input type="file" id="file" />
-        </label>
+        )}
       </div>
+
+      {selectedMemory && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-[#1f1f1f]">
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 z-10 rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+            >
+              <X size={24} />
+            </button>
+            <button
+              onClick={() => navigateMemory("prev")}
+              className="absolute top-1/2 left-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              onClick={() => navigateMemory("next")}
+              className="absolute top-1/2 right-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+            >
+              <ChevronRight size={24} />
+            </button>
+
+            <div className="flex flex-col lg:flex-row">
+              <div className="lg:w-2/3">
+                <img
+                  src={selectedMemory.url}
+                  alt={selectedMemory.title}
+                  className="h-64 w-full object-cover lg:h-96"
+                />
+              </div>
+              <div className="p-6 lg:w-1/3">
+                <h2 className="mb-4 text-2xl font-bold text-white">
+                  {selectedMemory.title}
+                </h2>
+                <div className="mb-6 space-y-3">
+                  <div className="flex items-center gap-2 text-gray-300">
+                    <Calendar size={18} />
+                    <span>{formatDate(selectedMemory.date)}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-300">
+                    <MapPin size={18} />
+                    <span>{selectedMemory.location}</span>
+                  </div>
+                </div>
+                <p className="mb-6 text-gray-300">
+                  {selectedMemory.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

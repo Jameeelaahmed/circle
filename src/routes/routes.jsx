@@ -28,7 +28,7 @@ const routes = createBrowserRouter([
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
       { path: "explore", element: <Explore /> },
-      // "events/:eventId/memories"
+      // "events/:cirlceId/:eventId/memories"
       {path:"memories",element:<Memories/>}
     ],
   },

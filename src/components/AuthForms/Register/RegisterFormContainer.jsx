@@ -23,8 +23,11 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [location, setLocation] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,7 +44,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     const isvalid = validateForm({
       email,
       password,
-      repeatPassword,
+      userName,
     });
     if (!isvalid) return;
 
@@ -63,9 +66,10 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         provider: "email",
         emailVerified: user.emailVerified,
         name: user.displayName || null,
-        username: "",
+        username: userName || "",
+        age: userAge || null,
         bio: "",
-        location: "",
+        location: location || "",
         joinDate: "",
         avatar: user.photoURL || null,
         coverImage: "../../../assets/images/coverDeafault.jpg",
@@ -121,7 +125,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         provider: "email",
         emailVerified: user.emailVerified,
         name: user.displayName || null,
-        username: "",
+        username: userName || "",
         bio: "",
         location: "",
         joinDate: "",
@@ -189,6 +193,31 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     }
   };
 
+  const handleAgeChange = (e) => {
+    const age = new Date(e.target.value);
+    const today = new Date();
+    const userAge = today.getFullYear() - age.getFullYear();
+    if (userAge < 18) {
+      toast.warning("You must be at least 18 years old to register.");
+      return;
+    }
+    setUserAge(userAge);
+  };
+
+  const handleLocation = (e) => {
+    console.log("get locaiton");
+    setLocation("detecting location...");
+    try {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        console.log(latitude, longitude);
+        setLocation([latitude, longitude]);
+      });
+    } catch (error) {
+      toast.error("Failed to get location. Please allow location access.");
+    }
+  };
+
   // Real-time password match validation
   const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
@@ -211,6 +240,11 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       password={password}
       repeatPassword={repeatPassword}
       onSwitchToLogin={onSwitchToLogin}
+      handleAgeChange={handleAgeChange}
+      setUserName={setUserName}
+      userName={userName}
+      handleLocation={handleLocation}
+      location={location}
     />
   );
 }
