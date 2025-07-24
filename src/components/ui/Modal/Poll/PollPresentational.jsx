@@ -3,7 +3,8 @@ import Input from "../../Input/Input";
 import Toggle from "../../ReactBits/Toggle/Toggle";
 import SendBtn from "../../ReactBits/SendBtn/SendBtn";
 import AiButton from "../../Buttons/AiButton";
-import ModalHeading from "../ModalHeading/ModalHeading";
+import { X } from "lucide-react";
+
 
 export default function PollPresentational({
   question,
@@ -12,6 +13,9 @@ export default function PollPresentational({
   onOptionChange,
   allowMultiple,
   setAllowMultiple,
+  expireDate,
+  setExpireDate,
+  onAskAi,
   onSubmit,
   onClose,
   t,
@@ -19,13 +23,22 @@ export default function PollPresentational({
   return (
     <div className="relative w-[500px] rounded-4xl backdrop-blur-lg">
       {/* Header */}
-      <ModalHeading onClose={onClose} title={t("Create Poll")} />
+      <div className="flex items-center justify-between gap-3 mb-10">
+        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
+          {t("Create Poll")}
+        </h2>
+        <X
+          onClick={onClose}
+          size={28}
+          className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
+        />
+      </div>
 
       {/* Form */}
       <form onSubmit={onSubmit} className="">
         {/* Question */}
         <div>
-          <label className="block text-lg mb-2 font-medium text-light">
+          <label className="text-light mb-2 block text-lg font-medium">
             {t("Question *")}
           </label>
           <Input
@@ -38,13 +51,15 @@ export default function PollPresentational({
         {/* Options */}
         <div>
           <div className="flex items-center justify-between">
-            <label className="block text-lg mb-2 font-medium text-light">
+            <label className="text-light mb-2 block text-lg font-medium">
               {t("Options *")}
             </label>
 
-            <div className="flex items-center gap-x-2 cursor-pointer">
+            <div className="flex cursor-pointer items-center gap-x-2" onClick={onAskAi}>
               <AiButton />
-              <span className="font-bold ps-2 py-1 text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">Ask AI</span>
+              <span className="from-secondary to-primary bg-gradient-to-l bg-clip-text py-1 ps-2 font-bold text-transparent">
+                Ask AI
+              </span>
             </div>
           </div>
 
@@ -61,7 +76,7 @@ export default function PollPresentational({
         </div>
 
         {/* Toggle */}
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <ShinyText
             text={t("Allow multiple answers!")}
             disabled={false}
@@ -70,13 +85,27 @@ export default function PollPresentational({
           />
           <Toggle
             checked={allowMultiple}
-            onChange={() => setAllowMultiple(!allowMultiple)}
+            onCheckedChange={setAllowMultiple}
+          />
+        </div>
+
+        {/* Expiration Date */}
+        <div className="mt-6">
+          <label className="text-light mb-2 block text-lg font-medium">
+            {t("Expire Date")}
+          </label>
+          <input
+            type="date"
+            className="bg-dark focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
+            value={expireDate}
+            onChange={(e) => setExpireDate(e.target.value)}
+            min={new Date().toISOString().split("T")[0]} // disables past dates
           />
         </div>
 
         {/* Submit */}
         <div className="pt-2">
-          <div className="flex justify-end relative z-10">
+          <div className="flex justify-end relative translate-y-[50%] z-10">
             <SendBtn />
           </div>
         </div>

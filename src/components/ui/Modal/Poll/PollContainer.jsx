@@ -2,25 +2,35 @@ import { useRef, useState } from "react";
 import Modal from "../Modal";
 import PollPresentational from "./PollPresentational";
 import { useTranslation } from "react-i18next";
+import { doc, collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../../../firebase-config";
+import { getAiPollOptions } from "./aiSuggestOptions";
 
-export default function PollContainer() {
-   const { t } = useTranslation();
+export default function PollContainer({
+  onClose,
+  circleId = "YwengDJJqbgMWTBk9dAn",
+}) {
+  const { t } = useTranslation();
   const modalRef = useRef();
+
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [allowMultiple, setAllowMultiple] = useState(false);
+  const [expireDate, setExpireDate] = useState("");
 
-  const openModal = () => modalRef.current.open();
-  const closeModal = () => modalRef.current.close();
+  const openModal = () => modalRef.current?.open();
+  const closeModal = () => modalRef.current?.close();
 
   const handleOptionChange = (index, value) => {
-    const updatedOptions = [...options];
-    updatedOptions[index] = value;
+    const updated = [...options];
+    updated[index] = value;
 
+    // Add new empty input if typing in the last one
     if (index === options.length - 1 && value.trim() !== "") {
-      setOptions([...updatedOptions, ""]);
+      setOptions([...updated, ""]);
     } else {
-      let trimmed = [...updatedOptions];
+      // Trim extra empty fields
+      let trimmed = [...updated];
       while (
         trimmed.length > 2 &&
         trimmed[trimmed.length - 1].trim() === "" &&
@@ -32,27 +42,77 @@ export default function PollContainer() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleAskAi = async () => {
+    if (!question.trim()) return alert("Please enter a question first");
+
+    const result = await getAiPollOptions(question);
+    if (!result) return alert("AI failed to suggest options");
+
+    const suggestions = result
+      .split("\n")
+      .map((line) => line.replace(/^\d+\.\s*/, "").trim())
+      .filter(Boolean)
+      .slice(0, 5);
+
+    if (suggestions.length < 2) {
+      alert("AI did not return enough valid options");
+      return;
+    }
+
+    // Add the suggestions + an empty field at the end
+    setOptions([...suggestions, ""]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const filledOptions = options.filter((opt) => opt.trim() !== "");
 
-    if (question.trim() === "") return alert("Please enter a question.");
-    if (filledOptions.length < 2)
-      return alert("Please provide at least two options.");
+    if (
+      !question.trim() ||
+      options.filter((opt) => opt.trim()).length < 2 ||
+      !expireDate
+    ) {
+      alert(t("Please fill in all required fields"));
+      return;
+    }
 
-    const pollData = { question, options: filledOptions, allowMultiple };
-    alert("Poll Submitted:\n" + JSON.stringify(pollData, null, 2));
-    closeModal();
+    const pollData = {
+      question: question.trim(),
+      options: options
+        .filter((opt) => opt.trim())
+        .map((text) => ({ text, votes: 0 })),
+      allowMultiple,
+      expireDate: Timestamp.fromDate(new Date(expireDate)),
+      createdAt: Timestamp.now(),
+    };
+
+    try {
+      const pollCollectionRef = collection(
+        doc(db, "circles", circleId),
+        "poll",
+      );
+      await addDoc(pollCollectionRef, pollData);
+
+      alert(t("Poll created successfully!"));
+      setQuestion("");
+      setOptions(["", ""]);
+      setAllowMultiple(false);
+      setExpireDate("");
+      closeModal();
+      onClose?.();
+    } catch (error) {
+      console.error("Error creating poll:", error);
+      alert(t("An error occurred while creating the poll."));
+    }
   };
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <button
           onClick={openModal}
-          className="bg-primary text-white px-6 py-3 rounded-xl hover:bg-primary/80 transition"
+          className="bg-primary hover:bg-primary/80 rounded-xl px-6 py-3 text-white transition"
         >
-          Create Poll
+          {t("Create Poll")}
         </button>
       </div>
 
@@ -64,7 +124,10 @@ export default function PollContainer() {
           onOptionChange={handleOptionChange}
           allowMultiple={allowMultiple}
           setAllowMultiple={setAllowMultiple}
+          expireDate={expireDate}
+          setExpireDate={setExpireDate}
           onSubmit={handleSubmit}
+          onAskAi={handleAskAi}
           onClose={closeModal}
           t={t}
         />
