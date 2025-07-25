@@ -85,7 +85,7 @@ export default function CreateCircleModalPresentional({
             <label htmlFor="expireDate" className="text-light mb-1 block text-sm font-medium">
               {t("Due Date")} *
             </label>
-            <input type="date" className={inputStyles} {...register("expireDate")} />
+            <input type="date" className={inputStyles} {...register("expiresAt")} />
             {errors?.expireDate && (
               <span className="text-red-500 text-xs mt-1 block">{errors.expireDate}</span>
             )}

@@ -12,6 +12,7 @@ import PaymentSuccess from "../pages/Payments/Success";
 import PaymentFailure from "../pages/Payments/Cancel";
 import Explore from "../pages/Explore/Explore";
 import ProfilePage from "../pages/profile/profile.jsx";
+import CirclesPageContainer from "../pages/CirclesPage/CirclesPageContainer.jsx";
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -23,6 +24,7 @@ const routes = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <LandingPage /> },
+      { path: "circles", element: <CirclesPageContainer /> },
       { path: "payments", element: <Payments /> },
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },

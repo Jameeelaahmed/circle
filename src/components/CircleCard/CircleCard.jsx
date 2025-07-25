@@ -14,10 +14,9 @@ import {
 } from "lucide-react";
 import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 
-export default function CercleCard({ circle }) {
+export default function CircleCard({ circle }) {
   return (
     <div
-      key={circle}
       className="p-3 transition-all duration-300 hover:scale-105 sm:p-4"
       style={{
         background: `linear-gradient(135deg, ${COLORS.primary}10, ${COLORS.secondary}10)`,
@@ -28,13 +27,10 @@ export default function CercleCard({ circle }) {
     >
       <div className="mb-2 flex items-center space-x-2 sm:mb-3 sm:space-x-3">
         <div
-          className="flex h-8 w-8 items-center justify-center sm:h-10 sm:w-10 lg:h-12 lg:w-12"
-          style={{
-            background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.secondary})`,
-            borderRadius: RADII.pill,
-          }}
+          className="flex h-8 w-8 items-center justify-center sm:h-10 sm:w-10 lg:h-12 lg:w-12 rounded-full overflow-hidden"
         >
-          <Users className="h-4 w-4 text-white sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+          <img className="w-full h-full object-cover rounded-full"
+            src={circle.imageUrl} alt="" />
         </div>
         <div>
           <h3
@@ -44,7 +40,7 @@ export default function CercleCard({ circle }) {
               fontFamily: FONTS.heading,
             }}
           >
-            Photography Circle
+            {circle.circleName}
           </h3>
           <p className="text-xs sm:text-sm" style={{ color: COLORS.text }}>
             124 members
@@ -52,10 +48,10 @@ export default function CercleCard({ circle }) {
         </div>
       </div>
       <p
-        className="mb-2 text-xs sm:mb-3 sm:text-sm"
+        className="mb-2 text-xs sm:mb-3 sm:text-sm line-clamp-3"
         style={{ color: COLORS.text }}
       >
-        Weekly meetups for photo enthusiasts
+        {circle.description}
       </p>
       <button
         className="w-full py-1.5 text-xs font-medium transition-all duration-300 sm:py-2 sm:text-sm"

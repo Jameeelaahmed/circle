@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
+import { Timestamp } from "firebase/firestore";
 // helpers
 import { validateForm } from "../../../../utils/FormValidator";
 
@@ -142,7 +143,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
     const formFields = {
       ...data,
       circleId: uuidv4(),
-      createdAt: new Date().toISOString(),
+      createdAt: Timestamp.now(),
       admins: [{ userEmail: user.email, userName: user.displayName }],
       createdBy: { userEmail: user.email, userName: user.displayName },
       circlePrivacy: circlePrivacy,
