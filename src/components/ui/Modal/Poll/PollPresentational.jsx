@@ -1,9 +1,9 @@
-import { X } from "lucide-react";
 import ShinyText from "../../ReactBits/ShinyText/ShinyText";
 import Input from "../../Input/Input";
 import Toggle from "../../ReactBits/Toggle/Toggle";
 import SendBtn from "../../ReactBits/SendBtn/SendBtn";
 import AiButton from "../../Buttons/AiButton";
+import ModalHeading from "../ModalHeading/ModalHeading";
 
 export default function PollPresentational({
   question,
@@ -17,18 +17,9 @@ export default function PollPresentational({
   t,
 }) {
   return (
-    <div className="relative w-[500px] rounded-4xl backdrop-blur-lg bg-darker shadow-2xl">
+    <div className="relative w-[500px] rounded-4xl backdrop-blur-lg">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 mb-5">
-        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
-          {t("Create Poll")}
-        </h2>
-        <X
-          onClick={onClose}
-          size={28}
-          className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
-        />
-      </div>
+      <ModalHeading onClose={onClose} title={t("Create Poll")} />
 
       {/* Form */}
       <form onSubmit={onSubmit} className="">
