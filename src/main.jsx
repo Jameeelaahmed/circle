@@ -6,6 +6,7 @@ import store from "./app/store.js";
 // STYLESHEETS
 import "./index.css";
 import App from "./App.jsx";
+import "../i18n.js"
 // FONTS
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins/500.css";

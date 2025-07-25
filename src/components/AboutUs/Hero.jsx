@@ -1,5 +1,3 @@
-import React from "react";
-// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import { Link } from "react-router";
 
 const styles = {

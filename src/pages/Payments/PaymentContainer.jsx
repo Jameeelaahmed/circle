@@ -1,11 +1,9 @@
 import { CrownIcon, UserIcon, ZapIcon } from "lucide-react";
-
 import Button from "../../components/ui/Buttons/Button";
-import { useEffect, useState } from "react";
 import PaymentPresentational from "./PaymentPresentational";
 import { loadStripe } from "@stripe/stripe-js";
+import { memo } from "react";
 function PaymentContainer() {
-  const [particles, setParticles] = useState([]);
   let stripePromise;
   const getStripe = () => {
     if (!stripePromise) {
@@ -27,23 +25,7 @@ function PaymentContainer() {
     const stripe = await getStripe();
     await stripe.redirectToCheckout(checkoutOptions);
   };
-  useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = [];
-      for (let i = 0; i < 50; i++) {
-        newParticles.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 3 + 1,
-          duration: Math.random() * 20 + 10,
-        });
-      }
-      setParticles(newParticles);
-    };
 
-    generateParticles();
-  }, []);
   const cards = [
     {
       color: "#1e40af",
@@ -104,6 +86,6 @@ function PaymentContainer() {
       ),
     },
   ];
-  return <PaymentPresentational cards={cards} particles={particles} />;
+  return <PaymentPresentational cards={cards} />;
 }
-export default PaymentContainer;
+export default memo(PaymentContainer);

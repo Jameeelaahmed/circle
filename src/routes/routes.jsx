@@ -12,6 +12,7 @@ import PaymentSuccess from "../pages/Payments/Success";
 import PaymentFailure from "../pages/Payments/Cancel";
 import Explore from "../pages/Explore/Explore";
 import ProfilePage from "../pages/profile/profile.jsx";
+import Memories from "../pages/Memories";
 import CirclesPageContainer from "../pages/CirclesPage/CirclesPageContainer.jsx";
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -29,6 +30,8 @@ const routes = createBrowserRouter([
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
       { path: "explore", element: <Explore /> },
+      // "events/:cirlceId/:eventId/memories"
+      {path:"memories",element:<Memories/>}
     ],
   },
   {
