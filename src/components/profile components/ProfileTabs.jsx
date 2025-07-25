@@ -1,5 +1,5 @@
 import React from "react";
-import { COLORS, FONTS } from "../../../constants";
+import { COLORS, FONTS } from "../../constants";
 
 const ProfileTabs = ({ activeTab, setActiveTab }) => {
   const tabs = ["about", "circles"];

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   userInfo: null,
   token: null,
   isAuthenticated: undefined,
-  isAuthLoading: true
+  isAuthLoading: true,
 };
 
 const userSlice = createSlice({
@@ -33,7 +33,7 @@ const userSlice = createSlice({
     },
     setAuthLoading(state, action) {
       state.isAuthLoading = action.payload;
-    }
+    },
   },
 });
 

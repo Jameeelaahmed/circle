@@ -63,23 +63,34 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
+
         provider: "email",
         emailVerified: user.emailVerified,
         name: user.displayName || null,
         username: userName || "",
         age: userAge || null,
+
+        username: user.displayName || null,
+
         bio: "",
         location: location || "",
         joinDate: "",
-        avatar: user.photoURL || null,
-        coverImage: "../../../assets/images/coverDeafault.jpg",
+        avatarPhoto: user.photoURL || null,
+        coverPhoto:
+          "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
           circles: 0,
-          followers: 0,
-          following: 0,
+          connections: 0,
+          events: 0,
         },
         interests: [""],
-        recentActivities: [],
+        joninedEvents: [],
+        connectionRequests: [],
+        connections: [],
+        createdAt: new Date(),
+        isAdmin: false,
+        joinedCircles: [],
+        phoneNumber: "",
       };
 
       await createUserProfile(user.uid, profileData);
@@ -122,23 +133,33 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
+
         provider: "email",
         emailVerified: user.emailVerified,
         name: user.displayName || null,
         username: userName || "",
+
+        username: user.displayName || null,
+
         bio: "",
         location: "",
         joinDate: "",
-        avatar: user.photoURL || null,
-        coverImage:
-          "https://images.unsplash.com/photo-1637775297458-7443ffd545b2?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        avatarPhoto: user.photoURL || null,
+        coverPhoto:
+          "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
           circles: 0,
-          followers: 0,
-          following: 0,
+          connections: 0,
+          events: 0,
         },
         interests: [""],
-        recentActivities: [],
+        joninedEvents: [],
+        connectionRequests: [],
+        connections: [],
+        createdAt: new Date(),
+        isAdmin: false,
+        joinedCircles: [],
+        phoneNumber: "",
       };
 
       try {

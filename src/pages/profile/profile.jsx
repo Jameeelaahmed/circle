@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import ProfileHeader from "./components/ProfileHeader";
-import ProfileCover from "./components/ProfileCover";
-import ProfileInfo from "./components/ProfileInfo";
-import ProfileStats from "./components/ProfileStats";
-import ProfileTabs from "./components/ProfileTabs";
-import ProfileContent from "./components/ProfileContent";
+import ProfileHeader from "../../components/profile components/ProfileHeader";
+import ProfileCover from "../../components/profile components/ProfileCover";
+import ProfileInfo from "../../components/profile components/ProfileInfo";
+import ProfileStats from "../../components/profile components/ProfileStats";
+import ProfileTabs from "../../components/profile components/ProfileTabs";
+import ProfileContent from "../../components/profile components/ProfileContent";
+import { setProfileData } from "../../features/userProfile/profileSlice";
 import { COLORS, FONTS } from "../../constants";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getUserProfile } from "../../fire_base/profileController/profileController";
 import { auth } from "../../firebase-config";
+import { useSelector } from "react-redux";
+
 const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
@@ -17,50 +20,26 @@ const ProfilePage = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isProfileMyProfile, setIsProfileMyProfile] = useState(false);
   const dispatch = useDispatch();
+  const profileData = useSelector((state) => state.profileData);
   const { profileId } = useParams();
-
-  const [profileData, setprofileData] = useState({
-    name: "ahmed adel",
-    username: "",
-    bio: "",
-    location: "",
-    joinDate: "",
-    avatar: "",
-    coverImage: "",
-    stats: {
-      circles: 10,
-      followers: 1000,
-      following: 1000,
-    },
-    interests: [""],
-    recentActivities: [
-      {
-        type: "joined",
-        text: "Joined Photography Meetup",
-        time: "2 hours ago",
-      },
-    ],
-  });
 
   useEffect(() => {
     const fitchProfile = async () => {
       const profile = await getUserProfile(profileId);
-      console.log(profile);
-      // setprofileData(profile);
-      setprofileData(profile);
+
+      dispatch(setProfileData(profile));
+      console.log(profileData);
+
       if (auth.currentUser.uid === profileId) {
         setIsProfileMyProfile(true);
       }
-      // profileData.name = profile.displayName;
-      // profileData.avatar = profile.photoURL;
     };
     fitchProfile();
-  }, []);
+  }, [profileId]);
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
   };
-
   return (
     <div
       className="min-h-screen"
@@ -77,9 +56,13 @@ const ProfilePage = () => {
 
       <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="relative">
-          <ProfileCover coverImage={profileData.coverImage} />
+          <ProfileCover
+            coverImage={profileData.coverPhoto}
+            isProfileMyProfile={isProfileMyProfile}
+          />
 
           <ProfileInfo
+            isProfileMyProfile={isProfileMyProfile}
             profileData={profileData}
             isFollowing={isFollowing}
             handleFollow={handleFollow}

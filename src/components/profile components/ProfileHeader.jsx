@@ -1,6 +1,6 @@
 import React from "react";
 import { Share2, Settings } from "lucide-react";
-import { COLORS } from "../../../constants";
+import { COLORS } from "../../constants";
 
 const ProfileHeader = ({ showMobileMenu, setShowMobileMenu }) => {
   return (

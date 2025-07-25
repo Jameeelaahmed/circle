@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
-import RecentActivities from "../../../components/profile components/RecentActivities";
-import { COLORS, FONTS, RADII } from "../../../constants";
+import RecentActivities from "./RecentActivities";
+import { COLORS, FONTS, RADII } from "../../constants";
 
 const AboutTab = ({ interests, recentActivities }) => {
   return (
