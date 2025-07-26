@@ -36,7 +36,7 @@ export default function UserDropdownPresentational({
                     y: isDropdownOpen ? 0 : -10,
                 }}
                 transition={{ duration: 0.2 }}
-                className={`bg-main/90 absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-white/10 shadow-lg backdrop-blur-sm ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+                className={`bg-main absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-white/10 shadow-lg ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
             >
                 {dropdownItems.map((item, index) =>
                     item.onClick ? (
