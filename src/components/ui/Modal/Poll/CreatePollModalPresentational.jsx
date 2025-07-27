@@ -3,7 +3,6 @@ import Input from "../../Input/Input";
 import Toggle from "../../ReactBits/Toggle/Toggle";
 import SendBtn from "../../ReactBits/SendBtn/SendBtn";
 import AiButton from "../../Buttons/AiButton";
-import { X } from "lucide-react";
 
 
 export default function CreatePollModalPresentational({
@@ -23,20 +22,7 @@ export default function CreatePollModalPresentational({
   return (
     <div className="relative w-[500px] rounded-4xl backdrop-blur-lg">
       {/* Header */}
-<<<<<<< HEAD:src/components/ui/Modal/Poll/PollPresentational.jsx
-      <div className="flex items-center justify-between gap-3 mb-10">
-        <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-secondary to-primary bg-clip-text">
-          {t("Create Poll")}
-        </h2>
-        <X
-          onClick={onClose}
-          size={28}
-          className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
-        />
-      </div>
-=======
       <ModalHeading onClose={close} title={t("Create Poll")} />
->>>>>>> 07bf8c0e5cf3e23119f7c6e979accf851c168289:src/components/ui/Modal/Poll/CreatePollModalPresentational.jsx
 
       {/* Form */}
       <form onSubmit={onSubmit} className="">
