@@ -5,7 +5,7 @@ import { Logo } from "../../../assets/icons/Logo";
 import AuthButton from "../../../components/ui/Buttons/AuthButton";
 import GoogleIcon from "../../../assets/icons/google.svg";
 import { motion as Motion } from "framer-motion";
-
+import EgyptCities from "../../../assets/EgyptCities.json"
 function RegisterFormPresentional({
   setShowRepeatPassword,
   handleKeyPress,
@@ -71,19 +71,20 @@ function RegisterFormPresentional({
               onChange={(e) => setUserName(e.target.value)}
               //   onKeyUp={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
           </div>
-          <div>
+          <div className="relative">
             <input
               type="date"
               placeholder="Age"
               onChange={(e) => handleAgeChange(e)}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
+            <span className="absolute top-1/2 left-4/5 -translate-1/2">Date of Birth</span>
           </div>
           {/* Email Input */}
           <div>
@@ -94,7 +95,7 @@ function RegisterFormPresentional({
               onChange={(e) => setEmail(e.target.value)}
               onKeyUp={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
           </div>
@@ -108,7 +109,7 @@ function RegisterFormPresentional({
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
               minLength={6}
             />
@@ -122,37 +123,13 @@ function RegisterFormPresentional({
             </button>
           </div>
 
-          {/* Repeat Password Input */}
-          {/* <div className="relative">
-            <input
-              type={showRepeatPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={repeatPassword}
-              onChange={(e) => setRepeatPassword(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={isLoading}
-              className={`bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                repeatPassword && !isPasswordMatch ? "border-red-500" : ""
-              }`}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-              disabled={isLoading}
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
-            >
-              {showRepeatPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div> */}
           <div className="flex gap-4 items-center">
-            <input
-              type="text"
-              readOnly
-              value={location}
-              className={`bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50`}
-            />
-            <div className="w-32 cursor-pointer text-text hover:text-white" onClick={handleLocation}>Get Location</div>
+            <label className="text-text/70">Location</label>
+            <select className="bg-main grow">
+              {EgyptCities.map(city => (
+                <option>{city.city_name_en}</option>
+              ))}
+            </select>
           </div>
           {/* Password Match Indicator */}
           {repeatPassword && !isPasswordMatch && (

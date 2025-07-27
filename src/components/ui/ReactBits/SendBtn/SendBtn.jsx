@@ -1,7 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 
-const Button = () => {
+const SendBtn = () => {
   return (
     <StyledWrapper>
       <button>
@@ -37,15 +36,14 @@ const StyledWrapper = styled.div`
     justify-content: center;
     border: none;
     border-radius: var(--rounded-pill);
-    box-shadow: var(--shadow-btnPrimary);
+    box-shadow: var(--shadow-main);
     transition: all 0.3s;
   }
 
   button:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-btnPrimaryHover);
+    box-shadow: var(--shadow-main);
     padding: 0em;
-    background: linear-gradient(to bottom, #ff84a1 0%, #9f8aff 100%);
     cursor: pointer;
   }
 
@@ -99,4 +97,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default Button;
+export default SendBtn;

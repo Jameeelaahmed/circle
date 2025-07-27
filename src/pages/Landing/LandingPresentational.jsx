@@ -1,7 +1,6 @@
 // libs
 import { motion as Motion } from "framer-motion";
 // components
-import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
 import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer";
 import Modal from "../../components/ui/Modal/Modal"
@@ -38,7 +37,7 @@ export default function LandingPresentational({
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <span className="text-white">{t("From we should..")}</span>
-            <span className="from-secondary to-primary block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
+            <span className="bg-gradient-to-l from-secondary to-primary block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
               {t("to we did!")}
             </span>
           </Motion.h1>
@@ -65,7 +64,7 @@ export default function LandingPresentational({
                 setAuthFormType("login");
                 openCCircleModal();
               }}
-              className="bg-primary hover:shadow-primary/30 rounded-lg px-6 py-3 font-medium text-white transition-all hover:shadow-lg"
+              className="bg-main shadow-main rounded-lg px-6 py-3 border border-primary font-medium text-white transition-all cursor-pointer hover:shadow-none hover:scale-95"
             >
               {t("Create Circle")}
             </button>

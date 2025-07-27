@@ -28,7 +28,7 @@ export default function EventsContainer() {
       Meeting: getCSSVar("--color-primary") || "#ff6b8b",
       Design: getCSSVar("--color-secondary") || "#6a5acd",
       Workshop: getCSSVar("--color-accent") || "#00c9b1",
-      Deadline: getCSSVar("--color-darker") || "#0b0c10",
+      Deadline: getCSSVar("--color-main") || "#0b0c10",
     });
   }, []);
 
