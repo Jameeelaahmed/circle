@@ -20,6 +20,7 @@ function LoginFormPresentational({
     showPassword,
     password,
     onSwitchToRegister,
+    errors = {},
 }) {
     return (
         <>
@@ -57,15 +58,17 @@ function LoginFormPresentational({
                     <form onSubmit={handleSignIn} className="space-y-4">
                         <div>
                             <input
-                                type="email"
+                                type="text"
                                 placeholder="Email address"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
-                                required
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
+                            {errors.email && (
+                                <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>
+                            )}
                         </div>
 
                         <div className="relative">
@@ -76,8 +79,7 @@ function LoginFormPresentational({
                                 onChange={(e) => setPassword(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
-                                required
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             <button
                                 type="button"
@@ -87,6 +89,9 @@ function LoginFormPresentational({
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
+                            {errors.password && (
+                                <span className="text-red-500 text-xs mt-1 block">{errors.password}</span>
+                            )}
                         </div>
 
                         <div className="flex items-center justify-between text-right">

@@ -16,6 +16,7 @@ function Header() {
   const navItems = [
     { label: t("Home"), href: "/" },
     { label: t("Events"), href: "/events" },
+    { label: t("Circles"), href: "/circles" },
     { label: t("Payments"), href: "/payments" },
     { label: t("About Us"), href: "/about" },
     { label: t("Explore"), href: "/explore" },

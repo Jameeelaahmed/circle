@@ -73,7 +73,7 @@ export default function Team() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-10 px-10 lg:justify-between">
-          {team.map((member, index) => (
+          {team.map((member) => (
             // <div
             //   key={index}
             //   className="group rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:scale-105"

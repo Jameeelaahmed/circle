@@ -26,7 +26,7 @@ const StyledWrapper = styled.div`
   }
 
   .spinner1 {
-    background-color: var(--color-darker);
+    background-color: var(--color-main);
     width: 30px;
     height: 30px;
     border-radius: var(--rounded-pill);

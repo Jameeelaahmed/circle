@@ -71,7 +71,7 @@ function RegisterFormPresentional({
               onChange={(e) => setUserName(e.target.value)}
               //   onKeyUp={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
           </div>
@@ -81,7 +81,7 @@ function RegisterFormPresentional({
               placeholder="Age"
               onChange={(e) => handleAgeChange(e)}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
           </div>
@@ -94,7 +94,7 @@ function RegisterFormPresentional({
               onChange={(e) => setEmail(e.target.value)}
               onKeyUp={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
             />
           </div>
@@ -108,7 +108,7 @@ function RegisterFormPresentional({
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
               minLength={6}
             />
@@ -150,7 +150,7 @@ function RegisterFormPresentional({
               type="text"
               readOnly
               value={location}
-              className={`bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50`}
+              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50`}
             />
             <div className="w-32 cursor-pointer text-text hover:text-white" onClick={handleLocation}>Get Location</div>
           </div>

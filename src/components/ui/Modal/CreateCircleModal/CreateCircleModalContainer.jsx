@@ -1,20 +1,61 @@
 // libs
 import { useState, useRef, useEffect } from "react";
+import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import CreateCircleModalPresentional from "./CreateCircleModalPresentional";
+import customSelectStyles from "./customSelectStyles";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from 'uuid';
+import { Timestamp } from "firebase/firestore";
+// helpers
+import { validateForm } from "../../../../utils/FormValidator";
 
-export default function CreateCircleModalContainer() {
-  const [uploadedImages, setUploadedImages] = useState([]);
+export default function CreateCircleModalContainer({ closeModal }) {
+  // states
+  // const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedImage, setUploadedImage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [circleType, setCircleType] = useState("");
+  const [circlePrivacy, setCirclePrivacy] = useState("");
+  const { user } = useAuth();
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [membersKey, setMembersKey] = useState(0);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [interestsKey, setInterestsKey] = useState(0);
+  const [errors, setErrors] = useState({});
+  const { register, handleSubmit, reset } = useForm();
+  // refs
   const fileInputRef = useRef(null);
+
   const { t } = useTranslation();
-  const memberOptions = [
-    { value: "user1", label: "John Doe" },
-    { value: "user2", label: "Jane Smith" },
-    { value: "user3", label: "Mike Johnson" },
-    { value: "user4", label: "Sarah Wilson" },
-    { value: "user5", label: "David Brown" },
-  ];
+  const [memberOptions, setMemberOptions] = useState([]);
+
+  // Fetch users from Firestore, exclude current user
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const db = getFirestore();
+        const usersCol = collection(db, "users");
+        const snapshot = await import("firebase/firestore").then(({ getDocs }) => getDocs(usersCol));
+
+        const options = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+
+          if (data.email !== user.email) {
+            options.push({ value: data.email, label: data.email });
+          }
+        });
+        setMemberOptions(options);
+
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    }
+    if (user?.email) fetchUsers();
+  }, [user]);
 
   const interestOptions = [
     { value: "technology", label: "Technology" },
@@ -30,140 +71,176 @@ export default function CreateCircleModalContainer() {
   ];
 
   const circleTypeOptions = [
-    { value: t("public"), label: "public" },
-    { value: t("private"), label: "private" },
+    { value: t("Permenent Circle"), label: "Permenent Circle" },
+    { value: t("Flash Circle"), label: "Flash Circle" },
+  ];
+  const circlePrivacyOptions = [
+    { value: t("Public Circle"), label: "Public Circle" },
+    { value: t("Private Circle"), label: "Private Circle" },
   ];
 
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const imagePreviews = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setUploadedImages([...uploadedImages, ...imagePreviews]);
+    const file = e.target.files[0];
+    if (file) {
+      // Revoke previous preview if exists
+      if (uploadedImage) {
+        URL.revokeObjectURL(uploadedImage[0].preview);
+      }
+      setUploadedImage({
+        file,
+        preview: URL.createObjectURL(file),
+      });
+    }
   };
 
   const removeImage = (index) => {
-    const newImages = [...uploadedImages];
+    const newImages = [...uploadedImage];
     URL.revokeObjectURL(newImages[index].preview);
     newImages.splice(index, 1);
-    setUploadedImages(newImages);
+    setUploadedImage(newImages);
   };
 
-  useEffect(() => {
-    return () => {
-      uploadedImages.forEach((image) => URL.revokeObjectURL(image.preview));
-    };
-  }, [uploadedImages]);
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      backgroundColor: "var(--color-main)",
-      border: `${state.isFocused ? "3px" : "1px"} solid var(--color-primary)`,
-      borderRadius: "1rem",
-      minHeight: "42px",
-      boxShadow: "none",
-      transition: "border-width 0.2s ease-in-out",
-      "&:hover": {
-        borderColor: "var(--color-primary)",
-      },
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: "0 8px",
-    }),
-    input: (provided) => ({
-      ...provided,
-      color: "white",
-      margin: "0",
-      padding: "0",
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "var(--color-primary)",
-      fontSize: "12px",
-      margin: "0",
-      textTransform: "lowercase",
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "white",
-    }),
-    multiValue: (provided) => ({
-      ...provided,
-      backgroundColor: "var(--color-primary)",
-      borderRadius: "6px",
-    }),
-    multiValueLabel: (provided) => ({
-      ...provided,
-      color: "white",
-      padding: "2px 6px",
-    }),
-    multiValueRemove: (provided) => ({
-      ...provided,
-      color: "white",
-      ":hover": {
-        backgroundColor: "rgba(0,0,0,0.2)",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: "var(--color-main)",
-      border: `3px solid var(--color-primary)`,
-      borderRadius: "1rem",
-      marginTop: "4px",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected
-        ? "var(--color-primary)"
-        : state.isFocused
-          ? "rgba(255, 107, 139, 0.2)"
-          : "transparent",
-      color: "white",
-      ":active": {
-        backgroundColor: "var(--color-primary)",
-      },
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      paddingRight: "6px",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "var(--color-primary)",
-      ":hover": {
-        color: "var(--color-primary)",
-      },
-    }),
-    clearIndicator: (provided) => ({
-      ...provided,
-      color: "var(--color-primary)",
-      ":hover": {
-        color: "white",
-      },
-    }),
-  };
+  // errors are now set only on submit
 
-  const inputStyles = `bg-main border border-primary focus:border-[3px] focus:p-[6px] w-full p-2 rounded-2xl text-white placeholder-primary focus:outline-none focus:ring-0 transition-all duration-200 placeholder:opacity-100 placeholder:transition-opacity placeholder:duration-[400ms] placeholder:ease-in-out focus:placeholder:opacity-0 placeholder:text-xs placeholder:lowercase`;
+  // useEffect(() => {
+  //   return () => {
+  //     uploadedImages.forEach((image) => URL.revokeObjectURL(image.preview));
+  //   };
+  // }, [uploadedImages]);
+
+  const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
+  shadow-inner focus:outline-none focus:ring-3 focus:ring-[var(--color-secondary)]
+  placeholder-gray-500 transition`;
   const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
+
+  // Helper to reset all fields
+  const resetAllFields = () => {
+    reset();
+    setUploadedImage(undefined);
+    setSelectedMembers([]);
+    setInterestsKey(prev => prev + 1);
+    setMembersKey(prev => prev + 1);
+    setSelectedInterests([]);
+    setCircleType("");
+    setCirclePrivacy("");
+    setErrors({});
+  };
+
+  const handleCloseModal = () => {
+    resetAllFields();
+    closeModal();
+  };
+
+  const onFormSubmit = async (data) => {
+    let imageUrl = "";
+    // Always include current user in members
+    const membersWithCurrent = [
+      { value: user.email, label: user.email },
+      ...selectedMembers.filter(m => m.value !== user.email)
+    ];
+    const circleId = uuidv4();
+    const formFields = {
+      ...data,
+      circleId: circleId,
+      createdAt: Timestamp.now(),
+      admins: [{ userEmail: user.email, userName: user.displayName }],
+      createdBy: { userEmail: user.email, userName: user.displayName },
+      circlePrivacy: circlePrivacy,
+      members: membersWithCurrent,
+      interests: selectedInterests,
+      imageUrl: "",
+      circleType: circleType,
+    };
+    const validationErrors = validateForm(formFields);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+    setIsLoading(true);
+    if (uploadedImage && uploadedImage.file) {
+      const cloudName = "dqvp8eb1d";
+      const unsignedPreset = "Circle";
+      const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+      const formData = new FormData();
+      formData.append("file", uploadedImage.file);
+      formData.append("upload_preset", unsignedPreset);
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: formData,
+        });
+        const result = await response.json();
+        imageUrl = result.secure_url;
+        formFields.imageUrl = imageUrl;
+      } catch (err) {
+        console.error("Cloudinary upload failed:", err);
+      }
+    }
+    try {
+      const db = getFirestore();
+      await setDoc(doc(db, "circles", circleId), formFields);
+      toast.success("Board created successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: {
+          background: "var(--color-main)",
+          color: "var(--color-primary)",
+          fontWeight: "bold"
+        },
+        icon: false,
+      });
+      reset();
+      setUploadedImage(undefined);
+      setSelectedMembers([]);
+      setInterestsKey(prev => prev + 1);
+      setMembersKey(prev => prev + 1);
+      setSelectedInterests([]);
+      setCircleType("");
+      closeModal();
+    } catch (error) {
+      console.error("Error adding circle:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <CreateCircleModalPresentional
-      inputStyles={inputStyles}
-      textareaStyles={textareaStyles}
-      customStyles={customStyles}
-      circleType={circleType}
-      setCircleType={setCircleType}
-      fileInputRef={fileInputRef}
-      memberOptions={memberOptions}
-      interestOptions={interestOptions}
-      circleTypeOptions={circleTypeOptions}
-      handleImageUpload={handleImageUpload}
-      removeImage={removeImage}
-      t={t}
-      uploadedImages={uploadedImages}
-    />
+    <>
+      <CreateCircleModalPresentional
+        t={t}
+        register={register}
+        handleSubmit={handleSubmit(onFormSubmit)}
+        circlePrivacyOptions={circlePrivacyOptions}
+        setCirclePrivacy={setCirclePrivacy}
+        circleType={circleType}
+        setCircleType={setCircleType}
+        selectedMembers={selectedMembers}
+        setSelectedMembers={setSelectedMembers}
+        selectedInterests={selectedInterests}
+        setSelectedInterests={setSelectedInterests}
+        fileInputRef={fileInputRef}
+        uploadedImage={uploadedImage}
+        handleImageUpload={handleImageUpload}
+        removeImage={removeImage}
+        memberOptions={memberOptions}
+        interestOptions={interestOptions}
+        circleTypeOptions={circleTypeOptions}
+        inputStyles={inputStyles}
+        textareaStyles={textareaStyles}
+        customStyles={customSelectStyles}
+        errors={errors}
+        isLoading={isLoading}
+        onClose={handleCloseModal}
+        membersKey={membersKey}
+        interestsKey={interestsKey}
+      />
+    </>
   );
 }
