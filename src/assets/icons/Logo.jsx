@@ -9,8 +9,8 @@ export const Logo = (props) => (
     {/* Modern concentric circles with gradient */}
     <defs>
       <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#ff6b8b" />
-        <stop offset="100%" stopColor="#00c9b1" />
+        <stop offset="0%" stopColor="var(--color-main)" />
+        <stop offset="100%" stopColor="var(--color-primary)" />
       </linearGradient>
     </defs>
 
@@ -34,6 +34,6 @@ export const Logo = (props) => (
     />
 
     {/* Central dot */}
-    <circle cx="50" cy="50" r="8" fill="#ff6b8b" />
+    <circle cx="50" cy="50" r="8" fill="var(--color-primary)" />
   </svg>
 );

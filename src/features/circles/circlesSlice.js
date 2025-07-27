@@ -25,9 +25,14 @@ const circlesSlice = createSlice({
     initialState: {
         circles: [],
         status: 'idle',
+        selectedCircle: null,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        setSelectedCircle(state, action) {
+            state.selectedCircle = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchCircles.pending, (state) => {
@@ -49,3 +54,4 @@ const circlesSlice = createSlice({
 });
 
 export default circlesSlice.reducer;
+export const { setSelectedCircle } = circlesSlice.actions;

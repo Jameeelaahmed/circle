@@ -64,7 +64,7 @@ function LoginFormPresentational({
                                 onChange={(e) => setEmail(e.target.value)}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             {errors.email && (
                                 <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>
@@ -79,7 +79,7 @@ function LoginFormPresentational({
                                 onChange={(e) => setPassword(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             <button
                                 type="button"

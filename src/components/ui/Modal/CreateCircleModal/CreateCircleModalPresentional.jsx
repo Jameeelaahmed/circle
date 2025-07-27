@@ -32,14 +32,10 @@ export default function CreateCircleModalPresentional({
   return (
     <form className="mx-auto max-w-3xl space-y-6" onSubmit={handleSubmit}>
       <ModalHeading onClose={onClose} title={t("Create Circle")} />
-      {/* <h2 className="font-secondary text-center text-2xl font-bold text-primary">
-
-      </h2> */}
-
-      <div className="space-y-2">
+      <div className="mb-0">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-2">
           <div>
-            <label htmlFor="circleName" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleName" className="text-text mb-1 block text-sm font-medium">
               {t("Circle Name")} *
             </label>
             <input
@@ -55,7 +51,7 @@ export default function CreateCircleModalPresentional({
           </div>
 
           <div>
-            <label htmlFor="circleType" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleType" className="text-text mb-1 block text-sm font-medium">
               {t("Circle Type")} *
             </label>
             <Select
@@ -82,7 +78,7 @@ export default function CreateCircleModalPresentional({
         {/* Due Date - Only show for Flash circles */}
         {circleType === "Flash Circle" && (
           <div className="mb-2">
-            <label htmlFor="expireDate" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="expireDate" className="text-text mb-1 block text-sm font-medium">
               {t("Due Date")} *
             </label>
             <input type="date" className={inputStyles} {...register("expiresAt")} />
@@ -93,7 +89,7 @@ export default function CreateCircleModalPresentional({
         )}
 
         <div className="mb-2">
-          <label htmlFor="privacy" className="text-light mb-1 block text-sm font-medium">
+          <label htmlFor="privacy" className="text-text mb-1 block text-sm font-medium">
             {t("Circle Privacy")}
           </label>
           <Select
@@ -110,8 +106,8 @@ export default function CreateCircleModalPresentional({
             <span className="text-red-500 text-xs mt-1 block">{errors.circlePrivacy}</span>
           )}
         </div>
-        <div>
-          <label htmlFor="description" className="text-light mb-1 block text-sm font-medium">
+        <div className="mb-0">
+          <label htmlFor="description" className="text-text mb-1 block text-sm font-medium">
             {t("Description")}
           </label>
           <textarea
@@ -129,7 +125,7 @@ export default function CreateCircleModalPresentional({
 
       {/* Members */}
       <div className="mb-2">
-        <label className="text-light mb-1 block text-sm font-medium">
+        <label className="text-text mb-1 block text-sm font-medium">
           {t("Members")}
         </label>
         <Select
@@ -147,7 +143,7 @@ export default function CreateCircleModalPresentional({
 
       {/* Interests */}
       <div className="mb-2">
-        <label className="text-light mb-1 block text-sm font-medium">
+        <label className="text-text mb-1 block text-sm font-medium">
           {t("Interests")}
         </label>
         <Select
@@ -166,7 +162,7 @@ export default function CreateCircleModalPresentional({
 
       {/* Image Upload */}
       <div className="mb-2">
-        <label htmlFor="circleImages" className="text-light mb-1 block text-sm font-medium">
+        <label htmlFor="circleImages" className="text-text mb-1 block text-sm font-medium">
           {t("Circle Image")}
         </label>
 
@@ -216,7 +212,7 @@ export default function CreateCircleModalPresentional({
               <button
                 type="button"
                 onClick={() => removeImage(0)}
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-text opacity-0 transition-opacity group-hover:opacity-100"
               >
                 ×
               </button>
@@ -266,11 +262,11 @@ export default function CreateCircleModalPresentional({
       <div className="pt-2">
         <button
           type="submit"
-          className="bg-main hover:bg-opacity-90 w-full rounded-2xl py-3 font-bold text-white transition-colors flex items-center justify-center shadow-[0_4px_12px_rgba(255,107,139,0.3)]"
+          className="bg-main w-full rounded-2xl py-3 font-bold text-text flex items-center justify-center shadow-main transition-all duration-300 hover:bg-primary"
           disabled={isLoading}
         >
           {isLoading && (
-            <Loader className="animate-spin h-5 w-5 mr-2 text-white" />
+            <Loader className="animate-spin h-5 w-5 mr-2 text-text" />
           )}
           {t("Create Circle")}
         </button>

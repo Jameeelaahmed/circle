@@ -14,6 +14,7 @@ import Explore from "../pages/Explore/Explore";
 import ProfilePage from "../pages/profile/profile.jsx";
 import Memories from "../pages/Memories";
 import CirclesPageContainer from "../pages/CirclesPage/CirclesPageContainer.jsx";
+import CirclePage from "../pages/CirlclePage/CirclePagePresentational.jsx";
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -26,6 +27,7 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: "circles", element: <CirclesPageContainer /> },
+      { path: "circles/:circleId", element: <CirclePage /> },
       { path: "payments", element: <Payments /> },
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
