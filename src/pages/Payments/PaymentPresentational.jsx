@@ -7,9 +7,10 @@ function PaymentPresentational({ cards }) {
       <div
         style={{
           width: "100%",
-          height: "calc(100vh + 64px)",
+          height: "600px",
           position: "absolute",
           zIndex: -1,
+          top: "50%",
         }}
       >
         <DarkVeil />

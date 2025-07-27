@@ -1,18 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-const Switch = ({ checked, onCheckedChange }) => {
+const Switch = () => {
   return (
     <StyledWrapper>
       <div className="checkbox-apple">
-        <input
-          className="yep"
-          id="check-apple"
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onCheckedChange(e.target.checked)}
-        />
-
+        <input className="yep" id="check-apple" type="checkbox" />
         <label htmlFor="check-apple" />
       </div>
     </StyledWrapper>

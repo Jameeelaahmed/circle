@@ -66,9 +66,8 @@ const StyledWrapper = styled.div`
   .input-container input[type="text"] {
     font-size: 20px;
     width: 100%;
-    color: #ffff;
     border: none;
-    border-bottom: 2px solid #ffff;
+    border-bottom: 2px solid #ccc;
     padding: 5px 35px 5px 0;
     background-color: transparent;
     outline: none;
@@ -83,7 +82,7 @@ const StyledWrapper = styled.div`
   .input-container .label {
     position: absolute;
     top: 0;
-    color: #ffff;
+    color: #ccc;
     transition: all 0.3s ease;
     pointer-events: none;
 
