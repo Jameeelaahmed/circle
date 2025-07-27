@@ -5,7 +5,7 @@ import SendBtn from "../../ReactBits/SendBtn/SendBtn";
 import AiButton from "../../Buttons/AiButton";
 import ModalHeading from "../ModalHeading/ModalHeading";
 
-export default function PollPresentational({
+export default function CreatePollModalPresentational({
   question,
   setQuestion,
   options,
@@ -13,13 +13,13 @@ export default function PollPresentational({
   allowMultiple,
   setAllowMultiple,
   onSubmit,
-  onClose,
+  close,
   t,
 }) {
   return (
     <div className="relative w-[500px] rounded-4xl backdrop-blur-lg">
       {/* Header */}
-      <ModalHeading onClose={onClose} title={t("Create Poll")} />
+      <ModalHeading onClose={close} title={t("Create Poll")} />
 
       {/* Form */}
       <form onSubmit={onSubmit} className="">

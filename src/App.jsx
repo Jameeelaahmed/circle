@@ -7,7 +7,6 @@ import { fetchCircles } from "./features/circles/circlesSlice";
 function App() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.circles.status);
-  console.log(status);
 
   useEffect(() => {
     if (status === "idle") {
@@ -16,7 +15,6 @@ function App() {
   }, [dispatch, status]);
   return (
     <>
-
       <AuthProvider />
       <RoutesPages></RoutesPages>
     </>

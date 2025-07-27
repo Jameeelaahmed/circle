@@ -1,7 +1,6 @@
 // libs
 import { motion as Motion } from "framer-motion";
 // components
-import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
 import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer";
 import Modal from "../../components/ui/Modal/Modal"
@@ -65,7 +64,7 @@ export default function LandingPresentational({
                 setAuthFormType("login");
                 openCCircleModal();
               }}
-              className="bg-main shadow-main rounded-lg px-6 py-3 border border-primary font-medium text-white transition-all cursor-pointer"
+              className="bg-main shadow-main rounded-lg px-6 py-3 border border-primary font-medium text-white transition-all cursor-pointer hover:shadow-none hover:scale-95"
             >
               {t("Create Circle")}
             </button>
