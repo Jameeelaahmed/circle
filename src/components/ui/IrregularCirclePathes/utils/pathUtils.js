@@ -33,7 +33,7 @@ export const generatePathLayers = (numLayers = 12) => {
     const pathLayers = [];
 
     for (let i = 0; i < numLayers; i++) {
-        const baseRadius = 70 + (i * 20);
+        const baseRadius = 120 + (i * 20);
         const irregularity = 25 + Math.sin(i * 0.3) * 15;
         const pathIndex = i;
 

@@ -13,7 +13,7 @@ import { auth, GoogleProvider } from "../../../firebase-config";
 import LoginFormPresentational from './LoginFormPresentational';
 import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
-import { validateForm } from "../../../utils/FormValidator";
+import { validateLoginForm } from "../../../utils/FormValidator";
 
 export default function LoginFormContainer({ onSwitchToRegister }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +21,9 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -34,11 +34,13 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
 
     const handleSignIn = async (e) => {
         e?.preventDefault();
-        const isValid = validateForm({ email, password }, toast);
-        if (!isValid) return;
-
+        const validationErrors = validateLoginForm({ email, password });
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setErrors({});
         setIsLoading(true);
-
         try {
             const userCredential = await signInWithEmailAndPassword(
                 auth,
@@ -47,7 +49,6 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
             );
             const token = await userCredential.user.getIdToken();
             dispatch(setUserInfo({ user: userCredential.user, token }));
-            toast.success("Successfully logged in!");
             navigate("/");
         } catch (error) {
             console.error("Login error:", error);
@@ -96,7 +97,9 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
             showPassword={showPassword}
             isLoading={isLoading}
             isGoogleLoading={isGoogleLoading}
-            password={password}>
-        </LoginFormPresentational>
+            password={password}
+            email={email}
+            errors={errors}
+        />
     )
 }

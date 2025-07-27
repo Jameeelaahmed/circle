@@ -14,7 +14,6 @@ function OrbPersentational({ ctnDom, imageUrl }) {
             alt="Avatar"
             className="h-full w-full object-cover"
             style={{
-              opacity: 0.4,
               mixBlendMode: "multiply",
             }}
           />

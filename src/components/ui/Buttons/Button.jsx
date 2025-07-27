@@ -6,12 +6,13 @@ export default function Button({
   size = "small",
   classes,
   children,
+  handleClick= ()=>{},
 }) {
   const variants = {
-    primary: COLORS.primary,
-    secondary: COLORS.secondary,
-    accent: COLORS.accent,
-    glass: COLORS.glass,
+    primary:"bg-primary hover:bg-primary/70",
+    secondary: "bg-secondary",
+    accent: "bg-accent",
+    glass: "bg-glass",
   }[variant];
   const sizes = {
     small: "px-3 py-1.5 text-sm",
@@ -24,12 +25,13 @@ export default function Button({
     variants,
     sizes,
     classes,
-    "cursor-pointer font-quick-sand font-semibold",
+    "cursor-pointer font-quick-sand font-semibold rounded-xl transition",
   );
   return (
     <button
-      style={{ background: variants, borderRadius: RADII.rounded }}
+  
       className={finalClasses}
+      onClick={handleClick}
     >
       {children}
     </button>

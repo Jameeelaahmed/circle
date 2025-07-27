@@ -101,8 +101,8 @@ function OrbContainer({
           return vec4(colorIn.rgb / (a + 1e-5), a);
         }
     
-        const vec3 baseColor1 = vec3(1.0, 0.42, 0.545);  // Primary color #ff6b8b
-        const vec3 baseColor2 = vec3(0.0, 0.788, 0.694); // Accent color #00c9b1  
+        const vec3 baseColor1 = vec3(0.031, 0.063, 0.125);  // Primary color #ff6b8b
+        const vec3 baseColor2 = vec3(0.607, 0.565, 0.835); // Accent color #00c9b1  
         const vec3 baseColor3 = vec3(0.071, 0.075, 0.102); // Dark color #12131a
         const float innerRadius = 0.6;
         const float noiseScale = 0.65;

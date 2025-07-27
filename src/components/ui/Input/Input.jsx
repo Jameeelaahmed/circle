@@ -59,22 +59,23 @@ const StyledWrapper = styled.div`
 
   .input-container {
     position: relative;
-    margin: 50px auto;
+    margin: 25px auto;
     width: 100%;
   }
 
   .input-container input[type="text"] {
     font-size: 20px;
     width: 100%;
+    color: #ffff;
     border: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #ffff;
     padding: 5px 35px 5px 0;
     background-color: transparent;
     outline: none;
 
     ${({ $dir }) =>
-      $dir === "rtl" &&
-      css`
+    $dir === "rtl" &&
+    css`
         padding: 5px 0 5px 35px;
       `}
   }
@@ -82,17 +83,17 @@ const StyledWrapper = styled.div`
   .input-container .label {
     position: absolute;
     top: 0;
-    color: #ccc;
+    color: #ffff;
     transition: all 0.3s ease;
     pointer-events: none;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             right: 0;
             left: auto;
           `
-        : css`
+      : css`
             left: 0;
             right: auto;
           `}
@@ -115,12 +116,12 @@ const StyledWrapper = styled.div`
     transition: all 0.3s ease;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             right: 0;
             left: auto;
           `
-        : css`
+      : css`
             left: 0;
             right: auto;
           `}
@@ -139,12 +140,12 @@ const StyledWrapper = styled.div`
     z-index: 10;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             left: 5px;
             right: auto;
           `
-        : css`
+      : css`
             right: 5px;
             left: auto;
           `}
@@ -156,12 +157,12 @@ const StyledWrapper = styled.div`
     z-index: 1000;
 
     ${({ $dir }) =>
-      $dir === "rtl"
-        ? css`
+    $dir === "rtl"
+      ? css`
             left: 0;
             right: auto;
           `
-        : css`
+      : css`
             right: 0;
             left: auto;
           `}

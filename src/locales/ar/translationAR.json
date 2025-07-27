@@ -21,9 +21,11 @@
   "Interests": "الاهتمامات",
   "Circle Images": "صور الدائرة",
   "Create Poll": "إنشاء استطلاع",
-   "Question *":"السؤال *",
+  "Question *": "السؤال *",
   "Ask question": "اكتب سؤالك",
   "Options *": "* الخيارات",
   "Option": "الخيار",
- "Allow multiple answers!": "السماح باختيار عدة إجابات!"
+   "Expire Date": "تاريخ الانتهاء",
+ "Allow multiple answers!": "السماح باختيار عدة إجابات!",
+  "My Memories": "ذكرياتي"
 }
