@@ -1,6 +1,6 @@
 // libs
 import { useState, useRef, useEffect } from "react";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import CreateCircleModalPresentional from "./CreateCircleModalPresentional";
 import customSelectStyles from "./customSelectStyles";
@@ -140,9 +140,10 @@ export default function CreateCircleModalContainer({ closeModal }) {
       { value: user.email, label: user.email },
       ...selectedMembers.filter(m => m.value !== user.email)
     ];
+    const circleId = uuidv4();
     const formFields = {
       ...data,
-      circleId: uuidv4(),
+      circleId: circleId,
       createdAt: Timestamp.now(),
       admins: [{ userEmail: user.email, userName: user.displayName }],
       createdBy: { userEmail: user.email, userName: user.displayName },
@@ -180,7 +181,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
     }
     try {
       const db = getFirestore();
-      await addDoc(collection(db, "circles"), formFields);
+      await setDoc(doc(db, "circles", circleId), formFields);
       toast.success("Board created successfully!", {
         position: "top-right",
         autoClose: 3000,

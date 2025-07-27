@@ -1,5 +1,5 @@
 import ChatSidbarContainer from "../../components/Chat/ChatSidebar/ChatSidbarContainer"
-import ChatWindowPresentational from "../../components/Chat/ChatWindow/ChatWindowContainer"
+import ChatWindowContainer from "../../components/Chat/ChatWindow/ChatWindowContainer"
 
 function CirclePagePresentational() {
     return (
@@ -8,7 +8,7 @@ function CirclePagePresentational() {
                 <ChatSidbarContainer />
             </div>
             <div className="flex-1">
-                <ChatWindowPresentational />
+                <ChatWindowContainer />
             </div>
         </div>
     )
