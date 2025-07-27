@@ -4,12 +4,12 @@ import IrregularCirclePaths from "../../../components/ui/IrregularCirclePathes/I
 
 function LoginPage() {
   return (
-    <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden bg-black">
+    <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden">
       <div className="relative w-1/2 overflow-hidden">
         <IrregularCirclePaths />
         <FloatingAvatarContainer />
       </div>
-      <div className="flex lg:w-1/2 items-center justify-center bg-black">
+      <div className="flex lg:w-1/2 items-center justify-center ">
         <LoginFormContainer />
       </div>
 

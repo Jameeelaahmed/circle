@@ -22,20 +22,20 @@ function MemoriesPresentational({
 }) {
   const {t} =useTranslation()
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen mt-[65px] text-white">
       {/* Header */}
-      <div className="bg-gray sticky top-[64px] z-40 border-b border-gray-700 shadow-sm backdrop-blur-sm">
+      <div className="sticky top-[64px] z-40 border-b border-primary shadow-sm backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 py-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-4xl font-bold text-transparent">
+              <h1 className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-bold text-transparent">
                 {t("My Memories")}
               </h1>
               <p className="mt-1 text-gray-300">
                 Capturing life's beautiful moments
               </p>
             </div>
-            <label className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-white shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl">
+            <label className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-6 py-3 text-white shadow-lg transition-all duration-300 hover:from-secondary hover:to-primary hover:shadow-xl">
               <Upload size={20} />
               {isUploading ? "Uploading..." : "Add Memories"}
               <input
@@ -64,7 +64,7 @@ function MemoriesPresentational({
               placeholder="Search memories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="focus:ring-primary w-full rounded-full border border-gray-600 bg-[#1f1f1f] py-3 pr-4 pl-10 text-white placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
+              className="focus:ring-primary w-full rounded-full border border-gray-600 bg-main py-3 pr-4 pl-10 text-white placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@ function MemoriesPresentational({
           {filteredMemories.map((memory, index) => (
             <div
               key={memory.id}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#1f1f1f] shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-purple-500/20"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-main shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-purple-500/20"
               onClick={() => openLightbox(memory)}
               style={{ animationDelay: `${index * 50}ms` }}
             >
@@ -117,8 +117,8 @@ function MemoriesPresentational({
       </div>
 
       {selectedMemory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-[#1f1f1f]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm">
+          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-main">
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-4 z-10 rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
