@@ -7,7 +7,6 @@ import GoogleIcon from "../../../assets/icons/google.svg";
 import { motion as Motion } from "framer-motion";
 
 function RegisterFormPresentional({
-  setShowRepeatPassword,
   handleKeyPress,
   handleSignUp,
   handleSignUpWithGoogle,
@@ -16,10 +15,8 @@ function RegisterFormPresentional({
   setShowPassword,
   isLoading,
   isGoogleLoading,
-  showRepeatPassword,
   setEmail,
   setPassword,
-  setRepeatPassword,
   email,
   password,
   repeatPassword,
@@ -27,8 +24,6 @@ function RegisterFormPresentional({
   handleAgeChange,
   setUserName,
   userName,
-  handleLocation,
-  location
 }) {
   return (
     <div className="flex w-full flex-col items-center justify-center px-8 lg:max-w-md">

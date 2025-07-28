@@ -16,6 +16,7 @@ import { createUserProfile } from "../../../fire_base/profileController/profileC
 
 // components
 import RegisterFormPresentional from "./RegisterFormPresentional";
+import { Timestamp } from "firebase/firestore";
 
 function RegisterFormContainer({ onSwitchToLogin }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,17 +28,16 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [location, setLocation] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       navigate("/");
+  //     }
+  //   });
+  // }, []);
 
   const handleSignUp = async (e) => {
     e?.preventDefault();
@@ -63,15 +63,10 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
-
         provider: "email",
         emailVerified: user.emailVerified,
-        name: user.displayName || null,
         username: userName || "",
         age: userAge || null,
-
-        username: user.displayName || null,
-
         bio: "",
         location: location || "",
         joinDate: "",
@@ -87,7 +82,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
-        createdAt: new Date(),
+        createdAt: Timestamp(),
         isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",
@@ -97,10 +92,10 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
       dispatch(setUserInfo({ user, token }));
       toast.success("Account created successfully! Welcome to Circle!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error);
-
+      toast.error(getErrorMessage(error.code));
       // Handle Firestore creation errors specifically
       if (
         error.message?.includes("Firestore") ||
@@ -109,9 +104,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         toast.error(
           "Account created but profile setup failed. Please try logging in.",
         );
-      } else {
-        toast.error(getErrorMessage(error.code));
-      }
+      } 
     } finally {
       setIsLoading(false);
     }
@@ -264,8 +257,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       handleAgeChange={handleAgeChange}
       setUserName={setUserName}
       userName={userName}
-      handleLocation={handleLocation}
-      location={location}
     />
   );
 }
