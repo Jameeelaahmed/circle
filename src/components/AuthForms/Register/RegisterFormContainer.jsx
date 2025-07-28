@@ -28,6 +28,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [location, setLocation] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -82,7 +83,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
-        createdAt: Timestamp(),
+        createdAt: new Timestamp(),
         isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",
@@ -97,14 +98,14 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       console.error("Registration error:", error);
       toast.error(getErrorMessage(error.code));
       // Handle Firestore creation errors specifically
-      if (
-        error.message?.includes("Firestore") ||
-        error.code?.includes("firestore")
-      ) {
-        toast.error(
-          "Account created but profile setup failed. Please try logging in.",
-        );
-      } 
+      // if (
+      //   error.message?.includes("Firestore") ||
+      //   error.code?.includes("firestore")
+      // ) {
+      //   toast.error(
+      //     "Account created but profile setup failed. Please try logging in.",
+      //   );
+      // }
     } finally {
       setIsLoading(false);
     }
@@ -126,14 +127,9 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
-
         provider: "email",
         emailVerified: user.emailVerified,
-        name: user.displayName || null,
         username: userName || "",
-
-        username: user.displayName || null,
-
         bio: "",
         location: "",
         joinDate: "",
@@ -218,20 +214,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     setUserAge(userAge);
   };
 
-  const handleLocation = (e) => {
-    console.log("get locaiton");
-    setLocation("detecting location...");
-    try {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        console.log(latitude, longitude);
-        setLocation([latitude, longitude]);
-      });
-    } catch (error) {
-      toast.error("Failed to get location. Please allow location access.");
-    }
-  };
-
   // Real-time password match validation
   const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
@@ -257,6 +239,8 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       handleAgeChange={handleAgeChange}
       setUserName={setUserName}
       userName={userName}
+      location={location}
+      setLocation={setLocation}
     />
   );
 }
