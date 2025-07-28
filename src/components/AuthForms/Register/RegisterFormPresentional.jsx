@@ -140,7 +140,7 @@ function RegisterFormPresentional({
               {showRepeatPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div> */}
-          <div className="flex gap-4 items-center">
+          {/* <div className="flex gap-4 items-center">
             <input
               type="text"
               readOnly
@@ -148,7 +148,7 @@ function RegisterFormPresentional({
               className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50`}
             />
             <div className="w-32 cursor-pointer text-text hover:text-white" onClick={handleLocation}>Get Location</div>
-          </div>
+          </div> */}
           {/* Password Match Indicator */}
           {repeatPassword && !isPasswordMatch && (
             <p className="mt-1 text-sm text-red-400">Passwords don't match</p>
