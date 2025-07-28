@@ -7,7 +7,7 @@ import Team from "../../components/AboutUs/Team";
 const AboutUs = () => {
   return (
     <div
-      className=" relative min-h-screen overflow-hidden pt-paddingTop text-color-text"
+      className=" relative min-h-screen overflow-hidden pt-[64px] text-color-text"
     >
       <Hero />
       <Stats />
