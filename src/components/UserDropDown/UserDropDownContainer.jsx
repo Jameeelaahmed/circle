@@ -33,10 +33,7 @@ function UserDropDownContainer() {
 
   const handleLogout = async () => {
     try {
-      console.log("before await");
-
       await signOut(auth);
-      console.log("after await");
       clearUserInfo();
       navigate("/login");
       setIsDropdownOpen(false);
@@ -52,7 +49,6 @@ function UserDropDownContainer() {
     { label: t("Help"), href: "/help" },
     { label: t("Logout"), onClick: handleLogout },
   ];
-  console.log(userName);
 
   return (
     <UserDropdownPresentational

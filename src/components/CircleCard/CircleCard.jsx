@@ -1,24 +1,51 @@
-
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
+import { FONTS, SHADOWS, RADII } from "../../constants";
+import { COLORS } from "../../constants";
+// Helper to pick a CSS variable shade based on circle name
+const cssVars = [
+  '--color-primary',
+  '--color-secondary',
+  '--color-accent',
+  '--color-glass',
+  '--color-success',
+  '--color-warning',
+  '--color-error',
+];
+const getAvatarBg = (name) => {
+  if (!name) return 'var(--color-primary)';
+  const code = name.charCodeAt(0);
+  // Use 30% opacity for the background
+  return `color-mix(in srgb, var(${cssVars[code % cssVars.length]}) 70%, white)`;
+};
 
 export default function CircleCard({ circle, membersByCircle }) {
   const members = membersByCircle && membersByCircle[circle.id] ? membersByCircle[circle.id] : [];
+  const hasImage = !!circle.imageUrl;
+  const avatarBg = getAvatarBg(circle.circleName);
   return (
     <div
       className="p-3 transition-all duration-300 hover:scale-105 sm:p-4"
       style={{
-        background: `linear-gradient(135deg, ${COLORS.primary}10, ${COLORS.secondary}10)`,
+        background: 'linear-gradient(135deg, var(--color-primary)10, var(--color-secondary)10)',
         borderRadius: RADII.rounded,
         boxShadow: SHADOWS.card,
-        border: `1px solid ${COLORS.primary}20`,
+        border: '1px solid var(--color-primary)20',
       }}
     >
       <div className="mb-2 flex items-center space-x-2 sm:mb-3 sm:space-x-3">
         <div
           className="flex h-8 w-8 items-center justify-center sm:h-10 sm:w-10 lg:h-12 lg:w-12 rounded-full overflow-hidden"
+          style={!hasImage ? { background: avatarBg } : {}}
         >
-          <img className="w-full h-full object-cover rounded-full"
-            src={circle.imageUrl} alt="" />
+          {hasImage ? (
+            <img className="w-full h-full object-cover rounded-full" src={circle.imageUrl} alt="" />
+          ) : (
+            <span
+              className="text-lg font-bold text-white select-none"
+              style={{ fontFamily: FONTS.heading }}
+            >
+              {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
+            </span>
+          )}
         </div>
         <div>
           <h3
