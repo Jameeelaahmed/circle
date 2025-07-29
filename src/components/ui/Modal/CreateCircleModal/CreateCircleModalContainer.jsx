@@ -81,13 +81,13 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const interestOptions = interests;
 
   const circleTypeOptions = [
-    { value: t("Permenent Circle"), label: "Permenent Circle" },
-    { value: t("Flash Circle"), label: "Flash Circle" },
+    { value: t("Permenent"), label: "Permenent" },
+    { value: t("Flash"), label: "Flash" },
   ];
 
   const circlePrivacyOptions = [
-    { value: t("Public Circle"), label: "Public Circle" },
-    { value: t("Private Circle"), label: "Private Circle" },
+    { value: t("Public"), label: "Public" },
+    { value: t("Private"), label: "Private" },
   ];
 
   const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
