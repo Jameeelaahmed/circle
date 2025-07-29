@@ -6,7 +6,7 @@ export default function Button({
   size = "small",
   classes,
   children,
-  handleClick = () => {},
+  handleClick = () => { },
 }) {
   const variants = {
     primary: "bg-primary",
@@ -25,7 +25,7 @@ export default function Button({
     variants,
     sizes,
     classes,
-    "cursor-pointer font-quick-sand font-semibold",
+    "cursor-pointer font-quick-sand font-semibold w-full",
   );
   return (
     <button

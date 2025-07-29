@@ -13,6 +13,7 @@ import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
 import { validateForm } from "../../../utils/FormValidator";
 import { createUserProfile } from "../../../fire_base/profileController/profileController";
+import interests from '../../../constants/interests';
 
 // components
 import RegisterFormPresentional from "./RegisterFormPresentional";
@@ -29,6 +30,12 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [location, setLocation] = useState(null);
+  const [search, setSearch] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const interestOptions = interests;
+  const filteredInterests = interestOptions.filter(opt =>
+    opt.label.toLowerCase().includes(search.toLowerCase())
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -79,7 +86,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           connections: 0,
           events: 0,
         },
-        interests: [""],
+        interests: selectedInterests,
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
@@ -141,7 +148,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           connections: 0,
           events: 0,
         },
-        interests: [""],
+        interests: selectedInterests,
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
@@ -241,6 +248,12 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       userName={userName}
       location={location}
       setLocation={setLocation}
+      selectedInterests={selectedInterests}
+      setSelectedInterests={setSelectedInterests}
+      interestOptions={interestOptions}
+      filteredInterests={filteredInterests}
+      search={search}
+      setSearch={setSearch}
     />
   );
 }

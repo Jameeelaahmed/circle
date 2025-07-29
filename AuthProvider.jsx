@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
-import { setUserInfo, clearUserInfo, setAuthLoading } from "../features/user/userSlice";
-import { auth } from "../firebase-config";
+import { setUserInfo, clearUserInfo, setAuthLoading } from "./src/features/user/userSlice";
+import { auth } from "./src/firebase-config";
 
 /**
  * AuthProvider: Listens to Firebase auth changes and updates Redux store.
- * Place this at the root of your app (e.g., in App.jsx or main.jsx).
  */
 const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
@@ -15,10 +14,24 @@ const AuthProvider = ({ children }) => {
         dispatch(setAuthLoading(true));
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
+                // Fetch user profile from Firestore to get username
+                let username = null;
+                try {
+                    const { getFirestore, getDoc, doc } = await import("firebase/firestore");
+                    const db = getFirestore();
+                    const userDocRef = doc(db, "users", currentUser.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    if (userDocSnap.exists()) {
+                        const profileData = userDocSnap.data();
+                        username = profileData.username || null;
+                    }
+                } catch (profileError) {
+                    console.error("Error fetching Firestore profile:", profileError);
+                }
                 const serializableUser = {
                     uid: currentUser.uid,
                     email: currentUser.email,
-                    displayName: currentUser.displayName,
+                    username: username,
                     photoURL: currentUser.photoURL,
                     emailVerified: currentUser.emailVerified,
                     phoneNumber: currentUser.phoneNumber,

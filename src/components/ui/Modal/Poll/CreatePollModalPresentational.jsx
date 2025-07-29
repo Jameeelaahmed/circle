@@ -3,8 +3,7 @@ import Input from "../../Input/Input";
 import Toggle from "../../ReactBits/Toggle/Toggle";
 import SendBtn from "../../ReactBits/SendBtn/SendBtn";
 import AiButton from "../../Buttons/AiButton";
-
-
+import ModalHeading from "../ModalHeading/ModalHeading";
 export default function CreatePollModalPresentational({
   question,
   setQuestion,

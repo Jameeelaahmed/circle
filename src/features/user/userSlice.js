@@ -17,10 +17,12 @@ const userSlice = createSlice({
       state.userInfo = {
         uid: user.uid,
         email: user.email,
-        displayName: user.displayName,
+        username: user.username,
         photoURL: user.photoURL,
         emailVerified: user.emailVerified,
       };
+      console.log(state.userInfo.username);
+
       state.token = token;
       state.isAuthenticated = true;
       state.isAuthLoading = false;

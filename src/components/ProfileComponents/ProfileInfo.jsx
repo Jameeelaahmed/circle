@@ -208,9 +208,8 @@ const ProfileInfo = ({
             />
             {isProfileMyProfile && (
               <label
-                className={`absolute right-1 bottom-1 rounded-full p-1 transition-all duration-300 sm:right-2 sm:bottom-2 sm:p-2 ${
-                  isUploading ? "cursor-not-allowed" : "cursor-pointer"
-                }`}
+                className={`absolute right-1 bottom-1 rounded-full p-1 transition-all duration-300 sm:right-2 sm:bottom-2 sm:p-2 ${isUploading ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
                 style={{
                   backgroundColor: COLORS.primary,
                   borderRadius: RADII.pill,
@@ -249,7 +248,7 @@ const ProfileInfo = ({
                 color: COLORS.light,
               }}
             >
-              {profileData.displayName || profileData.username || "User"}
+              {profileData.username || profileData.username || "User"}
             </h1>
             <p
               className="mb-2 text-sm sm:text-base"
