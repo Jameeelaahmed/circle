@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import RecentActivities from "./RecentActivities";
-import { COLORS, FONTS, RADII } from "../../constants";
+import { COLORS, RADII } from "../../constants";
 
 const AboutTab = ({ interests, recentActivities }) => {
   return (
@@ -12,8 +12,8 @@ const AboutTab = ({ interests, recentActivities }) => {
             <h2
               className="mb-3 text-lg font-bold sm:text-xl"
               style={{
-                color: COLORS.light,
-                fontFamily: FONTS.heading,
+                color: "var(--color-light)",
+                fontFamily: "var(--font-secondary)",
               }}
             >
               Interests
@@ -24,11 +24,13 @@ const AboutTab = ({ interests, recentActivities }) => {
                   key={index}
                   className="cursor-pointer px-2 py-1 text-xs font-medium transition-all duration-300 hover:scale-105 sm:px-3 sm:text-sm"
                   style={{
-                    background: `linear-gradient(45deg, ${COLORS.primary}20, ${COLORS.secondary}20)`,
+                    background:
+                      "linear-gradient(45deg, var(--color-primary)20, var(--color-secondary)20)",
+
                     color: COLORS.primary,
                     borderRadius: RADII.pill,
                     border: `1px solid ${COLORS.primary}40`,
-                    fontFamily: FONTS.body,
+                    fontFamily: "var(--font-primary)",
                   }}
                 >
                   {interest}
@@ -40,7 +42,7 @@ const AboutTab = ({ interests, recentActivities }) => {
                   border: `2px dashed ${COLORS.text}40`,
                   color: COLORS.text,
                   borderRadius: RADII.pill,
-                  fontFamily: FONTS.body,
+                  fontFamily: "var(--font-primary)",
                 }}
               >
                 <Plus className="mr-1 inline h-2 w-2 sm:h-3 sm:w-3" />

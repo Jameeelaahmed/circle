@@ -33,7 +33,7 @@ const routes = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "explore", element: <Explore /> },
       // "events/:cirlceId/:eventId/memories"
-      {path:"memories",element:<Memories/>}
+      { path: "memories", element: <Memories /> },
     ],
   },
   {

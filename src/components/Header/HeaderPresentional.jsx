@@ -1,10 +1,11 @@
 // components
 import UserDropDownContainer from "../UserDropDown/UserDropDownContainer";
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from "@mui/material/Skeleton";
 // libs
 import { motion as Motion } from "framer-motion";
 import { Link, NavLink } from "react-router-dom";
 import { Logo } from "../../assets/icons/Logo";
+import Notificaion from "../../pages/Notifications/NotificationSection";
 
 function HeaderPresentional({
   isAuthLoading,
@@ -14,7 +15,7 @@ function HeaderPresentional({
   handleLanguageChange,
 }) {
   return (
-    <div className="bg-main/90 fixed top-0 z-50 w-full border-b border-white/10 backdrop-blur-sm ">
+    <div className="bg-main/90 fixed top-0 z-50 w-full border-b border-white/10 backdrop-blur-sm">
       <div className="flex h-16 w-full items-center px-2 sm:px-4 lg:px-6">
         {/* <div className="flex items-center justify-between h-16"> */}
         {/* Left - Navigation Items */}
@@ -25,9 +26,10 @@ function HeaderPresentional({
                 key={index}
                 to={item.href}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white/10 ${isActive
-                    ? "text-primary bg-white/10"
-                    : "hover:text-primary text-text"
+                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white/10 ${
+                    isActive
+                      ? "text-primary bg-white/10"
+                      : "hover:text-primary text-text"
                   }`
                 }
               >
@@ -56,18 +58,27 @@ function HeaderPresentional({
           >
             {currentLang === "ar" ? "en" : "ar"}
           </button>
+          <Notificaion></Notificaion>
           {isAuthLoading ? (
-            <Skeleton sx={{ bgcolor: 'grey.900' }} animation="wave" variant="text" width={120} height={70} />
-          ) : (isLoggedIn === true ? (
+            <Skeleton
+              sx={{ bgcolor: "grey.900" }}
+              animation="wave"
+              variant="text"
+              width={120}
+              height={70}
+            />
+          ) : isLoggedIn === true ? (
             <UserDropDownContainer />
-          ) : (isLoggedIn === false ? (
-            <Link to='/login'>
-              <button className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200 tracking-wide font-secondary">SignIn/Up</button>
+          ) : isLoggedIn === false ? (
+            <Link to="/login">
+              <button className="text-primary hover:bg-primary/20 font-secondary flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 tracking-wide transition-all duration-200">
+                SignIn/Up
+              </button>
             </Link>
-          ) : null))}
+          ) : null}
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

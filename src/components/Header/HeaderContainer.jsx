@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import i18n from "../../../i18n";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/useAuth";
-import { useSelector } from 'react-redux';
-
+import { useSelector } from "react-redux";
+import Notification from "../../pages/Notifications/NotificationSection";
 //components
 import HeaderPresentional from "./HeaderPresentional";
 
 function Header() {
-  const isAuthLoading = useSelector(state => state.user.isAuthLoading);
+  const isAuthLoading = useSelector((state) => state.user.isAuthLoading);
   const [currentLang, setCurrentLang] = useState(i18n.language);
   const { t } = useTranslation();
   const { isLoggedIn } = useAuth();
