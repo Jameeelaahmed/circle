@@ -1,7 +1,7 @@
 function ChatMessaagePresentational({ messages, currentUser, getUserColor, messagesEndRef, getMessageRadius }) {
 
     return (
-        <div className="flex flex-col justify-end gap-2 p-4 overflow-y-auto h-full">
+        <div className="px-4 py-2 space-y-2">
             {messages.length === 0 && (
                 <div className="text-center text-gray-400">No messages yet.</div>
             )}

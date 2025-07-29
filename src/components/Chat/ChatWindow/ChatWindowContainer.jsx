@@ -14,6 +14,8 @@ function ChatWindowContainer() {
         { id: 5, userId: 'u2', username: 'Bob', text: 'Doing well, thanks!' },
     ]);
 
+    console.log(selectedCircle);
+
     function handleSendMsg(msgText) {
         if (!msgText.trim()) return;
         setMessages(prev => [

@@ -1,20 +1,8 @@
-import React from "react";
-import {
-  MapPin,
-  Calendar,
-  Users,
-  MessageCircle,
-  Camera,
-  Edit3,
-  Settings,
-  Share2,
-  Plus,
-  Menu,
-  X,
-} from "lucide-react";
+
 import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 
-export default function CircleCard({ circle }) {
+export default function CircleCard({ circle, membersByCircle }) {
+  const members = membersByCircle && membersByCircle[circle.id] ? membersByCircle[circle.id] : [];
   return (
     <div
       className="p-3 transition-all duration-300 hover:scale-105 sm:p-4"
@@ -43,7 +31,7 @@ export default function CircleCard({ circle }) {
             {circle.circleName}
           </h3>
           <p className="text-xs sm:text-sm" style={{ color: COLORS.text }}>
-            124 members
+            {members.length} {members.length === 1 ? " Member" : " Members"}
           </p>
         </div>
       </div>

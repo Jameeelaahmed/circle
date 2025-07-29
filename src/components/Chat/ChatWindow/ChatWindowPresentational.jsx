@@ -7,13 +7,13 @@ function ChatWindowPresentational({ selectedCircle, messages, onSendMsg }) {
             <div className="shrink-0">
                 <ChatHeaderContainer circle={selectedCircle} />
             </div>
-            <div className="flex-1 items-end h-full overflow-y-auto">
+            <div className="flex h-full justify-end overflow-y-auto">
                 <ChatMessageContainer messages={messages} />
             </div>
             <div className="shrink-0">
                 <ChatInputContainer onSendMsg={onSendMsg} />
             </div>
-        </div>
+        </div >
     );
 }
 

@@ -9,7 +9,6 @@ export const useAuth = () => {
     const user = useSelector(getUserInfo);
     const token = useSelector(getToken);
     const isAuthenticated = useSelector(getIsAuthenticated);
-
     return {
         user,
         token,
@@ -17,7 +16,7 @@ export const useAuth = () => {
         isLoggedIn: isAuthenticated,
         userId: user?.uid,
         userEmail: user?.email,
-        userName: user?.displayName,
+        userName: user?.username,
     };
 };
 

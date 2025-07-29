@@ -9,7 +9,7 @@ import { clearUserInfo } from "../../features/user/userSlice";
 // components
 import UserDropdownPresentational from "./UserDropdownPresentational";
 function UserDropDownContainer() {
-  const { user } = useAuth();
+  const { userName, user } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const dropdownRef = useRef(null);
@@ -52,10 +52,11 @@ function UserDropDownContainer() {
     { label: t("Help"), href: "/help" },
     { label: t("Logout"), onClick: handleLogout },
   ];
+  console.log(userName);
 
   return (
     <UserDropdownPresentational
-      user={user}
+      user={userName}
       isDropdownOpen={isDropdownOpen}
       setIsDropdownOpen={setIsDropdownOpen}
       dropdownRef={dropdownRef}

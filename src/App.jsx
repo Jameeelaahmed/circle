@@ -1,4 +1,4 @@
-import AuthProvider from "./providers/AuthProvider";
+import AuthProvider from "../AuthProvider";
 import RoutesPages from "./routes/routes";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

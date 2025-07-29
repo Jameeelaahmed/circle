@@ -10,7 +10,6 @@ function ChatHeaderPresentational({
   handleOpenPollModal,
   handleClosePollModal,
 }) {
-  console.log(circle);
   return (
     <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm">
       {/* Left side: Image + Circle Name */}
