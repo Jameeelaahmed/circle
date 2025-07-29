@@ -20,7 +20,8 @@ const userSlice = createSlice({
         username: user.username,
         photoURL: user.photoURL,
         emailVerified: user.emailVerified,
-        interests: user.interests
+        interests: user.interests || [],
+        joinedCircles: user.joinedCircles || []
       };
       state.token = token;
       state.isAuthenticated = true;

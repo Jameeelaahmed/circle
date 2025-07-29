@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import customSelectStyles from "./customSelectStyles";
 import { toastStyles } from "../../../../utils/toastStyles";
 import { addMembersToCircle } from "../../../../utils/addMembersToCircle";
+import { addCircletoUser } from "../../../../utils/addCircletoUser";
 
 // hooks
 import { validateForm } from "../../../../utils/FormValidator";
@@ -164,6 +165,9 @@ export default function CreateCircleModalContainer({ closeModal }) {
 
       // Add members using the utility function
       await addMembersToCircle(circleId, user.uid || user.username, user, selectedMembers, user);
+
+      // Add circle to current user's joinedCircles
+      await addCircletoUser(user.uid, circleId);
 
       toast.success("Circle created successfully!", toastStyles);
       dispatch(fetchCircles());

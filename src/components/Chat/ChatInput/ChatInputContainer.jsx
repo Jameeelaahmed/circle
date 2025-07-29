@@ -1,19 +1,35 @@
 // libs
 import { useRef, useEffect } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../firebase-config";
 // hooks
 import { useAutoDir } from "../../../hooks/useAutoDir"
+import { useAuth } from '../../../hooks/useAuth';
 // components
 import ChatInputPresentational from "./ChatInputPresentational"
-function ChatInputContainer({ onSendMsg }) {
+
+function ChatInputContainer({ circleId }) {
     const { dir, handleAutoDir } = useAutoDir();
     const msgVal = useRef();
-    function handleSendMsg(e) {
+    const { userName, userId } = useAuth();
+    async function handleSendMsg(e) {
         e.preventDefault();
         const value = msgVal.current.value;
-        if (onSendMsg) {
-            onSendMsg(value);
+        if (!value.trim()) return;
+        try {
+            await addDoc(collection(db, "circles", circleId, "chat"), {
+                messageType: "text",
+                senderId: userId,
+                senderName: userName,
+                sentTime: new Date().toLocaleTimeString(),
+                text: value,
+                timestamp: serverTimestamp(),
+            });
+            msgVal.current.value = "";
+        } catch (err) {
+            console.log("msg error", err.msg);
+
         }
-        msgVal.current.value = "";
     }
 
 
@@ -28,15 +44,14 @@ function ChatInputContainer({ onSendMsg }) {
 
         textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
 
-        // Force scroll if content exceeds
         textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
     };
-
 
     function handleInput(e) {
         handleAutoDir(e.target.value)
         adjustHeight()
     }
+
     useEffect(() => {
         adjustHeight();
     }, []);
