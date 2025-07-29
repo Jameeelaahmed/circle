@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import ProfileHeader from "../../components/ProfileComponents/ProfileHeader";
-import ProfileCover from "../../components/ProfileComponents/ProfileCover";
-import ProfileInfo from "../../components/ProfileComponents/ProfileInfo";
-import ProfileStats from "../../components/ProfileComponents/ProfileStats";
-import ProfileTabs from "../../components/ProfileComponents/ProfileTabs";
-import ProfileContent from "../../components/ProfileComponents/ProfileContent";
 import { setProfileData } from "../../features/userProfile/profileSlice";
-import { COLORS, FONTS } from "../../constants";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getUserProfile } from "../../fire_base/profileController/profileController";
 import { auth } from "../../firebase-config";
 import { useSelector } from "react-redux";
-
+import ProfilePresentational from "./profilepresentational";
 const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
@@ -41,43 +34,20 @@ const ProfilePage = () => {
     setIsFollowing(!isFollowing);
   };
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundColor: COLORS.darker,
-        fontFamily: FONTS.body,
-        color: COLORS.text,
+    <ProfilePresentational
+      {...{
+        showMobileMenu,
+        setShowMobileMenu,
+        profileData,
+        isProfileMyProfile,
+        isFollowing,
+        handleFollow,
+        showEditMode,
+        setShowEditMode,
+        activeTab,
+        setActiveTab,
       }}
-    >
-      <ProfileHeader
-        showMobileMenu={showMobileMenu}
-        setShowMobileMenu={setShowMobileMenu}
-      />
-
-      <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="relative">
-          <ProfileCover
-            coverImage={profileData.coverPhoto}
-            isProfileMyProfile={isProfileMyProfile}
-          />
-
-          <ProfileInfo
-            isProfileMyProfile={isProfileMyProfile}
-            profileData={profileData}
-            isFollowing={isFollowing}
-            handleFollow={handleFollow}
-            showEditMode={showEditMode}
-            setShowEditMode={setShowEditMode}
-          />
-
-          <ProfileStats stats={profileData.stats} />
-        </div>
-
-        <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-
-        <ProfileContent activeTab={activeTab} profileData={profileData} />
-      </div>
-    </div>
+    />
   );
 };
 

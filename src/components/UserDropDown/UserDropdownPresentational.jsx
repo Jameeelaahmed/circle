@@ -19,7 +19,7 @@ export default function UserDropdownPresentational({
             >
                 {/* Primary colored circular letter */}
                 <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-                    <span className="text-sm font-bold text-white">{user.email.charAt(0).toUpperCase()}</span>
+                    <span className="text-sm font-bold text-white">{(user && user.charAt(0).toUpperCase()) || ""}</span>
                 </div>
 
                 <ChevronDown

@@ -41,15 +41,17 @@ function ChatMessageContainer({ messages }) {
 
     const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     return (
-        <div className="flex-grow overflow-y-auto">
-            <ChatMessaagePresentational
-                messages={messages}
-                messagesEndRef={messagesEndRef}
-                currentUser={currentUser}
-                getUserColor={getUserColor}
-                getMessageRadius={(args) => getMessageRadius({ ...args, dir })}
-                dir={dir}
-            />
+        <div className="flex-1 min-h-0 overflow-y-auto">
+            <div className="flex flex-col justify-end min-h-full">
+                <ChatMessaagePresentational
+                    messages={messages}
+                    messagesEndRef={messagesEndRef}
+                    currentUser={currentUser}
+                    getUserColor={getUserColor}
+                    getMessageRadius={(args) => getMessageRadius({ ...args, dir })}
+                    dir={dir}
+                />
+            </div>
         </div>
     );
 }

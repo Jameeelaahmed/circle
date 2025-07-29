@@ -24,15 +24,15 @@ export default function LandingPresentational({
     <div className="bg-white flex h-screen flex-col overflow-hidden">
       {/* <div className="h-screen w-full flex-col items-center justify-center px-4 md:flex-row overflow-hidden"> */}
       <Motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="z-10 flex w-full flex-col items-center pt-paddingTop p-8 min-h-screen"
       >
         <div className="max-w-xl">
           <Motion.h1
             className="mb-6 text-4xl font-bold md:text-6xl text-center"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
@@ -44,8 +44,8 @@ export default function LandingPresentational({
 
           <Motion.p
             className="mb-8 text-lg leading-relaxed text-gray-300 md:text-xl text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             {t(
@@ -54,8 +54,8 @@ export default function LandingPresentational({
           </Motion.p>
 
           <Motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-center"
           >
@@ -98,8 +98,8 @@ export default function LandingPresentational({
       />
       {/* Right: Child Development Section */}
       <Motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="z-10 flex w-full justify-center p-8 md:w-1/2"
       >

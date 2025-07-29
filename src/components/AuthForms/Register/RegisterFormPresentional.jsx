@@ -6,6 +6,8 @@ import AuthButton from "../../../components/ui/Buttons/AuthButton";
 import GoogleIcon from "../../../assets/icons/google.svg";
 import { motion as Motion } from "framer-motion";
 import EgyptCities from "../../../assets/EgyptCities.json";
+import Chip from '@mui/material/Chip';
+
 function RegisterFormPresentional({
   handleKeyPress,
   handleSignUp,
@@ -26,6 +28,11 @@ function RegisterFormPresentional({
   userName,
   location,
   setLocation,
+  selectedInterests,
+  setSelectedInterests,
+  filteredInterests,
+  search,
+  setSearch,
 }) {
   return (
     <div className="flex w-full flex-col items-center justify-center px-8 lg:max-w-md">
@@ -54,7 +61,7 @@ function RegisterFormPresentional({
 
       {/* Registration Form */}
       <Motion.div
-        className="min-w-xs space-y-4 md:min-w-md"
+        className="min-w-xs space-y-4 md:min-w-md py-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
@@ -135,6 +142,57 @@ function RegisterFormPresentional({
             <p className="mt-1 text-sm text-red-400">Passwords don't match</p>
           )}
 
+          {/* Interests Selection */}
+          <div>
+            <label className="text-text mb-1 block text-sm font-medium">
+              Interests
+            </label>
+            <input
+              type="text"
+              placeholder="Search interests..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="mb-2 p-2 rounded border w-full"
+            />
+            <div className="flex flex-wrap gap-2">
+              {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
+              {[
+                // Show selected interests that match the filter (max 10)
+                ...filteredInterests.filter(interest => selectedInterests.includes(interest.value)),
+                // Fill up to 10 with unselected filtered interests
+                ...filteredInterests.filter(interest => !selectedInterests.includes(interest.value)).slice(0, 10 - filteredInterests.filter(interest => selectedInterests.includes(interest.value)).length)
+              ].slice(0, 10).map(interest => (
+                <Chip
+                  key={interest.value}
+                  label={interest.label}
+                  color={"primary"}
+                  variant={selectedInterests.includes(interest.value) ? "filled" : "outlined"}
+                  onClick={() => {
+                    setSelectedInterests(prev =>
+                      prev.includes(interest.value)
+                        ? prev.filter(i => i !== interest.value)
+                        : [...prev, interest.value]
+                    );
+                    setSearch("");
+                  }}
+                />
+              ))}
+              {/* Show any selected interests that are not in the filteredInterests (e.g. from previous search) */}
+              {selectedInterests
+                .filter(sel => !filteredInterests.some(interest => interest.value === sel))
+                .map(sel => (
+                  <Chip
+                    key={sel}
+                    label={sel}
+                    color={"primary"}
+                    variant="filled"
+                    onClick={() => {
+                      setSelectedInterests(prev => prev.filter(i => i !== sel));
+                    }}
+                  />
+                ))}
+            </div>
+          </div>
           {/* Submit Button */}
           <div className="text-right">
             <Button
