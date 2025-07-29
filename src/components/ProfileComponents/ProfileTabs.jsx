@@ -1,5 +1,4 @@
 import React from "react";
-import { COLORS, FONTS } from "../../constants";
 
 const ProfileTabs = ({ activeTab, setActiveTab }) => {
   const tabs = ["about", "circles"];
@@ -8,9 +7,9 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
     <div
       className="sticky top-[57px] z-20 overflow-x-auto border-b sm:top-[65px]"
       style={{
-        backgroundColor: COLORS.glass,
+        backgroundColor: "var(--color-glass)",
         backdropFilter: "blur(10px)",
-        borderColor: COLORS.dark,
+        borderColor: "var(--color-dark)",
       }}
     >
       <div className="px-3 sm:px-6">
@@ -22,9 +21,12 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
               className="border-b-2 px-1 py-3 text-sm font-medium whitespace-nowrap capitalize transition-all duration-300 sm:py-4 sm:text-base"
               style={{
                 borderBottomColor:
-                  activeTab === tab ? COLORS.primary : "transparent",
-                color: activeTab === tab ? COLORS.primary : COLORS.text,
-                fontFamily: FONTS.body,
+                  activeTab === tab ? "var(--color-primary)" : "transparent",
+                color:
+                  activeTab === tab
+                    ? "var(--color-primary)"
+                    : "var(--color-text)",
+                fontFamily: "var(--font-primary)",
               }}
             >
               {tab}
