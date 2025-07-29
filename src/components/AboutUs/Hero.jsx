@@ -1,21 +1,13 @@
 import { Link } from "react-router";
 
-const styles = {
-  hero: {
-    color: "var(--color-text)",
-    background: `linear-gradient(to right, var(--color-primary), var(--color-secondary))`,
-    height: "60vh",
-  },
-};
+
 const Hero = () => {
   return (
     <section
-      className="flex flex-col items-center justify-center text-center"
-      style={styles.hero}
+      className="flex flex-col items-center justify-center text-center bg-gradient-to-r from-primary to-secondary h-[60vh]"
     >
       <h1
         className="mb-6 text-6xl font-bold text-shadow-lg md:text-8xl"
-        style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
       >
         About Circle
       </h1>
@@ -29,8 +21,7 @@ const Hero = () => {
       </p>
       <Link
         to="/login"
-        className="p-7 text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:text-white"
-        style={{ backgroundColor: "var(--color-secondary)", borderRadius: "70%" }}
+        className="p-7 text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:text-white bg-primary size-32 rounded-full flex justify-center items-center"
       >
         Join <br />
         Circle

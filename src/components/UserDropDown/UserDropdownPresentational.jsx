@@ -15,11 +15,11 @@ export default function UserDropdownPresentational({
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
-                className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200"
+                className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-inputsBg px-3 py-2 transition-all duration-200"
             >
                 {/* Primary colored circular letter */}
                 <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-                    <span className="text-sm font-bold text-white">{user.email.charAt(0).toUpperCase()}</span>
+                    <span className="text-sm font-bold text-white">{(user && user.charAt(0).toUpperCase()) || ""}</span>
                 </div>
 
                 <ChevronDown

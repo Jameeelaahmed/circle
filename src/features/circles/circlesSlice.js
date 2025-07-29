@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
 
+// Fetch all circles
 export const fetchCircles = createAsyncThunk(
     'circles/fetchCircles',
     async () => {
@@ -15,11 +16,30 @@ export const fetchCircles = createAsyncThunk(
                 expirestAt: data.expirestAt?.toDate().toISOString() || null,
                 createdAt: data.createdAt?.toDate()?.toISOString() || null,
             };
-
             return transformedData;
         });
     }
 );
+
+export const fetchCircleById = createAsyncThunk(
+    'circles/fetchCircleById',
+    async (circleId) => {
+        const db = getFirestore();
+        const circleDoc = doc(db, 'circles', circleId);
+        const snapshot = await getDoc(circleDoc);
+        if (!snapshot.exists()) {
+            throw new Error("Circle not found");
+        }
+        const data = snapshot.data();
+        return {
+            ...data,
+            id: snapshot.id,
+            expirestAt: data.expirestAt?.toDate().toISOString() || null,
+            createdAt: data.createdAt?.toDate()?.toISOString() || null,
+        };
+    }
+);
+
 const circlesSlice = createSlice({
     name: "circles",
     initialState: {
@@ -35,6 +55,7 @@ const circlesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // fetchCircles
             .addCase(fetchCircles.pending, (state) => {
                 state.status = 'loading';
                 state.error = null;
@@ -47,9 +68,23 @@ const circlesSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
                 console.log(state.error);
-
             })
 
+            //  fetchCircleById
+            .addCase(fetchCircleById.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+                state.selectedCircle = null;
+            })
+            .addCase(fetchCircleById.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.selectedCircle = action.payload;
+            })
+            .addCase(fetchCircleById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+                console.log(state.error);
+            });
     },
 });
 

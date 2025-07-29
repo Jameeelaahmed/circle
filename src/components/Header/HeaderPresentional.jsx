@@ -51,7 +51,7 @@ function HeaderPresentional({
         {/* Right - Button with Dropdown */}
         <div className="relative flex flex-1 items-center justify-end space-x-4">
           <button
-            className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200"
+            className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center space-x-2 rounded-lg px-3 py-2 transition-all duration-200"
             onClick={() =>
               handleLanguageChange(currentLang === "ar" ? "en" : "ar")
             }
@@ -59,9 +59,9 @@ function HeaderPresentional({
             {currentLang === "ar" ? "en" : "ar"}
           </button>
           <Notificaion></Notificaion>
-          {isAuthLoading ? (
+          {isAuthLoading || isLoggedIn === undefined ? (
             <Skeleton
-              sx={{ bgcolor: "grey.900" }}
+              sx={{ bgcolor: "var(--color-inputsBg)" }}
               animation="wave"
               variant="text"
               width={120}

@@ -35,12 +35,12 @@ body {
   /** colors */
   --color-main: #081020;
   --color-primary: #ac9ffa;
-  --color-inputsBg: rgb(255, 255, 255, 0.05);
   --color-secondary: #4ea8de;
   --color-accent: #f78fb3;
+  --color-inputsBg: rgb(255, 255, 255, 0.05);
   --color-dark: #12131a;
   --color-darker: #0b0c10;
-  --color-text: #c5c6c7;
+  --color-text: white;
   --color-glass: rgba(22, 23, 30, 0.7);
   --color-light: #f8f9fc;
 
@@ -83,11 +83,10 @@ body {
 
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: transparent;
 }
 
@@ -104,8 +103,4 @@ body {
   background: transparent;
 }
 
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) transparent;
-}
+
