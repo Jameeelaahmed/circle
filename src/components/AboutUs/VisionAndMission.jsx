@@ -2,7 +2,7 @@ import { Heart, Target, Users2, Sparkles, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const VisionAndMission = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const values = [
     {
       icon: Users2,
@@ -28,7 +28,10 @@ const VisionAndMission = () => {
           <div className="mb-16 text-center">
             <h2
               className="mb-6 text-5xl font-bold"
-              style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
+              style={{
+                color: "var(--color-primary)",
+                fontFamily: "var(--font-heading)",
+              }}
             >
               {t("about.Vision & Mission")}
             </h2>
@@ -40,7 +43,7 @@ const VisionAndMission = () => {
           <div className="grid gap-12 md:grid-cols-2">
             {/* Vision Card */}
             <div
-              className="rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:scale-105"
+              className="hover:animate-jelly rounded-3xl p-8 will-change-transform"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -63,13 +66,13 @@ const VisionAndMission = () => {
                 </h3>
               </div>
               <p className="text-lg leading-relaxed opacity-90">
-               {t("about.vision_message")}
+                {t("about.vision_message")}
               </p>
             </div>
 
             {/* Mission Card */}
             <div
-              className="rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:scale-105"
+              className="hover:animate-jelly rounded-3xl p-8 will-change-transform"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -82,7 +85,10 @@ const VisionAndMission = () => {
                   className="rounded-full p-3"
                   style={{ backgroundColor: `${"var(--color-secondary)"}20` }}
                 >
-                  <Heart size={32} style={{ color: "var(--color-secondary)" }} />
+                  <Heart
+                    size={32}
+                    style={{ color: "var(--color-secondary)" }}
+                  />
                 </div>
                 <h3
                   className="text-2xl font-bold"
@@ -109,14 +115,17 @@ const VisionAndMission = () => {
               {values.map((value, index) => (
                 <div
                   key={index}
-                  className="rounded-2xl p-6 transition-all duration-300 hover:scale-105"
+                  className="rounded-2xl p-6 hover:animate-jelly will-change-transform"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.03)",
                     border: "1px solid rgba(255, 255, 255, 0.08)",
                   }}
                 >
                   <div className="mb-4 flex justify-center">
-                    <value.icon size={28} style={{ color: "var(--color-accent)" }} />
+                    <value.icon
+                      size={28}
+                      style={{ color: "var(--color-accent)" }}
+                    />
                   </div>
                   <h4
                     className="mb-2 text-lg font-semibold"

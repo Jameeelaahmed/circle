@@ -118,7 +118,7 @@ export default function Team() {
             ].map((value, index) => (
               <div
                 key={index}
-                className="rounded-2xl p-4 transition-all duration-300 hover:scale-105"
+                className="rounded-2xl p-4 hover:animate-jelly will-change-transform relative z-20"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.03)",
                   border: "1px solid rgba(255, 255, 255, 0.08)",

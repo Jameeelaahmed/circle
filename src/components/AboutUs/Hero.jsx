@@ -16,7 +16,7 @@ const Hero = () => {
       </p>
       <Link
         to="/login"
-        className="bg-primary flex size-32 items-center justify-center rounded-full p-7 text-xl shadow-lg transition-all duration-300 hover:scale-105 hover:text-white"
+        className="bg-primary  flex size-32 items-center justify-center rounded-full p-7 text-xl shadow-md hover:animate-jelly will-change-transform"
       >
         {t("about.Join")} <br />
         {t("about.Circle")}
