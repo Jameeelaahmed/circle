@@ -1,17 +1,23 @@
 // libs
-import { useState } from "react";
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { db } from "../../../firebase-config";
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../hooks/useAuth';
 
 // components
 import ChatMessaagePresentational from "./ChatMessagePresentational";
 
 // func
 import { getMessageRadius } from "../../../utils/MessageBorderDir";
-import { useTranslation } from 'react-i18next';
-function ChatMessageContainer({ messages }) {
+function ChatMessageContainer({ circleId }) {
     const messagesEndRef = useRef(null);
-    const [currentUser] = useState({ id: 'u2', username: 'Bob' });
+    const { userName, userId } = useAuth();
+    const currentUser = { id: userId, username: userName };
     const { i18n } = useTranslation();
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const userColors = [
         'text-primary',
@@ -34,6 +40,25 @@ function ChatMessageContainer({ messages }) {
     }
 
     useEffect(() => {
+        if (!circleId) return;
+        setLoading(true);
+        setError(null);
+        const q = query(
+            collection(db, "circles", circleId, "chat"),
+            orderBy("timestamp")
+        );
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+            setLoading(false);
+        }, (err) => {
+            setError(err.message);
+            setLoading(false);
+        });
+        return unsubscribe;
+    }, [circleId]);
+
+    useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
@@ -41,18 +66,26 @@ function ChatMessageContainer({ messages }) {
 
     const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     return (
-        <div className="flex-1 min-h-0 overflow-y-auto">
-            <div className="flex flex-col justify-end min-h-full">
-                <ChatMessaagePresentational
-                    messages={messages}
-                    messagesEndRef={messagesEndRef}
-                    currentUser={currentUser}
-                    getUserColor={getUserColor}
-                    getMessageRadius={(args) => getMessageRadius({ ...args, dir })}
-                    dir={dir}
-                />
-            </div>
-        </div>
+        <>
+            {loading ? (
+                <div className="text-center text-gray-400 py-4">Loading messages...</div>
+            ) : error ? (
+                <div className="text-center text-red-500 py-4">{error}</div>
+            ) : (
+                <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
+                    <div className="flex-1 flex flex-col justify-end min-h-full">
+                        <ChatMessaagePresentational
+                            messages={messages}
+                            messagesEndRef={messagesEndRef}
+                            currentUser={currentUser}
+                            getUserColor={getUserColor}
+                            getMessageRadius={(args) => getMessageRadius({ ...args, dir })}
+                            dir={dir}
+                        />
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
