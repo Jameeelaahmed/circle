@@ -33,9 +33,8 @@ const ProfileInfoPresentioal = ({
 }) => {
   return (
     <div
-      className="px-3 pb-4 sm:px-4 sm:pb-6 lg:px-6"
+      className="px-3 pb-4 sm:px-4 sm:pb-6 lg:px-6 bg-white/5 backdrop-blur-2xl mb-10"
       style={{
-        backgroundColor: "var(--color-dark)",
         borderRadius: `0 0 var(--rounded-rounded) var(--rounded-rounded)`,
         boxShadow: "var(--shadow-glassCard)",
       }}
@@ -56,7 +55,7 @@ const ProfileInfoPresentioal = ({
         )}
 
         {/* Profile Image and Basic Info */}
-        <div className="flex flex-col space-y-3 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-4">
+        <div className="flex flex-col pt-10 space-y-3 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-4">
           <div className="relative self-center sm:self-auto">
             <img
               src={profileData.avatarPhoto || "/default-avatar.png"}

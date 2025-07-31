@@ -1,23 +1,23 @@
-import React from "react";
-// import { COLORS, SHADOWS } from "../../constants";
 import { Users, Users2, Calendar, Camera } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Stats = () => {
+  const {t} = useTranslation();
   const stats = [
-    { icon: Users, value: 10000, label: "Active Users", color: "var(--color-primary)" },
+    { icon: Users, value: 10000, label: t("about.Active Users"), color: "var(--color-primary)" },
     {
       icon: Users2,
       value: 2000,
-      label: "Private Circles",
+      label: t("about.Private Circles"),
       color: "var(--color-secondary)",
     },
     {
       icon: Calendar,
       value: 3000,
-      label: "Events Created",
+      label: t("about.Events Created"),
       color: "var(--color-accent)",
     },
-    { icon: Camera, value: 5000, label: "Memories Shared", color: "#bad" },
+    { icon: Camera, value: 5000, label: t("about.Memories Shared"), color: "#bad" },
   ];
 
   return (

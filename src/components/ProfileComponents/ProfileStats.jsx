@@ -1,12 +1,9 @@
-import React from "react";
-
 const ProfileStats = ({ stats }) => {
   return (
     <div
-      className="mt-4 grid grid-cols-3 gap-2 border-t pt-4 sm:mt-6 sm:gap-4 sm:pt-6"
+      className="mt-4 grid grid-cols-3 gap-2 border-t pt-4 sm:mt-6 sm:gap-4 sm:pt-6 bg-white/5 rounded-t-2xl"
       style={{
         borderColor: "var(--color-glass)",
-        backgroundColor: "var(--color-dark)",
         marginTop: 0,
         paddingLeft: "0.75rem",
         paddingRight: "0.75rem",
@@ -41,10 +38,11 @@ const ProfileStats = ({ stats }) => {
           {stats.followers}
         </div>
         <div
-          className="text-xs sm:text-sm"
+          className="text-xs sm:text-sm flex flex-col"
           style={{ color: "var(--color-text)" }}
         >
-          Followers
+        <span className="text-2xl font-bold">{stats.connections}</span>
+          <span>Connections</span>
         </div>
       </div>
       <div className="text-center">
@@ -55,14 +53,13 @@ const ProfileStats = ({ stats }) => {
             fontFamily: "var(--font-heading)",
           }}
         >
-          {stats.following}
         </div>
-        <div
+        {/* <div
           className="text-xs sm:text-sm"
           style={{ color: "var(--color-text)" }}
         >
           Following
-        </div>
+        </div> */}
       </div>
     </div>
   );

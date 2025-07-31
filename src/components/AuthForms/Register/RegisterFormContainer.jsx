@@ -90,7 +90,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
-        createdAt: new Timestamp(),
+        createdAt: Timestamp.now(),
         isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",

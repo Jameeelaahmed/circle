@@ -1,13 +1,4 @@
-import React, { useEffect, useState } from "react";
-import {
-  MapPin,
-  Calendar,
-  MessageCircle,
-  Camera,
-  Edit3,
-  Check,
-  X,
-} from "lucide-react";
+import { useEffect, useState } from "react";
 import { auth } from "../../firebase-config";
 import { updateUserProfile } from "../../fire_base/profileController/profileController";
 import { useDispatch } from "react-redux";

@@ -1,11 +1,13 @@
 import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
+import { useTranslation } from "react-i18next";
 
 export default function Team() {
+  const { t } = useTranslation();
   const team = [
     {
       name: "Hajar Ali",
-      image: "/src/assets/images/aboutus/hager.webp",
+      image: "/src/assets/images/aboutus/Hajar.webp",
       role: "Frontend Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications.",
@@ -13,7 +15,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Refaat",
-      image: "/src/assets/images/aboutus/refaat.webp",
+      image: "/src/assets/images/aboutus/Refaat.webp",
       role: "Frontend Developer",
       description:
         "I am a quick learner and I am always looking to improve my skills.",
@@ -21,7 +23,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Yasser",
-      image: "/src/assets/images/aboutus/yasser.webp",
+      image: "/src/assets/images/aboutus/Yasser.webp",
       role: "Frontend Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications. I am a quick learner and I am always looking to improve my skills.",
@@ -29,7 +31,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Gamal",
-      image: "/src/assets/images/aboutus/gmal.jpg",
+      image: "/src/assets/images/aboutus/Gamal.webp",
       role: "Frontend Developer",
       description:
         "I am a UX designer with a passion for creating intuitive user experiences. I am a quick learner and I am always looking to improve my skills.",
@@ -37,7 +39,7 @@ export default function Team() {
     },
     {
       name: "Jameela Abdel-rahman",
-      image: "/src/assets/images/aboutus/jameela.jpg",
+      image: "/src/assets/images/aboutus/Jameela.webp",
       role: "Frontend Developer",
       description:
         "Security expert ensuring your private circles and personal data remain protected.",
@@ -45,7 +47,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Adel",
-      image: "/src/assets/images/aboutus/adel.jpg",
+      image: "/src/assets/images/aboutus/Adel.webp",
       role: "Frontend Developer",
       description:
         "Growth strategist helping Circle reach more people and create more meaningful connections.",
@@ -64,54 +66,15 @@ export default function Team() {
               fontFamily: "var(--font-heading)",
             }}
           >
-            Our Team
+            {t("about.Our Team")}
           </h2>
           <p className="mx-auto max-w-3xl text-xl opacity-80">
-            Meet the passionate minds behind Circle, dedicated to transforming
-            how people connect and maintain friendships.
+            {t("about.Our Team_description")}
           </p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-10 px-10 lg:justify-between">
           {team.map((member) => (
-            // <div
-            //   key={index}
-            //   className="group rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:scale-105"
-            //   style={{
-            //     backgroundColor: member.cardColor,
-            //     border: "1px solid rgba(255, 255, 255, 0.1)",
-            //     boxShadow: "var(--shadow-glassCard)",
-            //     backdropFilter: "blur(10px)",
-            //   }}
-            // >
-            //   <div className="relative mb-6">
-            //     <div
-            //       className="mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-offset-4 transition-all duration-300 group-hover:ring-offset-8"
-            //       style={{
-            //         ringColor: "var(--color-primary)",
-            //         ringOffsetColor: "var(--color-dark)",
-            //       }}
-            //     >
-            //       <img
-            //         src={member.image}
-            //         alt={member.name}
-            //         className="h-full w-full object-cover"
-            //       />
-            //     </div>
-            //   </div>
-            //   <div className="text-center">
-            //     <h3
-            //       className="mb-2 text-xl font-bold"
-            //       style={{ color: "var(--color-primary)" }}
-            //     >
-            //       {member.name}
-            //     </h3>
-            //     <p className="mb-3 text-sm opacity-80">{member.role}</p>
-            //     <p className="text-xs leading-relaxed opacity-70">
-            //       {member.description}
-            //     </p>
-            //   </div>
-            // </div>
             <ArcCard
               imgSrc={member.image}
               name={member.name}
@@ -128,29 +91,29 @@ export default function Team() {
             className="mb-12 text-3xl font-bold"
             style={{ color: "var(--color-primary)" }}
           >
-            Our Team Values
+            {t("about.Our Team Values")}
           </h3>
           <div className="grid gap-6 md:grid-cols-4">
             {[
               {
                 icon: Heart,
-                title: "Empathy",
-                description: "Understanding user needs",
+                title: t("about.Empathy"),
+                description: t("about.Empathy_description"),
               },
               {
                 icon: Sparkles,
-                title: "Innovation",
-                description: "Pushing boundaries",
+                title: t("about.Innovation"),
+                description: t("about.Innovation_values_description"),
               },
               {
                 icon: Shield,
-                title: "Trust",
-                description: "Building secure connections",
+                title: t("about.Trust"),
+                description: t("about.Trust_description"),
               },
               {
                 icon: Users2,
-                title: "Collaboration",
-                description: "Working together",
+                title: t("about.Collaboration"),
+                description: t("about.Collaboration_description"),
               },
             ].map((value, index) => (
               <div

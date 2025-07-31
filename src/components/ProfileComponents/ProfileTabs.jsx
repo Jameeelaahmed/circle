@@ -5,9 +5,8 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
 
   return (
     <div
-      className="sticky top-[57px] z-20 overflow-x-auto border-b sm:top-[65px]"
+      className="sticky top-[57px] z-20 overflow-x-auto border-b sm:top-[65px] bg-white/5"
       style={{
-        backgroundColor: "var(--color-glass)",
         backdropFilter: "blur(10px)",
         borderColor: "var(--color-dark)",
       }}

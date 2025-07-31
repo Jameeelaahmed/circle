@@ -1,23 +1,23 @@
-import React from "react";
-// import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 import { Heart, Target, Users2, Sparkles, Shield } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const VisionAndMission = () => {
+  const {t} = useTranslation();
   const values = [
     {
       icon: Users2,
-      title: "Connection",
-      description: "Fostering meaningful relationships",
+      title: t("about.Connection"),
+      description: t("about.Connection_description"),
     },
     {
       icon: Sparkles,
-      title: "Innovation",
-      description: "Simplifying social planning",
+      title: t("about.Innovation"),
+      description: t("about.Innovation_description"),
     },
     {
       icon: Shield,
-      title: "Privacy",
-      description: "Protecting your social circles",
+      title: t("about.Privacy"),
+      description: t("about.Privacy_description"),
     },
   ];
   return (
@@ -30,10 +30,10 @@ const VisionAndMission = () => {
               className="mb-6 text-5xl font-bold"
               style={{ color: "var(--color-primary)", fontFamily: "var(--font-heading)" }}
             >
-              Vision & Mission
+              {t("about.Vision & Mission")}
             </h2>
             <p className="mx-auto max-w-3xl text-xl opacity-80">
-              Building meaningful connections in the digital age
+              {t("about.Building meaningful connections in the digital age")}
             </p>
           </div>
 
@@ -59,12 +59,11 @@ const VisionAndMission = () => {
                   className="text-2xl font-bold"
                   style={{ color: "var(--color-primary)" }}
                 >
-                  Our Vision
+                  {t("about.Our Vision")}
                 </h3>
               </div>
               <p className="text-lg leading-relaxed opacity-90">
-                To be the essential platform for maintaining and strengthening
-                real-world friendships in a digital age.
+               {t("about.vision_message")}
               </p>
             </div>
 
@@ -89,14 +88,11 @@ const VisionAndMission = () => {
                   className="text-2xl font-bold"
                   style={{ color: "var(--color-secondary)" }}
                 >
-                  Our Mission
+                  {t("about.Our Mission")}
                 </h3>
               </div>
               <p className="text-lg leading-relaxed opacity-90">
-                Circle combats social drift by reducing the logistical friction
-                of planning group activities. It provides a dedicated space for
-                social circles to decide, plan, and relive their shared
-                experiences, transforming intention into connection.
+                {t("about.mission_message")}
               </p>
             </div>
           </div>
@@ -107,7 +103,7 @@ const VisionAndMission = () => {
               className="mb-12 text-3xl font-bold"
               style={{ color: "var(--color-accent)" }}
             >
-              Our Core Values
+              {t("about.Our Core Values")}
             </h3>
             <div className="grid gap-8 md:grid-cols-3">
               {values.map((value, index) => (
