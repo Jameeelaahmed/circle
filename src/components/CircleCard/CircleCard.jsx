@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
+import EventsContainer from './../../pages/Events/EventsContainer';
 
 export default function CircleCard({ circle }) {
   return (
@@ -73,6 +74,8 @@ export default function CircleCard({ circle }) {
       >
         View Circle
       </button>
+
+
     </div>
   );
 }

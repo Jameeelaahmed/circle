@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ProfileHeader from "../../components/profile components/ProfileHeader";
-import ProfileCover from "../../components/profile components/ProfileCover";
-import ProfileInfo from "../../components/profile components/ProfileInfo";
-import ProfileStats from "../../components/profile components/ProfileStats";
-import ProfileTabs from "../../components/profile components/ProfileTabs";
-import ProfileContent from "../../components/profile components/ProfileContent";
+import ProfileHeader from "../../components/ProfileComponents/ProfileHeader";
+import ProfileCover from "../../components/ProfileComponents/ProfileCover";
+import ProfileInfo from "../../components/ProfileComponents/ProfileInfo";
+import ProfileStats from "../../components/ProfileComponents/ProfileStats";
+import ProfileTabs from "../../components/ProfileComponents/ProfileTabs";
+import ProfileContent from "../../components/ProfileComponents/ProfileContent";
 import { setProfileData } from "../../features/userProfile/profileSlice";
 import { COLORS, FONTS } from "../../constants";
 import { useDispatch } from "react-redux";
