@@ -1,45 +1,47 @@
 //libs
-import Select from "react-select";
+// eslint-disable-next-line no-unused-vars
+import Select, { components } from "react-select";
 import { Loader } from "lucide-react";
 import ModalHeading from "../ModalHeading/ModalHeading";
+import Chip from '@mui/material/Chip';
 
 export default function CreateCircleModalPresentional({
   t,
-  uploadedImage,
-  inputStyles,
-  textareaStyles,
-  customStyles,
+  register,
+  handleSubmit,
   circlePrivacyOptions,
   setCirclePrivacy,
   circleType,
   setCircleType,
+  selectedMembers,
+  setSelectedMembers,
+  selectedInterests,
+  setSelectedInterests,
+  filteredInterests,
+  search,
+  setSearch,
   fileInputRef,
-  memberOptions,
-  interestOptions,
-  circleTypeOptions,
+  uploadedImage,
   handleImageUpload,
   removeImage,
-  register,
-  handleSubmit,
-  setSelectedMembers,
-  setSelectedInterests,
+  memberOptions,
+  circleTypeOptions,
+  inputStyles,
+  textareaStyles,
+  customStyles,
   errors,
   isLoading,
   onClose,
   membersKey,
-  interestsKey
 }) {
+
   return (
     <form className="mx-auto max-w-3xl space-y-6" onSubmit={handleSubmit}>
       <ModalHeading onClose={onClose} title={t("Create Circle")} />
-      {/* <h2 className="font-secondary text-center text-2xl font-bold text-primary">
-
-      </h2> */}
-
-      <div className="space-y-2">
+      <div className="mb-0">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-2">
           <div>
-            <label htmlFor="circleName" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleName" className="text-text mb-1 block text-sm font-medium">
               {t("Circle Name")} *
             </label>
             <input
@@ -55,7 +57,7 @@ export default function CreateCircleModalPresentional({
           </div>
 
           <div>
-            <label htmlFor="circleType" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="circleType" className="text-text mb-1 block text-sm font-medium">
               {t("Circle Type")} *
             </label>
             <Select
@@ -73,8 +75,8 @@ export default function CreateCircleModalPresentional({
               }
               isClearable
             />
-            {errors?.type && (
-              <span className="text-red-500 text-xs mt-1 block">{errors.type}</span>
+            {errors?.circleType && (
+              <span className="text-red-500 text-xs mt-1 block">{errors.circleType}</span>
             )}
           </div>
         </div>
@@ -82,7 +84,7 @@ export default function CreateCircleModalPresentional({
         {/* Due Date - Only show for Flash circles */}
         {circleType === "Flash Circle" && (
           <div className="mb-2">
-            <label htmlFor="expireDate" className="text-light mb-1 block text-sm font-medium">
+            <label htmlFor="expireDate" className="text-text mb-1 block text-sm font-medium">
               {t("Due Date")} *
             </label>
             <input type="date" className={inputStyles} {...register("expiresAt")} />
@@ -93,7 +95,7 @@ export default function CreateCircleModalPresentional({
         )}
 
         <div className="mb-2">
-          <label htmlFor="privacy" className="text-light mb-1 block text-sm font-medium">
+          <label htmlFor="privacy" className="text-text mb-1 block text-sm font-medium">
             {t("Circle Privacy")}
           </label>
           <Select
@@ -110,8 +112,8 @@ export default function CreateCircleModalPresentional({
             <span className="text-red-500 text-xs mt-1 block">{errors.circlePrivacy}</span>
           )}
         </div>
-        <div>
-          <label htmlFor="description" className="text-light mb-1 block text-sm font-medium">
+        <div className="mb-0">
+          <label htmlFor="description" className="text-text mb-1 block text-sm font-medium">
             {t("Description")}
           </label>
           <textarea
@@ -129,16 +131,27 @@ export default function CreateCircleModalPresentional({
 
       {/* Members */}
       <div className="mb-2">
-        <label className="text-light mb-1 block text-sm font-medium">
+        <label className="text-text mb-1 block text-sm font-medium">
           {t("Members")}
         </label>
         <Select
           isMulti
           key={membersKey}
           options={memberOptions}
+          value={selectedMembers}
           styles={customStyles}
-          placeholder="select members..."
-          onChange={setSelectedMembers}
+          onChange={newValue => {
+            // Prevent removing fixed members
+            setSelectedMembers([
+              ...newValue.filter(m => !m.isFixed),
+              ...selectedMembers.filter(m => m.isFixed)
+            ]);
+          }}
+          // Custom rendering to disable remove for fixed members
+          components={{
+            MultiValueRemove: props =>
+              props.data.isFixed ? null : <components.MultiValueRemove {...props} />
+          }}
         />
         {errors?.members && (
           <span className="text-red-500 text-xs mt-1 block">{errors.members}</span>
@@ -147,17 +160,56 @@ export default function CreateCircleModalPresentional({
 
       {/* Interests */}
       <div className="mb-2">
-        <label className="text-light mb-1 block text-sm font-medium">
+        <label className="text-text mb-1 block text-sm font-medium">
           {t("Interests")}
         </label>
-        <Select
-          isMulti
-          key={interestsKey}
-          options={interestOptions}
-          styles={customStyles}
-          placeholder="select interests..."
-          onChange={setSelectedInterests}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Search interests..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className={`${inputStyles} ${'mb-2'}`}
+          />
+          <div className="flex flex-wrap gap-2">
+            {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
+            {[
+              // Show selected interests that match the filter (max 10)
+              ...filteredInterests.filter(interest => selectedInterests.includes(interest.value)),
+              // Fill up to 10 with unselected filtered interests
+              ...filteredInterests.filter(interest => !selectedInterests.includes(interest.value)).slice(0, 10 - filteredInterests.filter(interest => selectedInterests.includes(interest.value)).length)
+            ].slice(0, 10).map(interest => (
+              <Chip
+                key={interest.value}
+                label={interest.label}
+                color={"primary"}
+                variant={selectedInterests.includes(interest.value) ? "filled" : "outlined"}
+                onClick={() => {
+                  setSelectedInterests(prev =>
+                    prev.includes(interest.value)
+                      ? prev.filter(i => i !== interest.value)
+                      : [...prev, interest.value]
+                  );
+                  setSearch("");
+                }}
+              />
+            ))}
+            {/* Show any selected interests that are not in the filteredInterests (e.g. from previous search) */}
+            {selectedInterests
+              .filter(sel => !filteredInterests.some(interest => interest.value === sel))
+              .map(sel => (
+                <Chip
+                  key={sel}
+                  label={sel}
+                  color={"primary"}
+                  variant="filled"
+                  onClick={() => {
+                    setSelectedInterests(prev => prev.filter(i => i !== sel));
+                  }}
+                />
+              ))}
+          </div>
+        </div>
         {errors?.interests && (
           <span className="text-red-500 text-xs mt-1 block">{errors.interests}</span>
         )}
@@ -166,7 +218,7 @@ export default function CreateCircleModalPresentional({
 
       {/* Image Upload */}
       <div className="mb-2">
-        <label htmlFor="circleImages" className="text-light mb-1 block text-sm font-medium">
+        <label htmlFor="circleImages" className="text-text mb-1 block text-sm font-medium">
           {t("Circle Image")}
         </label>
 
@@ -216,7 +268,7 @@ export default function CreateCircleModalPresentional({
               <button
                 type="button"
                 onClick={() => removeImage(0)}
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-text opacity-0 transition-opacity group-hover:opacity-100"
               >
                 ×
               </button>
@@ -266,11 +318,11 @@ export default function CreateCircleModalPresentional({
       <div className="pt-2">
         <button
           type="submit"
-          className="bg-main hover:bg-opacity-90 w-full rounded-2xl py-3 font-bold text-white transition-colors flex items-center justify-center shadow-[0_4px_12px_rgba(255,107,139,0.3)]"
+          className="bg-main w-full rounded-2xl py-3 font-bold text-text flex items-center justify-center shadow-main transition-all duration-300 hover:bg-primary"
           disabled={isLoading}
         >
           {isLoading && (
-            <Loader className="animate-spin h-5 w-5 mr-2 text-white" />
+            <Loader className="animate-spin h-5 w-5 mr-2 text-text" />
           )}
           {t("Create Circle")}
         </button>

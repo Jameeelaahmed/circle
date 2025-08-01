@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export const ArcCard = ({ name, title, since,imgSrc }) => {
+export const ArcCard = ({ name, title, since, imgSrc }) => {
   const boundingRef = useRef(null);
 
   return (
@@ -24,14 +24,14 @@ export const ArcCard = ({ name, title, since,imgSrc }) => {
           ev.currentTarget.style.setProperty("--x", `${xPercentage * 100}%`);
           ev.currentTarget.style.setProperty("--y", `${yPercentage * 100}%`);
         }}
-        className="group relative grid w-[300px] grid-rows-[250px_120px_40px] rounded-md bg-[#1f1f1f] p-4 text-accent transition-transform ease-out hover:[transform:rotateX(var(--x-rotation))_rotateY(var(--y-rotation))_scale(1.1)]"
+        className="group relative grid w-[300px] grid-rows-[250px_120px_40px] rounded-md bg-white/5 backdrop-blur-3xl p-4 text-primary transition-transform ease-out hover:[transform:rotateX(var(--x-rotation))_rotateY(var(--y-rotation))_scale(1.1)]"
       >
         <figure>
-          <img src={imgSrc} alt="" className="h-[250px] w-full object-cover rounded-md object-top"/>
+          <img src={imgSrc} alt="" className="h-[250px] w-full object-cover rounded-md object-top" />
         </figure>
         <div className="pt-4">
-          <p className="text-3xl font-bold">{name}</p>
-          <p className="text-xl">{title}</p>
+          <p className="text-2xl font-bold">{name}</p>
+          <p className="text-xl text-primary/85 mt-1">{title}</p>
         </div>
         <footer className="flex items-end">
           <p className="flex rounded-sm border border-current px-1 py-px text-[9px] uppercase">

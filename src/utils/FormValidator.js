@@ -61,9 +61,9 @@ export function validateForm(fields) {
     if (err) errors.circleName = err;
   }
   // Type (select)
-  if ('type' in fields) {
-    if (!fields.type || !fields.type.trim()) {
-      errors.type = 'Please select circle type';
+  if ('circleType' in fields) {
+    if (!fields.circleType || !fields.circleType.trim()) {
+      errors.circleType = 'Please select circle type';
     }
   }
   // Privacy (select)

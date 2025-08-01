@@ -15,11 +15,11 @@ export default function UserDropdownPresentational({
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
-                className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 transition-all duration-200"
+                className="text-primary hover:bg-primary/20 flex items-center space-x-2 rounded-lg bg-inputsBg px-3 py-2 transition-all duration-200"
             >
                 {/* Primary colored circular letter */}
                 <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-                    <span className="text-sm font-bold text-white">{user.email.charAt(0).toUpperCase()}</span>
+                    <span className="text-sm font-bold text-white">{(user && user.charAt(0).toUpperCase()) || ""}</span>
                 </div>
 
                 <ChevronDown
@@ -36,7 +36,7 @@ export default function UserDropdownPresentational({
                     y: isDropdownOpen ? 0 : -10,
                 }}
                 transition={{ duration: 0.2 }}
-                className={`bg-main/90 absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-white/10 shadow-lg backdrop-blur-sm ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+                className={`bg-main absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-white/10 shadow-lg ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
             >
                 {dropdownItems.map((item, index) =>
                     item.onClick ? (

@@ -64,7 +64,7 @@ function LoginFormPresentational({
                                 onChange={(e) => setEmail(e.target.value)}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             {errors.email && (
                                 <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>
@@ -79,7 +79,7 @@ function LoginFormPresentational({
                                 onChange={(e) => setPassword(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-dark h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             <button
                                 type="button"
@@ -94,7 +94,8 @@ function LoginFormPresentational({
                             )}
                         </div>
 
-                        <div className="flex items-center justify-between text-right">
+                        <div>
+
                             <Button
                                 variant={"primary"}
                                 size={"xlarge"}
@@ -103,13 +104,16 @@ function LoginFormPresentational({
                             >
                                 {isLoading ? "Signing in..." : "Login"}
                             </Button>
+                        </div>
+                        <div>
                             <Link
                                 to={"/forget-password"}
-                                className="text-text cursor-pointer hover:underline"
+                                className="text-text text-right block cursor-pointer hover:underline"
                             >
                                 forget password?
                             </Link>
                         </div>
+                        {/* </div> */}
                     </form>
 
                     <div

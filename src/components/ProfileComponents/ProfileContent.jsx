@@ -1,13 +1,11 @@
-import React from "react";
 import AboutTab from "./AboutTab";
 import CirclesTab from "./CirclesTab";
-import { COLORS } from "../../constants";
 
 const ProfileContent = ({ activeTab, profileData }) => {
   // console.log(profileData);
 
   return (
-    <div style={{ backgroundColor: COLORS.dark }}>
+    <div className="bg-white/5 backdrop-blur-2xl mb-8 rounded-b-2xl shadow-md">
       {activeTab === "about" && (
         <AboutTab
           interests={profileData.interests}

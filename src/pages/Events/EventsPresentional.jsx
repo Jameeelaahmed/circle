@@ -2,13 +2,10 @@
 import { ScheduleXCalendar } from "@schedule-x/react";
 // imgs
 import CalendarImg from "../../assets/images/calendar.png";
-// components
-import PollContainer from '../../components/ui/Modal/Poll/PollContainer';
 
 function EventsPresentional({ categoryColors, calendarApp }) {
     return (
         <>
-            <PollContainer />
             <div
                 className="flex h-screen w-full flex-col gap-6 overflow-hidden  px-6 pt-paddingTop pb-6"
                 style={{

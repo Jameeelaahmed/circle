@@ -1,31 +1,31 @@
-import React from "react";
-// import { COLORS, SHADOWS } from "../../constants";
 import { Users, Users2, Calendar, Camera } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Stats = () => {
+  const {t} = useTranslation();
   const stats = [
-    { icon: Users, value: 10000, label: "Active Users", color: "var(--color-primary)" },
+    { icon: Users, value: 10000, label: t("about.Active Users"), color: "var(--color-primary)" },
     {
       icon: Users2,
       value: 2000,
-      label: "Private Circles",
+      label: t("about.Private Circles"),
       color: "var(--color-secondary)",
     },
     {
       icon: Calendar,
       value: 3000,
-      label: "Events Created",
+      label: t("about.Events Created"),
       color: "var(--color-accent)",
     },
-    { icon: Camera, value: 5000, label: "Memories Shared", color: "#bad" },
+    { icon: Camera, value: 5000, label: t("about.Memories Shared"), color: "#bad" },
   ];
 
   return (
-    <section className="flex w-full flex-row flex-wrap items-start justify-center gap-8 mt-14">
+    <section className="flex w-full flex-row flex-wrap relative z-20 items-start justify-center gap-8 mt-14">
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="w-full rounded-2xl p-6 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:scale-105 lg:w-1/5"
+          className="w-full rounded-2xl p-6 text-center backdrop-blur-sm hover:animate-jelly will-change-transform lg:w-1/5"
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             border: "1px solid rgba(255, 255, 255, 0.1)",

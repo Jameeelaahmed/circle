@@ -1,83 +1,98 @@
-import React, { useState, useEffect } from "react";
-import ProfileHeader from "../../components/ProfileComponents/ProfileHeader";
-import ProfileCover from "../../components/ProfileComponents/ProfileCover";
-import ProfileInfo from "../../components/ProfileComponents/ProfileInfo";
-import ProfileStats from "../../components/ProfileComponents/ProfileStats";
-import ProfileTabs from "../../components/ProfileComponents/ProfileTabs";
-import ProfileContent from "../../components/ProfileComponents/ProfileContent";
+import { useState, useEffect } from "react";
 import { setProfileData } from "../../features/userProfile/profileSlice";
-import { COLORS, FONTS } from "../../constants";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getUserProfile } from "../../fire_base/profileController/profileController";
-import { auth } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
 import { useSelector } from "react-redux";
-
+import ProfilePresentational from "./profilepresentational";
+import {
+  
+  arrayUnion,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { getUserInfo } from "../../features/user/userSlice";
 const ProfilePage = () => {
+  const profileData = useSelector((state) => state.profileData);
+  const userInfo = useSelector(getUserInfo);
   const [isFollowing, setIsFollowing] = useState(false);
+
   const [activeTab, setActiveTab] = useState("about");
   const [showEditMode, setShowEditMode] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isProfileMyProfile, setIsProfileMyProfile] = useState(false);
   const dispatch = useDispatch();
-  const profileData = useSelector((state) => state.profileData);
   const { profileId } = useParams();
 
   useEffect(() => {
-    const fitchProfile = async () => {
+    const fetchProfile = async () => {
       const profile = await getUserProfile(profileId);
-
+      console.log(profile)
       dispatch(setProfileData(profile));
-      console.log(profileData);
 
       if (auth.currentUser.uid === profileId) {
         setIsProfileMyProfile(true);
       }
     };
-    fitchProfile();
+
+    fetchProfile();
   }, [profileId]);
 
-  const handleFollow = () => {
+  useEffect(() => {
+    if (!profileData?.id || !profileData.connectionRequests || !userInfo?.uid)
+      return;
+
+    setIsFollowing(
+      profileData.connectionRequests.some((user) => user.uid === userInfo.uid),
+    );
+  }, [profileData.connectionRequests, userInfo?.uid]);
+
+  const handleFollow = async () => {
     setIsFollowing(!isFollowing);
+    const userRef = doc(db, "users", profileId);
+    if (isFollowing) {
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        const requests = data.connectionRequests || [];
+
+        const updatedRequests = requests.filter(
+          (req) => req.uid !== userInfo.uid,
+        );
+
+        await updateDoc(userRef, {
+          connectionRequests: updatedRequests,
+        });
+      }
+    } else {
+      await updateDoc(userRef, {
+        ["connectionRequests"]: arrayUnion({
+          email: userInfo.email,
+          uid: userInfo.uid,
+          username: userInfo.username,
+          sentAt: Timestamp.now(),
+        }),
+      });
+    }
   };
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundColor: COLORS.darker,
-        fontFamily: FONTS.body,
-        color: COLORS.text,
+    <ProfilePresentational
+      {...{
+        showMobileMenu,
+        setShowMobileMenu,
+        profileData,
+        isProfileMyProfile,
+        isFollowing,
+        handleFollow,
+        showEditMode,
+        setShowEditMode,
+        activeTab,
+        setActiveTab,
       }}
-    >
-      <ProfileHeader
-        showMobileMenu={showMobileMenu}
-        setShowMobileMenu={setShowMobileMenu}
-      />
-
-      <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="relative">
-          <ProfileCover
-            coverImage={profileData.coverPhoto}
-            isProfileMyProfile={isProfileMyProfile}
-          />
-
-          <ProfileInfo
-            isProfileMyProfile={isProfileMyProfile}
-            profileData={profileData}
-            isFollowing={isFollowing}
-            handleFollow={handleFollow}
-            showEditMode={showEditMode}
-            setShowEditMode={setShowEditMode}
-          />
-
-          <ProfileStats stats={profileData.stats} />
-        </div>
-
-        <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-
-        <ProfileContent activeTab={activeTab} profileData={profileData} />
-      </div>
-    </div>
+    />
   );
 };
 

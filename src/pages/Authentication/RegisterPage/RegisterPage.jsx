@@ -4,7 +4,7 @@ import RegisterFormContainer from "../../../components/AuthForms/Register/Regist
 
 function RegisterPage() {
   return (
-    <div className="flex flex-col lg:flex-row h-screen w-screen overflow-x-hidden bg-black">
+    <div className="flex flex-col lg:flex-row h-screen w-screen overflow-x-hidden">
       {/* Left Half - Background Paths and Avatars */}
       <div className="relative w-1/2 overflow-hidden">
         <IrregularCirclePaths />
@@ -12,7 +12,7 @@ function RegisterPage() {
       </div>
 
       {/* Right Half - Clean Registration Form */}
-      <div className="flex w-full lg:w-1/2  items-center justify-center bg-black">
+      <div className="flex w-full lg:w-1/2  items-center justify-center ">
         <RegisterFormContainer />
       </div>
     </div>

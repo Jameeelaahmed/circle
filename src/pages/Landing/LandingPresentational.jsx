@@ -1,7 +1,6 @@
 // libs
 import { motion as Motion } from "framer-motion";
 // components
-import LandingIrregularCirclePaths from "../../components/ui/IrregularCirclePathes/LandingIrregularCirclePaths";
 import FloatingAvatarContainer from "../../components/ui/FloatingAvatars/FloatingAvatarContainer";
 import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer";
 import Modal from "../../components/ui/Modal/Modal"
@@ -25,28 +24,28 @@ export default function LandingPresentational({
     <div className="bg-white flex h-screen flex-col overflow-hidden">
       {/* <div className="h-screen w-full flex-col items-center justify-center px-4 md:flex-row overflow-hidden"> */}
       <Motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="z-10 flex w-full flex-col items-center pt-paddingTop p-8 min-h-screen"
       >
         <div className="max-w-xl">
           <Motion.h1
             className="mb-6 text-4xl font-bold md:text-6xl text-center"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <span className="text-white">{t("From we should..")}</span>
-            <span className="from-secondary to-primary block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
+            <span className="bg-gradient-to-l from-secondary to-primary block bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
               {t("to we did!")}
             </span>
           </Motion.h1>
 
           <Motion.p
             className="mb-8 text-lg leading-relaxed text-gray-300 md:text-xl text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             {t(
@@ -55,8 +54,8 @@ export default function LandingPresentational({
           </Motion.p>
 
           <Motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-center"
           >
@@ -65,7 +64,7 @@ export default function LandingPresentational({
                 setAuthFormType("login");
                 openCCircleModal();
               }}
-              className="bg-primary hover:shadow-primary/30 rounded-lg px-6 py-3 font-medium text-white transition-all hover:shadow-lg"
+              className="bg-main shadow-main rounded-lg px-6 py-3 border border-primary font-medium text-white transition-all cursor-pointer hover:shadow-none hover:scale-95"
             >
               {t("Create Circle")}
             </button>
@@ -99,8 +98,8 @@ export default function LandingPresentational({
       />
       {/* Right: Child Development Section */}
       <Motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="z-10 flex w-full justify-center p-8 md:w-1/2"
       >

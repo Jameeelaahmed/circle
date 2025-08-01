@@ -14,6 +14,8 @@ import Explore from "../pages/Explore/Explore";
 import ProfilePage from "../pages/profile/profile.jsx";
 import Memories from "../pages/Memories";
 import CirclesPageContainer from "../pages/CirclesPage/CirclesPageContainer.jsx";
+import CirclePageContainer from "../pages/CirlclePage/CirclePageContainer.jsx";
+import MemoryUploadPage from "../pages/Memories/AddMemories.jsx";
 const routes = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -26,12 +28,14 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: "circles", element: <CirclesPageContainer /> },
+      { path: "circles/:circleId", element: <CirclePageContainer /> },
       { path: "payments", element: <Payments /> },
       { path: "events", element: <EventsContainer /> },
       { path: "about", element: <AboutUs /> },
       { path: "explore", element: <Explore /> },
       // "events/:cirlceId/:eventId/memories"
-      {path:"memories",element:<Memories/>}
+      { path: "circles/:circleId/memories", element: <Memories /> },
+      { path: "circles/:circleId/memories/add", element: <MemoryUploadPage /> },
     ],
   },
   {

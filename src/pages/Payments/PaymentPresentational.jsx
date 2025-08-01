@@ -1,26 +1,24 @@
+import { useTranslation } from "react-i18next";
 import GlowCardContainer from "../../components/ui/Payments/GlowCardContainer";
 import DarkVeil from "./DarkVeil";
 
 function PaymentPresentational({ cards }) {
+  const {t} = useTranslation();
   return (
     <>
       <div
         style={{
           width: "100%",
-          height: "600px",
+          height: "calc(100vh + 64px)",
           position: "absolute",
           zIndex: -1,
-          top: "50%",
         }}
       >
         <DarkVeil />
       </div>
-      <section className="mt-4 mb-10">
-        <h1 className="text-primary mb-10 text-center text-2xl font-semibold">
-          Pricing
-        </h1>
-        <p className="mb-10 text-center text-4xl font-semibold">
-          Choose Your Circle. Unlock the Experience.
+      <section className="mt-[64px] mb-10">
+        <p className="mb-10 pt-10 text-center text-4xl font-semibold">
+          {t("payment.Choose Your Circle. Unlock the Experience.")}
         </p>
         <div className="mx-16 grid grid-cols-1 justify-center gap-10 select-none md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
