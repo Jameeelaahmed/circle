@@ -7,11 +7,24 @@ const VoiceMessagePlayer = ({ audioData, isMe, duration: providedDuration }) => 
     const [duration, setDuration] = useState(providedDuration || 0);
     const [currentTime, setCurrentTime] = useState(0);
     const [playbackSpeed, setPlaybackSpeed] = useState(1);
-    const [waveformBars, setWaveformBars] = useState(Array(20).fill(0.3));
+    const [waveformBars, setWaveformBars] = useState(() =>
+        Array(40).fill(0).map(() => Math.random() * 0.6 + 0.2)
+    );
     const audioRef = useRef(null);
     const animationRef = useRef(null);
+    const originalWaveformRef = useRef(
+        Array(40).fill(0).map(() => Math.random() * 0.6 + 0.2)
+    );
 
     const speeds = [1, 1.25, 1.5, 2];
+
+    // Initialize with proper waveform on mount
+    useEffect(() => {
+        // Set initial waveform pattern
+        const initialPattern = Array(40).fill(0).map(() => Math.random() * 0.6 + 0.2);
+        setWaveformBars(initialPattern);
+        originalWaveformRef.current = initialPattern;
+    }, [audioData]); // Re-initialize when audioData changes
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -20,19 +33,24 @@ const VoiceMessagePlayer = ({ audioData, isMe, duration: providedDuration }) => 
             if (!audioRef.current || duration === 0) return;
 
             const progress = currentTime / duration;
-            const activeBars = Math.floor(progress * 20);
+            const activeBars = Math.floor(progress * 40);
 
-            setWaveformBars(prev =>
-                prev.map((_, index) => {
+            setWaveformBars(prev => {
+                if (!Array.isArray(prev) || prev.length !== 40) {
+                    return originalWaveformRef.current;
+                }
+
+                return prev.map((originalHeight, index) => {
+                    const baseHeight = originalWaveformRef.current[index] || originalHeight;
                     if (index < activeBars) {
-                        return 0.8; // Active bars
+                        return Math.max(baseHeight, 0.8); // Active bars - use original height or 0.8, whichever is higher
                     } else if (index === activeBars) {
-                        return 0.6; // Current playing bar
+                        return Math.max(baseHeight, 0.6); // Current playing bar
                     } else {
-                        return 0.3; // Inactive bars
+                        return baseHeight; // Inactive bars keep original height
                     }
-                })
-            );
+                });
+            });
         };
 
         const handleLoadedMetadata = () => {
@@ -198,8 +216,9 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 200px;
-    max-width: 280px;
+    width:100%
+    // min-width: 200px;
+    // max-width: 280px;
   }
 
   .play-button {

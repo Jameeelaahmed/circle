@@ -52,7 +52,7 @@ export default function CreatePollModalPresentational({
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-1">
             {options.map((option, index) => (
               <Input
                 key={index}
@@ -79,13 +79,13 @@ export default function CreatePollModalPresentational({
         </div>
 
         {/* Expiration Date */}
-        <div className="mt-6">
+        <div className="">
           <label className="text-light mb-2 block text-lg font-medium">
             {t("Expire Date")}
           </label>
           <input
             type="date"
-            className="bg-dark focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
+            className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
             value={expireDate}
             onChange={(e) => setExpireDate(e.target.value)}
             min={new Date().toISOString().split("T")[0]} // disables past dates
@@ -93,10 +93,8 @@ export default function CreatePollModalPresentational({
         </div>
 
         {/* Submit */}
-        <div className="pt-2">
-          <div className="flex justify-end relative translate-y-[50%] z-10">
-            <SendBtn />
-          </div>
+        <div className="flex justify-end relative translate-y-[50%] z-10">
+          <SendBtn />
         </div>
       </form>
     </div>
