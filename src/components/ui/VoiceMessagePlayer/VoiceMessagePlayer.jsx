@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
+import Skeleton from "@mui/material/Skeleton";
 
 const VoiceMessagePlayer = ({ audioData, isMe, duration: providedDuration }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [duration, setDuration] = useState(providedDuration || 0);
     const [currentTime, setCurrentTime] = useState(0);
     const [playbackSpeed, setPlaybackSpeed] = useState(1);
+    const [isLoading, setIsLoading] = useState(!providedDuration || providedDuration === 0);
     const [waveformBars, setWaveformBars] = useState(() =>
         Array(40).fill(0).map(() => Math.random() * 0.6 + 0.2)
     );
@@ -63,6 +65,7 @@ const VoiceMessagePlayer = ({ audioData, isMe, duration: providedDuration }) => 
             } else {
                 console.warn('No valid duration available');
             }
+            setIsLoading(false); // Audio metadata loaded
         };
 
         const handleTimeUpdate = () => {
@@ -175,38 +178,76 @@ const VoiceMessagePlayer = ({ audioData, isMe, duration: providedDuration }) => 
                 preload="metadata"
             />
 
-            <div className="voice-player">
-                {/* Play/Pause Button */}
-                <button className="play-button" onClick={togglePlayPause}>
-                    {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                </button>
-
-                {/* Waveform */}
-                <div className="waveform-container">
-                    <div className="waveform">
-                        {waveformBars.map((amplitude, index) => (
-                            <div
-                                key={index}
-                                className="bar"
-                                style={{
-                                    height: `${Math.max(3, amplitude * 24)}px`,
-                                }}
-                                onClick={() => handleWaveformClick(index)}
-                            />
-                        ))}
+            {isLoading ? (
+                <div className="voice-player">
+                    {/* Loading Skeleton */}
+                    <Skeleton
+                        sx={{ bgcolor: isMe ? "rgba(255, 255, 255, 0.2)" : "var(--color-secondary)" }}
+                        animation="wave"
+                        variant="circular"
+                        width={32}
+                        height={32}
+                    />
+                    <div className="waveform-container">
+                        <Skeleton
+                            sx={{ bgcolor: isMe ? "rgba(255, 255, 255, 0.2)" : "var(--color-secondary)" }}
+                            animation="wave"
+                            variant="rounded"
+                            width="100%"
+                            height={32}
+                        />
+                    </div>
+                    <div className="controls">
+                        <Skeleton
+                            sx={{ bgcolor: isMe ? "rgba(255, 255, 255, 0.2)" : "var(--color-secondary)" }}
+                            animation="wave"
+                            variant="text"
+                            width={30}
+                            height={12}
+                        />
+                        <Skeleton
+                            sx={{ bgcolor: isMe ? "rgba(255, 255, 255, 0.2)" : "var(--color-secondary)" }}
+                            animation="wave"
+                            variant="rounded"
+                            width={24}
+                            height={16}
+                        />
                     </div>
                 </div>
-
-                {/* Dynamic Time Display: Duration when stopped, Counter when playing */}
-                <div className="controls">
-                    <span className="duration">
-                        {isPlaying ? formatTime(currentTime) : formatTime(duration)}
-                    </span>
-                    <button className="speed-button" onClick={handleSpeedChange}>
-                        {playbackSpeed}x
+            ) : (
+                <div className="voice-player">
+                    {/* Play/Pause Button */}
+                    <button className="play-button" onClick={togglePlayPause}>
+                        {isPlaying ? <Pause size={16} /> : <Play size={16} />}
                     </button>
+
+                    {/* Waveform */}
+                    <div className="waveform-container">
+                        <div className="waveform">
+                            {waveformBars.map((amplitude, index) => (
+                                <div
+                                    key={index}
+                                    className="bar"
+                                    style={{
+                                        height: `${Math.max(3, amplitude * 24)}px`,
+                                    }}
+                                    onClick={() => handleWaveformClick(index)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Dynamic Time Display: Duration when stopped, Counter when playing */}
+                    <div className="controls">
+                        <span className="duration">
+                            {isPlaying ? formatTime(currentTime) : formatTime(duration)}
+                        </span>
+                        <button className="speed-button" onClick={handleSpeedChange}>
+                            {playbackSpeed}x
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
         </StyledWrapper>
     );
 };
