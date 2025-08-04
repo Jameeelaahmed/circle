@@ -1,10 +1,10 @@
-import { 
-    getFirestore, 
-    doc, 
-    deleteDoc, 
-    updateDoc, 
-    arrayRemove, 
-    collection, 
+import {
+    getFirestore,
+    doc,
+    deleteDoc,
+    updateDoc,
+    arrayRemove,
+    collection,
     getDocs
 } from "firebase/firestore";
 
@@ -17,7 +17,7 @@ import {
  */
 export async function leaveCircle(circleId, userId, circle) {
     const db = getFirestore();
-    
+
     try {
         // Get all members of the circle
         const membersColRef = collection(db, "circles", circleId, "members");
@@ -67,7 +67,7 @@ export async function leaveCircle(circleId, userId, circle) {
         return {
             success: true,
             shouldRedirect: true,
-            message: isLeavingUserAdmin && otherMembers.length > 0 
+            message: isLeavingUserAdmin && otherMembers.length > 0
                 ? `You have left the circle. Admin privileges have been transferred to ${otherMembers[Math.floor(Math.random() * otherMembers.length)].username}.`
                 : "You have successfully left the circle."
         };
@@ -97,6 +97,6 @@ export function canLeaveCircle(userId, members) {
 
     // For now, all members can leave. Add additional business rules here if needed
     // Example: Prevent leaving if user is the only admin and there are other members
-    
+
     return { canLeave: true, reason: null };
 }

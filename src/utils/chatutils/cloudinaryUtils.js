@@ -94,16 +94,18 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             mimeType: uploadResult.format ? `audio/${uploadResult.format}` : 'audio/webm',
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                id: replyTo.id,
+                id: replyTo.id || replyTo.messageId,
                 messageId: replyTo.messageId || replyTo.id,
                 senderId: replyTo.senderId,
                 senderName: replyTo.senderName,
-                text: replyTo.text,
-                messageType: replyTo.messageType,
+                text: replyTo.text || '',
+                messageType: replyTo.messageType || 'text',
             } : null,
         };
 
+        console.log('Sending audio message to Firestore:', messageData);
         const docRef = await addDoc(collection(db, "circles", circleId, "chat"), messageData);
+        console.log('Audio message sent successfully with ID:', docRef.id);
 
         return {
             messageId: docRef.id,

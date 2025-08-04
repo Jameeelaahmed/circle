@@ -18,6 +18,7 @@ export function useVoiceRecording() {
     const stopRecording = useCallback(() => {
         return new Promise((resolve) => {
             isCancelledRef.current = false;
+            console.log('Stopping recording, current duration:', recordingTimeRef.current, 'seconds');
 
             if (mediaRecorder && mediaRecorder.state === 'recording') {
                 // Store the resolve function to call it when recording stops
@@ -31,6 +32,13 @@ export function useVoiceRecording() {
             setIsRecording(false);
             setMediaRecorder(null);
             setAudioStream(null);
+
+            // Clear the recording timer
+            if (recordingTimer.current) {
+                clearInterval(recordingTimer.current);
+                recordingTimer.current = null;
+                console.log('Recording timer cleared');
+            }
 
             if (recordingTimeout.current) {
                 clearTimeout(recordingTimeout.current);
@@ -95,6 +103,10 @@ export function useVoiceRecording() {
             recorder.onstop = async () => {
                 console.log('Recording stopped, chunks:', recordingChunks.current.length);
 
+                // Capture duration before cleaning up
+                const capturedRecordingTime = recordingTimeRef.current;
+                console.log('Captured recording duration before cleanup:', capturedRecordingTime, 'seconds');
+
                 // Clean up stream and timers
                 stream.getTracks().forEach(track => track.stop());
                 setAudioStream(null);
@@ -121,7 +133,7 @@ export function useVoiceRecording() {
 
                 // Only return data if it wasn't cancelled
                 if (recordingChunks.current.length > 0 && !isCancelledRef.current) {
-                    const capturedRecordingTime = recordingTimeRef.current;
+                    console.log('Recording completed with duration:', capturedRecordingTime, 'seconds');
                     const recordingData = { audioBlob, duration: capturedRecordingTime };
 
                     if (recordingPromiseRef.current) {
@@ -129,6 +141,7 @@ export function useVoiceRecording() {
                         recordingPromiseRef.current = null;
                     }
                 } else {
+                    console.log('Recording cancelled or no chunks available');
                     if (recordingPromiseRef.current) {
                         recordingPromiseRef.current(null);
                         recordingPromiseRef.current = null;
@@ -141,9 +154,11 @@ export function useVoiceRecording() {
 
             setRecordingTime(0);
             recordingTimeRef.current = 0;
+            console.log('Starting recording timer');
             recordingTimer.current = setInterval(() => {
                 recordingTimeRef.current += 1;
                 setRecordingTime(prev => prev + 1);
+                console.log('Timer tick:', recordingTimeRef.current, 'seconds');
             }, 1000);
 
             recordingTimeout.current = setTimeout(() => {
@@ -161,6 +176,14 @@ export function useVoiceRecording() {
             setIsUploading(true);
             console.log('Sending voice message:', audioBlob.size, 'bytes, duration:', duration);
 
+            // Validate inputs
+            if (!audioBlob || audioBlob.size === 0) {
+                throw new Error('Invalid audio blob');
+            }
+            if (!circleId || !userId || !userName) {
+                throw new Error('Missing required parameters');
+            }
+
             await uploadAndSendAudio(
                 audioBlob,
                 duration,
@@ -176,6 +199,15 @@ export function useVoiceRecording() {
 
         } catch (error) {
             console.error('Error sending voice message:', error);
+            console.error('Error details:', {
+                audioBlob: audioBlob ? `${audioBlob.size} bytes` : 'null',
+                duration,
+                circleId,
+                userId,
+                userName,
+                replyTo,
+                error: error.message || error
+            });
             throw error;
         } finally {
             setIsUploading(false);

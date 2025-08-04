@@ -99,14 +99,28 @@ function ChatInputPresentational({
                             disabled={isRecording}
                         />
                         {hasText || isEditing ? (
-                            <SendBtn isEditing={isEditing} />
+                            <button
+                                type="submit"
+                                className="flex items-center justify-center w-12 h-12 bg-primary hover:bg-primary/80 rounded-full text-white transition-colors"
+                                title={isEditing ? "Save changes" : "Send message"}
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                                </svg>
+                            </button>
                         ) : (
                             <div className="flex items-center gap-2 relative" style={{ visibility: isRecording ? 'hidden' : 'visible' }}>
                                 {/* Media Upload Button with Dropup Menu */}
                                 <div className="relative" ref={mediaMenuRef}>
                                     {/* Dropup Menu - Context Menu Style */}
                                     {showMediaMenu && (
-                                        <div className="absolute bottom-full mb-2 right-0 bg-main shadow-lg border border-primary/20 rounded-lg py-1 min-w-[140px] z-50">
+                                        <div 
+                                            className="fixed bg-main shadow-lg border border-primary/20 rounded-lg py-1 min-w-[140px] z-[9999]"
+                                            style={{
+                                                bottom: '70px', // Position above the input area
+                                                right: '20px'   // Align with the right side
+                                            }}
+                                        >
                                             <button
                                                 onClick={handleCameraCapture}
                                                 className="w-full px-3 py-2 text-left hover:bg-primary/10 flex items-center gap-3 text-primary transition-colors"

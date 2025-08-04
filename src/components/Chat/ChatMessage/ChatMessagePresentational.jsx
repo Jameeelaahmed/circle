@@ -414,14 +414,14 @@ function ChatMessagePresentational({
                                             onClick={() => scrollToMessage && scrollToMessage(msg.replyTo.messageId || msg.replyTo.id)}
                                         >
                                             <div className="flex flex-col min-w-0">
-                                                <span className="font-semibold text-primary text-xs truncate max-w-[120px]">
+                                                <span className="font-semibold text-primary text-xs truncate max-w-[100px]">
                                                     {(msg.replyTo.senderId === msg.senderId)
                                                         ? (msg.senderId === currentUser?.id)
                                                             ? 'Replied to yourself'
                                                             : `Replied to ${msg.senderName || 'User'}`
                                                         : (msg.replyTo.senderName || 'User')}
                                                 </span>
-                                                <span className="text-xs text-white/80 truncate max-w-[180px]">
+                                                <span className="text-xs text-white/80 truncate max-w-[140px]">
                                                     {msg.replyTo.messageType === 'audio' ? '🎤 Voice message' :
                                                         msg.replyTo.messageType === 'image' ? '📷 Photo' :
                                                             msg.replyTo.messageType === 'video' ? '🎥 Video' :
