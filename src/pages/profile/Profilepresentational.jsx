@@ -19,10 +19,9 @@ const ProfilePresentational = ({
 }) => {
   return (
     <div
-      className="min-h-screen"
+      className="min-h-screen bg-main"
       style={{
         marginTop: "4rem",
-        backgroundColor: "var(--color-darker)",
         fontFamily: "var(--font-primary)",
         color: "var(--color-text)",
       }}

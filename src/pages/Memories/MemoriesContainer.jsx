@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import MemoriesPresentational from "./MemoriesPresentational.jsx";
+import { useNavigate, useParams } from "react-router";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../../firebase-config.js";
 const MemoriesGallery = () => {
   const [memories, setMemories] = useState([]);
   const [selectedMemory, setSelectedMemory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-
+  const navigate = useNavigate();
+  const { circleId } = useParams();
   const sampleMemories = [
     {
       id: 1,
@@ -66,22 +70,33 @@ const MemoriesGallery = () => {
   ];
 
   useEffect(() => {
-    setMemories(sampleMemories);
+    const getMemories = async () => {
+      const docRef = collection(db, "circles", circleId, "memories");
+      const res = await getDocs(docRef);
+
+      const memories = res.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(memories);
+      setMemories(memories);
+    };
+    getMemories();
   }, []);
 
   const filteredMemories = memories.filter((memory) => {
     const matchesSearch =
-      memory.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      memory.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      memory.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
+      memory.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      memory.description?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
 
   const handleFileUpload = async (event) => {
-    const files = event.target.files;
-    if (!files.length) return;
+    // const files = event.target.files;
+    // if (!files.length) return;
+
+    navigate(`/circles/${circleId}/memories/add`);
+    return;
 
     setIsUploading(true);
 

@@ -3,7 +3,9 @@ import Button from "../../components/ui/Buttons/Button";
 import PaymentPresentational from "./PaymentPresentational";
 import { loadStripe } from "@stripe/stripe-js";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 function PaymentContainer() {
+  const {t} = useTranslation();
   let stripePromise;
   const getStripe = () => {
     if (!stripePromise) {
@@ -30,28 +32,28 @@ function PaymentContainer() {
     {
       color: "#1e40af",
       icon: <UserIcon size={50} />,
-      header: "Explore & Connect",
-      price: <p className="mb-10 text-center text-5xl font-bold">Free</p>,
-      services: ["Join public Circles", "Up to 2 private Circles"],
+      header: t("payment.Explore & Connect"),
+      price: <p className="mb-10 text-center text-5xl font-bold">{t("payment.Free")}</p>,
+      services: [t("payment.Join Public Circles"), t("payment.Up to 2 private Circles")],
       actionBtn: (
         <Button size="large" variant="primary" classes={"mx-auto block"}>
-          Get Started
+          {t("payment.Get Started")}
         </Button>
       ),
     },
     {
       color: "#dc2626",
       icon: <ZapIcon size={50} />,
-      header: "More Circles, More Power",
+      header: t("payment.More Circles, More Power"),
       price: (
         <p className="mb-10 text-center text-5xl font-bold">
-          $4.99 <span className="text-base">/ month</span>
+          $4.99 <span className="text-base">/ {t("payment.month")}</span>
         </p>
       ),
       services: [
-        "Unlimited private Circles",
-        "Priority support",
-        "Up to 10GB storage",
+        t("payment.Unlimited private Circles"),
+        t("payment.Priority support"),
+        t("payment.Up to 10GB storage"),
       ],
       actionBtn: (
         <Button
@@ -60,28 +62,28 @@ function PaymentContainer() {
           classes={"mx-auto block"}
           handleClick={() => checkout("price_1RmDoZ4SCalKHrm25m0sglVh")}
         >
-          Subscribe Now
+          {t("payment.Subscribe Now")}
         </Button>
       ),
     },
     {
       color: "#059669",
       icon: <CrownIcon size={50} />,
-      header: "Circle+",
+      header: t("payment.Circle+"),
       price: (
         <p className="mb-10 text-center text-5xl font-bold">
-          $9.99 <span className="text-base">/ month</span>
+          $9.99 <span className="text-base">/ {t("payment.month")}</span>
         </p>
       ),
       services: [
-        "Host up to 1000 members per Circle",
-        "Analytics & engagement insights",
-        "Custom Circle branding",
-        "Scheduled hangouts & auto-reminders",
+        t("payment.Host up to 1000 members per Circle"),
+        t("payment.Analytics & engagement insights"),
+        t("payment.Custom Circle branding"),
+        t("payment.Scheduled hangouts & auto-reminders"),
       ],
       actionBtn: (
         <Button size="large" variant="primary" classes={"mx-auto block"}  handleClick={() => checkout("price_1RmDpH4SCalKHrm2w7ihyGY1")}>
-          Subscribe Now
+          {t("payment.Subscribe Now")}
         </Button>
       ),
     },
