@@ -4,6 +4,7 @@ import VoiceWaveform from "../../ui/VoiceWaveform/VoiceWaveform"
 import CameraView from "../../ui/CameraView/CameraViewPresentational"
 import CreatePollModalContainer from "../../ui/Modal/Poll/CreatePollModalContainer";
 import Modal from "../../ui/Modal/Modal";
+import Skeleton from "@mui/material/Skeleton";
 import { Mic, Paperclip, Camera, Image, BarChart3 } from "lucide-react"
 import { useEffect, useRef } from "react"
 
@@ -114,7 +115,7 @@ function ChatInputPresentational({
                                 <div className="relative" ref={mediaMenuRef}>
                                     {/* Dropup Menu - Context Menu Style */}
                                     {showMediaMenu && (
-                                        <div 
+                                        <div
                                             className="fixed bg-main shadow-lg border border-primary/20 rounded-lg py-1 min-w-[140px] z-[9999]"
                                             style={{
                                                 bottom: '70px', // Position above the input area
@@ -158,13 +159,25 @@ function ChatInputPresentational({
                                         {isUploading ? (
                                             uploadProgress.total > 1 ? (
                                                 <div className="flex flex-col items-center">
-                                                    <div className="w-5 h-5 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin"></div>
+                                                    <Skeleton
+                                                        sx={{ bgcolor: "var(--color-secondary)" }}
+                                                        animation="wave"
+                                                        variant="circular"
+                                                        width={20}
+                                                        height={20}
+                                                    />
                                                     <span className="text-[8px] mt-0.5 text-secondary/80">
                                                         {uploadProgress.current}/{uploadProgress.total}
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <div className="w-5 h-5 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin"></div>
+                                                <Skeleton
+                                                    sx={{ bgcolor: "var(--color-secondary)" }}
+                                                    animation="wave"
+                                                    variant="circular"
+                                                    width={20}
+                                                    height={20}
+                                                />
                                             )
                                         ) : (
                                             <Paperclip size={20} />

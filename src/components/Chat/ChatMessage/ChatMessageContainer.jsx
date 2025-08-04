@@ -5,6 +5,7 @@ import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
+import Skeleton from "@mui/material/Skeleton";
 
 // Components
 import ChatMessaagePresentational from "./ChatMessagePresentational";
@@ -194,11 +195,57 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
         setSelectedMessage(null);
     }
 
+    // Message skeleton component
+    const MessageSkeleton = ({ isMe }) => (
+        <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-3`}>
+            <div className={`max-w-[85%] sm:max-w-lg flex ${isMe ? 'items-end' : 'items-start'} gap-2`}>
+                {!isMe && (
+                    <Skeleton
+                        sx={{ bgcolor: "var(--color-inputsBg)" }}
+                        animation="wave"
+                        variant="circular"
+                        width={32}
+                        height={32}
+                    />
+                )}
+                <div className="flex flex-col gap-1">
+                    {!isMe && (
+                        <Skeleton
+                            sx={{ bgcolor: "var(--color-inputsBg)" }}
+                            animation="wave"
+                            variant="text"
+                            width={80}
+                            height={16}
+                        />
+                    )}
+                    <Skeleton
+                        sx={{ bgcolor: "var(--color-inputsBg)" }}
+                        animation="wave"
+                        variant="rounded"
+                        width={Math.random() * 200 + 100}
+                        height={40}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+
+    // Loading skeleton for messages
+    const MessagesLoadingSkeleton = () => (
+        <div className="px-4 py-2 space-y-3">
+            <MessageSkeleton isMe={false} />
+            <MessageSkeleton isMe={true} />
+            <MessageSkeleton isMe={false} />
+            <MessageSkeleton isMe={true} />
+            <MessageSkeleton isMe={false} />
+        </div>
+    );
+
     const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     return (
         <>
             {loading ? (
-                <div className="text-center text-gray-400 py-4">Loading messages...</div>
+                <MessagesLoadingSkeleton />
             ) : error ? (
                 <div className="text-center text-red-500 py-4">{error}</div>
             ) : (
