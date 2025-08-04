@@ -458,19 +458,11 @@ function ChatMessagePresentational({
                                         >
                                             {/* Message content */}
                                             {msg.messageType === 'audio' ? (
-                                                <>
-                                                    {console.log('Audio message data:', {
-                                                        duration: msg.duration,
-                                                        audioUrl: msg.audioUrl,
-                                                        mediaData: msg.mediaData,
-                                                        fullMsg: msg
-                                                    })}
-                                                    <VoiceMessagePlayer
-                                                        audioData={msg.audioUrl || msg.mediaData}
-                                                        isMe={isMe}
-                                                        duration={msg.duration}
-                                                    />
-                                                </>
+                                                <VoiceMessagePlayer
+                                                    audioData={msg.audioUrl || msg.mediaData}
+                                                    isMe={isMe}
+                                                    duration={msg.duration}
+                                                />
                                             ) : msg.messageType === 'image' ? (
                                                 <div className="flex flex-col">
                                                     <img

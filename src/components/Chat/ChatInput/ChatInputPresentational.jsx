@@ -114,7 +114,13 @@ function ChatInputPresentational({
                                 <div className="relative" ref={mediaMenuRef}>
                                     {/* Dropup Menu - Context Menu Style */}
                                     {showMediaMenu && (
-                                        <div className="absolute bottom-full mb-2 right-0 bg-main shadow-lg border border-primary/20 rounded-lg py-1 min-w-[140px] z-50">
+                                        <div 
+                                            className="fixed bg-main shadow-lg border border-primary/20 rounded-lg py-1 min-w-[140px] z-[9999]"
+                                            style={{
+                                                bottom: '70px', // Position above the input area
+                                                right: '20px'   // Align with the right side
+                                            }}
+                                        >
                                             <button
                                                 onClick={handleCameraCapture}
                                                 className="w-full px-3 py-2 text-left hover:bg-primary/10 flex items-center gap-3 text-primary transition-colors"
