@@ -1,44 +1,94 @@
 // libs
 import { useState, useEffect, useRef } from "react";
+import useContextMenu from "../../../hooks/chathooks/useContextMenu";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
 
-// components
+// Components
 import ChatMessaagePresentational from "./ChatMessagePresentational";
+import Modal from "../../ui/Modal/Modal";
+import MessageInfoModalContainer from "../../ui/Modal/MessageInfoModal/MessageInfoModalContainer";
+import TypingIndicatorContainer from "../TypingIndicator/TypingIndicatorContainer";
 
-// func
-import { getMessageRadius } from "../../../utils/MessageBorderDir";
-function ChatMessageContainer({ circleId }) {
+// Utils and Hooks
+import { getMessageRadius } from "../../../utils/chatutils/MessageBorderDir";
+import {
+    getUserColor,
+    canEditMessage,
+    formatMessageDate,
+    shouldShowDateSeparator,
+    scrollToMessage,
+    handleDownloadMedia
+} from "../../../utils/chatutils/messageUtils";
+import {
+    handleReact,
+    handleDeleteMessage,
+    handleEditMessage,
+    handleOpenModal,
+    handleCloseModal
+} from "../../../utils/chatutils/messageActions";
+import { useTypingIndicator } from "../../../hooks/chathooks/useTypingIndicator";
+import { useAutoScroll } from "../../../hooks/chathooks/useAutoScroll";
+import { useMessageSeen } from "../../../hooks/chathooks/useMessageSeen";
+function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
     const messagesEndRef = useRef(null);
+    const deleteModalRefs = useRef({});
+    const messageRefs = useRef({});
+    const containerRef = useRef(null);
+    const messageInfoModalRef = useRef(null);
     const { userName, userId } = useAuth();
     const currentUser = { id: userId, username: userName };
     const { i18n } = useTranslation();
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState(null);
 
-    const userColors = [
-        'text-primary',
-        'text-secondary',
-        'text-accent',
-        'text-blue-400',
-        'text-purple-400',
-        'text-pink-400',
-        'text-yellow-400',
-        'text-green-400',
-        'text-cyan-400',
-    ];
+    // Custom hooks for complex functionality
+    const { typingUsers } = useTypingIndicator(circleId, userId);
+    useAutoScroll(messages, messagesEndRef);
+    useMessageSeen(circleId, userId, userName, messageRefs, messages);
 
-    function getUserColor(userId) {
-        let hash = 0;
-        for (let i = 0; i < userId.length; i++) {
-            hash = userId.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        return userColors[Math.abs(hash) % userColors.length];
-    }
+    const {
+        menu,
+        setMenu,
+        menuDirection,
+        handleContextMenu: handleContextMenuRaw
+    } = useContextMenu();
 
+    // Context menu handler
+    const handleContextMenu = (e, msg) => {
+        handleContextMenuRaw(e, msg);
+    };
+
+    // Wrapper functions that use our utility functions
+    const handleReactWrapper = (messageId, emoji) =>
+        handleReact(messageId, emoji, circleId, userId, setError);
+
+    const handleDeleteMessageWrapper = (messageId, deleteOption) =>
+        handleDeleteMessage(messageId, deleteOption, circleId, userId, setError);
+
+    const handleEditMessageWrapper = (message) =>
+        handleEditMessage(message, setEditingMessage);
+
+    const handleOpenModalWrapper = (messageId) =>
+        handleOpenModal(messageId, deleteModalRefs);
+
+    const handleCloseModalWrapper = (messageId) =>
+        handleCloseModal(messageId, deleteModalRefs);
+
+    const scrollToMessageWrapper = (messageId) =>
+        scrollToMessage(messageId, messageRefs);
+
+    const getUserColorWrapper = (userId) =>
+        getUserColor(userId);
+
+    const canEditMessageWrapper = (message) =>
+        canEditMessage(message, userId);
+
+    // *REAL TIME MESSAGING
     useEffect(() => {
         if (!circleId) return;
         setLoading(true);
@@ -49,20 +99,100 @@ function ChatMessageContainer({ circleId }) {
         );
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+            const allMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const filteredMessages = allMessages.filter(msg => {
+                const deletedFor = msg.deletedFor || [];
+                return !deletedFor.includes(userId);
+            });
+            setMessages(filteredMessages);
             setLoading(false);
         }, (err) => {
             setError(err.message);
             setLoading(false);
         });
         return unsubscribe;
-    }, [circleId]);
+    }, [circleId, userId]);
 
+    //* Prevent scrolling when context menu is open
     useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        if (menu.visible) {
+            // Store original styles
+            const originalBodyOverflow = document.body.style.overflow;
+            const originalHtmlOverflow = document.documentElement.style.overflow;
+
+            // Prevent scroll event handler
+            const preventScroll = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            };
+
+            // Prevent touch scroll on mobile
+            const preventTouchMove = (e) => {
+                e.preventDefault();
+            };
+
+            // Disable scrolling completely
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+
+            // Add event listeners to prevent scroll
+            window.addEventListener('scroll', preventScroll, { passive: false });
+            window.addEventListener('wheel', preventScroll, { passive: false });
+            window.addEventListener('touchmove', preventTouchMove, { passive: false });
+            document.addEventListener('scroll', preventScroll, { passive: false });
+
+            // Cleanup function to restore scrolling
+            return () => {
+                document.body.style.overflow = originalBodyOverflow;
+                document.documentElement.style.overflow = originalHtmlOverflow;
+
+                // Remove event listeners
+                window.removeEventListener('scroll', preventScroll);
+                window.removeEventListener('wheel', preventScroll);
+                window.removeEventListener('touchmove', preventTouchMove);
+                document.removeEventListener('scroll', preventScroll);
+            };
         }
-    }, [messages]);
+    }, [menu.visible]);
+
+    function handleAction(action, message) {
+        const targetMessage = message || menu.message;
+        if (!targetMessage) return;
+        const messageType = targetMessage.messageType;
+
+        if (action === 'reply') {
+            if (typeof setReplyTo === 'function') setReplyTo(targetMessage);
+        }
+        if (action === 'edit') {
+            // Only allow edit for text messages or messages without messageType (default to text)
+            if ((!messageType || messageType === 'text') && canEditMessageWrapper(targetMessage)) {
+                handleEditMessageWrapper(targetMessage);
+            }
+        }
+        if (action === 'download') {
+            // Download media files (images, videos, audio)
+            if (['image', 'video', 'audio'].includes(messageType)) {
+                handleDownloadMedia(targetMessage);
+            }
+        }
+        if (action === 'react-close') {
+            // Close menu after reaction is selected
+        }
+        if (action === 'info') {
+            // Show message info modal for own messages
+            if (targetMessage.senderId === userId) {
+                setSelectedMessage(targetMessage);
+                messageInfoModalRef.current?.open();
+            }
+        }
+        setMenu(m => ({ ...m, visible: false }));
+    }
+
+    function handleCloseInfoModal() {
+        messageInfoModalRef.current?.close();
+        setSelectedMessage(null);
+    }
 
     const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     return (
@@ -72,19 +202,49 @@ function ChatMessageContainer({ circleId }) {
             ) : error ? (
                 <div className="text-center text-red-500 py-4">{error}</div>
             ) : (
-                <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
+                <div className="flex-1 min-h-0 overflow-y-auto flex flex-col" ref={containerRef}>
                     <div className="flex-1 flex flex-col justify-end min-h-full">
                         <ChatMessaagePresentational
+                            handleReact={handleReactWrapper}
+                            deleteModalRefs={deleteModalRefs}
+                            onDeleteMessage={handleDeleteMessageWrapper}
                             messages={messages}
                             messagesEndRef={messagesEndRef}
                             currentUser={currentUser}
-                            getUserColor={getUserColor}
+                            getUserColor={getUserColorWrapper}
                             getMessageRadius={(args) => getMessageRadius({ ...args, dir })}
                             dir={dir}
+                            onMessageContextMenu={handleContextMenu}
+                            handleAction={handleAction}
+                            menu={menu}
+                            menuDirection={menuDirection}
+                            canEditMessage={canEditMessageWrapper}
+                            open={handleOpenModalWrapper}
+                            close={handleCloseModalWrapper}
+                            formatMessageDate={formatMessageDate}
+                            shouldShowDateSeparator={shouldShowDateSeparator}
+                            messageRefs={messageRefs}
+                            scrollToMessage={scrollToMessageWrapper}
                         />
                     </div>
                 </div>
             )}
+
+            {/* Typing Indicator */}
+            {typingUsers.length > 0 && (
+                <TypingIndicatorContainer typingUsers={typingUsers} />
+            )}
+
+            {/* Message Info Modal */}
+            <Modal ref={messageInfoModalRef}>
+                {selectedMessage && (
+                    <MessageInfoModalContainer
+                        message={selectedMessage}
+                        circleId={circleId}
+                        onClose={handleCloseInfoModal}
+                    />
+                )}
+            </Modal>
         </>
     );
 }

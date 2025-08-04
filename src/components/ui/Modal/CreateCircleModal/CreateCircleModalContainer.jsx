@@ -12,6 +12,7 @@ import customSelectStyles from "./customSelectStyles";
 import { toastStyles } from "../../../../utils/toastStyles";
 import { addMembersToCircle } from "../../../../utils/addMembersToCircle";
 import { addCircletoUser } from "../../../../utils/addCircletoUser";
+import cloudinaryService from "../../../../services/cloudinaryService";
 
 // hooks
 import { validateForm } from "../../../../utils/FormValidator";
@@ -29,6 +30,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const [isLoading, setIsLoading] = useState(false);
   const [circleType, setCircleType] = useState("");
   const [circlePrivacy, setCirclePrivacy] = useState("");
+  const [expireDate, setExpireDate] = useState("");
   const { user } = useAuth();
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [membersKey, setMembersKey] = useState(0);
@@ -108,7 +110,8 @@ export default function CreateCircleModalContainer({ closeModal }) {
       () => setMembersKey(prev => prev + 1),
       () => setSelectedInterests([]),
       () => setCircleType(""),
-      () => setCirclePrivacy("")
+      () => setCirclePrivacy(""),
+      () => setExpireDate("")
     );
   };
 
@@ -128,9 +131,26 @@ export default function CreateCircleModalContainer({ closeModal }) {
       interests: selectedInterests, // now array of strings
       imageUrl: "",
       circleType,
+      expireDate: circleType === "Flash" && expireDate ? Timestamp.fromDate(new Date(expireDate)) : null,
     };
 
     const validationErrors = validateForm(formFields);
+
+    // Add custom validation for Flash circles
+    if (circleType === "Flash") {
+      if (!expireDate) {
+        validationErrors.expireDate = "Expire date is required for Flash circles";
+      } else {
+        const selectedDate = new Date(expireDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to compare dates only
+
+        if (selectedDate <= today) {
+          validationErrors.expireDate = "Expire date must be in the future";
+        }
+      }
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -141,18 +161,31 @@ export default function CreateCircleModalContainer({ closeModal }) {
 
     if (uploadedImage?.file) {
       try {
-        const formData = new FormData();
-        formData.append("file", uploadedImage.file);
-        formData.append("upload_preset", "Circle");
-        const response = await fetch("https://api.cloudinary.com/v1_1/dqvp8eb1d/upload", {
-          method: "POST",
-          body: formData,
-        });
-        const result = await response.json();
-        imageUrl = result.secure_url;
+        const uploadResult = await cloudinaryService.uploadImage(
+          uploadedImage.file,
+          (progress) => {
+            // You can add progress UI here if needed
+            console.log('Circle cover upload progress:', progress + '%');
+          },
+          {
+            folder: 'circles/covers',
+            tags: ['circle', 'cover', 'circle-creation']
+          }
+        );
+        imageUrl = uploadResult.secure_url;
         formFields.imageUrl = imageUrl;
+        // Store additional Cloudinary data if needed
+        formFields.coverImageData = {
+          publicId: uploadResult.public_id,
+          width: uploadResult.width,
+          height: uploadResult.height,
+          format: uploadResult.format
+        };
       } catch (err) {
-        console.error("Cloudinary upload failed:", err);
+        console.error("Circle cover upload failed:", err);
+        toast.error("Failed to upload cover image. Please try again.", toastStyles);
+        setIsLoading(false);
+        return;
       }
     }
 
@@ -193,6 +226,8 @@ export default function CreateCircleModalContainer({ closeModal }) {
       setCirclePrivacy={setCirclePrivacy}
       circleType={circleType}
       setCircleType={setCircleType}
+      expireDate={expireDate}
+      setExpireDate={setExpireDate}
       selectedMembers={selectedMembers}
       setSelectedMembers={setSelectedMembers}
       selectedInterests={selectedInterests}

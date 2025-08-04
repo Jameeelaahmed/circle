@@ -13,6 +13,8 @@ export default function CreateCircleModalPresentional({
   setCirclePrivacy,
   circleType,
   setCircleType,
+  expireDate,
+  setExpireDate,
   selectedMembers,
   setSelectedMembers,
   selectedInterests,
@@ -81,13 +83,19 @@ export default function CreateCircleModalPresentional({
           </div>
         </div>
 
-        {/* Due Date - Only show for Flash circles */}
-        {circleType === "Flash Circle" && (
+        {/* Expire Date - Only show for Flash circles */}
+        {circleType === "Flash" && (
           <div className="mb-2">
             <label htmlFor="expireDate" className="text-text mb-1 block text-sm font-medium">
-              {t("Due Date")} *
+              {t("Expire Date")} *
             </label>
-            <input type="date" className={inputStyles} {...register("expiresAt")} />
+            <input
+              type="date"
+              className={inputStyles}
+              value={expireDate}
+              onChange={(e) => setExpireDate(e.target.value)}
+              min={new Date(Date.now() + 86400000).toISOString().split('T')[0]} // Tomorrow's date
+            />
             {errors?.expireDate && (
               <span className="text-red-500 text-xs mt-1 block">{errors.expireDate}</span>
             )}
@@ -141,13 +149,11 @@ export default function CreateCircleModalPresentional({
           value={selectedMembers}
           styles={customStyles}
           onChange={newValue => {
-            // Prevent removing fixed members
             setSelectedMembers([
               ...newValue.filter(m => !m.isFixed),
               ...selectedMembers.filter(m => m.isFixed)
             ]);
           }}
-          // Custom rendering to disable remove for fixed members
           components={{
             MultiValueRemove: props =>
               props.data.isFixed ? null : <components.MultiValueRemove {...props} />
@@ -172,11 +178,8 @@ export default function CreateCircleModalPresentional({
             className={`${inputStyles} ${'mb-2'}`}
           />
           <div className="flex flex-wrap gap-2">
-            {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
             {[
-              // Show selected interests that match the filter (max 10)
               ...filteredInterests.filter(interest => selectedInterests.includes(interest.value)),
-              // Fill up to 10 with unselected filtered interests
               ...filteredInterests.filter(interest => !selectedInterests.includes(interest.value)).slice(0, 10 - filteredInterests.filter(interest => selectedInterests.includes(interest.value)).length)
             ].slice(0, 10).map(interest => (
               <Chip
@@ -194,7 +197,6 @@ export default function CreateCircleModalPresentional({
                 }}
               />
             ))}
-            {/* Show any selected interests that are not in the filteredInterests (e.g. from previous search) */}
             {selectedInterests
               .filter(sel => !filteredInterests.some(interest => interest.value === sel))
               .map(sel => (
