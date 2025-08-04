@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getUserProfile } from "../../fire_base/profileController/profileController";
 
 const INITIAL_STATE = {
   location: "",
@@ -24,6 +25,18 @@ const INITIAL_STATE = {
   },
 };
 
+export const fetchUserProfile = createAsyncThunk(
+  "user/fetchUserProfile",
+  async (profileId, thunkAPI) => {
+    try {
+      const profile = await getUserProfile(profileId);
+      return profile;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: INITIAL_STATE,
@@ -34,6 +47,15 @@ const userSlice = createSlice({
         ...action.payload,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        return {
+          ...state,
+          ...action.payload,
+        };
+      });
   },
 });
 
