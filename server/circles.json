@@ -1,0 +1,56 @@
+{
+  "circleId": "string",
+  "name": "string",
+  "PhotoUrl": "string",
+  "description": "string",
+  "type": "private | flash | public",
+  "createdBy": "string",
+  "admins": ["string"],
+  "members": ["string"],
+  "createdAt": "timestamp",
+  "expiresAt": "timestamp | null",
+  "votes": {
+    "voteId": "string",
+    "createdBy": "string",
+    "stage": "1 | 2",
+    "question": "string",
+    "options": [
+      {
+        "optionId": "string",
+        "text": "string",
+        "votes": ["string"]
+      }
+    ],
+    "deadline": "timestamp",
+    "createdAt": "timestamp"
+  },
+
+  "Events": {
+    "eventId": "string",
+    "name": "string",
+    "photoMemomersUrl": ["string"],
+    "photoUrl": ["string"],
+    "description": "string",
+    "members": ["string"],
+    "location": "string",
+    "date": "timestamp",
+    "createdBy": "string",
+    "createdAt": "timestamp",
+    "membersStatus": [
+      {
+        "memberId": "string",
+        "status": "going | maybe | not going"
+      }
+    ]
+  },
+
+  "messages": [
+    {
+      "messageId": "string",
+      "text": "string",
+      "createdAt": "timestamp",
+      "createdBy": "string",
+      "reacts": ["string"]
+    }
+  ]
+}

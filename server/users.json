@@ -1,0 +1,15 @@
+{
+    "uid": "string",          
+    "Name": "string",
+    "photoURL": "string",
+    "bio": "string",
+    "email": "string",
+    "phoneNumber": "string",
+    "interests": ["string"],       
+    "createdAt": "timestamp",
+    "friends": ["string"],
+    "friendRequests": ["string"],
+    "joinedCircles": ["string"],
+    "joninedEvents": ["string"]
+  }
+  
