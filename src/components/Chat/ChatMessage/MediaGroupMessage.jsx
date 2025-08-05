@@ -15,7 +15,7 @@ function MediaGroupMessage({
 }) {
     const firstMessage = item.messages[0];
     const isMe = currentUser && (firstMessage.senderId === currentUser.id);
-    const bubbleColor = isMe ? 'bg-main/80' : 'bg-main';
+    const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
 
     // Check if this is the first message in a group from the same sender
     const prevItem = groupedMessages[idx - 1];
@@ -53,7 +53,7 @@ function MediaGroupMessage({
             {/* Date Separator */}
             {showDateSeparator && (
                 <div className="flex justify-center my-4">
-                    <div className="bg-main/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+                    <div className="bg-main/30 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
                         <span className="text-xs font-medium text-white/80">
                             {formatMessageDate(firstMessage.timestamp)}
                         </span>
