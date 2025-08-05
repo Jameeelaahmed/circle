@@ -1,8 +1,8 @@
 // libs
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCircles } from '../../../../features/circles/circlesSlice';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -19,8 +19,9 @@ import { validateForm } from "../../../../utils/FormValidator";
 import { useCircleForm } from "../../../../hooks/useCircleForm";
 import { useAuth } from "../../../../hooks/useAuth";
 import { useImageUpload } from "../../../../hooks/useImageUpload";
-// components
-import CreateCircleModalPresentational from "./CreateCircleModalPresentional";
+
+// Lazy load the presentational component
+const CreateCircleModalPresentational = lazy(() => import("./CreateCircleModalPresentional"));
 
 import interests from '../../../../constants/interests';
 
@@ -53,7 +54,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
       try {
         const db = getFirestore();
         const usersCol = collection(db, "users");
-        const snapshot = await import("firebase/firestore").then(({ getDocs }) => getDocs(usersCol));
+        const snapshot = await getDocs(usersCol);
         const options = [];
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
@@ -218,38 +219,40 @@ export default function CreateCircleModalContainer({ closeModal }) {
   );
 
   return (
-    <CreateCircleModalPresentational
-      t={t}
-      register={register}
-      handleSubmit={handleSubmit(onFormSubmit)}
-      circlePrivacyOptions={circlePrivacyOptions}
-      setCirclePrivacy={setCirclePrivacy}
-      circleType={circleType}
-      setCircleType={setCircleType}
-      expireDate={expireDate}
-      setExpireDate={setExpireDate}
-      selectedMembers={selectedMembers}
-      setSelectedMembers={setSelectedMembers}
-      selectedInterests={selectedInterests}
-      setSelectedInterests={setSelectedInterests}
-      fileInputRef={fileInputRef}
-      filteredInterests={filteredInterests}
-      search={search}
-      setSearch={setSearch}
-      uploadedImage={uploadedImage}
-      handleImageUpload={handleImageUpload}
-      removeImage={removeImage}
-      memberOptions={memberOptions}
-      interestOptions={interestOptions}
-      circleTypeOptions={circleTypeOptions}
-      inputStyles={inputStyles}
-      textareaStyles={textareaStyles}
-      customStyles={customSelectStyles}
-      errors={errors}
-      isLoading={isLoading}
-      onClose={handleCloseModal}
-      membersKey={membersKey}
-      interestsKey={interestsKey}
-    />
+    <Suspense fallback={<div />}>
+      <CreateCircleModalPresentational
+        t={t}
+        register={register}
+        handleSubmit={handleSubmit(onFormSubmit)}
+        circlePrivacyOptions={circlePrivacyOptions}
+        setCirclePrivacy={setCirclePrivacy}
+        circleType={circleType}
+        setCircleType={setCircleType}
+        expireDate={expireDate}
+        setExpireDate={setExpireDate}
+        selectedMembers={selectedMembers}
+        setSelectedMembers={setSelectedMembers}
+        selectedInterests={selectedInterests}
+        setSelectedInterests={setSelectedInterests}
+        fileInputRef={fileInputRef}
+        filteredInterests={filteredInterests}
+        search={search}
+        setSearch={setSearch}
+        uploadedImage={uploadedImage}
+        handleImageUpload={handleImageUpload}
+        removeImage={removeImage}
+        memberOptions={memberOptions}
+        interestOptions={interestOptions}
+        circleTypeOptions={circleTypeOptions}
+        inputStyles={inputStyles}
+        textareaStyles={textareaStyles}
+        customStyles={customSelectStyles}
+        errors={errors}
+        isLoading={isLoading}
+        onClose={handleCloseModal}
+        membersKey={membersKey}
+        interestsKey={interestsKey}
+      />
+    </Suspense>
   );
 }

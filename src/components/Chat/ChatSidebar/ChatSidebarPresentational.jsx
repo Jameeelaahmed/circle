@@ -1,7 +1,7 @@
 import { useParams } from 'react-router'
 
 function ChatSidebarPresentational() {
-    const {circleId} = useParams();
+    const { circleId } = useParams();
     console.log(circleId)
     return (
         <>sidebar</>
