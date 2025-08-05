@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
+import { getFirestore, getDoc, doc } from "firebase/firestore";
 import { setUserInfo, clearUserInfo, setAuthLoading } from "./src/features/user/userSlice";
 import { auth } from "./src/firebase-config";
 
@@ -17,7 +18,6 @@ const AuthProvider = ({ children }) => {
                 // Fetch user profile from Firestore to get username
                 let username = null;
                 try {
-                    const { getFirestore, getDoc, doc } = await import("firebase/firestore");
                     const db = getFirestore();
                     const userDocRef = doc(db, "users", currentUser.uid);
                     const userDocSnap = await getDoc(userDocRef);
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
                         user: serializableUser,
                         token: token,
                     }));
-                } catch (error) {
+                } catch {
                     dispatch(setUserInfo({
                         user: serializableUser,
                         token: null,

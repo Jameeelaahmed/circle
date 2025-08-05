@@ -5,9 +5,8 @@ import { useParams } from "react-router";
 import { getUserProfile } from "../../fire_base/profileController/profileController";
 import { auth, db } from "../../firebase-config";
 import { useSelector } from "react-redux";
-import ProfilePresentational from "./profilepresentational";
+import ProfilePresentational from "./Profilepresentational";
 import {
-  arrayRemove,
   arrayUnion,
   doc,
   getDoc,
