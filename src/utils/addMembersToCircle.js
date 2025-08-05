@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection, getDoc } from "firebase/firestore";
 
 export async function addMembersToCircle(circleId, creatorUid, creatorProfile, selectedMembers, user) {
     const db = getFirestore();
@@ -18,8 +18,7 @@ export async function addMembersToCircle(circleId, creatorUid, creatorProfile, s
         if (memberUid !== creatorUid) {
             let memberProfile = {};
             try {
-                const { getDoc, doc: firestoreDoc } = await import("firebase/firestore");
-                const memberDocRef = firestoreDoc(db, "users", memberUid);
+                const memberDocRef = doc(db, "users", memberUid);
                 const memberDocSnap = await getDoc(memberDocRef);
                 if (memberDocSnap.exists()) {
                     memberProfile = memberDocSnap.data();
