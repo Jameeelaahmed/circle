@@ -94,7 +94,8 @@ function LoginFormPresentational({
                             )}
                         </div>
 
-                        <div className="flex items-center justify-between text-right">
+                        <div>
+
                             <Button
                                 variant={"primary"}
                                 size={"xlarge"}
@@ -103,13 +104,16 @@ function LoginFormPresentational({
                             >
                                 {isLoading ? "Signing in..." : "Login"}
                             </Button>
+                        </div>
+                        <div>
                             <Link
                                 to={"/forget-password"}
-                                className="text-text cursor-pointer hover:underline"
+                                className="text-text text-right block cursor-pointer hover:underline"
                             >
                                 forget password?
                             </Link>
                         </div>
+                        {/* </div> */}
                     </form>
 
                     <div

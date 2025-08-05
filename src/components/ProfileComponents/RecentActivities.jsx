@@ -11,15 +11,14 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { COLORS, FONTS, SHADOWS, RADII } from "../../constants";
 export default function RecentActivities({ recentActivities }) {
   return (
     <div>
       <h2
-        className="text-lg sm:text-xl font-bold mb-3"
+        className="mb-3 text-lg font-bold sm:text-xl"
         style={{
-          color: COLORS.light,
-          fontFamily: FONTS.heading,
+          color: "var(--color-light)",
+          fontFamily: "var(--font-primary)",
         }}
       >
         Recent Activity
@@ -28,19 +27,25 @@ export default function RecentActivities({ recentActivities }) {
         {recentActivities.map((activity, index) => (
           <div key={index} className="flex items-start space-x-3">
             <div
-              className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center flex-shrink-0"
+              className="flex h-6 w-6 flex-shrink-0 items-center justify-center sm:h-8 sm:w-8"
               style={{
-                background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.secondary})`,
-                borderRadius: RADII.pill,
+                background: `linear-gradient(45deg, "var(--color-main)", "var(--color-primary)")`,
+                borderRadius: "var(--radius-pill)",
               }}
             >
-              <Users className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+              <Users className="h-3 w-3 text-white sm:h-4 sm:w-4" />
             </div>
             <div className="flex-1">
-              <p className="text-xs sm:text-sm" style={{ color: COLORS.light }}>
+              <p
+                className="text-xs sm:text-sm"
+                style={{ color: "var(--color-light)" }}
+              >
                 {activity.text}
               </p>
-              <p className="text-xs mt-1" style={{ color: COLORS.text }}>
+              <p
+                className="mt-1 text-xs"
+                style={{ color: "var(--color-text)" }}
+              >
                 {activity.time}
               </p>
             </div>

@@ -1,42 +1,97 @@
-import Skeleton from '@mui/material/Skeleton';
-import { BarChart2, MoreVertical } from 'lucide-react';
-import CreatePollModalContainer from '../../ui/Modal/Poll/CreatePollModalContainer';
-import Modal from '../../ui/Modal/Modal';
+import Skeleton from "@mui/material/Skeleton";
+import { MoreVertical, Trash2, LogOut } from "lucide-react";
+import { useEffect } from "react";
 
-function ChatHeaderPresentational({ pollRef, circle, isLoading, handleOpenPollModal, handleClosePollModal }) {
+function ChatHeaderPresentational({
+  circle,
+  isLoading,
+  menu,
+  menuDirection,
+  onMoreClick,
+  onClearChat,
+  onLeaveCircle,
+  closeMenu,
+}) {
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClick() {
+      if (menu?.visible) closeMenu();
+    }
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, [menu?.visible, closeMenu]);
 
-    return (
-        <div className="flex justify-between bg-main backdrop-blur-sm px-4 py-2">
-            {/* Left side: Image + Circle Name */}
-            <div className="flex items-center gap-2">
-                {isLoading ? (
-                    <>
-                        <Skeleton sx={{ bgcolor: 'var(--color-inputsBg)' }} animation="wave" variant="circular" width={40} height={40} />
-                        <Skeleton sx={{ bgcolor: 'var(--color-inputsBg)' }} variant="rounded" width={100} height={40} />                    </>
-                ) : (
-                    <>
-                        <img
-                            src={circle.imageUrl}
-                            alt={circle.circleName}
-                            className="h-10 w-10 rounded-full object-cover"
-                        />
-                        <p className="text-white">{circle.circleName}</p>
-                    </>
-                )}
-            </div>
-
-            <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1" onClick={handleOpenPollModal}>
-                    <BarChart2 size={20} color="white" />
-                    <span className="text-white">Poll</span>
-                    <Modal ref={pollRef}>
-                        <CreatePollModalContainer onClose={handleClosePollModal} />
-                    </Modal>
-                </div>
-                <MoreVertical size={24} color="white" />
-            </div>
+  return (
+    <>
+      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm">
+        {/* Left side: Image + Circle Name */}
+        <div className="flex items-center gap-2">
+          {isLoading ? (
+            <>
+              <Skeleton
+                sx={{ bgcolor: "var(--color-inputsBg)" }}
+                animation="wave"
+                variant="circular"
+                width={40}
+                height={40}
+              />
+              <Skeleton
+                sx={{ bgcolor: "var(--color-inputsBg)" }}
+                variant="rounded"
+                width={100}
+                height={40}
+              />
+            </>
+          ) : (
+            <>
+              <img
+                src={circle.imageUrl}
+                alt={circle.circleName}
+                className="h-10 w-10 rounded-full object-cover"
+              />
+              <p className="text-white">{circle.circleName}</p>
+            </>
+          )}
         </div>
-    );
+
+        <div className="flex items-center gap-3 relative">
+          <button
+            onClick={onMoreClick}
+            className="p-1 rounded-full hover:bg-white/10 transition-colors"
+            aria-label="More options"
+          >
+            <MoreVertical size={24} color="white" />
+          </button>
+        </div>
+      </div>
+
+      {/* Context Menu */}
+      {menu?.visible && (
+        <div
+          className={`fixed z-50 w-48 backdrop-blur-2xl rounded-xl shadow-xl border border-white/10 
+                      flex flex-col text-sm select-none overflow-hidden
+                      text-white bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
+          style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-white/10 flex items-center gap-2"
+            onClick={onClearChat}
+          >
+            <Trash2 size={16} />
+            Clear Chat
+          </button>
+          <button
+            className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors flex items-center gap-2"
+            onClick={onLeaveCircle}
+          >
+            <LogOut size={16} />
+            Leave Circle
+          </button>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default ChatHeaderPresentational;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import AuthProvider from "./providers/AuthProvider";
+import AuthProvider from "../AuthProvider";
 import RoutesPages from "./routes/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCircles } from "./features/circles/circlesSlice";

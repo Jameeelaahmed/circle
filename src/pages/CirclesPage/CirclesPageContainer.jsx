@@ -1,23 +1,91 @@
-import CirclesPagePresentational from './CirclesPagePresentational'
+// libs
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+// slices
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
+import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
+
+// components
+import CirclesPagePresentational from './CirclesPagePresentational'
+import CirclesTabs from '../../components/ui/CircleTabs/CirclesTabs';
+import CirclesPrivacyFilter from '../../components/ui/CirclePrivacyFilter/CirclesPrivacyFilter';
+import CustomPaginationContainer from '../../components/Pagination/CustomPaginationContainer';
+import { useAuth } from '../../hooks/useAuth';
 function CirclesPageContainer() {
     const circles = useSelector(state => state.circles.circles);
+    const { user } = useAuth();
+    const membersByCircle = useSelector(state => state.members.membersByCircle);
     const navigate = useNavigate();
+
     const dispatch = useDispatch();
+    const [activeTab, setActiveTab] = useState('my');
+    const [circlePrivacy, setCirclePrivacy] = useState('all');
+    const [currentPage, setCurrentPage] = useState(0);
+    const circlesPerPage = 6;
+
+    useEffect(() => {
+        circles.forEach(circle => {
+            if (circle.id && !membersByCircle[circle.id]) {
+                dispatch(fetchCircleMembers(circle.id));
+            }
+        });
+    }, [circles, membersByCircle, dispatch]);
+
+    // Filter circles by type for current tab
+    let filteredCircles = circles;
+    if (circlePrivacy === 'public') {
+        filteredCircles = circles.filter(circle => circle.circlePrivacy === 'Public');
+    } else if (circlePrivacy === 'private') {
+        filteredCircles = circles.filter(circle => circle.circlePrivacy === 'Private');
+    }
+    console.log(user);
+
+    // filteredCircles.filter((circle) => {
+    //     return user.joinedCircles.includes(circle.id)
+    // })
+
+    // Pagination logic
+    const pageCount = Math.ceil(filteredCircles.length / circlesPerPage);
+    const paginatedCircles = filteredCircles.slice(
+        currentPage * circlesPerPage,
+        (currentPage + 1) * circlesPerPage
+    );
+
     const handleCardClick = (circle) => {
         dispatch(setSelectedCircle(circle));
-        navigate(`/circles/${circle.circleId}`);
+        navigate(`/circles/${circle.id}`);
     };
+
     return (
-        <>
-            <CirclesPagePresentational
-                circles={circles}
-                handleCardClick={handleCardClick}
-            />
-        </>
-    )
+        <div className='pt-paddingTop flex flex-col min-h-screen'>
+            <CirclesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+            <CirclesPrivacyFilter circlePrivacy={circlePrivacy} setCirclePrivacy={setCirclePrivacy} />
+            <div className="flex-1">
+                {activeTab === 'forYou' ? (
+                    // <div className="text-center text-lg text-gray-400 py-12">No circles to show</div>
+                    <CirclesPagePresentational
+                        circles={paginatedCircles}
+                        membersByCircle={membersByCircle}
+                        handleCardClick={handleCardClick}
+                    />
+                ) : (
+                    <CirclesPagePresentational
+                        circles={paginatedCircles}
+                        membersByCircle={membersByCircle}
+                        handleCardClick={handleCardClick}
+                    />
+                )}
+            </div>
+            {pageCount > 1 && (
+                <CustomPaginationContainer
+                    pageCount={pageCount}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                />
+            )}
+        </div>
+    );
 }
 
 export default CirclesPageContainer

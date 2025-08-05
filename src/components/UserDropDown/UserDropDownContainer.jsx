@@ -9,7 +9,7 @@ import { clearUserInfo } from "../../features/user/userSlice";
 // components
 import UserDropdownPresentational from "./UserDropdownPresentational";
 function UserDropDownContainer() {
-  const { user } = useAuth();
+  const { userName, user } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { t } = useTranslation();
   const dropdownRef = useRef(null);
@@ -33,10 +33,7 @@ function UserDropDownContainer() {
 
   const handleLogout = async () => {
     try {
-      console.log("before await");
-
       await signOut(auth);
-      console.log("after await");
       clearUserInfo();
       navigate("/login");
       setIsDropdownOpen(false);
@@ -55,7 +52,7 @@ function UserDropDownContainer() {
 
   return (
     <UserDropdownPresentational
-      user={user}
+      user={userName}
       isDropdownOpen={isDropdownOpen}
       setIsDropdownOpen={setIsDropdownOpen}
       dropdownRef={dropdownRef}

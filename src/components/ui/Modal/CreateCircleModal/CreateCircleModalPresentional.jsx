@@ -1,34 +1,42 @@
 //libs
-import Select from "react-select";
+// eslint-disable-next-line no-unused-vars
+import Select, { components } from "react-select";
 import { Loader } from "lucide-react";
 import ModalHeading from "../ModalHeading/ModalHeading";
+import Chip from '@mui/material/Chip';
 
 export default function CreateCircleModalPresentional({
   t,
-  uploadedImage,
-  inputStyles,
-  textareaStyles,
-  customStyles,
+  register,
+  handleSubmit,
   circlePrivacyOptions,
   setCirclePrivacy,
   circleType,
   setCircleType,
+  expireDate,
+  setExpireDate,
+  selectedMembers,
+  setSelectedMembers,
+  selectedInterests,
+  setSelectedInterests,
+  filteredInterests,
+  search,
+  setSearch,
   fileInputRef,
-  memberOptions,
-  interestOptions,
-  circleTypeOptions,
+  uploadedImage,
   handleImageUpload,
   removeImage,
-  register,
-  handleSubmit,
-  setSelectedMembers,
-  setSelectedInterests,
+  memberOptions,
+  circleTypeOptions,
+  inputStyles,
+  textareaStyles,
+  customStyles,
   errors,
   isLoading,
   onClose,
   membersKey,
-  interestsKey
 }) {
+
   return (
     <form className="mx-auto max-w-3xl space-y-6" onSubmit={handleSubmit}>
       <ModalHeading onClose={onClose} title={t("Create Circle")} />
@@ -69,19 +77,25 @@ export default function CreateCircleModalPresentional({
               }
               isClearable
             />
-            {errors?.type && (
-              <span className="text-red-500 text-xs mt-1 block">{errors.type}</span>
+            {errors?.circleType && (
+              <span className="text-red-500 text-xs mt-1 block">{errors.circleType}</span>
             )}
           </div>
         </div>
 
-        {/* Due Date - Only show for Flash circles */}
-        {circleType === "Flash Circle" && (
+        {/* Expire Date - Only show for Flash circles */}
+        {circleType === "Flash" && (
           <div className="mb-2">
             <label htmlFor="expireDate" className="text-text mb-1 block text-sm font-medium">
-              {t("Due Date")} *
+              {t("Expire Date")} *
             </label>
-            <input type="date" className={inputStyles} {...register("expiresAt")} />
+            <input
+              type="date"
+              className={inputStyles}
+              value={expireDate}
+              onChange={(e) => setExpireDate(e.target.value)}
+              min={new Date(Date.now() + 86400000).toISOString().split('T')[0]} // Tomorrow's date
+            />
             {errors?.expireDate && (
               <span className="text-red-500 text-xs mt-1 block">{errors.expireDate}</span>
             )}
@@ -132,9 +146,18 @@ export default function CreateCircleModalPresentional({
           isMulti
           key={membersKey}
           options={memberOptions}
+          value={selectedMembers}
           styles={customStyles}
-          placeholder="select members..."
-          onChange={setSelectedMembers}
+          onChange={newValue => {
+            setSelectedMembers([
+              ...newValue.filter(m => !m.isFixed),
+              ...selectedMembers.filter(m => m.isFixed)
+            ]);
+          }}
+          components={{
+            MultiValueRemove: props =>
+              props.data.isFixed ? null : <components.MultiValueRemove {...props} />
+          }}
         />
         {errors?.members && (
           <span className="text-red-500 text-xs mt-1 block">{errors.members}</span>
@@ -146,14 +169,49 @@ export default function CreateCircleModalPresentional({
         <label className="text-text mb-1 block text-sm font-medium">
           {t("Interests")}
         </label>
-        <Select
-          isMulti
-          key={interestsKey}
-          options={interestOptions}
-          styles={customStyles}
-          placeholder="select interests..."
-          onChange={setSelectedInterests}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Search interests..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className={`${inputStyles} ${'mb-2'}`}
+          />
+          <div className="flex flex-wrap gap-2">
+            {[
+              ...filteredInterests.filter(interest => selectedInterests.includes(interest.value)),
+              ...filteredInterests.filter(interest => !selectedInterests.includes(interest.value)).slice(0, 10 - filteredInterests.filter(interest => selectedInterests.includes(interest.value)).length)
+            ].slice(0, 10).map(interest => (
+              <Chip
+                key={interest.value}
+                label={interest.label}
+                color={"primary"}
+                variant={selectedInterests.includes(interest.value) ? "filled" : "outlined"}
+                onClick={() => {
+                  setSelectedInterests(prev =>
+                    prev.includes(interest.value)
+                      ? prev.filter(i => i !== interest.value)
+                      : [...prev, interest.value]
+                  );
+                  setSearch("");
+                }}
+              />
+            ))}
+            {selectedInterests
+              .filter(sel => !filteredInterests.some(interest => interest.value === sel))
+              .map(sel => (
+                <Chip
+                  key={sel}
+                  label={sel}
+                  color={"primary"}
+                  variant="filled"
+                  onClick={() => {
+                    setSelectedInterests(prev => prev.filter(i => i !== sel));
+                  }}
+                />
+              ))}
+          </div>
+        </div>
         {errors?.interests && (
           <span className="text-red-500 text-xs mt-1 block">{errors.interests}</span>
         )}

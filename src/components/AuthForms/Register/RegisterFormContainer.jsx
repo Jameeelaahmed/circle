@@ -13,9 +13,11 @@ import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
 import { validateForm } from "../../../utils/FormValidator";
 import { createUserProfile } from "../../../fire_base/profileController/profileController";
+import interests from '../../../constants/interests';
 
 // components
 import RegisterFormPresentional from "./RegisterFormPresentional";
+import { Timestamp } from "firebase/firestore";
 
 function RegisterFormContainer({ onSwitchToLogin }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,17 +29,23 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(null);
+  const [search, setSearch] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const interestOptions = interests;
+  const filteredInterests = interestOptions.filter(opt =>
+    opt.label.toLowerCase().includes(search.toLowerCase())
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       navigate("/");
+  //     }
+  //   });
+  // }, []);
 
   const handleSignUp = async (e) => {
     e?.preventDefault();
@@ -63,15 +71,10 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
-
         provider: "email",
         emailVerified: user.emailVerified,
-        name: user.displayName || null,
         username: userName || "",
         age: userAge || null,
-
-        username: user.displayName || null,
-
         bio: "",
         location: location || "",
         joinDate: "",
@@ -83,11 +86,11 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           connections: 0,
           events: 0,
         },
-        interests: [""],
+        interests: selectedInterests,
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
-        createdAt: new Date(),
+        createdAt: Timestamp.now(),
         isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",
@@ -97,21 +100,19 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
       dispatch(setUserInfo({ user, token }));
       toast.success("Account created successfully! Welcome to Circle!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error);
-
+      toast.error(getErrorMessage(error.code));
       // Handle Firestore creation errors specifically
-      if (
-        error.message?.includes("Firestore") ||
-        error.code?.includes("firestore")
-      ) {
-        toast.error(
-          "Account created but profile setup failed. Please try logging in.",
-        );
-      } else {
-        toast.error(getErrorMessage(error.code));
-      }
+      // if (
+      //   error.message?.includes("Firestore") ||
+      //   error.code?.includes("firestore")
+      // ) {
+      //   toast.error(
+      //     "Account created but profile setup failed. Please try logging in.",
+      //   );
+      // }
     } finally {
       setIsLoading(false);
     }
@@ -133,14 +134,9 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const profileData = {
         uid: user.uid,
         email: user.email,
-
         provider: "email",
         emailVerified: user.emailVerified,
-        name: user.displayName || null,
         username: userName || "",
-
-        username: user.displayName || null,
-
         bio: "",
         location: "",
         joinDate: "",
@@ -152,7 +148,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           connections: 0,
           events: 0,
         },
-        interests: [""],
+        interests: selectedInterests,
         joninedEvents: [],
         connectionRequests: [],
         connections: [],
@@ -225,20 +221,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     setUserAge(userAge);
   };
 
-  const handleLocation = (e) => {
-    console.log("get locaiton");
-    setLocation("detecting location...");
-    try {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        console.log(latitude, longitude);
-        setLocation([latitude, longitude]);
-      });
-    } catch (error) {
-      toast.error("Failed to get location. Please allow location access.");
-    }
-  };
-
   // Real-time password match validation
   const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
@@ -264,8 +246,14 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       handleAgeChange={handleAgeChange}
       setUserName={setUserName}
       userName={userName}
-      handleLocation={handleLocation}
       location={location}
+      setLocation={setLocation}
+      selectedInterests={selectedInterests}
+      setSelectedInterests={setSelectedInterests}
+      interestOptions={interestOptions}
+      filteredInterests={filteredInterests}
+      search={search}
+      setSearch={setSearch}
     />
   );
 }
