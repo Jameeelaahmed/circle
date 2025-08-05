@@ -4,7 +4,7 @@ import ImageSliderModal from "./ImageSliderModal";
 import MessageContextMenu from "./MessageContextMenu";
 import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
-import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
+import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils.jsx";
 import { useState } from "react";
 
 function ChatMessagePresentational({
