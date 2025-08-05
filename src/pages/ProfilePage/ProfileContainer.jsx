@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import { getUserInfo } from "../../features/user/userSlice";
 // components
-import ProfilePresentational from "./ProfilePresentational";
+import ProfilePresentational from "./ProfilePresentational.jsx";
 const ProfileContainer = () => {
     const profileData = useSelector((state) => state.profileData);
     const userInfo = useSelector(getUserInfo);
