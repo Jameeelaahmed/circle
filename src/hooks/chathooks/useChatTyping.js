@@ -5,6 +5,7 @@ import { db } from '../../firebase-config';
 export function useChatTypingIndicator(circleId, userId, userName) {
     const [isTyping, setIsTyping] = useState(false);
     const typingTimeoutRef = useRef(null);
+    const lastUpdateTimeRef = useRef(0);
 
     const updateTypingStatus = useCallback(async (typing) => {
         try {
@@ -25,13 +26,19 @@ export function useChatTypingIndicator(circleId, userId, userName) {
                 };
             }
             await setDoc(typingDoc, currentStatus, { merge: true });
+            lastUpdateTimeRef.current = Date.now();
         } catch (error) {
             console.error('Error updating typing status:', error);
         }
     }, [circleId, userId, userName]);
 
     const handleStartTyping = useCallback(() => {
-        if (!isTyping) {
+        const now = Date.now();
+
+        // Only update typing status if:
+        // 1. Not currently typing, OR
+        // 2. More than 2 seconds have passed since last update (to refresh the timestamp)
+        if (!isTyping || (now - lastUpdateTimeRef.current > 2000)) {
             setIsTyping(true);
             updateTypingStatus(true);
         }
@@ -52,18 +59,22 @@ export function useChatTypingIndicator(circleId, userId, userName) {
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);
         }
-        setIsTyping(false);
-        updateTypingStatus(false);
-    }, [updateTypingStatus]);
+        if (isTyping) {
+            setIsTyping(false);
+            updateTypingStatus(false);
+        }
+    }, [isTyping, updateTypingStatus]);
 
     // Cleanup function
     const cleanup = useCallback(() => {
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);
         }
-        setIsTyping(false);
-        updateTypingStatus(false);
-    }, [updateTypingStatus]);
+        if (isTyping) {
+            setIsTyping(false);
+            updateTypingStatus(false);
+        }
+    }, [isTyping, updateTypingStatus]);
 
     return {
         isTyping,

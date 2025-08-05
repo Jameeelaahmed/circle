@@ -44,7 +44,7 @@ export default defineConfig({
             './src/components/Chat/ChatWindow/ChatWindowContainer.jsx',
             './src/components/Chat/ChatMessage/ChatMessageContainer.jsx',
             './src/components/Chat/ChatInput/ChatInputContainer.jsx',
-            './src/components/Chat/ChatSidebar/ChatSidbarContainer.jsx'
+            './src/components/Chat/ChatSidebar/ChatSidebarContainer.jsx'
           ]
         }
       }

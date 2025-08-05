@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCircles } from '../../../../features/circles/circlesSlice';
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import customSelectStyles from "./customSelectStyles";
 import { toastStyles } from "../../../../utils/toastStyles";
 import { addMembersToCircle } from "../../../../utils/addMembersToCircle";
 import { addCircletoUser } from "../../../../utils/addCircletoUser";
+import { getAllUsersForCircleCreation } from "../../../../utils/memberManagement";
 import cloudinaryService from "../../../../services/cloudinaryService";
 
 // hooks
@@ -47,24 +48,19 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const fileInputRef = useRef(null);
   const { t } = useTranslation();
   const [memberOptions, setMemberOptions] = useState([]);
+  const [membersLoading, setMembersLoading] = useState(false);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     async function fetchUsers() {
+      if (!user?.username || !(user.userId || user.uid)) return;
+
+      setMembersLoading(true);
       try {
-        const db = getFirestore();
-        const usersCol = collection(db, "users");
-        const snapshot = await getDocs(usersCol);
-        const options = [];
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          const uid = docSnap.id;
-          // Exclude current user from options
-          if (uid !== (user.userId || user.uid)) {
-            options.push({ value: uid, label: data.username });
-          }
-        });
+        // Use the member management utility to get available users
+        const options = await getAllUsersForCircleCreation(user.userId || user.uid);
         setMemberOptions(options);
+
         // Only set current user as selected if not already set
         setSelectedMembers(prev => {
           // If already set, don't duplicate
@@ -77,9 +73,13 @@ export default function CreateCircleModalContainer({ closeModal }) {
         });
       } catch (err) {
         console.error("Error fetching users:", err);
+        toast.error("Failed to load users. Please try again.", toastStyles);
+        setMemberOptions([]); // Reset to empty array on error
+      } finally {
+        setMembersLoading(false);
       }
     }
-    if (user?.username && (user.userId || user.uid)) fetchUsers();
+    fetchUsers();
   }, [user]);
 
   const interestOptions = interests;
@@ -242,6 +242,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
         handleImageUpload={handleImageUpload}
         removeImage={removeImage}
         memberOptions={memberOptions}
+        membersLoading={membersLoading}
         interestOptions={interestOptions}
         circleTypeOptions={circleTypeOptions}
         inputStyles={inputStyles}

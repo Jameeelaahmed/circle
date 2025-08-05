@@ -5,6 +5,8 @@ export default customStyles = {
         border: `${state.isFocused ? "3px" : "1px"} solid var(--color-primary)`,
         borderRadius: "1rem",
         minHeight: "42px",
+        width: "100%",
+        maxWidth: "400px", // Fixed maximum width
         boxShadow: "none",
         transition: "border-width 0.2s ease-in-out",
         "&:hover": {
@@ -14,6 +16,11 @@ export default customStyles = {
     valueContainer: (provided) => ({
         ...provided,
         padding: "0 8px",
+        maxWidth: "calc(100% - 60px)", // Leave space for indicators
+        overflow: "hidden",
+        flexWrap: "wrap", // Allow wrapping but with controlled height
+        maxHeight: "60px", // Limit height to prevent excessive growth
+        overflowY: "auto", // Add scroll if needed
     }),
     input: (provided) => ({
         ...provided,
@@ -36,11 +43,18 @@ export default customStyles = {
         ...provided,
         backgroundColor: "var(--color-primary)",
         borderRadius: "6px",
+        margin: "1px", // Reduced margin for compactness
+        maxWidth: "120px", // Fixed max width for each tag
     }),
     multiValueLabel: (provided) => ({
         ...provided,
         color: "white",
         padding: "2px 6px",
+        fontSize: "11px", // Smaller font size
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        maxWidth: "90px", // Leave space for remove button
     }),
     multiValueRemove: (provided) => ({
         ...provided,
@@ -55,6 +69,8 @@ export default customStyles = {
         border: `3px solid var(--color-primary)`,
         borderRadius: "1rem",
         marginTop: "4px",
+        width: "100%",
+        maxWidth: "400px", // Match control width
     }),
     option: (provided, state) => ({
         ...provided,

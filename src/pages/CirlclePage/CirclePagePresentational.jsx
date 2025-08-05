@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import ChatSidbarContainer from "../../components/Chat/ChatSidebar/ChatSidbarContainer"
+import ChatSidebarContainer from "../../components/Chat/ChatSidebar/ChatSidebarContainer"
 
 // Lazy load chat window (heavy component)
 const ChatWindowContainer = lazy(() => import("../../components/Chat/ChatWindow/ChatWindowContainer"));
@@ -7,9 +7,7 @@ const ChatWindowContainer = lazy(() => import("../../components/Chat/ChatWindow/
 function CirclePagePresentational() {
     return (
         <div className="pt-paddingTop pr-1.5 pl-1.5 pb-1.5 flex h-screen">
-            <div className="w-64 bg-main backdrop-blur-md border-r border-white/10">
-                <ChatSidbarContainer />
-            </div>
+            <ChatSidebarContainer />
             <Suspense fallback={<div className="flex-1" />}>
                 <div className="flex-1">
                     <ChatWindowContainer />
