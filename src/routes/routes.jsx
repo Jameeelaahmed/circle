@@ -15,7 +15,7 @@ const EventsContainer = lazy(() => import("../pages/Events/EventsContainer"));
 const PaymentSuccess = lazy(() => import("../pages/Payments/Success"));
 const PaymentFailure = lazy(() => import("../pages/Payments/Cancel"));
 const Explore = lazy(() => import("../pages/Explore/Explore"));
-const ProfilePage = lazy(() => import("../pages/profile/profile.jsx"));
+const ProfileContainer = lazy(() => import("../pages/ProfilePage/ProfileContainer.jsx"));
 const Memories = lazy(() => import("../pages/Memories"));
 const CirclesPageContainer = lazy(() => import("../pages/CirclesPage/CirclesPageContainer.jsx"));
 const CirclePageContainer = lazy(() => import("../pages/CirlclePage/CirclePageContainer.jsx"));
@@ -52,7 +52,7 @@ const routes = createBrowserRouter([
   {
     path: "/profile/:profileId",
     element: <RootLayout />,
-    children: [{ index: true, element: <LazyWrapper><ProfilePage /></LazyWrapper> }],
+    children: [{ index: true, element: <LazyWrapper><ProfileContainer /></LazyWrapper> }],
   },
 ]);
 
