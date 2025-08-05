@@ -3,6 +3,7 @@ import RoutesPages from "./routes/routes";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCircles } from "./features/circles/circlesSlice";
+import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 
 function App() {
   const dispatch = useDispatch();
@@ -13,10 +14,13 @@ function App() {
       dispatch(fetchCircles());
     }
   }, [dispatch, status]);
+
   return (
     <>
       <AuthProvider />
-      <RoutesPages></RoutesPages>
+      <OnlinePresenceProvider>
+        <RoutesPages></RoutesPages>
+      </OnlinePresenceProvider>
     </>
   );
 }
