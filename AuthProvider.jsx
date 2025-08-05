@@ -43,11 +43,7 @@ const AuthProvider = ({ children }) => {
                         user: serializableUser,
                         token: token,
                     }));
-<<<<<<< HEAD
-                } catch (error) {
-=======
                 } catch {
->>>>>>> upstream/main
                     dispatch(setUserInfo({
                         user: serializableUser,
                         token: null,
