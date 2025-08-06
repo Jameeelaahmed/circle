@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import OnlinePresenceContext from '../contexts/OnlinePresenceContext';
+import OnlinePresenceContext from '../../contexts/OnlinePresenceContext';
 
 // Hook to use the online presence context
 export function useOnlinePresenceContext() {
