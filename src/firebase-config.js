@@ -15,6 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+const currentUser = auth.currentUser;
 export const GoogleProvider = new GoogleAuthProvider();
 
 export async function checkIfBlocked(user) {

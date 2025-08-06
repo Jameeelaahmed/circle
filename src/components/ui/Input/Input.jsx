@@ -19,7 +19,7 @@ const Input = ({ label, value, onChange }) => {
 
   return (
     <StyledWrapper $dir={direction}>
-      <div className="input-container">
+      <div className="input-container text-white">
         <input
           ref={inputRef}
           type="text"
@@ -29,7 +29,7 @@ const Input = ({ label, value, onChange }) => {
           placeholder=" "
           dir={direction}
         />
-        <label htmlFor="input" className="label">
+        <label htmlFor="input" className="label text-white/80">
           {label}
         </label>
         <div className="underline" />
@@ -82,7 +82,7 @@ const StyledWrapper = styled.div`
   .input-container .label {
     position: absolute;
     top: 0;
-    color: #ccc;
+    color: #fffff;
     transition: all 0.3s ease;
     pointer-events: none;
 
@@ -102,7 +102,7 @@ const StyledWrapper = styled.div`
   .input-container input[type="text"]:not(:placeholder-shown) ~ .label {
     top: -20px;
     font-size: 16px;
-    color: #333;
+    color: #fffff;
   }
 
   .input-container .underline {

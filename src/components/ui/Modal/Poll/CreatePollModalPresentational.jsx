@@ -44,7 +44,10 @@ export default function CreatePollModalPresentational({
               {t("Options *")}
             </label>
 
-            <div className="flex cursor-pointer items-center gap-x-2" onClick={onAskAi}>
+            <div
+              className="flex cursor-pointer items-center gap-x-2"
+              onClick={onAskAi}
+            >
               <AiButton />
               <span className="from-secondary to-primary bg-gradient-to-l bg-clip-text py-1 ps-2 font-bold text-transparent">
                 Ask AI
@@ -74,7 +77,7 @@ export default function CreatePollModalPresentational({
           />
           <Toggle
             checked={allowMultiple}
-            onCheckedChange={setAllowMultiple}
+            onChange={(e) => setAllowMultiple(e.target.checked)}
           />
         </div>
 
@@ -93,7 +96,7 @@ export default function CreatePollModalPresentational({
         </div>
 
         {/* Submit */}
-        <div className="flex justify-end relative translate-y-[50%] z-10">
+        <div className="relative z-10 flex translate-y-[50%] justify-end">
           <SendBtn />
         </div>
       </form>
