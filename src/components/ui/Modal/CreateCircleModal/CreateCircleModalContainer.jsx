@@ -1,7 +1,7 @@
 // libs
 import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
-import { fetchCircles } from '../../../../features/circles/circlesSlice';
+import { fetchCircles } from "../../../../features/circles/circlesSlice";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { Timestamp } from "firebase/firestore";
@@ -22,13 +22,16 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { useImageUpload } from "../../../../hooks/useImageUpload";
 
 // Lazy load the presentational component
-const CreateCircleModalPresentational = lazy(() => import("./CreateCircleModalPresentional"));
+const CreateCircleModalPresentational = lazy(
+  () => import("./CreateCircleModalPresentional"),
+);
 
-import interests from '../../../../constants/interests';
+import interests from "../../../../constants/interests";
 
 export default function CreateCircleModalContainer({ closeModal }) {
   const dispatch = useDispatch();
-  const { uploadedImage, setUploadedImage, handleImageUpload, removeImage } = useImageUpload();
+  const { uploadedImage, setUploadedImage, handleImageUpload, removeImage } =
+    useImageUpload();
   const [isLoading, setIsLoading] = useState(false);
   const [circleType, setCircleType] = useState("");
   const [circlePrivacy, setCirclePrivacy] = useState("");
@@ -38,13 +41,8 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const [membersKey, setMembersKey] = useState(0);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [interestsKey, setInterestsKey] = useState(0);
-  const {
-    register,
-    handleSubmit,
-    errors,
-    setErrors,
-    resetAllFields,
-  } = useCircleForm();
+  const { register, handleSubmit, errors, setErrors, resetAllFields } =
+    useCircleForm();
   const fileInputRef = useRef(null);
   const { t } = useTranslation();
   const [memberOptions, setMemberOptions] = useState([]);
@@ -58,18 +56,23 @@ export default function CreateCircleModalContainer({ closeModal }) {
       setMembersLoading(true);
       try {
         // Use the member management utility to get available users
-        const options = await getAllUsersForCircleCreation(user.userId || user.uid);
+        const options = await getAllUsersForCircleCreation(
+          user.userId || user.uid,
+        );
         setMemberOptions(options);
 
         // Only set current user as selected if not already set
-        setSelectedMembers(prev => {
+        setSelectedMembers((prev) => {
           // If already set, don't duplicate
-          if (prev.length && prev[0]?.value === (user.userId || user.uid)) return prev;
-          return [{
-            value: user.userId || user.uid || "current-user",
-            label: user.username,
-            isFixed: true,
-          }];
+          if (prev.length && prev[0]?.value === (user.userId || user.uid))
+            return prev;
+          return [
+            {
+              value: user.userId || user.uid || "current-user",
+              label: user.username,
+              isFixed: true,
+            },
+          ];
         });
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -102,17 +105,20 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const resetAllFieldsContainer = () => {
     resetAllFields(
       () => setUploadedImage(undefined),
-      () => setSelectedMembers([{
-        value: user.userId || user.uid || "current-user",
-        label: user.username,
-        isFixed: true,
-      }]),
-      () => setInterestsKey(prev => prev + 1),
-      () => setMembersKey(prev => prev + 1),
+      () =>
+        setSelectedMembers([
+          {
+            value: user.userId || user.uid || "current-user",
+            label: user.username,
+            isFixed: true,
+          },
+        ]),
+      () => setInterestsKey((prev) => prev + 1),
+      () => setMembersKey((prev) => prev + 1),
       () => setSelectedInterests([]),
       () => setCircleType(""),
       () => setCirclePrivacy(""),
-      () => setExpireDate("")
+      () => setExpireDate(""),
     );
   };
 
@@ -127,12 +133,19 @@ export default function CreateCircleModalContainer({ closeModal }) {
     const formFields = {
       ...data,
       createdAt: Timestamp.now(),
-      createdBy: { userEmail: user.email, userName: user.username, uid: user.uid },
+      createdBy: {
+        userEmail: user.email,
+        userName: user.username,
+        uid: user.uid,
+      },
       circlePrivacy,
       interests: selectedInterests, // now array of strings
       imageUrl: "",
       circleType,
-      expireDate: circleType === "Flash" && expireDate ? Timestamp.fromDate(new Date(expireDate)) : null,
+      expireDate:
+        circleType === "Flash" && expireDate
+          ? Timestamp.fromDate(new Date(expireDate))
+          : null,
     };
 
     const validationErrors = validateForm(formFields);
@@ -140,7 +153,8 @@ export default function CreateCircleModalContainer({ closeModal }) {
     // Add custom validation for Flash circles
     if (circleType === "Flash") {
       if (!expireDate) {
-        validationErrors.expireDate = "Expire date is required for Flash circles";
+        validationErrors.expireDate =
+          "Expire date is required for Flash circles";
       } else {
         const selectedDate = new Date(expireDate);
         const today = new Date();
@@ -166,12 +180,12 @@ export default function CreateCircleModalContainer({ closeModal }) {
           uploadedImage.file,
           (progress) => {
             // You can add progress UI here if needed
-            console.log('Circle cover upload progress:', progress + '%');
+            console.log("Circle cover upload progress:", progress + "%");
           },
           {
-            folder: 'circles/covers',
-            tags: ['circle', 'cover', 'circle-creation']
-          }
+            folder: "circles/covers",
+            tags: ["circle", "cover", "circle-creation"],
+          },
         );
         imageUrl = uploadResult.secure_url;
         formFields.imageUrl = imageUrl;
@@ -180,11 +194,14 @@ export default function CreateCircleModalContainer({ closeModal }) {
           publicId: uploadResult.public_id,
           width: uploadResult.width,
           height: uploadResult.height,
-          format: uploadResult.format
+          format: uploadResult.format,
         };
       } catch (err) {
         console.error("Circle cover upload failed:", err);
-        toast.error("Failed to upload cover image. Please try again.", toastStyles);
+        toast.error(
+          "Failed to upload cover image. Please try again.",
+          toastStyles,
+        );
         setIsLoading(false);
         return;
       }
@@ -193,12 +210,17 @@ export default function CreateCircleModalContainer({ closeModal }) {
     try {
       const db = getFirestore();
       const circlesColRef = collection(db, "circles");
-
       const docRef = await addDoc(circlesColRef, formFields);
       const circleId = docRef.id;
 
       // Add members using the utility function
-      await addMembersToCircle(circleId, user.uid || user.username, user, selectedMembers, user);
+      await addMembersToCircle(
+        circleId,
+        user.uid || user.username,
+        user,
+        selectedMembers,
+        user,
+      );
 
       // Add circle to current user's joinedCircles
       await addCircletoUser(user.uid, circleId);
@@ -214,8 +236,8 @@ export default function CreateCircleModalContainer({ closeModal }) {
     }
   };
 
-  const filteredInterests = interestOptions.filter(opt =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
+  const filteredInterests = interestOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (

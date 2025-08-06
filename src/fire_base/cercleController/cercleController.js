@@ -3,10 +3,8 @@ import { db } from "../../firebase-config";
 import { pushNotificationToUser } from "../notificationController/notificationController";
 const getCercleMembersReceivers = async (cercleId, myId) => {
   try {
-    console.log("cercleId", cercleId);
     const membersRef = collection(db, "circles", cercleId, "members");
     const querySnapshot = await getDocs(membersRef);
-    console.log("querySnapshot", querySnapshot);
 
     const members = querySnapshot.docs.map((doc) => {
       if (doc.id === myId) return null;
