@@ -233,17 +233,22 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       toast.success("Account created successfully! Welcome to Circle!");
       navigate("/");
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(getErrorMessage(error.code));
-      // Handle Firestore creation errors specifically
-      // if (
-      //   error.message?.includes("Firestore") ||
-      //   error.code?.includes("firestore")
-      // ) {
-      //   toast.error(
-      //     "Account created but profile setup failed. Please try logging in.",
-      //   );
-      // }
+      // Map Firebase errors to inline field errors
+      let fieldErrors = {};
+      if (error.code === "auth/email-already-in-use") {
+        fieldErrors.email = "Email is already in use";
+      } else if (error.code === "auth/invalid-email") {
+        fieldErrors.email = "Invalid email address";
+      } else if (error.code === "auth/weak-password") {
+        fieldErrors.password = "Password is too weak";
+      } else if (error.code === "auth/network-request-failed") {
+        fieldErrors.general = "Network error. Please try again.";
+      } else {
+        // fallback: show the error under a general field
+        fieldErrors.general = getErrorMessage(error.code) || "Registration failed. Please try again.";
+      }
+      setErrors(fieldErrors);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }

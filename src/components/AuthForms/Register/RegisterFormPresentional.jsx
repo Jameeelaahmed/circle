@@ -90,7 +90,7 @@ function RegisterFormPresentional({
               //   onKeyUp={handleKeyPress}
               disabled={isLoading}
               className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${(usernameValidation?.isValid === false || errors.username) ? 'border-red-500 border-2' :
-                  usernameValidation?.isValid === true ? 'border-green-500 border-2' : ''
+                usernameValidation?.isValid === true ? 'border-green-500 border-2' : ''
                 }`}
             />
             {usernameValidation?.isChecking && (
@@ -100,7 +100,7 @@ function RegisterFormPresentional({
             )}
             {(errors.username || usernameValidation?.message) && (
               <p className={`text-xs mt-1 ${errors.username ? 'text-red-400' :
-                  usernameValidation?.isValid ? 'text-green-400' : 'text-red-400'
+                usernameValidation?.isValid ? 'text-green-400' : 'text-red-400'
                 }`}>
                 {errors.username || usernameValidation.message}
               </p>
@@ -239,25 +239,20 @@ function RegisterFormPresentional({
           </div>
 
           {/* Interests Selection */}
-          <div>
-            <label className={`text-text mb-1 block text-sm font-medium ${errors.interests ? 'text-red-400' : ''
-              }`}>
-              Interests {errors.interests && '(Required)'}
-            </label>
+          <div className="relative">
+            <label className={`text-text mb-1 block text-sm font-medium ${errors.interests ? 'text-red-400' : ''}`}>Interests {errors.interests && '(Required)'}</label>
             <input
               ref={searchRef}
               type="text"
               placeholder="Search interests..."
               defaultValue={search}
               onChange={handleSearchChange}
-              className="mb-2 p-2 rounded border w-full"
+              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? 'border-red-500 border-2' : ''} mb-2`}
             />
             <div className="flex flex-wrap gap-2">
               {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
               {[
-                // Show selected interests that match the filter (max 10)
                 ...filteredInterests.filter(interest => selectedInterests.includes(interest.value)),
-                // Fill up to 10 with unselected filtered interests
                 ...filteredInterests.filter(interest => !selectedInterests.includes(interest.value)).slice(0, 10 - filteredInterests.filter(interest => selectedInterests.includes(interest.value)).length)
               ].slice(0, 10).map(interest => (
                 <Chip
@@ -277,7 +272,6 @@ function RegisterFormPresentional({
                   }}
                 />
               ))}
-              {/* Show any selected interests that are not in the filteredInterests (e.g. from previous search) */}
               {selectedInterests
                 .filter(sel => !filteredInterests.some(interest => interest.value === sel))
                 .map(sel => (
