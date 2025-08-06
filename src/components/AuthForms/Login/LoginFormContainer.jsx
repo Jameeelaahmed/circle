@@ -1,5 +1,5 @@
 // Libs
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -17,11 +17,14 @@ import { validateLoginForm } from "../../../utils/FormValidator";
 
 export default function LoginFormContainer({ onSwitchToRegister }) {
     const [showPassword, setShowPassword] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [errors, setErrors] = useState({});
+
+    // Refs for form inputs
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -30,11 +33,16 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
                 navigate("/");
             }
         });
-    }, []);
+    }, [navigate]);
 
     const handleSignIn = async (e) => {
         e?.preventDefault();
-        const validationErrors = validateLoginForm({ email, password });
+
+        // Get values from refs
+        const emailValue = emailRef.current?.value || "";
+        const passwordValue = passwordRef.current?.value || "";
+
+        const validationErrors = validateLoginForm({ email: emailValue, password: passwordValue });
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
@@ -44,8 +52,8 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
         try {
             const userCredential = await signInWithEmailAndPassword(
                 auth,
-                email,
-                password,
+                emailValue,
+                passwordValue,
             );
             const token = await userCredential.user.getIdToken();
             dispatch(setUserInfo({ user: userCredential.user, token }));
@@ -91,15 +99,14 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
             handleSignIn={handleSignIn}
             handleKeyPress={handleKeyPress}
             handleSignInWithGoogle={handleSignInWithGoogle}
-            setEmail={setEmail}
             setShowPassword={setShowPassword}
-            setPassword={setPassword}
             showPassword={showPassword}
             isLoading={isLoading}
             isGoogleLoading={isGoogleLoading}
-            password={password}
-            email={email}
             errors={errors}
+            // Refs
+            emailRef={emailRef}
+            passwordRef={passwordRef}
         />
     )
 }

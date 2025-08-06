@@ -1,9 +1,8 @@
 // Libs
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithPopup,
 } from "firebase/auth";
 import { auth, GoogleProvider } from "../../../firebase-config";
@@ -11,7 +10,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
-import { validateForm } from "../../../utils/FormValidator";
+import { validateText, validateEmail, validatePassword } from "../../../utils/FormValidator";
+import { validateUsername } from "../../../utils/usernameValidator";
 import { createUserProfile } from "../../../fire_base/profileController/profileController";
 import interests from '../../../constants/interests';
 
@@ -21,23 +21,101 @@ import { Timestamp } from "firebase/firestore";
 
 function RegisterFormContainer({ onSwitchToLogin }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [usernameValidation, setUsernameValidation] = useState({
+    isValid: null,
+    message: "",
+    isChecking: false
+  });
   const [location, setLocation] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const [errors, setErrors] = useState({});
   const interestOptions = interests;
+
+  // Refs for form inputs
+  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+  const searchRef = useRef(null);
+
   const filteredInterests = interestOptions.filter(opt =>
     opt.label.toLowerCase().includes(search.toLowerCase())
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Username validation with useEffect
+  useEffect(() => {
+    const validateUsernameAsync = async () => {
+      if (!userName || userName.length < 3) {
+        setUsernameValidation({
+          isValid: null,
+          message: "",
+          isChecking: false
+        });
+        return;
+      }
+
+      setUsernameValidation(prev => ({ ...prev, isChecking: true }));
+
+      try {
+        const validation = await validateUsername(userName);
+        setUsernameValidation({
+          isValid: validation.isValid,
+          message: validation.message,
+          isChecking: false
+        });
+      } catch (error) {
+        console.error("Username validation error:", error);
+        setUsernameValidation({
+          isValid: false,
+          message: "Error checking username availability",
+          isChecking: false
+        });
+      }
+    };
+
+    // Add a small delay to avoid too many API calls while typing
+    const timeoutId = setTimeout(validateUsernameAsync, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [userName]);
+
+  // Handle search input change with ref
+  const handleSearchChange = () => {
+    setSearch(searchRef.current?.value || "");
+  };
+
+  // Clear specific field errors
+  const clearFieldError = (fieldName) => {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[fieldName];
+      return newErrors;
+    });
+  };
+
+  // Handle location change and clear error
+  const handleLocationChange = (value) => {
+    setLocation(value);
+    if (value) {
+      clearFieldError('location');
+    }
+  };
+
+  // Handle interests change and clear error
+  const handleInterestsChange = (newInterests) => {
+    setSelectedInterests(newInterests);
+    if (newInterests.length > 0) {
+      clearFieldError('interests');
+    }
+  };
 
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
@@ -49,20 +127,73 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
   const handleSignUp = async (e) => {
     e?.preventDefault();
-    const isvalid = validateForm({
-      email,
-      password,
-      userName,
-    });
-    if (!isvalid) return;
+
+    // Get values from refs
+    const emailValue = emailRef.current?.value || "";
+    const passwordValue = passwordRef.current?.value || "";
+    const confirmPasswordValue = confirmPasswordRef.current?.value || "";
+
+    // Validate all fields
+    const validationErrors = {};
+
+    // Username validation
+    const usernameError = validateText(userName, "username");
+    if (usernameError) validationErrors.username = usernameError;
+
+    // Email validation
+    const emailError = validateEmail(emailValue);
+    if (emailError) validationErrors.email = emailError;
+
+    // Password validation
+    const passwordError = validatePassword(passwordValue);
+    if (passwordError) validationErrors.password = passwordError;
+
+    // Confirm password validation
+    if (!confirmPasswordValue) {
+      validationErrors.confirmPassword = "Please confirm your password";
+    } else if (passwordValue !== confirmPasswordValue) {
+      validationErrors.confirmPassword = "Passwords do not match";
+    }
+
+    // Age validation
+    if (!userAge || userAge < 18) {
+      validationErrors.age = "You must be at least 18 years old to register";
+    }
+
+    // Location validation
+    if (!location) {
+      validationErrors.location = "Please select your location";
+    }
+
+    // Interests validation
+    if (selectedInterests.length === 0) {
+      validationErrors.interests = "Please select at least one interest";
+    }
+
+    // If there are validation errors, display them and stop
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    // Clear any previous errors
+    setErrors({});
 
     setIsLoading(true);
 
     try {
+      // Validate username availability before creating account
+      const usernameValidationResult = await validateUsername(userName);
+      if (!usernameValidationResult.isValid) {
+        setErrors({ username: usernameValidationResult.message });
+        setIsLoading(false);
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
-        password,
+        emailValue,
+        passwordValue,
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
@@ -213,47 +344,53 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const handleAgeChange = (e) => {
     const age = new Date(e.target.value);
     const today = new Date();
-    const userAge = today.getFullYear() - age.getFullYear();
-    if (userAge < 18) {
-      toast.warning("You must be at least 18 years old to register.");
-      return;
-    }
-    setUserAge(userAge);
-  };
+    const calculatedAge = today.getFullYear() - age.getFullYear();
 
-  // Real-time password match validation
-  const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
+    if (calculatedAge < 18) {
+      setErrors(prev => ({ ...prev, age: "You must be at least 18 years old to register" }));
+      setUserAge(null);
+    } else {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.age;
+        return newErrors;
+      });
+      setUserAge(calculatedAge);
+    }
+  };
 
   return (
     <RegisterFormPresentional
-      setShowRepeatPassword={setShowRepeatPassword}
       handleKeyPress={handleKeyPress}
       handleSignUp={handleSignUp}
       handleSignUpWithGoogle={handleSignUpWithGoogle}
-      isPasswordMatch={isPasswordMatch}
       showPassword={showPassword}
       setShowPassword={setShowPassword}
+      showConfirmPassword={showConfirmPassword}
+      setShowConfirmPassword={setShowConfirmPassword}
       isLoading={isLoading}
       isGoogleLoading={isGoogleLoading}
-      showRepeatPassword={showRepeatPassword}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setRepeatPassword={setRepeatPassword}
-      email={email}
-      password={password}
-      repeatPassword={repeatPassword}
       onSwitchToLogin={onSwitchToLogin}
       handleAgeChange={handleAgeChange}
       setUserName={setUserName}
       userName={userName}
+      usernameValidation={usernameValidation}
       location={location}
-      setLocation={setLocation}
+      setLocation={handleLocationChange}
       selectedInterests={selectedInterests}
-      setSelectedInterests={setSelectedInterests}
+      setSelectedInterests={handleInterestsChange}
       interestOptions={interestOptions}
       filteredInterests={filteredInterests}
       search={search}
-      setSearch={setSearch}
+      handleSearchChange={handleSearchChange}
+      errors={errors}
+      clearFieldError={clearFieldError}
+      // Refs
+      usernameRef={usernameRef}
+      emailRef={emailRef}
+      passwordRef={passwordRef}
+      confirmPasswordRef={confirmPasswordRef}
+      searchRef={searchRef}
     />
   );
 }
