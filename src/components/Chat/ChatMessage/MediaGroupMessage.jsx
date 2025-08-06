@@ -1,5 +1,5 @@
 import { detectTextDirection } from "../../../utils/textDirection.js";
-import { renderMediaGrid } from "../../../utils/chatutils/mediaGridUtils.js";
+import { renderMediaGrid } from "../../../utils/chatutils/mediaGridUtils.jsx";
 
 function MediaGroupMessage({
   item,

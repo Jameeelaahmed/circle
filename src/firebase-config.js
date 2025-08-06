@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "circle-26a87",
   storageBucket: "circle-26a87.firebasestorage.app",
   messagingSenderId: "141731835688",
-  appId: "1:141731835688:web:69bd763eeda258b0eb6a1d"
+  appId: "1:141731835688:web:69bd763eeda258b0eb6a1d",
 };
 
 const app = initializeApp(firebaseConfig);

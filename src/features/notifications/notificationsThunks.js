@@ -71,8 +71,6 @@ export const listenToNotifications = () => (dispatch, getState) => {
   const unsubscribe = onSnapshot(
     notificationsQuery,
     (snapshot) => {
-      console.log("Notifications snapshot size:", snapshot.size);
-
       const notifications = [];
 
       snapshot.forEach((doc) => {
@@ -82,11 +80,8 @@ export const listenToNotifications = () => (dispatch, getState) => {
           ...doc.data(),
         };
 
-        console.log("Notification document:", notificationData);
         notifications.push(notificationData);
       });
-
-      console.log("All notifications:", notifications);
 
       // Serialize the notifications to make them Redux-compatible
       const serializedNotifications = serializeFirestoreData(notifications);
