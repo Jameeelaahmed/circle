@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, setDoc, onSnapshot, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase-config';
-import { useAuth } from './useAuth';
+import { db } from '../../firebase-config';
+import { useAuth } from '../useAuth';
 
 export const useOnlinePresence = () => {
     const [onlineUsers, setOnlineUsers] = useState({});
@@ -9,30 +9,25 @@ export const useOnlinePresence = () => {
 
     useEffect(() => {
         if (!user) {
-            console.log('👤 useOnlinePresence: No user found, skipping presence setup');
+            console.log('useOnlinePresence: No user found, skipping presence setup');
             return;
         }
-
-        console.log('🚀 useOnlinePresence: Setting up presence for user:', user.uid, user.email);
 
         const presenceRef = collection(db, 'presence');
         const userPresenceRef = doc(db, 'presence', user.uid);
 
-        // Set user as online
         const setUserOnline = async () => {
             const userData = {
                 isOnline: true,
                 lastSeen: serverTimestamp(),
-                username: user.username || user.displayName || user.email || 'Unknown User',
+                username: user.username || 'Unknown User',
                 email: user.email,
                 uid: user.uid
             };
-            console.log('📝 User data to set:', userData);
-
             try {
                 await setDoc(userPresenceRef, userData, { merge: true });
             } catch (error) {
-                console.error('❌ Error setting user online:', error);
+                console.error('Error setting user online:', error);
             }
         };
 
@@ -43,9 +38,8 @@ export const useOnlinePresence = () => {
                     isOnline: false,
                     lastSeen: serverTimestamp(),
                 }, { merge: true });
-                console.log('🔌 Successfully set user offline');
             } catch (error) {
-                console.error('❌ Error setting user offline:', error);
+                console.error('Error setting user offline:', error);
             }
         };
 
@@ -55,10 +49,9 @@ export const useOnlinePresence = () => {
             snapshot.forEach(doc => {
                 presenceData[doc.id] = doc.data();
             });
-            console.log('📡 Presence data updated:', presenceData);
             setOnlineUsers(presenceData);
         }, (error) => {
-            console.error('❌ Error listening to presence:', error);
+            console.error('Error listening to presence:', error);
         });
 
         // Initialize presence
@@ -68,18 +61,15 @@ export const useOnlinePresence = () => {
         const handleVisibilityChange = async () => {
             if (document.hidden) {
                 // User switched tabs or minimized window
-                console.log('👁️ User went offline (tab hidden)');
                 await setUserOffline();
             } else {
                 // User came back
-                console.log('👁️ User came back online (tab visible)');
                 await setUserOnline();
             }
         };
 
         // Handle beforeunload (page close/refresh)  
         const handleBeforeUnload = async () => {
-            console.log('🚪 User closing page');
             await setUserOffline();
         };
 
@@ -88,7 +78,6 @@ export const useOnlinePresence = () => {
 
         return () => {
             // Cleanup
-            console.log('🧹 Cleaning up presence for user:', user.uid);
             unsubscribe();
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -102,7 +91,6 @@ export const useOnlinePresence = () => {
         onlineUsers,
         isUserOnline: (userId) => {
             const isOnline = onlineUsers[userId]?.isOnline || false;
-            console.log(`🔍 Checking if user ${userId} is online:`, isOnline);
             return isOnline;
         },
         getUserLastSeen: (userId) => onlineUsers[userId]?.lastSeen || null

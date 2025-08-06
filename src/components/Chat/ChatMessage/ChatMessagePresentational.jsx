@@ -107,7 +107,7 @@ function ChatMessagePresentational({
         // Handle regular messages
         return (
           <SingleMessage
-            key={item.message.messageId || item.message.id || item.index}
+            key={item.message.id || item.index}
             msg={item.message}
             originalIdx={item.index}
             currentUser={currentUser}

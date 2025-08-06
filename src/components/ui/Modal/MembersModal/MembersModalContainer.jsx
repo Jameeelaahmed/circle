@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../../../hooks/useAuth";
-import { useOnlinePresenceContext } from "../../../../hooks/useOnlinePresenceContext";
+import { useOnlinePresenceContext } from "../../../../hooks/chathooks/useOnlinePresenceContext";
 import { fetchCircleMembers } from "../../../../features/circleMembers/circleMembersSlice";
 import { addMemberToCircle, toggleMemberAdminRole, getAvailableUsers, removeMemberFromCircle } from "../../../../utils/memberManagement";
 import { toastStyles } from "../../../../utils/toastStyles";

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCircleMembers } from "../../../features/circleMembers/circleMembersSlice";
-import { useOnlinePresenceContext } from "../../../hooks/useOnlinePresenceContext";
+import { useOnlinePresenceContext } from "../../../hooks/chathooks/useOnlinePresenceContext";
 import ChatSidebarPresentational from "./ChatSidebarPresentational";
 
 function ChatSidebarContainer() {
@@ -18,9 +18,8 @@ function ChatSidebarContainer() {
 
     // Add online status to members
     const membersWithOnlineStatus = members.map(member => {
-        const memberId = member.id || member.uid;
+        const memberId = member.id;
         const isOnline = isUserOnline(memberId);
-        console.log(`Member ${member.username} (${memberId}): ${isOnline ? 'Online' : 'Offline'}`);
         return {
             ...member,
             isOnline

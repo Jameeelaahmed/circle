@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { useOnlinePresence } from '../hooks/useOnlinePresence';
+import { useOnlinePresence } from '../hooks/chathooks/useOnlinePresence';
 
 // Create the context
 const OnlinePresenceContext = createContext();
