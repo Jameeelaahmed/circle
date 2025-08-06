@@ -2,8 +2,9 @@
 import React from "react";
 import { X } from "lucide-react";
 import { getNotificationIcon } from "./notificationUtils";
-
+import { timeAgo } from "../../utils/timeAgo";
 const NotificationItem = ({ notification, markAsRead, removeNotification }) => {
+  console.log(notification);
   return (
     <div
       className={`hover:bg-opacity-50 group relative cursor-pointer border-b p-4 transition-all duration-200 ${
@@ -60,7 +61,7 @@ const NotificationItem = ({ notification, markAsRead, removeNotification }) => {
                     "color-mix(in srgb, var(--color-text) 70%, transparent)",
                 }}
               >
-                {notification.time}
+                {timeAgo(notification.createdAt)}
               </p>
             </div>
 

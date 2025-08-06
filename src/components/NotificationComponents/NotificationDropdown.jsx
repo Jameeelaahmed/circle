@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bell } from "lucide-react";
 import NotificationList from "./NotificationList";
-import { sampleNotifications } from "./notificationData";
 
-const NotificationDropdown = () => {
+const NotificationDropdown = ({ notifications, loading }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState(sampleNotifications);
+  // const [notifications, setNotifications] = useState(sampleNotifications);
 
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
