@@ -93,13 +93,23 @@ export function scrollToMessage(messageId, messageRefs) {
 }
 
 
-export function handleDownloadMedia(message) {
+export async function handleDownloadMedia(message) {
     if (!message.mediaData) return;
 
-    const link = document.createElement('a');
-    link.href = message.mediaData;
-    link.download = message.fileName || `${message.messageType}-${Date.now()}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+        const response = await fetch(message.mediaData);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = message.fileName || `${message.messageType}-${Date.now()}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Download failed:', error);
+    }
 }

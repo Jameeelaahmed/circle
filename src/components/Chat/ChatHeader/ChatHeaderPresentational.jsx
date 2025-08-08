@@ -23,7 +23,7 @@ function ChatHeaderPresentational({
 
   return (
     <>
-      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm">
+      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm ltr:rounded-tr-3xl rtl:rounded-tr-3xl">
         {/* Left side: Image + Circle Name */}
         <div className="flex items-center gap-2">
           {isLoading ? (

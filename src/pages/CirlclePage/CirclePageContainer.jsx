@@ -12,7 +12,6 @@ function CirclePageContainer() {
     const { circleId } = useParams();
     const dispatch = useDispatch();
     const selectedCircle = useSelector((state) => state.circles.selectedCircle);
-    console.log(circleId)
     useEffect(() => {
         if (!selectedCircle || selectedCircle.id !== circleId) {
             dispatch(fetchCircleById(circleId));

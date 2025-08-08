@@ -10,7 +10,14 @@ export const fetchCircleMembers = createAsyncThunk(
         const snapshot = await getDocs(membersCol);
         return {
             circleId,
-            members: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+            members: snapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    ...data,
+                    joinedAt: data.joinedAt ? data.joinedAt.toDate().toISOString() : null,
+                };
+            }),
         };
     }
 );

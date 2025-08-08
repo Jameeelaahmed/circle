@@ -2,14 +2,6 @@
 import { doc, updateDoc, deleteDoc, getDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase-config";
 
-/**
- * Handle emoji reactions to messages
- * @param {string} messageId - ID of the message to react to
- * @param {string} emoji - Emoji to add as reaction
- * @param {string} circleId - ID of the circle/chat
- * @param {string} userId - Current user's ID
- * @param {function} setError - Error state setter function
- */
 export async function handleReact(messageId, emoji, circleId, userId, setError) {
     try {
         const messageRef = doc(db, "circles", circleId, "chat", messageId);
@@ -29,20 +21,11 @@ export async function handleReact(messageId, emoji, circleId, userId, setError) 
     }
 }
 
-/**
- * Handle message deletion (for everyone or just current user)
- * @param {string} messageId - ID of the message to delete
- * @param {string} deleteOption - 'forEveryone' or 'forMe'
- * @param {string} circleId - ID of the circle/chat
- * @param {string} userId - Current user's ID
- * @param {function} setError - Error state setter function
- */
 export async function handleDeleteMessage(messageId, deleteOption, circleId, userId, setError) {
     try {
         const messageRef = doc(db, "circles", circleId, "chat", messageId);
 
         if (deleteOption === 'forEveryone') {
-            // Delete the entire message document
             await deleteDoc(messageRef);
         } else {
             // Delete for current user only - add user to deletedFor array
@@ -61,11 +44,6 @@ export async function handleDeleteMessage(messageId, deleteOption, circleId, use
     }
 }
 
-/**
- * Handle message editing - prepare message for editing
- * @param {object} message - Message object to edit
- * @param {function} setEditingMessage - Function to set editing state
- */
 export function handleEditMessage(message, setEditingMessage) {
     // Ensure the message has the correct ID field for Firebase
     const editMessage = {
@@ -76,11 +54,6 @@ export function handleEditMessage(message, setEditingMessage) {
     setEditingMessage(editMessage);
 }
 
-/**
- * Handle modal opening with proper timing
- * @param {string} messageId - ID of the message
- * @param {object} deleteModalRefs - Ref object containing modal references
- */
 export function handleOpenModal(messageId, deleteModalRefs) {
     setTimeout(() => {
         if (deleteModalRefs.current[messageId] && typeof deleteModalRefs.current[messageId].open === 'function') {
@@ -91,11 +64,6 @@ export function handleOpenModal(messageId, deleteModalRefs) {
     }, 0);
 }
 
-/**
- * Handle modal closing
- * @param {string} messageId - ID of the message
- * @param {object} deleteModalRefs - Ref object containing modal references
- */
 export function handleCloseModal(messageId, deleteModalRefs) {
     if (deleteModalRefs.current[messageId] && typeof deleteModalRefs.current[messageId].close === 'function') {
         deleteModalRefs.current[messageId].close();

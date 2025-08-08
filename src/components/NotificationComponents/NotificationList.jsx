@@ -65,7 +65,7 @@ const NotificationList = ({
       </div>
 
       {/* Footer */}
-      {notifications.length > 0 && (
+      {/* {notifications.length > 0 && (
         <div
           className="border-t p-3 text-center"
           style={{
@@ -80,7 +80,7 @@ const NotificationList = ({
             View all notifications
           </button>
         </div>
-      )}
+      )} */}
     </>
   );
 };

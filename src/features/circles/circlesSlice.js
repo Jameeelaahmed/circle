@@ -13,7 +13,7 @@ export const fetchCircles = createAsyncThunk(
             const transformedData = {
                 ...data,
                 id: doc.id,
-                expirestAt: data.expirestAt?.toDate().toISOString() || null,
+                expiresAt: data.expiresAt?.toDate().toISOString() || null,
                 createdAt: data.createdAt?.toDate()?.toISOString() || null,
             };
             return transformedData;
@@ -34,7 +34,7 @@ export const fetchCircleById = createAsyncThunk(
         return {
             ...data,
             id: snapshot.id,
-            expirestAt: data.expirestAt?.toDate().toISOString() || null,
+            expiresAt: data.expiresAt?.toDate().toISOString() || null,
             createdAt: data.createdAt?.toDate()?.toISOString() || null,
         };
     }

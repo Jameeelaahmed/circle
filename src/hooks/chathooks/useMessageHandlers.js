@@ -1,7 +1,5 @@
-/**
- * Custom hook to handle core message operations
- * Manages sending, editing, input handling, and keyboard interactions
- */
+import { useRef } from 'react';
+
 export function useMessageHandlers(
     messageManager,
     typing,
@@ -11,6 +9,8 @@ export function useMessageHandlers(
     setEditingMessage,
     handleAutoDir
 ) {
+    const typingDebounceRef = useRef(null);
+
     const handleSendMsg = async (e) => {
         e.preventDefault();
         const value = messageManager.msgVal.current.value;
@@ -50,11 +50,19 @@ export function useMessageHandlers(
         handleAutoDir(e.target.value);
         messageManager.handleInput(e);
 
-        // Handle typing indicator
+        // Debounce typing indicator updates
+        if (typingDebounceRef.current) {
+            clearTimeout(typingDebounceRef.current);
+        }
+
+        // Handle typing indicator with debouncing
         if (e.target.value.trim().length > 0) {
             typing.handleStartTyping();
         } else {
-            typing.handleStopTyping();
+            // Debounce stop typing to avoid rapid on/off
+            typingDebounceRef.current = setTimeout(() => {
+                typing.handleStopTyping();
+            }, 300);
         }
     };
 

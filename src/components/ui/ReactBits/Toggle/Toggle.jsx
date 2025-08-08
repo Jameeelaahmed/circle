@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-const Switch = () => {
+const Switch = ({ checked, onChange }) => {
   return (
     <StyledWrapper>
       <div className="checkbox-apple">
-        <input className="yep" id="check-apple" type="checkbox" />
+        <input
+          className="yep"
+          id="check-apple"
+          type="checkbox"
+          checked={checked}
+          onChange={onChange}
+        />
         <label htmlFor="check-apple" />
       </div>
     </StyledWrapper>
@@ -17,10 +23,7 @@ const StyledWrapper = styled.div`
     position: relative;
     width: 50px;
     height: 25px;
-    margin:20px 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    margin: 20px 0;
     user-select: none;
   }
 
@@ -71,6 +74,9 @@ const StyledWrapper = styled.div`
     left: 0;
     width: 50px;
     height: 25px;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
   }
 `;
 

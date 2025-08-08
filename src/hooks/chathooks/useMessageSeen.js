@@ -5,7 +5,6 @@ import { db } from '../../firebase-config';
 
 export function useMessageSeen(circleId, userId, userName, messageRefs, messages) {
     useEffect(() => {
-
         async function markMessageAsSeen(messageId) {
             try {
                 const messageRef = doc(db, "circles", circleId, "chat", messageId);
@@ -58,10 +57,12 @@ export function useMessageSeen(circleId, userId, userName, messageRefs, messages
             }
         );
 
+        // !!!!!!!!
         // Observe all message elements
         Object.values(messageRefs.current).forEach((messageElement) => {
             if (messageElement) {
                 observer.observe(messageElement);
+
             }
         });
 

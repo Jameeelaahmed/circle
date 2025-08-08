@@ -3,12 +3,6 @@ import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 
-/**
- * Custom hook to manage typing indicator state
- * @param {string} circleId - ID of the circle/chat
- * @param {string} userId - Current user's ID
- * @returns {object} - Object containing typingUsers array
- */
 export function useTypingIndicator(circleId, userId) {
     const [typingUsers, setTypingUsers] = useState([]);
 
