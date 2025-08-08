@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../useAuth";
 import { db } from "../../firebase-config";
-import { sendNotificationMembers } from "../../fire_base/cercleController/cercleController";
+import { sendNotificationMembers } from "../../fire_base/circleController/circleController";
 import { createNotification } from "../../fire_base/notificationController/notificationController";
 export function useMessageManager(circleId, userId, userName) {
   const { photoURL } = useAuth();
@@ -41,13 +41,13 @@ export function useMessageManager(circleId, userId, userName) {
           timestamp: serverTimestamp(),
           replyTo: replyTo
             ? {
-                id: replyTo.id,
-                messageId: replyTo.messageId || replyTo.id,
-                senderId: replyTo.senderId,
-                senderName: replyTo.senderName,
-                text: replyTo.text,
-                messageType: replyTo.messageType,
-              }
+              id: replyTo.id,
+              messageId: replyTo.messageId || replyTo.id,
+              senderId: replyTo.senderId,
+              senderName: replyTo.senderName,
+              text: replyTo.text,
+              messageType: replyTo.messageType,
+            }
             : null,
         });
         const newNotification = await createNotification({

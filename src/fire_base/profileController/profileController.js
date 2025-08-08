@@ -28,6 +28,8 @@ export const updateUserProfile = async (userId, updates) => {
 };
 
 export const getUserProfile = async (userId) => {
+  if (!userId) throw new Error("No userId provided to getUserProfile");
+
   try {
     const userRef = doc(db, "users", userId);
     const docSnap = await getDoc(userRef);

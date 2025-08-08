@@ -33,22 +33,13 @@ const ProfileInfoPresentioal = ({
 }) => {
   return (
     <div
-      className="px-3 pb-4 sm:px-4 sm:pb-6 lg:px-6 bg-white/5 backdrop-blur-2xl mb-10"
-      style={{
-        borderRadius: `0 0 var(--rounded-rounded) var(--rounded-rounded)`,
-        boxShadow: "var(--shadow-glassCard)",
-      }}
+      className="px-3 pb-4 sm:px-4 sm:pb-6 lg:px-6 bg-text/5 backdrop-blur-2xl mb-10 rounded-b-[var(--rounded-rounded)] shadow-[var(--shadow-glassCard)]"
     >
       <div className="relative z-10 -mt-8 flex flex-col space-y-4 sm:-mt-12 lg:-mt-16">
         {/* Error Message */}
         {uploadError && (
           <div
-            className="rounded-lg p-3 text-sm"
-            style={{
-              backgroundColor: `color-mix(in srgb, var(--color-accent) 20%, transparent)`,
-              color: "var(--color-accent)",
-              border: `1px solid var(--color-accent)`,
-            }}
+            className="rounded-lg p-3 text-sm bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] text-accent border border-accent"
           >
             {uploadError}
           </div>
@@ -60,25 +51,11 @@ const ProfileInfoPresentioal = ({
             <img
               src={profileData.avatarPhoto || "/default-avatar.png"}
               alt={profileData.username || "User"}
-              className="h-20 w-20 border-2 object-cover sm:h-24 sm:w-24 sm:border-4 lg:h-32 lg:w-32"
-              style={{
-                borderRadius: "var(--rounded-pill)",
-                borderColor: "var(--color-light)",
-                boxShadow: "var(--shadow-softPrimary)",
-                opacity: isUploading ? 0.7 : 1,
-              }}
+              className={`h-20 w-20 border-2 object-cover sm:h-24 sm:w-24 sm:border-4 lg:h-32 lg:w-32 rounded-[var(--rounded-pill)] border-text shadow-softPrimary ${isUploading ? "opacity-70" : "opacity-100"}`}
             />
             {isProfileMyProfile && (
               <label
-                className={`absolute right-1 bottom-1 rounded-full p-1 transition-all duration-300 sm:right-2 sm:bottom-2 sm:p-2 ${
-                  isUploading ? "cursor-not-allowed" : "cursor-pointer"
-                }`}
-                style={{
-                  backgroundColor: "var(--color-primary)",
-                  borderRadius: "var(--rounded-pill)",
-                  boxShadow: "var(--shadow-btnPrimary)",
-                  opacity: isUploading ? 0.7 : 1,
-                }}
+                className={`absolute right-1 bottom-1 rounded-full p-1 transition-all duration-300 sm:right-2 sm:bottom-2 sm:p-2 ${isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer opacity-100"} bg-primary shadow-btnPrimary`}
                 onMouseEnter={(e) =>
                   !isUploading &&
                   handleHover(e, "var(--shadow-btnPrimaryHover)")
@@ -99,25 +76,16 @@ const ProfileInfoPresentioal = ({
             )}
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-text border-t-transparent"></div>
               </div>
             )}
           </div>
 
           <div className="flex-1 pb-2 text-center sm:pb-4 sm:text-left">
-            <h1
-              className="mb-1 text-xl font-bold sm:text-2xl lg:text-3xl"
-              style={{
-                fontFamily: "var(--font-primary)",
-                color: "var(--color-light)",
-              }}
-            >
+            <h1 className="mb-1 text-xl font-bold sm:text-2xl lg:text-3xl text-text">
               {profileData.displayName || profileData.username || "User"}
             </h1>
-            <p
-              className="mb-2 text-sm sm:text-base"
-              style={{ color: "var(--color-text)" }}
-            >
+            <p className="mb-2 text-sm sm:text-base text-text">
               @{profileData.username || "username"}
             </p>
 
@@ -130,34 +98,23 @@ const ProfileInfoPresentioal = ({
                     onChange={(e) => setNewBio(e.target.value)}
                     placeholder="Tell us about yourself..."
                     maxLength={160}
-                    className="w-full resize-none rounded-lg px-3 py-2 text-xs sm:text-sm"
-                    style={{
-                      backgroundColor: "var(--color-glass)",
-                      color: "var(--color-light)",
-                      border: `1px solid var(--color-secondary)`,
-                      minHeight: "60px",
-                    }}
+                    className="w-full resize-none rounded-lg px-3 py-2 text-xs sm:text-sm bg-glass text-text border border-secondary min-h-[60px]"
                     rows={3}
                   />
                   <div className="flex items-center justify-between">
-                    <span
-                      className="text-xs"
-                      style={{ color: "var(--color-text)" }}
-                    >
+                    <span className="text-xs text-text">
                       {newBio.length}/160
                     </span>
                     <div className="flex space-x-2">
                       <button
                         onClick={handleUpdateBio}
-                        className="rounded-full p-1 transition-all duration-200"
-                        style={{ color: "var(--color-primary)" }}
+                        className="rounded-full p-1 transition-all duration-200 text-primary"
                       >
                         <Check className="h-4 w-4" />
                       </button>
                       <button
                         onClick={cancelBioEdit}
-                        className="rounded-full p-1 transition-all duration-200"
-                        style={{ color: "var(--color-accent)" }}
+                        className="rounded-full p-1 transition-all duration-200 text-accent"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -166,10 +123,7 @@ const ProfileInfoPresentioal = ({
                 </div>
               ) : (
                 <div className="flex items-start justify-between">
-                  <p
-                    className="flex-1 text-xs leading-relaxed sm:text-sm"
-                    style={{ color: "var(--color-text)" }}
-                  >
+                  <p className="flex-1 text-xs leading-relaxed sm:text-sm text-text">
                     {profileData.bio ||
                       (isProfileMyProfile
                         ? "Add a bio to tell people about yourself"
@@ -178,8 +132,7 @@ const ProfileInfoPresentioal = ({
                   {isProfileMyProfile && (
                     <button
                       onClick={() => setShowEditModeBio(true)}
-                      className="ml-2 rounded-full p-1 transition-all duration-200"
-                      style={{ color: "var(--color-text)" }}
+                      className="ml-2 rounded-full p-1 transition-all duration-200 text-text"
                     >
                       <Edit3 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
@@ -190,10 +143,7 @@ const ProfileInfoPresentioal = ({
 
             {/* Location and Join Date */}
             <div className="flex flex-col items-center justify-center space-y-1 text-xs sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4 sm:text-sm">
-              <div
-                className="flex items-center"
-                style={{ color: "var(--color-text)" }}
-              >
+              <div className="flex items-center text-text">
                 <MapPin className="mr-1 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
                 {showEditModeLocation ? (
                   <div className="flex items-center space-x-2">
@@ -202,25 +152,17 @@ const ProfileInfoPresentioal = ({
                       value={newLocation}
                       onChange={(e) => setNewLocation(e.target.value)}
                       placeholder="Add your location"
-                      className="rounded px-2 py-1 text-xs sm:text-sm"
-                      style={{
-                        backgroundColor: "var(--color-glass)",
-                        color: "var(--color-light)",
-                        border: `1px solid var(--color-secondary)`,
-                        minWidth: "120px",
-                      }}
+                      className="rounded px-2 py-1 text-xs sm:text-sm bg-[var(--color-glass)] text-text border border-secondary min-w-[120px]"
                     />
                     <button
                       onClick={handleUpdateLocation}
-                      className="rounded-full p-1 transition-all duration-200"
-                      style={{ color: "var(--color-primary)" }}
+                      className="rounded-full p-1 transition-all duration-200 text-primary"
                     >
                       <Check className="h-3 w-3" />
                     </button>
                     <button
                       onClick={cancelLocationEdit}
-                      className="rounded-full p-1 transition-all duration-200"
-                      style={{ color: "var(--color-accent)" }}
+                      className="rounded-full p-1 transition-all duration-200 text-accent"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -236,8 +178,7 @@ const ProfileInfoPresentioal = ({
                     {isProfileMyProfile && (
                       <button
                         onClick={() => setShowEditModeLocation(true)}
-                        className="ml-2 rounded-full p-1 transition-all duration-200"
-                        style={{ color: "var(--color-text)" }}
+                        className="ml-2 rounded-full p-1 transition-all duration-200 text-text"
                       >
                         <Edit3 className="h-3 w-3" />
                       </button>
@@ -246,10 +187,7 @@ const ProfileInfoPresentioal = ({
                 )}
               </div>
 
-              <span
-                className="flex items-center"
-                style={{ color: "var(--color-text)" }}
-              >
+              <span className="flex items-center text-text">
                 <Calendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                 Joined {profileData.joinDate || "Recently"}
               </span>
@@ -262,16 +200,10 @@ const ProfileInfoPresentioal = ({
           <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleFollow}
-              className="transform rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base"
-              style={{
-                borderRadius: "var(--rounded-pill)",
-                backgroundColor: isFollowing
-                  ? "var(--color-glass)"
-                  : "var(--color-primary)",
-                color: isFollowing ? "var(--color-text)" : "white",
-                boxShadow: isFollowing ? "none" : "var(--shadow-btnPrimary)",
-                fontFamily: "var(--font-primary)",
-              }}
+              className={`transform rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base  ${isFollowing
+                ? "bg-glass text-text shadow-none"
+                : "bg-primary text-text shadow-btnPrimary"
+                }`}
               onMouseEnter={(e) => {
                 if (!isFollowing) {
                   e.target.style.boxShadow = "var(--shadow-btnPrimaryHover)";
@@ -287,13 +219,7 @@ const ProfileInfoPresentioal = ({
             </button>
 
             <button
-              className="rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base"
-              style={{
-                borderRadius: "var(--rounded-pill)",
-                backgroundColor: "var(--color-accent)",
-                color: "white",
-                fontFamily: "var(--font-primary)",
-              }}
+              className="rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base bg-accent text-text"
               onMouseEnter={(e) =>
                 handleHover(e, "var(--shadow-btnSecondaryHover)")
               }

@@ -19,12 +19,8 @@ const ProfilePresentational = ({
 }) => {
     return (
         <div
-            className="min-h-screen bg-main"
-            style={{
-                marginTop: "4rem",
-                fontFamily: "var(--font-primary)",
-                color: "var(--color-text)",
-            }}
+            className="min-h-screen bg-main mt-16 text-text"
+
         >
             <ProfileHeader
                 showMobileMenu={showMobileMenu}
@@ -47,7 +43,7 @@ const ProfilePresentational = ({
                         setShowEditMode={setShowEditMode}
                     />
 
-                    <ProfileStats stats={profileData.stats} />
+                    <ProfileStats profileData={profileData} />
                 </div>
 
                 <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
