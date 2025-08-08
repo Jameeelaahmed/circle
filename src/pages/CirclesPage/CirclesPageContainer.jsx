@@ -40,7 +40,6 @@ function CirclesPageContainer() {
             filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'Private');
         }
     } else {
-        // Only display circles with at least one matched interest AND type Public
         if (profile?.interests && profile.interests.length > 0) {
             filteredCircles = circles
                 .map(circle => ({
@@ -81,8 +80,10 @@ function CirclesPageContainer() {
                         circles={paginatedCircles}
                         membersByCircle={membersByCircle}
                         handleCardClick={handleCardClick}
+                        activeTab={activeTab}
                         circlesStatus={circlesStatus}
                         profileStatus={profileStatus}
+                        profileInterests={profile.interests}
                     />
                 ) : (
                     <CirclesPagePresentational
@@ -90,7 +91,9 @@ function CirclesPageContainer() {
                         membersByCircle={membersByCircle}
                         handleCardClick={handleCardClick}
                         circlesStatus={circlesStatus}
+                        activeTab={activeTab}
                         profileStatus={profileStatus}
+                        profileInterests={profile.interests}
                     />
                 )}
             </div>

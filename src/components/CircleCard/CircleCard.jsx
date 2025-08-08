@@ -1,7 +1,17 @@
-export default function CircleCard({ circle, membersByCircle }) {
+import { User } from "lucide-react";
+export default function CircleCard({ circle, membersByCircle, activeTab, profileInterests }) {
   const members = membersByCircle?.[circle.id] || [];
   const hasImage = !!circle.imageUrl;
-  // const avatarBg = getAvatarBg(circle.circleName);
+
+  // Compute mutual and other interests
+  const mutualInterests = (circle.interests || []).filter(
+    (interest) => profileInterests?.includes(interest)
+  );
+  const otherInterests = (circle.interests || []).filter(
+    (interest) => !profileInterests?.includes(interest)
+  );
+  // Combine, limit to 4
+  const displayedInterests = [...mutualInterests, ...otherInterests].slice(0, 4);
 
   return (
     <div className="relative overflow-hidden rounded-3xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl group"
@@ -21,7 +31,6 @@ export default function CircleCard({ circle, membersByCircle }) {
         <div className="mb-3 flex items-center space-x-3 sm:mb-4 sm:space-x-4">
           <div
             className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden border border-[var(--color-primary)]"
-          // style={!hasImage ? { background: avatarBg } : {}}
           >
             {hasImage ? (
               <img
@@ -44,19 +53,35 @@ export default function CircleCard({ circle, membersByCircle }) {
             </h3>
             <p className="text-xs sm:text-sm flex items-center mt-1"
               style={{ color: 'var(--color-secondary)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
+              <User className="h-3.5 w-3.5 mr-1.5" />
               {members.length} {members.length === 1 ? "Member" : "Members"}
             </p>
           </div>
         </div>
 
-        <p className="mb-4 text-xs sm:text-sm line-clamp-3 leading-relaxed min-h-[3.5em]"
+        <p className="text-xs sm:text-sm line-clamp-3 leading-relaxed mb-1.5"
           style={{ color: 'rgba(173, 186, 199, 0.95)' }}>
           {circle.description || "This circle hasn't added a description yet"}
         </p>
 
+        {activeTab === 'forYou' && (
+          <div className="flex flex-wrap gap-2 mt-2 mb-2">
+            {displayedInterests.map((interest) => (
+              <span
+                key={interest}
+                className="border border-primary rounded-3xl text-primary p-2 mb-2"
+              >
+                {interest}
+              </span>
+            ))}
+            {circle.interests.length > 4 && (
+              <span className="border border-primary rounded-3xl text-primary p-2 mb-2"
+              >
+                +{circle.interests.length - 4} more
+              </span>
+            )}
+          </div>
+        )}
         <button className="w-full py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-300 rounded-2xl border border-[var(--color-primary)] bg-transparent text-[var(--color-primary)] hover:bg-[rgba(172,159,250,0.15)] relative overflow-hidden">
           <span className="relative z-10">View Circle</span>
           <div className="absolute inset-0 bg-[var(--color-primary)] opacity-0 hover:opacity-10 transition-opacity"></div>
