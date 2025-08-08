@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
-import { setProfileData } from "../../features/userProfile/profileSlice";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
-import { getUserProfile } from "../../fire_base/profileController/profileController";
-import { auth, db } from "../../firebase-config";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { auth, db } from "../../firebase-config";
 import {
     arrayUnion,
     doc,
@@ -15,40 +12,33 @@ import {
 import { getUserInfo } from "../../features/user/userSlice";
 // components
 import ProfilePresentational from "./ProfilePresentational";
-const ProfileContainer = () => {
-    const profileData = useSelector((state) => state.profileData);
-    const userInfo = useSelector(getUserInfo);
-    const [isFollowing, setIsFollowing] = useState(false);
+import { getProfileData } from '../../features/userProfile/profileSlice';
 
+const ProfileContainer = () => {
+    const profile = useSelector(getProfileData);
+    const userInfo = useSelector(getUserInfo);
+
+    const [isFollowing, setIsFollowing] = useState(false);
     const [activeTab, setActiveTab] = useState("about");
     const [showEditMode, setShowEditMode] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [isProfileMyProfile, setIsProfileMyProfile] = useState(false);
-    const dispatch = useDispatch();
     const { profileId } = useParams();
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const profile = await getUserProfile(profileId);
-            console.log(profile)
-            dispatch(setProfileData(profile));
-
-            if (auth.currentUser.uid === profileId) {
-                setIsProfileMyProfile(true);
-            }
-        };
-
-        fetchProfile();
+    // Check if viewing own profile
+    useState(() => {
+        if (auth.currentUser?.uid === profileId) {
+            setIsProfileMyProfile(true);
+        }
     }, [profileId]);
 
-    useEffect(() => {
-        if (!profileData?.id || !profileData.connectionRequests || !userInfo?.uid)
-            return;
-
+    // Update isFollowing state based on Redux profile
+    useState(() => {
+        if (!profile?.id || !profile.connectionRequests || !userInfo?.uid) return;
         setIsFollowing(
-            profileData.connectionRequests.some((user) => user.uid === userInfo.uid),
+            profile.connectionRequests.some((user) => user.uid === userInfo.uid),
         );
-    }, [profileData.connectionRequests, userInfo?.uid]);
+    }, [profile.connectionRequests, userInfo?.uid, profile?.id]);
 
     const handleFollow = async () => {
         setIsFollowing(!isFollowing);
@@ -58,11 +48,9 @@ const ProfileContainer = () => {
             if (snap.exists()) {
                 const data = snap.data();
                 const requests = data.connectionRequests || [];
-
                 const updatedRequests = requests.filter(
                     (req) => req.uid !== userInfo.uid,
                 );
-
                 await updateDoc(userRef, {
                     connectionRequests: updatedRequests,
                 });
@@ -78,12 +66,13 @@ const ProfileContainer = () => {
             });
         }
     };
+
     return (
         <ProfilePresentational
             {...{
                 showMobileMenu,
                 setShowMobileMenu,
-                profileData,
+                profileData: profile,
                 isProfileMyProfile,
                 isFollowing,
                 handleFollow,

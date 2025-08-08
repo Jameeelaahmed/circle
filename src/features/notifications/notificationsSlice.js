@@ -12,7 +12,6 @@ const notificationsSlice = createSlice({
   initialState,
   reducers: {
     startListening: (state) => {
-      console.log("Starting notifications listener");
       state.loading = true;
       state.error = null;
       state.isListening = true;

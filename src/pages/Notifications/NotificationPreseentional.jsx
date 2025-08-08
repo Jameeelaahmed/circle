@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import NotificationDropdown from "../../components/NotificationComponents/NotificationDropdown";
 import {
@@ -11,8 +10,6 @@ const NotificationPresentational = () => {
   const notifications = useSelector(selectNotifications);
   const unreadCount = useSelector(selectUnreadCount);
   const loading = useSelector(selectNotificationsLoading);
-  console.log(notifications, unreadCount, loading);
-
   return (
     <div>
       <NotificationDropdown

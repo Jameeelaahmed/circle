@@ -46,7 +46,6 @@ export const listenToNotifications = () => (dispatch, getState) => {
   const userInfo = getUserInfo(getState());
 
   if (!userInfo?.uid) {
-    console.log("No user UID found");
     return;
   }
 
@@ -85,7 +84,6 @@ export const listenToNotifications = () => (dispatch, getState) => {
 
       // Serialize the notifications to make them Redux-compatible
       const serializedNotifications = serializeFirestoreData(notifications);
-      console.log("Serialized notifications:", serializedNotifications);
 
       dispatch(setNotifications(serializedNotifications));
     },

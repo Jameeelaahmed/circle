@@ -5,10 +5,6 @@ import {
   getIsAuthenticated,
 } from "../features/user/userSlice";
 
-/**
- * Custom hook to get all authentication data
- * @returns {Object} - { user, token, isAuthenticated }
- */
 export const useAuth = () => {
   const user = useSelector(getUserInfo);
   const token = useSelector(getToken);
@@ -25,18 +21,11 @@ export const useAuth = () => {
   };
 };
 
-/**
- * Hook to get only the authentication token
- * Useful for API calls
- */
 export const useAuthToken = () => {
   return useSelector(getToken);
 };
 
-/**
- * Hook to check if user is authenticated
- * Useful for conditional rendering
- */
+
 export const useIsAuthenticated = () => {
   return useSelector(getIsAuthenticated);
 };

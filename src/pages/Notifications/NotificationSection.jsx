@@ -19,8 +19,6 @@ const NotificationSection = () => {
   useEffect(() => {
     // Only start listening if user is authenticated
     if (isAuthenticated) {
-      console.log("Starting notification listener for authenticated user");
-
       // Get the unsubscribe function from the thunk
       const unsubscribePromise = dispatch(listenToNotifications());
 
@@ -32,8 +30,6 @@ const NotificationSection = () => {
 
     // Cleanup function
     return () => {
-      console.log("Cleaning up notification listener");
-
       if (unsubscribeRef.current) {
         unsubscribeRef.current(); // Call Firestore unsubscribe
         unsubscribeRef.current = null;

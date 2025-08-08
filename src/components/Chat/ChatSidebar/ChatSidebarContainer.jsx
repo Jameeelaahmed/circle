@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCircleMembers } from "../../../features/circleMembers/circleMembersSlice";
-import { useOnlinePresenceContext } from "../../../hooks/chathooks/useOnlinePresenceContext";
+import useOnlinePresence from "../../../hooks/chathooks/useOnlinePresence";
 import ChatSidebarPresentational from "./ChatSidebarPresentational";
 
 function ChatSidebarContainer() {
@@ -13,8 +13,8 @@ function ChatSidebarContainer() {
     const { membersByCircle, status, error } = useSelector((state) => state.members);
     const members = membersByCircle[circleId] || [];
 
-    // Online presence from context
-    const { isUserOnline } = useOnlinePresenceContext();
+    // New online presence hook (from RTDB)
+    const { isUserOnline } = useOnlinePresence();
 
     // Add online status to members
     const membersWithOnlineStatus = members.map(member => {
@@ -25,6 +25,8 @@ function ChatSidebarContainer() {
             isOnline
         };
     });
+
+
 
     // Members modal ref and functions
     const membersModalRef = useRef();
@@ -48,18 +50,16 @@ function ChatSidebarContainer() {
     };
 
     return (
-        <>
-            <ChatSidebarPresentational
-                isOpen={isOpen}
-                toggleSidebar={toggleSidebar}
-                members={membersWithOnlineStatus}
-                loading={status === 'loading'}
-                error={error}
-                onShowAllMembers={openMembersModal}
-                membersModalRef={membersModalRef}
-                closeMembersModal={closeMembersModal}
-            />
-        </>
+        <ChatSidebarPresentational
+            isOpen={isOpen}
+            toggleSidebar={toggleSidebar}
+            members={membersWithOnlineStatus}
+            loading={status === 'loading'}
+            error={error}
+            onShowAllMembers={openMembersModal}
+            membersModalRef={membersModalRef}
+            closeMembersModal={closeMembersModal}
+        />
     );
 }
 
