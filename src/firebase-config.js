@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signOut } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
@@ -18,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const database = getDatabase(app); // Export Realtime Database
 export const auth = getAuth(app);
-const currentUser = auth.currentUser;
 export const GoogleProvider = new GoogleAuthProvider();
 
 export async function checkIfBlocked(user) {

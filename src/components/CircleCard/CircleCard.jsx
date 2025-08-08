@@ -13,7 +13,6 @@ const cssVars = [
 const getAvatarBg = (name) => {
   if (!name) return 'var(--color-primary)';
   const code = name.charCodeAt(0);
-  // Use 30% opacity for the background
   return `color-mix(in srgb, var(${cssVars[code % cssVars.length]}) 70%, white)`;
 };
 

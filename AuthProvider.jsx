@@ -37,7 +37,6 @@ const AuthProvider = ({ children }) => {
         };
         try {
           const token = await currentUser.getIdToken();
-          console.log("token", token, serializableUser);
 
           dispatch(
             setUserInfo({

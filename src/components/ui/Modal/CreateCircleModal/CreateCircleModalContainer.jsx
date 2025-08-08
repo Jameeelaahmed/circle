@@ -6,7 +6,7 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
-
+import { useSelector } from "react-redux";
 // functions
 import customSelectStyles from "./customSelectStyles";
 import { toastStyles } from "../../../../utils/toastStyles";
@@ -48,7 +48,14 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const [memberOptions, setMemberOptions] = useState([]);
   const [membersLoading, setMembersLoading] = useState(false);
   const [search, setSearch] = useState("");
-
+  const status = useSelector((state) => state.circles.status);
+  // ***************************
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchCircles());
+    }
+  }, [dispatch, status]);
+  // *******************
   useEffect(() => {
     async function fetchUsers() {
       if (!user?.username || !(user.userId || user.uid)) return;
@@ -142,7 +149,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
       interests: selectedInterests, // now array of strings
       imageUrl: "",
       circleType,
-      expireDate:
+      expiresAt:
         circleType === "Flash" && expireDate
           ? Timestamp.fromDate(new Date(expireDate))
           : null,
@@ -223,8 +230,9 @@ export default function CreateCircleModalContainer({ closeModal }) {
       );
 
       // Add circle to current user's joinedCircles
-      await addCircletoUser(user.uid, circleId);
-
+      for (const member of selectedMembers) {
+        await addCircletoUser(member.value, circleId);
+      }
       toast.success("Circle created successfully!", toastStyles);
       dispatch(fetchCircles());
       resetAllFieldsContainer();

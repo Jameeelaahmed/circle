@@ -1,54 +1,55 @@
 import { useState, useEffect } from 'react';
-import { doc, setDoc, onSnapshot, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { ref, set, onValue } from 'firebase/database';
+import { database } from '../../firebase-config';
 import { useAuth } from '../useAuth';
-
 export const useOnlinePresence = () => {
     const [onlineUsers, setOnlineUsers] = useState({});
     const { user } = useAuth();
 
     useEffect(() => {
+        // console.log('Current user:', user);
+        // console.log('Database instance:', database);
         if (!user) {
             console.log('useOnlinePresence: No user found, skipping presence setup');
             return;
         }
 
-        const presenceRef = collection(db, 'presence');
-        const userPresenceRef = doc(db, 'presence', user.uid);
-
+        const presenceRef = ref(database, 'presence');
+        const userPresenceRef = ref(database, `presence/${user.uid}`);
+        // Set user online in RTDB
         const setUserOnline = async () => {
             const userData = {
                 isOnline: true,
-                lastSeen: serverTimestamp(),
+                lastSeen: Date.now(),
                 username: user.username || 'Unknown User',
                 email: user.email,
                 uid: user.uid
             };
             try {
-                await setDoc(userPresenceRef, userData, { merge: true });
-            } catch (error) {
-                console.error('Error setting user online:', error);
+                await set(userPresenceRef, userData);
+                // console.log('Set user online in RTDB:', userPresenceRef, userData);
+            } catch (err) {
+                console.error('Error setting user online in RTDB:', err);
             }
         };
 
-        // Set user as offline
+        // Set user offline in RTDB
         const setUserOffline = async () => {
             try {
-                await setDoc(userPresenceRef, {
+                await set(userPresenceRef, {
                     isOnline: false,
-                    lastSeen: serverTimestamp(),
-                }, { merge: true });
-            } catch (error) {
-                console.error('Error setting user offline:', error);
+                    lastSeen: Date.now()
+                });
+                // console.log('Set user offline in RTDB:', userPresenceRef);
+            } catch (err) {
+                console.error('Error setting user offline in RTDB:', err);
             }
         };
 
-        // Listen to all users' presence using Firestore
-        const unsubscribe = onSnapshot(presenceRef, (snapshot) => {
-            const presenceData = {};
-            snapshot.forEach(doc => {
-                presenceData[doc.id] = doc.data();
-            });
+        // Listen to all users' presence using RTDB
+        const unsubscribe = onValue(presenceRef, (snapshot) => {
+            const presenceData = snapshot.val() || {};
+            // console.log('Presence data from RTDB:', presenceData);
             setOnlineUsers(presenceData);
         }, (error) => {
             console.error('Error listening to presence:', error);
@@ -60,15 +61,13 @@ export const useOnlinePresence = () => {
         // Handle page visibility changes
         const handleVisibilityChange = async () => {
             if (document.hidden) {
-                // User switched tabs or minimized window
                 await setUserOffline();
             } else {
-                // User came back
                 await setUserOnline();
             }
         };
 
-        // Handle beforeunload (page close/refresh)  
+        // Handle beforeunload (page close/refresh)
         const handleBeforeUnload = async () => {
             await setUserOffline();
         };
@@ -81,8 +80,6 @@ export const useOnlinePresence = () => {
             unsubscribe();
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('beforeunload', handleBeforeUnload);
-
-            // Set user offline when component unmounts
             setUserOffline();
         };
     }, [user]);
