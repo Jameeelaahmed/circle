@@ -13,7 +13,7 @@ function GlowCardPresentational({
 }) {
   return (
     <div
-      className={`group relative rounded-lg border border-neutral-800 bg-black p-6 transition-all duration-300 hover:border-neutral-700 ${className}`}
+      className={`group relative rounded-lg border border-neutral-800 bg-black p-6 transition-all duration-300 hover:border-neutral-700 ${className} w-full`}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

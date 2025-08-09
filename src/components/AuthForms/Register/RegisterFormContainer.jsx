@@ -1,19 +1,21 @@
 // Libs
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
+import useLocation from "../../../hooks/useLocation";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, GoogleProvider } from "../../../firebase-config";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
-import { validateText, validateEmail, validatePassword } from "../../../utils/FormValidator";
+import {
+  validateText,
+  validateEmail,
+  validatePassword,
+} from "../../../utils/FormValidator";
 import { validateUsername } from "../../../utils/usernameValidator";
 import { createUserProfile } from "../../../fire_base/profileController/profileController";
-import interests from '../../../constants/interests';
+import interests from "../../../constants/interests";
 
 // components
 import RegisterFormPresentional from "./RegisterFormPresentional";
@@ -26,12 +28,12 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [location, setLocation] = useState("");
   const [usernameValidation, setUsernameValidation] = useState({
     isValid: null,
     message: "",
-    isChecking: false
+    isChecking: false,
   });
-  const [location, setLocation] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [errors, setErrors] = useState({});
@@ -44,8 +46,8 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const confirmPasswordRef = useRef(null);
   const searchRef = useRef(null);
 
-  const filteredInterests = interestOptions.filter(opt =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
+  const filteredInterests = interestOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(search.toLowerCase()),
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,26 +59,26 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         setUsernameValidation({
           isValid: null,
           message: "",
-          isChecking: false
+          isChecking: false,
         });
         return;
       }
 
-      setUsernameValidation(prev => ({ ...prev, isChecking: true }));
+      setUsernameValidation((prev) => ({ ...prev, isChecking: true }));
 
       try {
         const validation = await validateUsername(userName);
         setUsernameValidation({
           isValid: validation.isValid,
           message: validation.message,
-          isChecking: false
+          isChecking: false,
         });
       } catch (error) {
         console.error("Username validation error:", error);
         setUsernameValidation({
           isValid: false,
           message: "Error checking username availability",
-          isChecking: false
+          isChecking: false,
         });
       }
     };
@@ -94,7 +96,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
   // Clear specific field errors
   const clearFieldError = (fieldName) => {
-    setErrors(prev => {
+    setErrors((prev) => {
       const newErrors = { ...prev };
       delete newErrors[fieldName];
       return newErrors;
@@ -105,7 +107,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const handleLocationChange = (value) => {
     setLocation(value);
     if (value) {
-      clearFieldError('location');
+      clearFieldError("location");
     }
   };
 
@@ -113,7 +115,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const handleInterestsChange = (newInterests) => {
     setSelectedInterests(newInterests);
     if (newInterests.length > 0) {
-      clearFieldError('interests');
+      clearFieldError("interests");
     }
   };
 
@@ -245,7 +247,9 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         fieldErrors.general = "Network error. Please try again.";
       } else {
         // fallback: show the error under a general field
-        fieldErrors.general = getErrorMessage(error.code) || "Registration failed. Please try again.";
+        fieldErrors.general =
+          getErrorMessage(error.code) ||
+          "Registration failed. Please try again.";
       }
       setErrors(fieldErrors);
       setIsLoading(false);
@@ -349,20 +353,29 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const handleAgeChange = (e) => {
     const age = new Date(e.target.value);
     const today = new Date();
-    const calculatedAge = today.getFullYear() - age.getFullYear();
-
-    if (calculatedAge < 18) {
-      setErrors(prev => ({ ...prev, age: "You must be at least 18 years old to register" }));
-      setUserAge(null);
-    } else {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors.age;
-        return newErrors;
-      });
-      setUserAge(calculatedAge);
+    const userAge = today.getFullYear() - age.getFullYear();
+    if (userAge < 18) {
+      toast.warning("You must be at least 18 years old to register.");
+      return;
     }
+    setUserAge(userAge);
   };
+  const handleLocation = async () => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = "efcadedc6ec64c51b36918c3e38a707c";
+      const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&format=json&apiKey=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const loc = data.results[0];
+        setLocation(loc.name || loc.district || loc.country || loc.city);
+      } catch (error) {}
+    });
+  };
+  // Real-time password match validation
+  const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
   return (
     <RegisterFormPresentional
@@ -381,6 +394,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       userName={userName}
       usernameValidation={usernameValidation}
       location={location}
+      handleLocation={handleLocation}
       setLocation={handleLocationChange}
       selectedInterests={selectedInterests}
       setSelectedInterests={handleInterestsChange}
