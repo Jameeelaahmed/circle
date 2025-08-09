@@ -11,8 +11,6 @@ function LoginFormPresentational({
     handleSignIn,
     handleKeyPress,
     handleSignInWithGoogle,
-    setEmail,
-    setPassword,
     setShowPassword,
     email,
     isLoading,
@@ -21,6 +19,9 @@ function LoginFormPresentational({
     password,
     onSwitchToRegister,
     errors = {},
+    // Refs
+    emailRef,
+    passwordRef,
 }) {
     return (
         <>
@@ -58,10 +59,10 @@ function LoginFormPresentational({
                     <form onSubmit={handleSignIn} className="space-y-4">
                         <div>
                             <input
+                                ref={emailRef}
                                 type="text"
                                 placeholder="Email address"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                defaultValue={email}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
                                 className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
@@ -73,10 +74,10 @@ function LoginFormPresentational({
 
                         <div className="relative">
                             <input
+                                ref={passwordRef}
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                defaultValue={password}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
                                 className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"

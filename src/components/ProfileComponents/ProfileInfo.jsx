@@ -56,7 +56,7 @@ const ProfileInfo = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "cercle");
+      formData.append("upload_preset", "circle");
       formData.append("folder", "profilePic");
 
       const response = await fetch(

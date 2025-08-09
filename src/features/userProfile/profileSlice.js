@@ -1,41 +1,62 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getUserProfile } from "../../fire_base/profileController/profileController";
 
 const INITIAL_STATE = {
-  location: "",
-  joinDate: "",
-  avatarPhoto: "",
-  bio: "",
-  connectionRequests: [],
-  connections: [],
-  coverPhoto: "",
-  createdAt: "",
-  email: "",
-  interests: [""],
-  isAdmin: false,
-  joinedCircles: [],
-  joninedEvents: [],
-  phoneNumber: "",
-  uid: "",
-  username: "",
-  stats: {
-    circles: 0,
-    connections: 0,
-    events: 0,
-  },
+  status: "idle",
+  error: null,
+  // Add other initial profile fields if needed
 };
 
-const userSlice = createSlice({
-  name: "user",
+export const fetchUserProfile = createAsyncThunk(
+  "userProfile/fetchUserProfile",
+  async (profileId, thunkAPI) => {
+    try {
+      const profile = await getUserProfile(profileId);
+      const transformedProfile = {
+        ...profile,
+        createdAt: profile.createdAt?.toDate?.() ? profile.createdAt.toDate().toISOString() : profile.createdAt ?? null,
+        updatedAt: profile.updatedAt?.toDate?.() ? profile.updatedAt.toDate().toISOString() : profile.updatedAt ?? null,
+      };
+      return transformedProfile;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+const profileSlice = createSlice({
+  name: "userProfile",
   initialState: INITIAL_STATE,
   reducers: {
     setProfileData(state, action) {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      Object.assign(state, action.payload);
     },
+    setUserInfo(state, action) {
+      const { email, username, photoURL, phoneNumber } = action.payload;
+      state.email = email ?? state.email;
+      state.username = username ?? state.username;
+      state.avatarPhoto = photoURL ?? state.avatarPhoto;
+      state.phoneNumber = phoneNumber ?? state.phoneNumber;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || action.error.message;
+      });
   },
 });
 
-export const { setProfileData } = userSlice.actions;
-export default userSlice.reducer;
+export const { setProfileData, setUserInfo } = profileSlice.actions;
+export const getProfileData = (state) => state.userProfile;
+export default profileSlice.reducer;

@@ -105,7 +105,7 @@ export default function LandingPresentational({
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="z-10 flex w-full justify-center p-8 md:w-1/2"
+        className="z-10 hidden md:flex w-full justify-center p-8 md:w-1/2"
       >
         {/* <LandingIrregularCirclePaths /> */}
         <FloatingAvatarContainer />
