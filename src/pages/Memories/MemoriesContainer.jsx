@@ -68,7 +68,6 @@ const MemoriesGallery = () => {
       tags: ["forest", "nature", "peaceful"],
     },
   ];
-
   useEffect(() => {
     const getMemories = async () => {
       const docRef = collection(db, "circles", circleId, "memories");

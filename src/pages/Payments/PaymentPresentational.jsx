@@ -3,27 +3,26 @@ import GlowCardContainer from "../../components/ui/Payments/GlowCardContainer";
 import DarkVeil from "./DarkVeil";
 
 function PaymentPresentational({ cards }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <>
-      <div
-        style={{
-          width: "100%",
-          height: "calc(100vh + 64px)",
-          position: "absolute",
-          zIndex: -1,
-        }}
-      >
-        <DarkVeil />
-      </div>
-      <section className="mt-[64px] mb-10">
-        <p className="mb-10 pt-10 text-center text-4xl font-semibold">
+      <section className="relative mt-[64px] mb-10 bg-black pb-10">
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+          }}
+        >
+          <DarkVeil />
+        </div>
+        <p className="relative z-10 mb-10 pt-10 text-center text-2xl font-semibold lg:text-4xl">
           {t("payment.Choose Your Circle. Unlock the Experience.")}
         </p>
-        <div className="mx-16 grid grid-cols-1 justify-center gap-10 select-none md:grid-cols-2 lg:grid-cols-3">
+        <div className="relative z-10 mx-2 grid grid-cols-1 justify-center gap-10 select-none sm:mx-16 md:grid-cols-2 xl:grid-cols-3">
           {cards.map((card) => (
             <GlowCardContainer
-              className={"bg-black/55 p-10 backdrop-blur-2xl"}
+              className={"grid bg-black/55 p-7 backdrop-blur-2xl"}
               color={card.color}
               key={card.header}
             >

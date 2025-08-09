@@ -1,62 +1,124 @@
 // libs
-import { useRef, useEffect } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../../firebase-config";
+import { useEffect } from "react";
 // hooks
-import { useAutoDir } from "../../../hooks/useAutoDir"
+import { useAutoDir } from "../../../hooks/useAutoDir";
 import { useAuth } from '../../../hooks/useAuth';
+import { useVoiceRecording } from '../../../hooks/chathooks/useVoiceRecording';
+import { useMediaUpload } from '../../../hooks/chathooks/useMediaUpload';
+import { useChatTypingIndicator } from '../../../hooks/chathooks/useChatTyping';
+import { useMessageManager } from '../../../hooks/chathooks/useMessageManager';
+import { useReplyEditMutualExclusion } from '../../../hooks/chathooks/useReplyEditMutualExclusion';
+import { useMediaHandlers } from '../../../hooks/chathooks/useMediaHandlers';
+import { useVoiceHandlers } from '../../../hooks/chathooks/useVoiceHandlers';
+import { useMessageHandlers } from '../../../hooks/chathooks/useMessageHandlers';
+import { usePollModal } from '../../../hooks/chathooks/usePollModal';
 // components
-import ChatInputPresentational from "./ChatInputPresentational"
+import ChatInputPresentational from "./ChatInputPresentational";
 
-function ChatInputContainer({ circleId }) {
+function ChatInputContainer({ circleId, replyTo, setReplyTo, editingMessage, setEditingMessage }) {
     const { dir, handleAutoDir } = useAutoDir();
-    const msgVal = useRef();
     const { userName, userId } = useAuth();
-    async function handleSendMsg(e) {
-        e.preventDefault();
-        const value = msgVal.current.value;
-        if (!value.trim()) return;
-        try {
-            await addDoc(collection(db, "circles", circleId, "chat"), {
-                messageType: "text",
-                senderId: userId,
-                senderName: userName,
-                sentTime: new Date().toLocaleTimeString(),
-                text: value,
-                timestamp: serverTimestamp(),
-            });
-            msgVal.current.value = "";
-        } catch (err) {
-            console.log("msg error", err.msg);
 
-        }
-    }
+    // Custom hooks
+    const voiceRecording = useVoiceRecording();
+    const mediaUpload = useMediaUpload();
+    const typing = useChatTypingIndicator(circleId, userId, userName);
+    const messageManager = useMessageManager(circleId, userId, userName);
 
+    // Extracted hook implementations
+    const pollModal = usePollModal();
+    const mediaHandlers = useMediaHandlers(mediaUpload, circleId, userId, userName, replyTo, setReplyTo, messageManager);
+    const voiceHandlers = useVoiceHandlers(voiceRecording, circleId, userId, userName, replyTo, setReplyTo, messageManager);
+    const messageHandlers = useMessageHandlers(messageManager, typing, replyTo, setReplyTo, editingMessage, setEditingMessage, handleAutoDir);
 
-    const adjustHeight = () => {
-        const textarea = msgVal.current;
-        if (!textarea) return;
+    // Handle reply/edit mutual exclusion
+    useReplyEditMutualExclusion(replyTo, setReplyTo, editingMessage, setEditingMessage, messageManager);
 
-        textarea.style.height = "auto"; // Reset the height
-        const lineHeight = 24;
-        const maxLines = 6;
-        const maxHeight = lineHeight * maxLines;
-
-        textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-
-        textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
-    };
-
-    function handleInput(e) {
-        handleAutoDir(e.target.value)
-        adjustHeight()
-    }
-
+    // Effects
     useEffect(() => {
-        adjustHeight();
-    }, []);
+        messageManager.adjustHeight();
+    }, [messageManager]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            typing.cleanup();
+        };
+    }, [typing]);
     return (
-        <ChatInputPresentational msgVal={msgVal} handleSendMsg={handleSendMsg} handleInput={handleInput} dir={dir} />
+        <div className="flex flex-col max-w-full overflow-hidden px-2 py-2">
+            {replyTo && (
+                <div className="mb-2 px-3 py-2 rounded-lg border flex items-center gap-2 bg-primary/10 border-primary max-w-full overflow-hidden">
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                        <div className="truncate max-w-[120px]">
+                            <span className="font-bold text-primary truncate">{replyTo.senderName || 'User'}</span>
+                        </div>
+                        <div className="truncate max-w-[180px]">
+                            <span className="text-secondary truncate">
+                                {replyTo.messageType === 'audio' ? '🎤 Voice message' :
+                                    replyTo.messageType === 'image' ? '📷 Photo' :
+                                        replyTo.messageType === 'video' ? '🎥 Video' :
+                                            replyTo.text}
+                            </span>
+                        </div>
+                    </div>
+                    <button
+                        className="ml-2 px-2 py-1 rounded text-xs bg-secondary text-white hover:bg-main flex-shrink-0"
+                        onClick={() => setReplyTo(null)}
+                        type="button"
+                    >Cancel</button>
+                </div>
+            )}
+            {editingMessage && (
+                <div className="mb-2 px-3 py-2 rounded-lg border flex items-center gap-2 bg-accent/10 border-accent max-w-full overflow-hidden">
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                        <div className="truncate max-w-[120px]">
+                            <span className="font-bold text-accent truncate">Editing message</span>
+                        </div>
+                        <div className="truncate max-w-[180px]">
+                            <span className="text-secondary truncate">{editingMessage.text}</span>
+                        </div>
+                    </div>
+                    <button
+                        className="ml-2 px-2 py-1 rounded text-xs bg-secondary text-white hover:bg-main flex-shrink-0"
+                        onClick={messageHandlers.handleCancelEdit}
+                        type="button"
+                    >Cancel</button>
+                </div>
+            )}
+            <ChatInputPresentational
+                pollModalRef={pollModal.pollModalRef}
+                handleOpenPollModal={pollModal.handleOpenPollModal}
+                handleClosePollModal={pollModal.handleClosePollModal}
+                msgVal={messageManager.msgVal}
+                handleSendMsg={messageHandlers.handleSendMsg}
+                handleInput={messageHandlers.handleInput}
+                handleKeyDown={messageHandlers.handleKeyDown}
+                dir={dir}
+                isEditing={!!editingMessage}
+                hasText={messageManager.hasText || !!editingMessage}
+
+                // Voice recording props
+                isRecording={voiceRecording.isRecording}
+                recordingTime={voiceRecording.recordingTime}
+                audioStream={voiceRecording.audioStream}
+                startRecording={voiceHandlers.startRecording}
+                stopRecording={voiceHandlers.stopRecording}
+                cancelRecording={voiceHandlers.cancelRecording}
+
+                // Media upload props
+                isUploading={mediaUpload.isUploading || voiceRecording.isUploading}
+                uploadProgress={mediaUpload.uploadProgress}
+                handleMediaUpload={mediaHandlers.handleMediaUpload}
+                showMediaMenu={mediaUpload.showMediaMenu}
+                setShowMediaMenu={mediaUpload.setShowMediaMenu}
+                handleCameraCapture={mediaHandlers.handleCameraCapture}
+                handleImageUpload={mediaHandlers.handleImageUpload}
+                showCameraModal={mediaUpload.showCameraModal}
+                closeCameraModal={mediaHandlers.closeCameraModal}
+                handleCapturedPhoto={mediaHandlers.handleCapturedPhoto}
+            />
+        </div>
     );
 }
 

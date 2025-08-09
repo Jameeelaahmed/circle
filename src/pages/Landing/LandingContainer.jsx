@@ -1,13 +1,12 @@
-
 // libs
 import { useTranslation } from "react-i18next";
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
 // components
 import LandingPresentational from "./LandingPresentational";
 
 function LandingContainer() {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth();
   const { t } = useTranslation();
   const authModalRef = useRef();
   const createCircleModalRef = useRef();
@@ -29,4 +28,4 @@ function LandingContainer() {
   );
 }
 
-export default LandingContainer;
+export default memo(LandingContainer);

@@ -2,8 +2,8 @@ export function getMessageRadius({ messages, idx, isMe, dir = 'ltr' }) {
     const msg = messages[idx];
     const prevMsg = messages[idx - 1];
     const nextMsg = messages[idx + 1];
-    const isPrevSame = prevMsg && prevMsg.userId === msg.userId;
-    const isNextSame = nextMsg && nextMsg.userId === msg.userId;
+    const isPrevSame = prevMsg && prevMsg.senderId === msg.senderId;
+    const isNextSame = nextMsg && nextMsg.senderId === msg.senderId;
 
     // Helper to swap left/right classes for RTL
     function swapRadius(str) {
@@ -27,7 +27,7 @@ export function getMessageRadius({ messages, idx, isMe, dir = 'ltr' }) {
         } else if (isPrevSame && !isNextSame) {
             radius = 'rounded-tl-3xl rounded-bl-3xl rounded-br-3xl rounded-tr-sm'; // last in group
         } else {
-            radius = 'rounded-lg'; // single message
+            radius = 'rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl rounded-br-3xl'; // single message
         }
     } else {
         // Other users: right side rounded only
@@ -38,7 +38,7 @@ export function getMessageRadius({ messages, idx, isMe, dir = 'ltr' }) {
         } else if (isPrevSame && !isNextSame) {
             radius = 'rounded-tr-3xl rounded-br-3xl rounded-bl-3xl rounded-tl-sm'; // last in group
         } else {
-            radius = 'rounded-lg'; // single message
+            radius = 'rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl rounded-br-3xl'; // single message
         }
     }
     return swapRadius(radius);

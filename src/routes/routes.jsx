@@ -1,47 +1,180 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { lazy, Suspense } from "react";
 // Components
-import AboutUs from "../pages/AboutUs/AboutUs";
 import RootLayout from "../layouts/RootLayout";
-import Payments from "../pages/Payments/PaymentContainer";
-import LandingPage from "../pages/Landing/LandingContainer";
-import ForgetPassword from "../pages/Authentication/ForgetPasswordPage/ForgetPasswordContainer";
-import LoginPage from "../pages/Authentication/LoginPage/LoginPage";
-import RegisterPage from "../pages/Authentication/RegisterPage/RegisterPage";
-import EventsContainer from "../pages/Events/EventsContainer";
-import PaymentSuccess from "../pages/Payments/Success";
-import PaymentFailure from "../pages/Payments/Cancel";
-import Explore from "../pages/Explore/Explore";
-import ProfilePage from "../pages/profile/profile.jsx";
-import Memories from "../pages/Memories";
-import CirclesPageContainer from "../pages/CirclesPage/CirclesPageContainer.jsx";
-import CirclePageContainer from "../pages/CirlclePage/CirclePageContainer.jsx";
-import MemoryUploadPage from "../pages/Memories/AddMemories.jsx";
+
+// Lazy loaded components with dynamic imports
+const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
+const Payments = lazy(() => import("../pages/Payments/PaymentContainer"));
+const LandingPage = lazy(() => import("../pages/Landing/LandingContainer"));
+const ForgetPassword = lazy(
+  () =>
+    import(
+      "../pages/Authentication/ForgetPasswordPage/ForgetPasswordContainer"
+    ),
+);
+const LoginPage = lazy(
+  () => import("../pages/Authentication/LoginPage/LoginPage"),
+);
+const RegisterPage = lazy(
+  () => import("../pages/Authentication/RegisterPage/RegisterPage"),
+);
+const EventsContainer = lazy(() => import("../pages/Events/EventsContainer"));
+const PaymentSuccess = lazy(() => import("../pages/Payments/Success"));
+const PaymentFailure = lazy(() => import("../pages/Payments/Cancel"));
+const Explore = lazy(() => import("../pages/Explore/Explore"));
+const ProfilePage = lazy(() => import("../pages/profile/profile.jsx"));
+const ProfileContainer = lazy(
+  () => import("../pages/ProfilePage/ProfileContainer.jsx"),
+);
+const Memories = lazy(() => import("../pages/Memories"));
+const CirclesPageContainer = lazy(
+  () => import("../pages/CirclesPage/CirclesPageContainer.jsx"),
+);
+const CirclePageContainer = lazy(
+  () => import("../pages/CirlclePage/CirclePageContainer.jsx"),
+);
+const MemoryUploadPage = lazy(
+  () => import("../pages/Memories/AddMemories.jsx"),
+);
+
+// Simple wrapper component for lazy-loaded routes
+const LazyWrapper = ({ children }) => (
+  <Suspense fallback={<div />}>{children}</Suspense>
+);
 const routes = createBrowserRouter([
-  { path: "/login", element: <LoginPage /> },
-  { path: "/register", element: <RegisterPage /> },
-  { path: "/forget-password", element: <ForgetPassword /> },
-  { path: "/success", element: <PaymentSuccess /> },
-  { path: "/cancel", element: <PaymentFailure /> },
+  {
+    path: "/login",
+    element: (
+      <LazyWrapper>
+        <LoginPage />
+      </LazyWrapper>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <LazyWrapper>
+        <RegisterPage />
+      </LazyWrapper>
+    ),
+  },
+  {
+    path: "/forget-password",
+    element: (
+      <LazyWrapper>
+        <ForgetPassword />
+      </LazyWrapper>
+    ),
+  },
+  {
+    path: "/success",
+    element: (
+      <LazyWrapper>
+        <PaymentSuccess />
+      </LazyWrapper>
+    ),
+  },
+  {
+    path: "/cancel",
+    element: (
+      <LazyWrapper>
+        <PaymentFailure />
+      </LazyWrapper>
+    ),
+  },
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <LandingPage /> },
-      { path: "circles", element: <CirclesPageContainer /> },
-      { path: "circles/:circleId", element: <CirclePageContainer /> },
-      { path: "payments", element: <Payments /> },
-      { path: "events", element: <EventsContainer /> },
-      { path: "about", element: <AboutUs /> },
-      { path: "explore", element: <Explore /> },
+      {
+        index: true,
+        element: (
+          <LazyWrapper>
+            <LandingPage />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "circles",
+        element: (
+          <LazyWrapper>
+            <CirclesPageContainer />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "circles/:circleId",
+        element: (
+          <LazyWrapper>
+            <CirclePageContainer />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "payments",
+        element: (
+          <LazyWrapper>
+            <Payments />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "events",
+        element: (
+          <LazyWrapper>
+            <EventsContainer />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "about",
+        element: (
+          <LazyWrapper>
+            <AboutUs />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "explore",
+        element: (
+          <LazyWrapper>
+            <Explore />
+          </LazyWrapper>
+        ),
+      },
       // "events/:cirlceId/:eventId/memories"
-      { path: "circles/:circleId/memories", element: <Memories /> },
-      { path: "circles/:circleId/memories/add", element: <MemoryUploadPage /> },
+      {
+        path: "circles/:circleId/memories",
+        element: (
+          <LazyWrapper>
+            <Memories />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "circles/:circleId/memories/add",
+        element: (
+          <LazyWrapper>
+            <MemoryUploadPage />
+          </LazyWrapper>
+        ),
+      },
     ],
   },
   {
     path: "/profile/:profileId",
     element: <RootLayout />,
-    children: [{ index: true, element: <ProfilePage /> }],
+    children: [
+      {
+        index: true,
+        element: (
+          <LazyWrapper>
+            <ProfileContainer />
+          </LazyWrapper>
+        ),
+      },
+    ],
   },
 ]);
 
