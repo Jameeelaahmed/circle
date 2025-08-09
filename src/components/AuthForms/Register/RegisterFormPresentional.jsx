@@ -1,6 +1,6 @@
 import Button from "../../../components/ui/Buttons/Button";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Logo } from "../../../assets/icons/Logo";
 import AuthButton from "../../../components/ui/Buttons/AuthButton";
 import GoogleIcon from "../../../assets/icons/google.svg";
@@ -27,7 +27,7 @@ function RegisterFormPresentional({
   setUserName,
   userName,
   location,
-  setLocation,
+  handleLocation,
   selectedInterests,
   setSelectedInterests,
   filteredInterests,
@@ -128,7 +128,27 @@ function RegisterFormPresentional({
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          <select
+          {/* Location */}
+           <div className="relative">
+            <input
+              type="text"
+              // placeholder="Password (min. 6 characters)"
+              value={location}
+              // onChange={(e) => setPassword(e.target.value)}
+              disabled
+              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              required
+              minLength={6}
+            />
+            <button
+              type="button"
+              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+              onClick={handleLocation}
+            >
+              Get Location
+            </button>
+          </div>
+          {/* <select
             className="bg-main h-12 w-full"
             onChange={(e) => setLocation(e.target.value)}
             value={location}
@@ -136,7 +156,7 @@ function RegisterFormPresentional({
             {EgyptCities.map((city) => (
               <option>{city.city_name_en}</option>
             ))}
-          </select>
+          </select> */}
           {/* Password Match Indicator */}
           {repeatPassword && !isPasswordMatch && (
             <p className="mt-1 text-sm text-red-400">Passwords don't match</p>

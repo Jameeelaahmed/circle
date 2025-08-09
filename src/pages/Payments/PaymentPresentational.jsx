@@ -17,10 +17,10 @@ function PaymentPresentational({ cards }) {
         <DarkVeil />
       </div>
       <section className="mt-[64px] mb-10">
-        <p className="mb-10 pt-10 text-center text-4xl font-semibold">
+        <p className="mb-10 pt-10 text-center text-2xl md:text-4xl font-semibold">
           {t("payment.Choose Your Circle. Unlock the Experience.")}
         </p>
-        <div className="mx-16 grid grid-cols-1 justify-center gap-10 select-none md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-2 sm:mx-16 grid grid-cols-1 justify-center gap-10 select-none md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <GlowCardContainer
               className={"bg-black/55 p-10 backdrop-blur-2xl"}

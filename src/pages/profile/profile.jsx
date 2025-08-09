@@ -30,7 +30,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       const profile = await getUserProfile(profileId);
-      console.log(profile)
+      console.log(profile);
       dispatch(setProfileData(profile));
 
       if (auth.currentUser.uid === profileId) {

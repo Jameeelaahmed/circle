@@ -1,6 +1,7 @@
 // Libs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import useLocation from "../../../hooks/useLocation";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -13,7 +14,7 @@ import { setUserInfo } from "../../../features/user/userSlice";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
 import { validateForm } from "../../../utils/FormValidator";
 import { createUserProfile } from "../../../fire_base/profileController/profileController";
-import interests from '../../../constants/interests';
+import interests from "../../../constants/interests";
 
 // components
 import RegisterFormPresentional from "./RegisterFormPresentional";
@@ -29,23 +30,15 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState("");
   const [search, setSearch] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
   const interestOptions = interests;
-  const filteredInterests = interestOptions.filter(opt =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
+  const filteredInterests = interestOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(search.toLowerCase()),
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
 
   const handleSignUp = async (e) => {
     e?.preventDefault();
@@ -220,7 +213,20 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     }
     setUserAge(userAge);
   };
-
+  const handleLocation = async () => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = "efcadedc6ec64c51b36918c3e38a707c";
+      const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&format=json&apiKey=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const loc = data.results[0];
+        setLocation(loc.name || loc.district || loc.country || loc.city);
+      } catch (error) {}
+    });
+  };
   // Real-time password match validation
   const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
@@ -247,7 +253,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       setUserName={setUserName}
       userName={userName}
       location={location}
-      setLocation={setLocation}
+      handleLocation={handleLocation}
       selectedInterests={selectedInterests}
       setSelectedInterests={setSelectedInterests}
       interestOptions={interestOptions}
