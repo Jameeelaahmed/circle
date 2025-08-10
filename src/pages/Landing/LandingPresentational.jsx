@@ -7,7 +7,7 @@ import Modal from "../../components/ui/Modal/Modal";
 import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
 import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
 import { useState } from "react";
-
+import mainImg from '../../assets/image.png'
 export default function LandingPresentational({
   t,
   isLoggedIn,
@@ -21,15 +21,22 @@ export default function LandingPresentational({
   const handleSwitchToLogin = () => setAuthFormType("login");
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-white">
+    <div className="flex h-screen flex-col overflow-hidden"
+      style={{
+        backgroundImage: `url(${mainImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       {/* <div className="h-screen w-full flex-col items-center justify-center px-4 md:flex-row overflow-hidden"> */}
       <Motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="pt-paddingTop z-10 flex min-h-screen w-full flex-col items-center p-8"
+        className="pt-paddingTop z-10 flex min-h-screen w-full flex-col items-center pb-8 pr-8 pl-8"
       >
-        <div className="max-w-xl">
+        <div className="max-w-xl mt-18">
           <Motion.h1
             className="mb-6 text-center text-4xl font-bold md:text-6xl"
             initial={{ opacity: 0, y: 50 }}
@@ -83,23 +90,6 @@ export default function LandingPresentational({
         </div>
       </Motion.div>
 
-      <div
-        style={{
-          position: "absolute",
-          width: "100vw",
-          height: "100vh",
-          left: 0,
-          top: 0,
-          background:
-            "radial-gradient(102.03% 100% at 51.22% 0%, #17284F 0%, #081020 67.67%, #13244F 74.71%, #253977 76.59%, #45519C 76.69%, #5A61AC 78.98%, #817DC6 81.74%, #9B90D5 83.77%, #CDB8EE 85.33%, #D9B9ED 87.36%, #EDD7FB 90.33%, #D9C5F3 94.86%, rgba(255, 255, 255, 0) 100%)",
-          filter: "blur(30px)",
-          zIndex: 0,
-          pointerEvents: "none",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, #fff 90%, transparent 100%)",
-          maskImage: "linear-gradient(to bottom, #fff 90%, transparent 100%)",
-        }}
-      />
       {/* Right: Child Development Section */}
       <Motion.div
         initial={{ opacity: 0, y: 50 }}

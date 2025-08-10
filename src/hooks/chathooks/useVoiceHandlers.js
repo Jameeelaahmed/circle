@@ -1,7 +1,4 @@
-/**
- * Custom hook to handle voice recording operations
- * Manages voice recording lifecycle and audio message sending
- */
+
 export function useVoiceHandlers(
     voiceRecording,
     circleId,

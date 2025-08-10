@@ -64,7 +64,7 @@ function PhotoGalleryContainer({ photos, initialIndex = 0, isOpen, onClose }) {
     const handleDownload = () => {
         const currentPhoto = photos[currentIndex];
         const link = document.createElement('a');
-        link.href = currentPhoto.mediaData;
+        link.href = currentPhoto.imageUrl;
         link.download = currentPhoto.fileName || `photo-${Date.now()}.jpg`;
         document.body.appendChild(link);
         link.click();

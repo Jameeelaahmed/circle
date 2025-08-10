@@ -94,10 +94,10 @@ export function scrollToMessage(messageId, messageRefs) {
 
 
 export async function handleDownloadMedia(message) {
-    if (!message.mediaData) return;
+    if (!message.imageUrl) return;
 
     try {
-        const response = await fetch(message.mediaData);
+        const response = await fetch(message.imageUrl);
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
 

@@ -2,7 +2,7 @@ import CircleCard from '../../components/CircleCard/CircleCard';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 
-function CirclesPagePresentational({ circles, membersByCircle, handleCardClick, circlesStatus, profileStatus, activeTab, profileInterests }) {
+function CirclesPagePresentational({ circles, membersByCircle, handleCardClick, circlesStatus, profileStatus, activeTab, profileInterests, user }) {
     const isLoading = circlesStatus === "loading" || profileStatus === "loading";
 
     if (isLoading) {
@@ -49,8 +49,8 @@ function CirclesPagePresentational({ circles, membersByCircle, handleCardClick, 
     return (
         <div className='mx-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
             {circles.map((circle) => (
-                <div key={circle.id} onClick={() => handleCardClick(circle)} style={{ cursor: 'pointer' }}>
-                    <CircleCard circle={circle} membersByCircle={membersByCircle} activeTab={activeTab} profileInterests={profileInterests} />
+                <div key={circle.id} onClick={() => handleCardClick(circle)} user={user} className='cursor-pointer'>
+                    <CircleCard circle={circle} membersByCircle={membersByCircle} activeTab={activeTab} profileInterests={profileInterests} user={user} />
                 </div>
             ))}
         </div>
