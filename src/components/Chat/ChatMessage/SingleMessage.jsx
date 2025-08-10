@@ -17,6 +17,8 @@ function SingleMessage({
     openImageSlider,
     dir
 }) {
+    console.log(msg);
+
     const isMe = currentUser && (msg.senderId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
@@ -120,14 +122,14 @@ function SingleMessage({
                                 {/* Message content */}
                                 {msg.messageType === 'audio' ? (
                                     <VoiceMessagePlayer
-                                        audioData={msg.audioUrl || msg.mediaData}
+                                        audioData={msg.audioUrl}
                                         isMe={isMe}
                                         duration={msg.duration}
                                     />
                                 ) : msg.messageType === 'image' ? (
                                     <div className="flex flex-col">
                                         <img
-                                            src={msg.mediaData}
+                                            src={msg.imageUrl}
                                             alt="Shared image"
                                             className="max-w-full max-h-80 rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity"
                                             onClick={() => openImageSlider([msg], 0)}
@@ -139,7 +141,7 @@ function SingleMessage({
                                 ) : msg.messageType === 'video' ? (
                                     <div className="flex flex-col">
                                         <video
-                                            src={msg.mediaData}
+                                            src={msg.videoUrl}
                                             controls
                                             className="max-w-full max-h-80 rounded-lg"
                                             preload="metadata"

@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 // slices
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
@@ -17,7 +18,8 @@ function CirclesPageContainer() {
     const circles = useSelector(state => state.circles.circles);
     const profile = useSelector(getProfileData);
     const dispatch = useDispatch();
-    const [activeTab, setActiveTab] = useState('my');
+    const { user } = useAuth()
+    const [activeTab, setActiveTab] = useState(user ? 'my' : 'forYou');
     const [circlePrivacy, setCirclePrivacy] = useState('all');
     const [currentPage, setCurrentPage] = useState(0);
     const circlesPerPage = 6;
@@ -40,7 +42,7 @@ function CirclesPageContainer() {
             filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'Private');
         }
     } else {
-        if (profile?.interests && profile.interests.length > 0) {
+        if (user && profile?.interests && profile.interests.length > 0) {
             filteredCircles = circles
                 .map(circle => ({
                     ...circle,
@@ -48,13 +50,17 @@ function CirclesPageContainer() {
                         profile.interests.includes(interest)
                     ) || []
                 }))
-                .filter(circle => circle.matchedInterests.length > 0 && circle.circlePrivacy === 'Public')
+                .filter(circle =>
+                (
+                    (circle.matchedInterests.length > 0 && circle.circlePrivacy === 'Public') &&
+                    !((membersByCircle?.[circle.id] || []).some(member => member.id === user.uid))
+                )
+                )
                 .sort((a, b) => b.matchedInterests.length - a.matchedInterests.length);
         } else {
-            filteredCircles = [];
+            filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public' || circle.circlePrivacy === 'Public'));
         }
     }
-
     // Pagination logic
     const pageCount = Math.ceil(filteredCircles.length / circlesPerPage);
     const paginatedCircles = filteredCircles.slice(
@@ -69,41 +75,61 @@ function CirclesPageContainer() {
 
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
-            <CirclesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-            {activeTab === "my" &&
-                <CirclesPrivacyFilter circlePrivacy={circlePrivacy} setCirclePrivacy={setCirclePrivacy} />
-            }
-            <div className="flex-1">
-                {activeTab === 'forYou' ? (
-                    // <div className="text-center text-lg text-gray-400 py-12">No circles to show</div>
-                    <CirclesPagePresentational
-                        circles={paginatedCircles}
-                        membersByCircle={membersByCircle}
-                        handleCardClick={handleCardClick}
-                        activeTab={activeTab}
-                        circlesStatus={circlesStatus}
-                        profileStatus={profileStatus}
-                        profileInterests={profile.interests}
-                    />
-                ) : (
-                    <CirclesPagePresentational
-                        circles={paginatedCircles}
-                        membersByCircle={membersByCircle}
-                        handleCardClick={handleCardClick}
-                        circlesStatus={circlesStatus}
-                        activeTab={activeTab}
-                        profileStatus={profileStatus}
-                        profileInterests={profile.interests}
+            {user && <>
+                <CirclesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                {activeTab === "my" &&
+                    <CirclesPrivacyFilter circlePrivacy={circlePrivacy} setCirclePrivacy={setCirclePrivacy} />
+                }
+                <div className="flex-1">
+                    {activeTab === 'forYou' ? (
+                        // <div className="text-center text-lg text-gray-400 py-12">No circles to show</div>
+                        <CirclesPagePresentational
+                            circles={paginatedCircles}
+                            membersByCircle={membersByCircle}
+                            handleCardClick={handleCardClick}
+                            activeTab={activeTab}
+                            circlesStatus={circlesStatus}
+                            profileStatus={profileStatus}
+                            profileInterests={profile.interests}
+                            user={user}
+                        />
+                    ) : (
+                        <CirclesPagePresentational
+                            circles={paginatedCircles}
+                            membersByCircle={membersByCircle}
+                            handleCardClick={handleCardClick}
+                            circlesStatus={circlesStatus}
+                            activeTab={activeTab}
+                            profileStatus={profileStatus}
+                            profileInterests={profile.interests}
+                            user={user}
+                        />
+                    )}
+                </div>
+                {pageCount > 1 && (
+                    <CustomPaginationContainer
+                        pageCount={pageCount}
+                        currentPage={currentPage}
+                        onPageChange={setCurrentPage}
                     />
                 )}
-            </div>
-            {pageCount > 1 && (
-                <CustomPaginationContainer
-                    pageCount={pageCount}
-                    currentPage={currentPage}
-                    onPageChange={setCurrentPage}
-                />
-            )}
+            </>}
+
+
+            {!user &&
+                <>
+                    <CirclesPagePresentational
+                        circles={paginatedCircles}
+                        membersByCircle={membersByCircle}
+                        handleCardClick={handleCardClick}
+                        activeTab={activeTab}
+                        circlesStatus={circlesStatus}
+                        profileStatus={profileStatus}
+                        profileInterests={profile.interests}
+                    />
+                </>
+            }
+
         </div>
     );
 }

@@ -4,6 +4,7 @@ export default function CircleCard({
   membersByCircle,
   activeTab,
   profileInterests,
+  user
 }) {
   const members = membersByCircle?.[circle.id] || [];
   const hasImage = !!circle.imageUrl;
@@ -77,26 +78,30 @@ export default function CircleCard({
         </p>
 
         {activeTab === "forYou" && (
-          <div className="mt-2 mb-2 flex flex-wrap gap-2">
-            {displayedInterests.map((interest) => (
-              <span
-                key={interest}
-                className="border-primary text-primary mb-2 rounded-3xl border p-2"
-              >
-                {interest}
-              </span>
-            ))}
-            {circle.interests.length > 4 && (
-              <span className="border-primary text-primary mb-2 rounded-3xl border p-2">
-                +{circle.interests.length - 4} more
-              </span>
+          <>
+            <div className="mt-2 mb-2 flex flex-wrap gap-2">
+              {displayedInterests.map((interest) => (
+                <span
+                  key={interest}
+                  className="border-primary text-primary mb-2 rounded-3xl border p-2"
+                >
+                  {interest}
+                </span>
+              ))}
+              {circle.interests.length > 4 && (
+                <span className="border-primary text-primary mb-2 rounded-3xl border p-2">
+                  +{circle.interests.length - 4} more
+                </span>
+              )}
+            </div>
+            {!(membersByCircle?.[circle.id] || []).some(member => member.id === user.uid) && (
+              <button className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm">
+                <span className="relative z-10">Join Circle</span>
+                <div className="absolute inset-0 bg-[var(--color-primary)] opacity-0 transition-opacity hover:opacity-10"></div>
+              </button>
             )}
-          </div>
+          </>
         )}
-        <button className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm">
-          <span className="relative z-10">View Circle</span>
-          <div className="absolute inset-0 bg-[var(--color-primary)] opacity-0 transition-opacity hover:opacity-10"></div>
-        </button>
       </div>
     </div>
   );

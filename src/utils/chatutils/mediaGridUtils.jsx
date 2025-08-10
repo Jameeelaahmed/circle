@@ -17,7 +17,7 @@ export const groupConsecutiveMedia = (messages) => {
       msg.senderId === prevMsg.senderId &&
       Math.abs(
         new Date(msg.timestamp?.toDate() || msg.timestamp) -
-          new Date(prevMsg.timestamp?.toDate() || prevMsg.timestamp),
+        new Date(prevMsg.timestamp?.toDate() || prevMsg.timestamp),
       ) < 60000; // Within 1 minute
 
     if (shouldGroup && currentGroup) {
@@ -54,7 +54,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
     return (
       <div className="relative">
         <img
-          src={msg.mediaData}
+          src={msg.imageUrl}
           alt="Shared image"
           className="max-h-80 max-w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
           onClick={() => openImageSlider(mediaMessages, 0)}
@@ -67,7 +67,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
         {mediaMessages.map((msg, idx) => (
           <img
             key={msg.id || idx}
-            src={msg.mediaData}
+            src={msg.imageUrl}
             alt="Shared image"
             className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
             onClick={() => openImageSlider(mediaMessages, idx)}
@@ -79,7 +79,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
     return (
       <div className="grid max-w-80 grid-cols-2 gap-1">
         <img
-          src={mediaMessages[0].mediaData}
+          src={mediaMessages[0].imageUrl}
           alt="Shared image"
           className="row-span-2 h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
           onClick={() => openImageSlider(mediaMessages, 0)}
@@ -88,7 +88,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
           {mediaMessages.slice(1).map((msg, idx) => (
             <img
               key={msg.id || idx}
-              src={msg.mediaData}
+              src={msg.imageUrl}
               alt="Shared image"
               className="h-[calc(10rem-0.125rem)] w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
               onClick={() => openImageSlider(mediaMessages, idx + 1)}
@@ -103,7 +103,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
         {mediaMessages.map((msg, idx) => (
           <img
             key={msg.id || idx}
-            src={msg.mediaData}
+            src={msg.imageUrl}
             alt="Shared image"
             className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
             onClick={() => openImageSlider(mediaMessages, idx)}
@@ -118,13 +118,13 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
       <div className="grid max-w-80 grid-cols-2 gap-1">
         {/* First row */}
         <img
-          src={mediaMessages[0].mediaData}
+          src={mediaMessages[0].imageUrl}
           alt="Shared image"
           className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
           onClick={() => openImageSlider(mediaMessages, 0)}
         />
         <img
-          src={mediaMessages[1].mediaData}
+          src={mediaMessages[1].imageUrl}
           alt="Shared image"
           className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
           onClick={() => openImageSlider(mediaMessages, 1)}
@@ -132,14 +132,14 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
 
         {/* Second row */}
         <img
-          src={mediaMessages[2].mediaData}
+          src={mediaMessages[2].imageUrl}
           alt="Shared image"
           className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
           onClick={() => openImageSlider(mediaMessages, 2)}
         />
         <div className="relative">
           <img
-            src={mediaMessages[3].mediaData}
+            src={mediaMessages[3].imageUrl}
             alt="Shared image"
             className="h-40 w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90"
             onClick={() => openImageSlider(mediaMessages, 3)}

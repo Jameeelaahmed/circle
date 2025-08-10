@@ -18,7 +18,6 @@ export function useVoiceRecording() {
     const stopRecording = useCallback(() => {
         return new Promise((resolve) => {
             isCancelledRef.current = false;
-            console.log('Stopping recording, current duration:', recordingTimeRef.current, 'seconds');
 
             if (mediaRecorder && mediaRecorder.state === 'recording') {
                 // Store the resolve function to call it when recording stops
@@ -37,7 +36,6 @@ export function useVoiceRecording() {
             if (recordingTimer.current) {
                 clearInterval(recordingTimer.current);
                 recordingTimer.current = null;
-                console.log('Recording timer cleared');
             }
 
             if (recordingTimeout.current) {
@@ -101,12 +99,8 @@ export function useVoiceRecording() {
             };
 
             recorder.onstop = async () => {
-                console.log('Recording stopped, chunks:', recordingChunks.current.length);
-
                 // Capture duration before cleaning up
                 const capturedRecordingTime = recordingTimeRef.current;
-                console.log('Captured recording duration before cleanup:', capturedRecordingTime, 'seconds');
-
                 // Clean up stream and timers
                 stream.getTracks().forEach(track => track.stop());
                 setAudioStream(null);
@@ -129,11 +123,9 @@ export function useVoiceRecording() {
                 }
 
                 const audioBlob = new Blob(recordingChunks.current, { type: recorder.mimeType });
-                console.log('Audio blob created:', audioBlob.size, 'bytes');
 
                 // Only return data if it wasn't cancelled
                 if (recordingChunks.current.length > 0 && !isCancelledRef.current) {
-                    console.log('Recording completed with duration:', capturedRecordingTime, 'seconds');
                     const recordingData = { audioBlob, duration: capturedRecordingTime };
 
                     if (recordingPromiseRef.current) {
@@ -174,7 +166,6 @@ export function useVoiceRecording() {
     const sendVoiceMessage = useCallback(async (audioBlob, duration, circleId, userId, userName, replyTo, formatTime) => {
         try {
             setIsUploading(true);
-            console.log('Sending voice message:', audioBlob.size, 'bytes, duration:', duration);
 
             // Validate inputs
             if (!audioBlob || audioBlob.size === 0) {
@@ -194,9 +185,6 @@ export function useVoiceRecording() {
                 (progress) => console.log('Audio upload progress:', progress + '%'),
                 formatTime
             );
-
-            console.log('Voice message sent successfully');
-
         } catch (error) {
             console.error('Error sending voice message:', error);
             console.error('Error details:', {

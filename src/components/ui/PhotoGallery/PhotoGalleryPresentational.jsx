@@ -95,7 +95,7 @@ function PhotoGalleryPresentational({
                 {/* Main image container */}
                 <div className="w-full h-full flex items-center justify-center p-8">
                     <img
-                        src={currentPhoto.mediaData}
+                        src={currentPhoto.imageUrl}
                         alt={currentPhoto.fileName || 'Photo'}
                         className={`max-w-full max-h-full object-contain transition-transform duration-200 cursor-pointer ${isZoomed ? 'cursor-move' : 'cursor-zoom-in'
                             }`}
@@ -135,7 +135,7 @@ function PhotoGalleryPresentational({
                                     }`}
                             >
                                 <img
-                                    src={photo.mediaData}
+                                    src={photo.imageUrl}
                                     alt={`Photo ${index + 1}`}
                                     className="w-full h-full object-cover"
                                 />

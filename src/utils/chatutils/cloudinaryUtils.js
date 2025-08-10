@@ -2,17 +2,6 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import cloudinaryService from "../../services/cloudinaryService";
 
-/**
- * Upload and send image message using Cloudinary
- * @param {File} file - Image file to upload
- * @param {string} circleId - Circle ID
- * @param {string} userId - User ID  
- * @param {string} userName - User name
- * @param {Object} replyTo - Reply to message object
- * @param {Function} onProgress - Progress callback
- * @param {Function} formatTime - Time formatting function
- * @returns {Promise<Object>} Upload result
- */
 export async function uploadAndSendImage(file, circleId, userId, userName, replyTo, onProgress, formatTime) {
     try {
         // Upload to Cloudinary
@@ -28,7 +17,6 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
             senderName: userName,
             sentTime: formatTime(),
             imageUrl: uploadResult.secure_url,
-            mediaData: uploadResult.secure_url, // Add for compatibility with UI
             publicId: uploadResult.public_id,
             fileName: file.name,
             fileSize: file.size,
@@ -59,18 +47,6 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
     }
 }
 
-/**
- * Upload and send audio message using Cloudinary
- * @param {Blob} audioBlob - Audio blob to upload
- * @param {number} duration - Recording duration in seconds
- * @param {string} circleId - Circle ID
- * @param {string} userId - User ID
- * @param {string} userName - User name
- * @param {Object} replyTo - Reply to message object
- * @param {Function} onProgress - Progress callback
- * @param {Function} formatTime - Time formatting function
- * @returns {Promise<Object>} Upload result
- */
 export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, userName, replyTo, onProgress, formatTime) {
     try {
         // Upload to Cloudinary
@@ -86,8 +62,6 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             senderName: userName,
             sentTime: formatTime(),
             audioUrl: uploadResult.secure_url,
-            audioData: uploadResult.secure_url, // For VoiceMessagePlayer compatibility
-            mediaData: uploadResult.secure_url, // Add for compatibility with UI
             publicId: uploadResult.public_id,
             duration: Math.round(duration),
             fileSize: audioBlob.size,
@@ -118,17 +92,6 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
     }
 }
 
-/**
- * Upload and send video message using Cloudinary
- * @param {File} file - Video file to upload
- * @param {string} circleId - Circle ID
- * @param {string} userId - User ID
- * @param {string} userName - User name
- * @param {Object} replyTo - Reply to message object
- * @param {Function} onProgress - Progress callback
- * @param {Function} formatTime - Time formatting function
- * @returns {Promise<Object>} Upload result
- */
 export async function uploadAndSendVideo(file, circleId, userId, userName, replyTo, onProgress, formatTime) {
     try {
         // Upload to Cloudinary
@@ -144,7 +107,6 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
             senderName: userName,
             sentTime: formatTime(),
             videoUrl: uploadResult.secure_url,
-            mediaData: uploadResult.secure_url, // Add for compatibility with UI
             publicId: uploadResult.public_id,
             fileName: file.name,
             fileSize: file.size,
@@ -176,17 +138,6 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
     }
 }
 
-/**
- * Batch upload images using Cloudinary
- * @param {File[]} files - Array of image files
- * @param {string} circleId - Circle ID
- * @param {string} userId - User ID
- * @param {string} userName - User name
- * @param {Object} replyTo - Reply to message object
- * @param {Function} onProgress - Progress callback (current, total)
- * @param {Function} formatTime - Time formatting function
- * @returns {Promise<Object[]>} Array of upload results
- */
 export async function batchUploadImages(files, circleId, userId, userName, replyTo, onProgress, formatTime) {
     try {
         const results = [];
@@ -246,12 +197,7 @@ export function getOptimizedImageUrl(publicId, options = {}) {
     return getCloudinaryUrl(publicId, transformations);
 }
 
-/**
- * Get thumbnail URL for images
- * @param {string} publicId - Cloudinary public ID
- * @param {number} size - Thumbnail size (default 150)
- * @returns {string} Thumbnail URL
- */
+
 export function getThumbnailUrl(publicId, size = 150) {
     return getOptimizedImageUrl(publicId, {
         width: size,
@@ -261,11 +207,6 @@ export function getThumbnailUrl(publicId, size = 150) {
     });
 }
 
-/**
- * Get preview URL for videos
- * @param {string} publicId - Cloudinary public ID
- * @returns {string} Video thumbnail URL
- */
 export function getVideoThumbnailUrl(publicId) {
     const baseUrl = `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}`;
     return `${baseUrl}/video/upload/so_0,w_300,h_200,c_fill,q_auto,f_jpg/${publicId}.jpg`;

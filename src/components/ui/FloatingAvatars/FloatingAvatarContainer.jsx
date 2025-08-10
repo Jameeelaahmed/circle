@@ -101,7 +101,7 @@ function FloatingAvatarContainer() {
     {
       id: 1,
       x: "6%",
-      y: "8%",
+      y: "10%",
       hue: 0,
       imageUrl:
         "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -112,7 +112,7 @@ function FloatingAvatarContainer() {
     {
       id: 2,
       x: "17%",
-      y: "13%",
+      y: "15%",
       hue: 0,
       imageUrl:
         "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -123,7 +123,7 @@ function FloatingAvatarContainer() {
     {
       id: 3,
       x: "10%",
-      y: "22%",
+      y: "30%",
       hue: 60,
       imageUrl:
         "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -134,7 +134,7 @@ function FloatingAvatarContainer() {
     {
       id: 4,
       x: "20%",
-      y: "30%",
+      y: "35%",
       hue: 60,
       imageUrl:
         "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -144,7 +144,7 @@ function FloatingAvatarContainer() {
     },
     {
       id: 5,
-      x: "2%",
+      x: "1%",
       y: "30%",
       hue: 120,
       imageUrl:
@@ -167,7 +167,7 @@ function FloatingAvatarContainer() {
     {
       id: 7,
       x: "25%",
-      y: "50%",
+      y: "55%",
       hue: 180,
       imageUrl:
         "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -175,22 +175,11 @@ function FloatingAvatarContainer() {
       role: "Backend Engineer",
       status: "Working remotely",
     },
-    {
-      id: 8,
-      x: "6%",
-      y: "48%",
-      hue: 240,
-      imageUrl:
-        "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      name: "David Kim",
-      role: "Frontend Developer",
-      status: "Active now",
-    },
 
     {
       id: 9,
-      x: "88%",
-      y: "8%",
+      x: "85%",
+      y: "10%",
       hue: 0,
       imageUrl:
         "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -200,8 +189,8 @@ function FloatingAvatarContainer() {
     },
     {
       id: 10,
-      x: "75%",
-      y: "13%",
+      x: "74%",
+      y: "15%",
       hue: 0,
       imageUrl:
         "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -211,8 +200,8 @@ function FloatingAvatarContainer() {
     },
     {
       id: 11,
-      x: "83%",
-      y: "22%",
+      x: "80%",
+      y: "30%",
       hue: 60,
       imageUrl:
         "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -222,8 +211,8 @@ function FloatingAvatarContainer() {
     },
     {
       id: 12,
-      x: "90%",
-      y: "30%",
+      x: "71%",
+      y: "35%",
       hue: 60,
       imageUrl:
         "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
@@ -233,7 +222,7 @@ function FloatingAvatarContainer() {
     },
     {
       id: 13,
-      x: "70%",
+      x: "90%",
       y: "30%",
       hue: 120,
       imageUrl:
@@ -244,7 +233,7 @@ function FloatingAvatarContainer() {
     },
     {
       id: 14,
-      x: "70%",
+      x: "78%",
       y: "50%",
       hue: 180,
       imageUrl:
@@ -255,25 +244,14 @@ function FloatingAvatarContainer() {
     },
     {
       id: 15,
-      x: "80%",
-      y: "50%",
+      x: "65%",
+      y: "55%",
       hue: 180,
       imageUrl:
         "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
       name: "Sarah Johnson",
       role: "Backend Engineer",
       status: "Working remotely",
-    },
-    {
-      id: 16,
-      x: "90%",
-      y: "48%",
-      hue: 240,
-      imageUrl:
-        "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      name: "David Kim",
-      role: "Frontend Developer",
-      status: "Active now",
     },
   ];
   const ltrOrbPositions = calcDelays(ltrOrbPositionsRaw);
