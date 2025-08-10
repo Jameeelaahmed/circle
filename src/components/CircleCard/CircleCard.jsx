@@ -4,7 +4,8 @@ export default function CircleCard({
   membersByCircle,
   activeTab,
   profileInterests,
-  user
+  user,
+  handleJoinRequest
 }) {
   const members = membersByCircle?.[circle.id] || [];
   const hasImage = !!circle.imageUrl;
@@ -94,8 +95,11 @@ export default function CircleCard({
                 </span>
               )}
             </div>
-            {!(membersByCircle?.[circle.id] || []).some(member => member.id === user.uid) && (
-              <button className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm">
+            {!(membersByCircle?.[circle.id] || []).some(member => member.id === user?.uid) && (
+              <button
+                className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                onClick={() => handleJoinRequest(circle.id)}
+              >
                 <span className="relative z-10">Join Circle</span>
                 <div className="absolute inset-0 bg-[var(--color-primary)] opacity-0 transition-opacity hover:opacity-10"></div>
               </button>

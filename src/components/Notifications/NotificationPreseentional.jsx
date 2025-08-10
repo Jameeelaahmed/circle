@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import NotificationDropdown from "../../components/NotificationComponents/NotificationDropdown";
+import NotificationDropdown from "../NotificationComponents/NotificationDropdown";
 import {
   selectNotifications,
   selectUnreadCount,

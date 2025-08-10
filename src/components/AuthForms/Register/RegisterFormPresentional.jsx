@@ -1,6 +1,6 @@
 import Button from "../../../components/ui/Buttons/Button";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Logo } from "../../../assets/icons/Logo";
 import AuthButton from "../../../components/ui/Buttons/AuthButton";
 import GoogleIcon from "../../../assets/icons/google.svg";
@@ -28,6 +28,7 @@ function RegisterFormPresentional({
   usernameValidation,
   location,
   handleLocation,
+  setLocation,
   selectedInterests,
   setSelectedInterests,
   filteredInterests,
@@ -35,7 +36,6 @@ function RegisterFormPresentional({
   handleSearchChange,
   errors,
   clearFieldError,
-  // Refs
   usernameRef,
   emailRef,
   passwordRef,
@@ -75,6 +75,7 @@ function RegisterFormPresentional({
         transition={{ delay: 0.5, duration: 0.6 }}
       >
         <form onSubmit={handleSignUp} className="space-y-4">
+          {/* Username */}
           <div className="relative">
             <input
               ref={usernameRef}
@@ -87,15 +88,13 @@ function RegisterFormPresentional({
                   clearFieldError("username");
                 }
               }}
-              //   onKeyUp={handleKeyPress}
               disabled={isLoading}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                usernameValidation?.isValid === false || errors.username
-                  ? "border-2 border-red-500"
-                  : usernameValidation?.isValid === true
-                    ? "border-2 border-green-500"
-                    : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${usernameValidation?.isValid === false || errors.username
+                ? "border-2 border-red-500"
+                : usernameValidation?.isValid === true
+                  ? "border-2 border-green-500"
+                  : ""
+                }`}
             />
             {usernameValidation?.isChecking && (
               <div className="absolute top-1/2 right-3 -translate-y-1/2 transform">
@@ -104,18 +103,18 @@ function RegisterFormPresentional({
             )}
             {(errors.username || usernameValidation?.message) && (
               <p
-                className={`mt-1 text-xs ${
-                  errors.username
-                    ? "text-red-400"
-                    : usernameValidation?.isValid
-                      ? "text-green-400"
-                      : "text-red-400"
-                }`}
+                className={`mt-1 text-xs ${errors.username
+                  ? "text-red-400"
+                  : usernameValidation?.isValid
+                    ? "text-green-400"
+                    : "text-red-400"
+                  }`}
               >
                 {errors.username || usernameValidation.message}
               </p>
             )}
           </div>
+          {/* Age */}
           <div className="relative">
             <div className="absolute top-1/2 right-14 z-[1] -translate-y-1/2 text-white">
               Date of Birth
@@ -123,11 +122,10 @@ function RegisterFormPresentional({
             <input
               type="date"
               placeholder="Age"
-              onChange={(e) => handleAgeChange(e)}
+              onChange={handleAgeChange}
               disabled={isLoading}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.age ? "border-2 border-red-500" : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.age ? "border-2 border-red-500" : ""
+                }`}
             />
             {errors.age && (
               <p className="mt-1 text-xs text-red-400">{errors.age}</p>
@@ -148,9 +146,8 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.email ? "border-2 border-red-500" : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.email ? "border-2 border-red-500" : ""
+                }`}
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-400">{errors.email}</p>
@@ -172,9 +169,8 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.password ? "border-2 border-red-500" : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.password ? "border-2 border-red-500" : ""
+                }`}
               minLength={6}
             />
             <button
@@ -206,9 +202,8 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.confirmPassword ? "border-2 border-red-500" : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.confirmPassword ? "border-2 border-red-500" : ""
+                }`}
             />
             <button
               type="button"
@@ -225,11 +220,11 @@ function RegisterFormPresentional({
             )}
           </div>
 
+          {/* City Select */}
           <div>
             <select
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm disabled:opacity-50 ${
-                errors.location ? "border-2 border-red-500" : ""
-              }`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm disabled:opacity-50 ${errors.location ? "border-2 border-red-500" : ""
+                }`}
               onChange={(e) => setLocation(e.target.value)}
               value={location || ""}
               disabled={isLoading}
@@ -251,11 +246,9 @@ function RegisterFormPresentional({
           <div className="relative">
             <input
               type="text"
-              // placeholder="Password (min. 6 characters)"
               value={location}
-              // onChange={(e) => setPassword(e.target.value)}
               disabled
-              className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+              className="inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
               required
               minLength={6}
             />
@@ -267,19 +260,6 @@ function RegisterFormPresentional({
               Get Location
             </button>
           </div>
-          {/* <select
-            className="bg-main h-12 w-full"
-            onChange={(e) => setLocation(e.target.value)}
-            value={location}
-          >
-            {EgyptCities.map((city) => (
-              <option>{city.city_name_en}</option>
-            ))}
-          </select> */}
-          {/* Password Match Indicator */}
-          {repeatPassword && !isPasswordMatch && (
-            <p className="mt-1 text-sm text-red-400">Passwords don't match</p>
-          )}
 
           {/* Interests Selection */}
           <div className="relative">
@@ -294,7 +274,7 @@ function RegisterFormPresentional({
               placeholder="Search interests..."
               defaultValue={search}
               onChange={handleSearchChange}
-              className={`bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""} mb-2`}
+              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""} mb-2`}
             />
             <div className="flex flex-wrap gap-2">
               {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
@@ -309,9 +289,9 @@ function RegisterFormPresentional({
                   .slice(
                     0,
                     10 -
-                      filteredInterests.filter((interest) =>
-                        selectedInterests.includes(interest.value),
-                      ).length,
+                    filteredInterests.filter((interest) =>
+                      selectedInterests.includes(interest.value),
+                    ).length,
                   ),
               ]
                 .slice(0, 10)

@@ -1,7 +1,6 @@
 // Libs
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import useLocation from "../../../hooks/useLocation";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, GoogleProvider } from "../../../firebase-config";
 import { toast } from "react-toastify";
@@ -47,7 +46,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const searchRef = useRef(null);
 
   const filteredInterests = interestOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase()),
+    opt.label.toLowerCase().includes(search.toLowerCase())
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -74,6 +73,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           isChecking: false,
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Username validation error:", error);
         setUsernameValidation({
           isValid: false,
@@ -119,16 +119,8 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     }
   };
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
-
   const handleSignUp = async (e) => {
-    e?.preventDefault();
+    if (e) e.preventDefault();
 
     // Get values from refs
     const emailValue = emailRef.current?.value || "";
@@ -180,7 +172,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
     // Clear any previous errors
     setErrors({});
-
     setIsLoading(true);
 
     try {
@@ -195,7 +186,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         emailValue,
-        passwordValue,
+        passwordValue
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
@@ -220,7 +211,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           events: 0,
         },
         interests: selectedInterests,
-        joninedEvents: [],
+        joinedEvents: [],
         connectionRequests: [],
         connections: [],
         createdAt: Timestamp.now(),
@@ -289,7 +280,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           events: 0,
         },
         interests: selectedInterests,
-        joninedEvents: [],
+        joinedEvents: [],
         connectionRequests: [],
         connections: [],
         createdAt: new Date(),
@@ -300,13 +291,14 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
       try {
         await createUserProfile(user.uid, profileData);
+        // eslint-disable-next-line no-console
         console.log("Profile created/updated successfully for Google user");
       } catch (profileError) {
+        // eslint-disable-next-line no-console
         console.error(
           "Error creating/updating Google user profile:",
-          profileError,
+          profileError
         );
-        // Don't block the login process, but notify the user
         toast.warning("Signed in successfully, but profile update failed.");
       }
 
@@ -314,16 +306,17 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       toast.success(
         isNewUser
           ? "Account created successfully with Google!"
-          : "Signed in successfully with Google!",
+          : "Signed in successfully with Google!"
       );
       navigate("/");
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Google signup error:", error);
 
       // Handle COOP policy error specifically
       if (error.message?.includes("Cross-Origin-Opener-Policy")) {
         toast.error(
-          "Popup blocked by security policy. Please try again or use a different browser.",
+          "Popup blocked by security policy. Please try again or use a different browser."
         );
       } else if (error.code === "auth/popup-closed-by-user") {
         toast.error("Sign-up was cancelled");
@@ -333,7 +326,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         error.code === "auth/account-exists-with-different-credential"
       ) {
         toast.error(
-          "An account with this email already exists. Please try signing in instead.",
+          "An account with this email already exists. Please try signing in instead."
         );
       } else {
         toast.error("Failed to sign up with Google. Please try again.");
@@ -351,31 +344,43 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   };
 
   const handleAgeChange = (e) => {
-    const age = new Date(e.target.value);
+    const ageDate = new Date(e.target.value);
     const today = new Date();
-    const userAge = today.getFullYear() - age.getFullYear();
-    if (userAge < 18) {
+    let calculatedAge = today.getFullYear() - ageDate.getFullYear();
+    // Adjust for month/day
+    const m = today.getMonth() - ageDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < ageDate.getDate())) {
+      calculatedAge--;
+    }
+    if (calculatedAge < 18) {
       toast.warning("You must be at least 18 years old to register.");
+      setUserAge(null);
       return;
     }
-    setUserAge(userAge);
+    setUserAge(calculatedAge);
   };
+
   const handleLocation = async () => {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      const apiKey = "efcadedc6ec64c51b36918c3e38a707c";
-      const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&format=json&apiKey=${apiKey}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const loc = data.results[0];
-        setLocation(loc.name || loc.district || loc.country || loc.city);
-      } catch (error) {}
-    });
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "efcadedc6ec64c51b36918c3e38a707c";
+        const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&format=json&apiKey=${apiKey}`;
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          const loc = data.results[0];
+          setLocation(loc.name || loc.district || loc.country || loc.city);
+        } catch (error) {
+          toast.error("Failed to fetch location.");
+        }
+      },
+      () => {
+        toast.error("Unable to access your location.");
+      }
+    );
   };
-  // Real-time password match validation
-  const isPasswordMatch = repeatPassword === "" || password === repeatPassword;
 
   return (
     <RegisterFormPresentional
