@@ -4,7 +4,7 @@ import i18n from "../../../i18n";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
-import Notification from "../../pages/Notifications/NotificationSection";
+import Notification from "../Notifications/NotificationSection";
 //components
 import HeaderPresentional from "./HeaderPresentional";
 
@@ -66,4 +66,4 @@ function Header() {
   );
 }
 
-export default  Header;
+export default Header;
