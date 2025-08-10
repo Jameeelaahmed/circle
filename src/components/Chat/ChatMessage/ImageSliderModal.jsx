@@ -47,7 +47,7 @@ function ImageSliderModal({
                 onClick={() => {
                     const currentImage = imageSlider.images[imageSlider.currentIndex];
                     const link = document.createElement('a');
-                    link.href = currentImage.mediaData;
+                    link.href = currentImage.imageUrl;
                     link.download = currentImage.fileName || `image-${imageSlider.currentIndex + 1}.jpg`;
                     document.body.appendChild(link);
                     link.click();
@@ -77,7 +77,7 @@ function ImageSliderModal({
             <div className="flex items-center justify-center w-full h-full p-4">
                 <div className="relative max-w-[90vw] max-h-[80vh] flex items-center justify-center">
                     <img
-                        src={imageSlider.images[imageSlider.currentIndex]?.mediaData}
+                        src={imageSlider.images[imageSlider.currentIndex]?.imageUrl}
                         alt="Full size image"
                         className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                         style={{
@@ -106,7 +106,7 @@ function ImageSliderModal({
                     {imageSlider.images.map((img, idx) => (
                         <img
                             key={img.id || idx}
-                            src={img.mediaData}
+                            src={img.imageUrl}
                             alt={`Thumbnail ${idx + 1}`}
                             className={`w-16 h-16 object-cover rounded cursor-pointer border-2 hover:border-gray-300 transition-colors ${idx === imageSlider.currentIndex ? 'border-white' : 'border-transparent'
                                 }`}

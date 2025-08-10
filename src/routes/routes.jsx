@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense } from "react";
 // Components
 import RootLayout from "../layouts/RootLayout";
+import { useAuth } from "../hooks/useAuth"; // <-- Import your hook
 
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
@@ -42,6 +43,18 @@ const MemoryUploadPage = lazy(
 const LazyWrapper = ({ children }) => (
   <Suspense fallback={<div />}>{children}</Suspense>
 );
+
+// Protected route wrapper
+function ProtectedRoute({ children }) {
+  const { isLoggedIn } = useAuth();
+  if (!isLoggedIn) {
+    // Redirect to login or show a message
+    window.location.href = "/login";
+    return null;
+  }
+  return children;
+}
+
 const routes = createBrowserRouter([
   {
     path: "/login",
@@ -106,9 +119,11 @@ const routes = createBrowserRouter([
       {
         path: "circles/:circleId",
         element: (
-          <LazyWrapper>
-            <CirclePageContainer />
-          </LazyWrapper>
+          <ProtectedRoute>
+            <LazyWrapper>
+              <CirclePageContainer />
+            </LazyWrapper>
+          </ProtectedRoute>
         ),
       },
       {

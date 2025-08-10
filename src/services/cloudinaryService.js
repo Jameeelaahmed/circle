@@ -12,12 +12,6 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Upload file to Cloudinary using unsigned upload
-     * @param {File|Blob} file - The file to upload
-     * @param {Object} options - Upload options
-     * @returns {Promise<Object>} Upload result
-     */
     async uploadFile(file, options = {}) {
         try {
             const formData = new FormData();
@@ -85,13 +79,6 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Upload image with progress tracking
-     * @param {File} file - Image file
-     * @param {Function} onProgress - Progress callback
-     * @param {Object} options - Upload options
-     * @returns {Promise<Object>} Upload result
-     */
     async uploadImage(file, onProgress = null, options = {}) {
         try {
             const uploadOptions = {
@@ -112,13 +99,6 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Upload audio with progress tracking
-     * @param {File|Blob} audioBlob - Audio file or blob
-     * @param {Function} onProgress - Progress callback
-     * @param {Object} options - Upload options
-     * @returns {Promise<Object>} Upload result
-     */
     async uploadAudio(audioBlob, onProgress = null, options = {}) {
         try {
             // Convert blob to file if needed
@@ -143,13 +123,6 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Upload video with progress tracking
-     * @param {File} file - Video file
-     * @param {Function} onProgress - Progress callback
-     * @param {Object} options - Upload options
-     * @returns {Promise<Object>} Upload result
-     */
     async uploadVideo(file, onProgress = null, options = {}) {
         try {
             const uploadOptions = {
@@ -170,13 +143,6 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Upload file with progress tracking using XMLHttpRequest
-     * @param {File} file - File to upload
-     * @param {Object} options - Upload options
-     * @param {Function} onProgress - Progress callback
-     * @returns {Promise<Object>} Upload result
-     */
     uploadWithProgress(file, options, onProgress) {
         return new Promise((resolve, reject) => {
             const formData = new FormData();
@@ -242,11 +208,6 @@ class CloudinaryService {
         });
     }
 
-    /**
-     * Get resource type based on MIME type
-     * @param {string} mimeType - File MIME type
-     * @returns {string} Cloudinary resource type
-     */
     getResourceType(mimeType) {
         if (mimeType.startsWith('image/')) {
             return 'image';
@@ -257,12 +218,7 @@ class CloudinaryService {
         }
     }
 
-    /**
-     * Delete file from Cloudinary
-     * @param {string} publicId - Public ID of the file to delete
-     * @param {string} resourceType - Resource type (image, video, raw)
-     * @returns {Promise<Object>} Deletion result
-     */
+
     async deleteFile(publicId, resourceType = 'image') {
         try {
             // Note: Deletion requires authentication and is typically done on the server side

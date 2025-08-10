@@ -45,7 +45,7 @@ function MessageContextMenu({
                     className="px-4 py-3 hover:bg-primary/30 text-left transition-colors"
                     onClick={() => {
                         const link = document.createElement('a');
-                        link.href = menu.message.mediaData;
+                        link.href = menu.message.imageUrl;
                         link.download = menu.message.fileName || `image-${Date.now()}.jpg`;
                         document.body.appendChild(link);
                         link.click();

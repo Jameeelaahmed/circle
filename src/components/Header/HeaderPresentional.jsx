@@ -5,7 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { motion as Motion } from "framer-motion";
 import { Link, NavLink } from "react-router-dom";
 import { Logo } from "../../assets/icons/Logo";
-import Notificaion from "../../pages/Notifications/NotificationSection";
+import Notificaion from "../Notifications/NotificationSection";
 import { useState } from "react";
 
 function HeaderPresentional({

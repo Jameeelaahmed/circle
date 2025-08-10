@@ -196,13 +196,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
         );
         imageUrl = uploadResult.secure_url;
         formFields.imageUrl = imageUrl;
-        // Store additional Cloudinary data if needed
-        formFields.coverImageData = {
-          publicId: uploadResult.public_id,
-          width: uploadResult.width,
-          height: uploadResult.height,
-          format: uploadResult.format,
-        };
       } catch (err) {
         console.error("Circle cover upload failed:", err);
         toast.error(
