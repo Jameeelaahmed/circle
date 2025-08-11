@@ -6,27 +6,25 @@ import Team from "../../components/AboutUs/Team";
 
 const AboutUs = () => {
   return (
-    <div
-      className=" relative min-h-screen overflow-hidden pt-[64px] text-color-text"
-    >
+    <div className="text-color-text bg-main relative min-h-screen pt-[64px]">
       <Hero />
       <Stats />
       <VisionAndMission />
       <Team />
 
-      <div className="absolute top-10 right-5 z-1 h-48 w-48 opacity-30 ">
+      <div className="absolute top-10 right-5 z-1 h-48 w-48 opacity-30">
         <Orb hue={480} hoverIntensity={0.3} />
       </div>
-      <div className="absolute top-20 right-10 z-10 h-96 w-96 opacity-20 ">
+      <div className="absolute top-20 right-10 z-10 h-96 w-96 opacity-20">
         <Orb hue={180} hoverIntensity={0.3} />
       </div>
-      <div className="absolute top-140 left-10 z-10 h-96 w-96 opacity-20 ">
+      <div className="absolute top-140 left-10 z-10 h-96 w-96 opacity-20">
         <Orb hue={180} hoverIntensity={0.3} />
       </div>
-      <div className="absolute right-10 bottom-300 z-10 h-48 w-48 opacity-10 ">
+      <div className="absolute right-10 bottom-300 z-10 h-48 w-48 opacity-10">
         <Orb hue={280} hoverIntensity={0.3} />
       </div>
-      <div className="absolute bottom-20 left-10 z-10 h-48 w-48 opacity-10 ">
+      <div className="absolute bottom-20 left-10 z-10 h-48 w-48 opacity-10">
         <Orb hue={280} hoverIntensity={0.2} />
       </div>
     </div>
