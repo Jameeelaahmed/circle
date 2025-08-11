@@ -5,7 +5,7 @@ export default function CircleCard({
   activeTab,
   profileInterests,
   user,
-  handleJoinRequest
+  handleJoinRequest,
 }) {
   const members = membersByCircle?.[circle.id] || [];
   const hasImage = !!circle.imageUrl;
@@ -72,7 +72,7 @@ export default function CircleCard({
         </div>
 
         <p
-          className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm"
+          className="mb-1.5 line-clamp-3 h-10 text-xs leading-relaxed wrap-break-word sm:text-sm"
           style={{ color: "rgba(173, 186, 199, 0.95)" }}
         >
           {circle.description || "This circle hasn't added a description yet"}
@@ -80,7 +80,7 @@ export default function CircleCard({
 
         {activeTab === "forYou" && (
           <>
-            <div className="mt-2 mb-2 flex flex-wrap gap-2">
+            <div className="mt-2 mb-2 flex h-10 flex-wrap gap-2">
               {displayedInterests.map((interest) => (
                 <span
                   key={interest}
@@ -95,7 +95,9 @@ export default function CircleCard({
                 </span>
               )}
             </div>
-            {!(membersByCircle?.[circle.id] || []).some(member => member.id === user?.uid) && (
+            {!(membersByCircle?.[circle.id] || []).some(
+              (member) => member.id === user?.uid,
+            ) && (
               <button
                 className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
                 onClick={() => handleJoinRequest(circle.id)}
