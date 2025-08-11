@@ -2,22 +2,19 @@ import Button from "../../../components/ui/Buttons/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Logo } from "../../../assets/icons/Logo";
-import AuthButton from "../../../components/ui/Buttons/AuthButton";
-import GoogleIcon from "../../../assets/icons/google.svg";
 import { motion as Motion } from "framer-motion";
 import EgyptCities from "../../../assets/EgyptCities.json";
 import Chip from "@mui/material/Chip";
-
+import Select from "react-select";
+import customSelectStyles from "../../ui/Modal/CreateCircleModal/customSelectStyles";
 function RegisterFormPresentional({
   handleKeyPress,
   handleSignUp,
-  handleSignUpWithGoogle,
   showPassword,
   setShowPassword,
   showConfirmPassword,
   setShowConfirmPassword,
   isLoading,
-  isGoogleLoading,
   email,
   password,
   confirmPassword,
@@ -42,45 +39,54 @@ function RegisterFormPresentional({
   confirmPasswordRef,
   searchRef,
 }) {
+  const cityOptions = EgyptCities.map((city) => ({
+    value: city.city_name_en,
+    label: city.city_name_en,
+  }));
+
   return (
-    <div className="flex w-full flex-col items-center justify-center px-8 lg:max-w-md">
+    <div className="flex w-full flex-col items-center justify-center px-8 lg:max-w-md py-4">
       {/* Logo */}
       <Motion.div
-        className="mb-8 flex justify-center text-center"
+        className="mb-4 flex justify-center text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
-        <Logo />
+        <Logo className="w-24 h-24" />
       </Motion.div>
 
       {/* Welcome Text */}
       <Motion.div
-        className="mb-8 text-center"
+        className="mb-6 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        <h1 className="font-quick-sand mb-2 text-3xl font-bold text-white">
+        <h1 className="font-quick-sand mb-1 text-2xl font-bold text-white">
           Welcome to Circle
         </h1>
-        <p className="text-text text-sm">Let's create an account for you</p>
+        <p className="text-text text-sm">Create your account to get started</p>
       </Motion.div>
 
       {/* Registration Form */}
       <Motion.div
-        className="min-w-xs space-y-4 py-4 md:min-w-md"
+        className="min-w-xs w-full space-y-3 py-2 max-h-[70vh] overflow-y-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        <form onSubmit={handleSignUp} className="space-y-4">
+        <form onSubmit={handleSignUp} className="space-y-3">
           {/* Username */}
           <div className="relative">
+            <label htmlFor="username" className="text-text mb-1 block text-sm font-medium">
+              Username
+            </label>
             <input
+              id="username"
               ref={usernameRef}
               type="text"
-              placeholder="Username"
+              placeholder="Enter your username"
               value={userName}
               onChange={(e) => {
                 setUserName(e.target.value);
@@ -89,7 +95,7 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${usernameValidation?.isValid === false || errors.username
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${usernameValidation?.isValid === false || errors.username
                 ? "border-2 border-red-500"
                 : usernameValidation?.isValid === true
                   ? "border-2 border-green-500"
@@ -114,29 +120,36 @@ function RegisterFormPresentional({
               </p>
             )}
           </div>
+
           {/* Age */}
           <div className="relative">
-            <div className="absolute top-1/2 right-14 z-[1] -translate-y-1/2 text-white">
+            <label htmlFor="age" className="text-text mb-1 block text-sm font-medium">
               Date of Birth
-            </div>
+            </label>
             <input
+              id="age"
               type="date"
               placeholder="Age"
               onChange={handleAgeChange}
               disabled={isLoading}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.age ? "border-2 border-red-500" : ""
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.age ? "border-2 border-red-500" : ""
                 }`}
             />
             {errors.age && (
               <p className="mt-1 text-xs text-red-400">{errors.age}</p>
             )}
           </div>
+
           {/* Email Input */}
           <div>
+            <label htmlFor="email" className="text-text mb-1 block text-sm font-medium">
+              Email Address
+            </label>
             <input
+              id="email"
               ref={emailRef}
               type="email"
-              placeholder="Email address"
+              placeholder="your.email@example.com"
               defaultValue={email}
               onKeyUp={handleKeyPress}
               onBlur={() => {
@@ -146,7 +159,7 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.email ? "border-2 border-red-500" : ""
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.email ? "border-2 border-red-500" : ""
                 }`}
             />
             {errors.email && (
@@ -156,10 +169,14 @@ function RegisterFormPresentional({
 
           {/* Password Input */}
           <div className="relative">
+            <label htmlFor="password" className="text-text mb-1 block text-sm font-medium">
+              Password
+            </label>
             <input
+              id="password"
               ref={passwordRef}
               type={showPassword ? "text" : "password"}
-              placeholder="Password (min. 6 characters)"
+              placeholder="Minimum 6 characters"
               defaultValue={password}
               onKeyPress={handleKeyPress}
               onBlur={() => {
@@ -169,7 +186,7 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.password ? "border-2 border-red-500" : ""
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.password ? "border-2 border-red-500" : ""
                 }`}
               minLength={6}
             />
@@ -179,7 +196,7 @@ function RegisterFormPresentional({
               disabled={isLoading}
               className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
             {errors.password && (
               <p className="mt-1 text-xs text-red-400">{errors.password}</p>
@@ -188,10 +205,14 @@ function RegisterFormPresentional({
 
           {/* Confirm Password Input */}
           <div className="relative">
+            <label htmlFor="confirmPassword" className="text-text mb-1 block text-sm font-medium">
+              Confirm Password
+            </label>
             <input
+              id="confirmPassword"
               ref={confirmPasswordRef}
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
+              placeholder="Re-enter your password"
               defaultValue={confirmPassword}
               onKeyPress={handleKeyPress}
               onBlur={() => {
@@ -202,7 +223,7 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.confirmPassword ? "border-2 border-red-500" : ""
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.confirmPassword ? "border-2 border-red-500" : ""
                 }`}
             />
             <button
@@ -211,7 +232,7 @@ function RegisterFormPresentional({
               disabled={isLoading}
               className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
             >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
             {errors.confirmPassword && (
               <p className="mt-1 text-xs text-red-400">
@@ -220,61 +241,71 @@ function RegisterFormPresentional({
             )}
           </div>
 
-          {/* City Select */}
-          <div>
-            <select
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm disabled:opacity-50 ${errors.location ? "border-2 border-red-500" : ""
-                }`}
-              onChange={(e) => setLocation(e.target.value)}
-              value={location || ""}
-              disabled={isLoading}
-            >
-              <option value="" disabled>
-                Select your city
-              </option>
-              {EgyptCities.map((city, index) => (
-                <option key={index} value={city.city_name_en}>
-                  {city.city_name_en}
-                </option>
-              ))}
-            </select>
-            {errors.location && (
-              <p className="mt-1 text-xs text-red-400">{errors.location}</p>
-            )}
-          </div>
-          {/* Location */}
-          <div className="relative">
-            <input
-              type="text"
-              value={location}
-              disabled
-              className="inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
-              required
-              minLength={6}
-            />
-            <button
-              type="button"
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
-              onClick={handleLocation}
-            >
-              Get Location
-            </button>
+          {/* Location Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* City Select */}
+            <div>
+              <label htmlFor="city" className="text-text mb-1 block text-sm font-medium">
+                City
+              </label>
+              <Select
+                inputId="city"
+                options={cityOptions}
+                value={cityOptions.find(opt => opt.value === location) || null}
+                onChange={opt => setLocation(opt ? opt.value : "")}
+                isDisabled={isLoading}
+                placeholder="Select your city"
+                styles={customSelectStyles}
+                classNamePrefix="react-select"
+              />
+              {errors.location && (
+                <p className="mt-1 text-xs text-red-400">{errors.location}</p>
+              )}
+            </div>
+
+            {/* Location Detection */}
+            <div className="relative">
+              <label className="text-text mb-1 block text-sm font-medium">
+                Detect Location
+              </label>
+              <div className="flex">
+                <input
+                  type="text"
+                  value={location}
+                  disabled
+                  className="bg-inputsBg h-11 w-full rounded-l-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  className="bg-primary text-white h-11 px-4 rounded-r-lg hover:bg-purple-700 transition-colors"
+                  onClick={handleLocation}
+                >
+                  Detect
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Interests Selection */}
-          <div className="relative">
+          <div className="relative pt-1">
             <label
-              className={`text-text mb-1 block text-sm font-medium ${errors.interests ? "text-red-400" : ""}`}
+              htmlFor="interests-search"
+              className={`text-text mb-1 block text-sm font-medium ${errors.interests ? "text-red-400" : ""
+                }`}
             >
               Interests {errors.interests && "(Required)"}
             </label>
             <input
+              id="interests-search"
               ref={searchRef}
               type="text"
               placeholder="Search interests..."
               defaultValue={search}
               onChange={handleSearchChange}
-              className={`inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""} mb-2`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""
+                } mb-2`}
             />
             <div className="flex flex-wrap gap-2">
               {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
@@ -345,8 +376,9 @@ function RegisterFormPresentional({
               <p className="mt-1 text-xs text-red-400">{errors.interests}</p>
             )}
           </div>
+
           {/* Submit Button */}
-          <div className="text-right">
+          <div className="pt-2">
             <Button
               variant={"primary"}
               size={"xlarge"}
@@ -359,25 +391,8 @@ function RegisterFormPresentional({
           </div>
         </form>
 
-        {/* Divider */}
-        <div
-          className={`text-text relative flex justify-center before:absolute before:top-1/2 before:left-[55%] before:h-1 before:w-[45%] before:-translate-y-1/2 before:bg-white after:absolute after:top-1/2 after:right-[55%] after:h-1 after:w-[45%] after:-translate-y-1/2 after:bg-white`}
-        >
-          OR
-        </div>
-
-        {/* Google Sign Up Button */}
-        <AuthButton
-          iconSrc={GoogleIcon}
-          size={35}
-          authFunc={handleSignUpWithGoogle}
-          disabled={isGoogleLoading || isLoading}
-        >
-          {isGoogleLoading ? "Creating account..." : "Sign up With Google"}
-        </AuthButton>
-
         {/* Redirect to sign in page */}
-        <div className="pt-4 text-center">
+        <div className="pt-3 text-center">
           <span className="text-text text-sm">Already have an account?</span>
           {onSwitchToLogin ? (
             <button
