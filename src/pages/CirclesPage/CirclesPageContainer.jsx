@@ -22,14 +22,12 @@ function CirclesPageContainer() {
     const navigate = useNavigate();
     const circles = useSelector(state => state.circles.circles);
     const profile = useSelector(getProfileData);
-    console.log(profile);
-
     const dispatch = useDispatch();
     const { user } = useAuth()
     const [activeTab, setActiveTab] = useState(user ? 'my' : 'forYou');
     const [circlePrivacy, setCirclePrivacy] = useState('all');
     const [currentPage, setCurrentPage] = useState(0);
-    const circlesPerPage = 6;
+    const circlesPerPage = activeTab === "my" ? 9 : 6;
     const circlesStatus = useSelector(state => state.circles.status);
     const profileStatus = useSelector(state => state.userProfile.status);
     const { isLoggedIn } = useAuth();
@@ -86,7 +84,7 @@ function CirclesPageContainer() {
         );
     }
 
-    const [authFormType, setAuthFormType] = useState("login"); // "login" or "register"
+    const [authFormType, setAuthFormType] = useState("login");
 
     const handleSwitchToRegister = () => setAuthFormType("register");
     const handleSwitchToLogin = () => setAuthFormType("login");
@@ -136,13 +134,15 @@ function CirclesPageContainer() {
         try {
             await addDoc(collection(db, "circleRequests"), {
                 circleId: circle.id,
-                userId: user.uid,
+                userId: profile.uid,
                 adminId: adminId,
-                message: `${user.username} wants to join your circle "${circle.circleName}".`,
+                message: `${profile.username} wants to join your circle "${circle.circleName}".`,
                 status: "pending",
                 createdAt: serverTimestamp(),
-                username: user.username,
-                circleName: circle.circleName
+                username: profile.username,
+                circleName: circle.circleName,
+                avatarPhoto: profile.avatarPhoto,
+                email: profile.email
             });
             // Update pendingRequests state immediately
             setPendingRequests(prev => [...prev, circle.id]);

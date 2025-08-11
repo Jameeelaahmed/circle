@@ -1,8 +1,8 @@
 // Libs
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, GoogleProvider } from "../../../firebase-config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../firebase-config";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../../../features/user/userSlice";
@@ -26,7 +26,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [userName, setUserName] = useState("");
   const [userAge, setUserAge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [location, setLocation] = useState("");
   const [usernameValidation, setUsernameValidation] = useState({
     isValid: null,
@@ -249,93 +248,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     }
   };
 
-  const handleSignUpWithGoogle = async () => {
-    setIsGoogleLoading(true);
-
-    try {
-      const userCredential = await signInWithPopup(auth, GoogleProvider);
-      const user = userCredential.user;
-      const token = await user.getIdToken();
-
-      // Check if this is a new user (first time signing up)
-      const isNewUser = userCredential._tokenResponse?.isNewUser || false;
-
-      // Always create/update user profile in Firestore
-      // This handles both new users and returning users who might not have a profile
-      const profileData = {
-        uid: user.uid,
-        email: user.email,
-        provider: "email",
-        emailVerified: user.emailVerified,
-        username: userName || "",
-        bio: "",
-        location: "",
-        joinDate: "",
-        avatarPhoto: user.photoURL || null,
-        coverPhoto:
-          "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
-        stats: {
-          circles: 0,
-          connections: 0,
-          events: 0,
-        },
-        interests: selectedInterests,
-        joinedEvents: [],
-        connectionRequests: [],
-        connections: [],
-        createdAt: new Date(),
-        isAdmin: false,
-        joinedCircles: [],
-        phoneNumber: "",
-      };
-
-      try {
-        await createUserProfile(user.uid, profileData);
-        // eslint-disable-next-line no-console
-        console.log("Profile created/updated successfully for Google user");
-      } catch (profileError) {
-        // eslint-disable-next-line no-console
-        console.error(
-          "Error creating/updating Google user profile:",
-          profileError
-        );
-        toast.warning("Signed in successfully, but profile update failed.");
-      }
-
-      dispatch(setUserInfo({ user, token }));
-      toast.success(
-        isNewUser
-          ? "Account created successfully with Google!"
-          : "Signed in successfully with Google!"
-      );
-      navigate("/");
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Google signup error:", error);
-
-      // Handle COOP policy error specifically
-      if (error.message?.includes("Cross-Origin-Opener-Policy")) {
-        toast.error(
-          "Popup blocked by security policy. Please try again or use a different browser."
-        );
-      } else if (error.code === "auth/popup-closed-by-user") {
-        toast.error("Sign-up was cancelled");
-      } else if (error.code === "auth/popup-blocked") {
-        toast.error("Popup was blocked. Please allow popups and try again");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error(
-          "An account with this email already exists. Please try signing in instead."
-        );
-      } else {
-        toast.error("Failed to sign up with Google. Please try again.");
-      }
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
-
   // Handle Enter key press
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -373,7 +285,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           const loc = data.results[0];
           setLocation(loc.name || loc.district || loc.country || loc.city);
         } catch (error) {
-          toast.error("Failed to fetch location.");
+          toast.error("Failed to fetch location.", error);
         }
       },
       () => {
@@ -386,13 +298,11 @@ function RegisterFormContainer({ onSwitchToLogin }) {
     <RegisterFormPresentional
       handleKeyPress={handleKeyPress}
       handleSignUp={handleSignUp}
-      handleSignUpWithGoogle={handleSignUpWithGoogle}
       showPassword={showPassword}
       setShowPassword={setShowPassword}
       showConfirmPassword={showConfirmPassword}
       setShowConfirmPassword={setShowConfirmPassword}
       isLoading={isLoading}
-      isGoogleLoading={isGoogleLoading}
       onSwitchToLogin={onSwitchToLogin}
       handleAgeChange={handleAgeChange}
       setUserName={setUserName}

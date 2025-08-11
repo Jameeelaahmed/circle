@@ -6,32 +6,29 @@ function CirclesRequistsPresentational({ requests, loading, onAccept, onCancel }
     if (!requests.length) return <div>No join requests.</div>;
 
     return (
-        <div className="pt-paddingTop">
+        <div className="pt-paddingTop pr-2 pl-2 pb-2">
             <h2 className="text-lg font-bold mb-4 text-white">Circle Join Requests</h2>
-            <ul className="divide-y divide-gray-800 rounded-lg overflow-hidden bg-[#161b22] shadow">
+            <ul className="divide-y divide-gray-800 rounded-lg overflow-hidden bg-main shadow">
                 {requests.map(req => (
                     <li
                         key={req.id}
-                        className="flex items-center justify-between px-4 py-3 hover:bg-[#21262d] transition-colors"
+                        className="flex items-center justify-between px-4 py-3 hover:bg-primary hover:text-text transition-colors"
                     >
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
                             <Link
                                 to={`/profile/${req.userId}`}
                                 className="font-semibold text-blue-400 hover:underline"
                             >
-                                {console.log(req.userId)}
-                                {console.log(req.adminId)}
-
-                                {req.username} {/* You may want to fetch/display the actual name */}
+                                {req.username}
                             </Link>
-                            <span className="text-gray-400 mx-2 hidden sm:inline">requested to join</span>
+                            <span className="text-text mx-2 hidden sm:inline">requested to join</span>
                             <Link
                                 to={`/circles/${req.circleId}`}
                                 className="font-semibold text-purple-400 hover:underline"
                             >
-                                {req.circleName} {/* You may want to fetch/display the actual name */}
+                                {req.circleName}
                             </Link>
-                            <span className="text-gray-300 ml-2">{req.message}</span>
+                            <span className="text-text ml-2">{req.message}</span>
                         </div>
                         <div className="flex items-center gap-2 ml-4">
                             <button

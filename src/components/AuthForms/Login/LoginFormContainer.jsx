@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signInWithPopup,
 } from "firebase/auth";
 import { auth, GoogleProvider } from "../../../firebase-config";
 // components
@@ -18,7 +17,6 @@ import { validateLoginForm } from "../../../utils/FormValidator";
 export default function LoginFormContainer({ onSwitchToRegister }) {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
     // Refs for form inputs
@@ -66,28 +64,6 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
         }
     };
 
-    const handleSignInWithGoogle = async () => {
-        setIsGoogleLoading(true);
-
-        try {
-            const userCredential = await signInWithPopup(auth, GoogleProvider);
-            const token = await userCredential.user.getIdToken();
-            dispatch(setUserInfo({ user: userCredential.user, token }));
-            navigate("/");
-        } catch (error) {
-            console.error("Google login error:", error);
-            if (error.code === "auth/popup-closed-by-user") {
-                toast.error("Sign-in was cancelled");
-            } else if (error.code === "auth/popup-blocked") {
-                toast.error("Popup was blocked. Please allow popups and try again");
-            } else {
-                toast.error("Failed to sign in with Google. Please try again");
-            }
-        } finally {
-            setIsGoogleLoading(false);
-        }
-    };
-
     const handleKeyPress = (e) => {
         if (e.key === "Enter") {
             handleSignIn(e);
@@ -98,11 +74,9 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
             onSwitchToRegister={onSwitchToRegister}
             handleSignIn={handleSignIn}
             handleKeyPress={handleKeyPress}
-            handleSignInWithGoogle={handleSignInWithGoogle}
             setShowPassword={setShowPassword}
             showPassword={showPassword}
             isLoading={isLoading}
-            isGoogleLoading={isGoogleLoading}
             errors={errors}
             // Refs
             emailRef={emailRef}
