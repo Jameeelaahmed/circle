@@ -7,6 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Logo } from "../../assets/icons/Logo";
 import Notificaion from "../Notifications/NotificationSection";
 import { useState } from "react";
+import { UserPlus } from "lucide-react";
 
 function HeaderPresentional({
   isAuthLoading,
@@ -110,6 +111,15 @@ function HeaderPresentional({
 
           {/* Notifications - Always visible on header */}
           <Notificaion />
+
+          <Link to="/circles-requests">
+            <button
+              className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center rounded-lg px-2 py-1 sm:px-3 sm:py-2 transition-all duration-200"
+              title="Circle Join Requests"
+            >
+              <UserPlus className="w-6 h-6" />
+            </button>
+          </Link>
 
           {isAuthLoading || isLoggedIn === undefined ? (
             <Skeleton

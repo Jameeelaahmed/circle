@@ -6,9 +6,9 @@ import ProfileTabs from "../../components/ProfileComponents/ProfileTabs";
 import ProfileContent from "../../components/ProfileComponents/ProfileContent";
 
 const ProfilePresentational = ({
+    profileData,
     showMobileMenu,
     setShowMobileMenu,
-    profileData,
     isProfileMyProfile,
     isFollowing,
     handleFollow,
@@ -17,6 +17,10 @@ const ProfilePresentational = ({
     activeTab,
     setActiveTab,
 }) => {
+    if (!profileData) {
+        return <div>Loading profile...</div>;
+    }
+
     return (
         <div
             className="min-h-screen bg-main mt-16 text-text"
@@ -30,7 +34,7 @@ const ProfilePresentational = ({
             <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-6">
                 <div className="relative">
                     <ProfileCover
-                        coverImage={profileData.coverPhoto}
+                        coverImage={profileData?.coverPhoto}
                         isProfileMyProfile={isProfileMyProfile}
                     />
 

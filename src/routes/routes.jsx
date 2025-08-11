@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 // Components
 import RootLayout from "../layouts/RootLayout";
 import { useAuth } from "../hooks/useAuth"; // <-- Import your hook
+import CirclesRequistsContainer from "../pages/CirclesRequists/CirclesRequestsContainer.jsx";
 
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
@@ -175,19 +176,20 @@ const routes = createBrowserRouter([
           </LazyWrapper>
         ),
       },
-    ],
-  },
-  {
-    path: "/profile/:profileId",
-    element: <RootLayout />,
-    children: [
       {
-        index: true,
+        path: "circles-requests",
+        element: (
+          <LazyWrapper>
+            <CirclesRequistsContainer />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "/profile/:profileId",
         element: (
           <LazyWrapper>
             <ProfileContainer />
-          </LazyWrapper>
-        ),
+          </LazyWrapper>)
       },
     ],
   },

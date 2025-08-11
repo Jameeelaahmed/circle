@@ -2,21 +2,28 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { query, where, getDocs } from "firebase/firestore";
+import { toast } from "react-toastify";
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
 import { getProfileData } from '../../features/userProfile/profileSlice';
 import { useAuth } from '../../hooks/useAuth';
 // components
+import { toastStyles } from "../../utils/toastStyles";
 import CirclesPagePresentational from './CirclesPagePresentational'
 import CirclesTabs from '../../components/ui/CircleTabs/CirclesTabs';
 import CirclesPrivacyFilter from '../../components/ui/CirclePrivacyFilter/CirclesPrivacyFilter';
 import CustomPaginationContainer from '../../components/Pagination/CustomPaginationContainer';
+import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkeltonCard';
 function CirclesPageContainer() {
     const membersByCircle = useSelector(state => state.members.membersByCircle);
     const navigate = useNavigate();
     const circles = useSelector(state => state.circles.circles);
     const profile = useSelector(getProfileData);
+    console.log(profile);
+
     const dispatch = useDispatch();
     const { user } = useAuth()
     const [activeTab, setActiveTab] = useState(user ? 'my' : 'forYou');
@@ -27,6 +34,7 @@ function CirclesPageContainer() {
     const profileStatus = useSelector(state => state.userProfile.status);
     const { isLoggedIn } = useAuth();
     const authModalRef = useRef();
+    const [pendingRequests, setPendingRequests] = useState([]);
     useEffect(() => {
         circles.forEach(circle => {
             if (circle.id && !membersByCircle[circle.id]) {
@@ -98,9 +106,71 @@ function CirclesPageContainer() {
         }
     }
 
-    function handleJoinRequest() {
+    async function handleJoinRequest(circleId, e) {
+        e.stopPropagation();
+        const db = getFirestore();
+        const circle = circles.find(c => c.id === circleId);
+        if (!circle || !user) return;
 
+        // Find the admin member
+        const members = membersByCircle[circle.id] || [];
+        const adminMember = members.find(member => member.isAdmin);
+        const adminId = adminMember ? adminMember.id : null;
+
+        if (!adminId) {
+            return;
+        }
+
+        // Check for existing pending request
+        const q = query(
+            collection(db, "circleRequests"),
+            where("circleId", "==", circle.id),
+            where("userId", "==", user.uid),
+            where("status", "==", "pending")
+        );
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "circleRequests"), {
+                circleId: circle.id,
+                userId: user.uid,
+                adminId: adminId,
+                message: `${user.username} wants to join your circle "${circle.circleName}".`,
+                status: "pending",
+                createdAt: serverTimestamp(),
+                username: user.username,
+                circleName: circle.circleName
+            });
+            // Update pendingRequests state immediately
+            setPendingRequests(prev => [...prev, circle.id]);
+            toast.success("Request Sent successfully!", toastStyles);
+        } catch (error) {
+            console.error("Join request error:", error);
+            alert("Failed to send join request.");
+        }
     }
+
+    useEffect(() => {
+        async function fetchPendingRequests() {
+            if (!user) {
+                setPendingRequests([]);
+                return;
+            }
+            const db = getFirestore();
+            const q = query(
+                collection(db, "circleRequests"),
+                where("userId", "==", user.uid),
+                where("status", "==", "pending")
+            );
+            const snapshot = await getDocs(q);
+            const requests = snapshot.docs.map(doc => doc.data().circleId);
+            setPendingRequests(requests);
+        }
+        fetchPendingRequests();
+    }, [user, circles]);
 
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
@@ -113,7 +183,11 @@ function CirclesPageContainer() {
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
-                        null // Don't render until all data is loaded
+                        // Show skeletons or loading UI here
+                        <div className="flex justify-center items-center h-full">
+                            {/* Replace with your actual skeleton component */}
+                            <span>Loading circles...</span>
+                        </div>
                     ) : (
                         <CirclesPagePresentational
                             circles={paginatedCircles}
@@ -125,6 +199,7 @@ function CirclesPageContainer() {
                             profileInterests={profile.interests}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
+                            pendingRequests={pendingRequests}
                         />
                     )}
                 </div>
@@ -139,22 +214,30 @@ function CirclesPageContainer() {
 
             {!user &&
                 <>
-                    <CirclesPagePresentational
-                        circles={paginatedCircles}
-                        membersByCircle={membersByCircle}
-                        handleCardClick={handleCardClick}
-                        activeTab={activeTab}
-                        circlesStatus={circlesStatus}
-                        profileStatus={profileStatus}
-                        profileInterests={profile.interests}
-                        user={user}
-                        handleJoinRequest={handleJoinRequest}
-                        handleSwitchToRegister={handleSwitchToRegister}
-                        handleSwitchToLogin={handleSwitchToLogin}
-                        authFormType={authFormType}
-                        authModalRef={authModalRef}
-                        handleCloseAuthModal={handleCloseAuthModal}
-                    />
+                    {(circlesStatus !== "succeeded" || !allMembersLoaded) ? (
+                        <CirclesSkeltonCard />
+                    ) : paginatedCircles.length > 0 ? (
+                        <CirclesPagePresentational
+                            circles={paginatedCircles}
+                            membersByCircle={membersByCircle}
+                            handleCardClick={handleCardClick}
+                            activeTab={activeTab}
+                            circlesStatus={circlesStatus}
+                            profileStatus={profileStatus}
+                            profileInterests={profile.interests}
+                            user={user}
+                            handleJoinRequest={handleJoinRequest}
+                            handleSwitchToRegister={handleSwitchToRegister}
+                            handleSwitchToLogin={handleSwitchToLogin}
+                            authFormType={authFormType}
+                            authModalRef={authModalRef}
+                            handleCloseAuthModal={handleCloseAuthModal}
+                        />
+                    ) : (
+                        <div className="flex justify-center items-center h-full">
+                            <span>No circles found.</span>
+                        </div>
+                    )}
                 </>
             }
 

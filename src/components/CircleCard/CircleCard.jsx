@@ -6,6 +6,7 @@ export default function CircleCard({
   profileInterests,
   user,
   handleJoinRequest,
+  pendingRequests
 }) {
   const members = membersByCircle?.[circle.id] || [];
   const hasImage = !!circle.imageUrl;
@@ -22,6 +23,9 @@ export default function CircleCard({
     0,
     4,
   );
+
+  const isRequestPending = pendingRequests?.includes(circle.id);
+
 
   return (
     <div
@@ -72,7 +76,7 @@ export default function CircleCard({
         </div>
 
         <p
-          className="mb-1.5 line-clamp-3 h-10 text-xs leading-relaxed wrap-break-word sm:text-sm"
+          className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm"
           style={{ color: "rgba(173, 186, 199, 0.95)" }}
         >
           {circle.description || "This circle hasn't added a description yet"}
@@ -98,14 +102,13 @@ export default function CircleCard({
             {!(membersByCircle?.[circle.id] || []).some(
               (member) => member.id === user?.uid,
             ) && (
-              <button
-                className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
-                onClick={() => handleJoinRequest(circle.id)}
-              >
-                <span className="relative z-10">Join Circle</span>
-                <div className="absolute inset-0 bg-[var(--color-primary)] opacity-0 transition-opacity hover:opacity-10"></div>
-              </button>
-            )}
+                <button
+                  className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                  onClick={(e) => handleJoinRequest(circle.id, e)}
+                >
+                  {isRequestPending ? "Request Sent" : "Join Circle"}
+                </button>
+              )}
           </>
         )}
       </div>
