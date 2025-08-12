@@ -1,23 +1,23 @@
 import { useRef } from "react";
 
-/**
- * Custom hook to handle poll modal operations
- * Manages poll modal ref and open/close handlers
- */
 export function usePollModal() {
-    const pollModalRef = useRef();
+  const pollModalRef = useRef();
 
-    const handleOpenPollModal = () => {
-        pollModalRef.current.open();
-    };
+  const handleOpenPollModal = () => {
+    if (pollModalRef.current?.open) {
+      pollModalRef.current.open(); // Calls showModal
+    }
+  };
 
-    const handleClosePollModal = () => {
-        pollModalRef.current.close();
-    };
+  const handleClosePollModal = () => {
+    if (pollModalRef.current?.close) {
+      pollModalRef.current.close(); // Calls close
+    }
+  };
 
-    return {
-        pollModalRef,
-        handleOpenPollModal,
-        handleClosePollModal
-    };
+  return {
+    pollModalRef,
+    handleOpenPollModal,
+    handleClosePollModal,
+  };
 }

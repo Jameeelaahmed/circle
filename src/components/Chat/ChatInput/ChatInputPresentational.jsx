@@ -2,7 +2,6 @@ import SendBtn from "../../ui/ReactBits/SendBtn/SendBtn";
 import DeleteBtn from "../../ui/ReactBits/DeleteBtn/DeleteBtn";
 import VoiceWaveform from "../../ui/VoiceWaveform/VoiceWaveform";
 import CameraView from "../../ui/CameraView/CameraViewPresentational";
-import CreatePollModalContainer from "../../ui/Modal/Poll/CreatePollModalContainer";
 import Modal from "../../ui/Modal/Modal";
 import Skeleton from "@mui/material/Skeleton";
 import { Mic, Paperclip, Camera, Image, BarChart3 } from "lucide-react";
@@ -229,14 +228,6 @@ function ChatInputPresentational({
           </form>
         </>
       )}
-
-      {/* Poll Modal - Outside the form to prevent interference */}
-      <Modal ref={pollModalRef}>
-        <CreatePollModalContainer
-          onClose={handleClosePollModal}
-          userId={currentUser ? currentUser.uid : null}
-        />
-      </Modal>
     </div>
   );
 }
