@@ -19,7 +19,7 @@ function PaymentPresentational({ cards }) {
         <p className="relative z-10 mb-10 pt-10 text-center text-2xl font-semibold lg:text-4xl">
           {t("payment.Choose Your Circle. Unlock the Experience.")}
         </p>
-        <div className="relative z-10 mx-2 grid grid-cols-1 justify-center gap-10 select-none sm:mx-16 md:grid-cols-2 xl:grid-cols-3">
+        <div className="relative z-10 mx-7 grid grid-cols-1 justify-center gap-10 select-none sm:mx-16 md:mx-10 md:grid-cols-2 xl:grid-cols-3">
           {cards.map((card) => (
             <GlowCardContainer
               className={"grid bg-black/55 p-7 backdrop-blur-2xl"}
