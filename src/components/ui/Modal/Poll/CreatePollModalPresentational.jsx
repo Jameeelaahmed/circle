@@ -15,13 +15,13 @@ export default function CreatePollModalPresentational({
   setExpireDate,
   onAskAi,
   onSubmit,
-  close,
+  onClose,
   t,
 }) {
   return (
-    <div className="relative w-[500px] rounded-4xl backdrop-blur-lg">
+    <div className="relative w-full rounded-4xl backdrop-blur-lg">
       {/* Header */}
-      <ModalHeading onClose={close} title={t("Create Poll")} />
+      <ModalHeading onClose={onClose} title={t("Create Poll")} />
 
       {/* Form */}
       <form onSubmit={onSubmit} className="">
