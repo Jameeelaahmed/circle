@@ -3,7 +3,7 @@ import { getFirestore, collection, query, where, getDocs, doc, updateDoc, setDoc
 import { useAuth } from "../../hooks/useAuth";
 import CirclesRequistsPresentational from "./CirclesRequestsPresentational";
 import { useDispatch } from "react-redux";
-import { fetchUserProfile } from "../../features/userProfile/profileSlice"; // Import the action to fetch user profile
+import { fetchUserProfile } from "../../features/userProfile/profileSlice";
 
 function CirclesRequistsContainer() {
     const { user } = useAuth();
@@ -11,6 +11,7 @@ function CirclesRequistsContainer() {
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const [requestType, setRequestType] = useState("join-request");
+
     useEffect(() => {
         async function fetchRequests() {
             if (!user) return;
@@ -19,7 +20,7 @@ function CirclesRequistsContainer() {
             const q = query(
                 collection(db, "circleRequests"),
                 where(
-                    requestType === "join-request" ? "adminId" : "userId",
+                    requestType === "join-request" ? "approverId" : "invitedUserId",
                     "==",
                     user.uid
                 ),
@@ -41,16 +42,29 @@ function CirclesRequistsContainer() {
         const request = requests.find(r => r.id === requestId);
         if (!request) return;
 
-        // The user to add is always request.userId
-        const memberData = {
-            email: request.email,
-            isAdmin: false,
-            avatarPhoto: request.avatarPhoto,
-            username: request.username,
-        };
+        let memberId, memberData;
+        if (requestType === "join-request") {
+            memberId = request.requesterId;
+            memberData = {
+                email: request.requesterEmail,
+                isAdmin: false,
+                isOwner: false,
+                photoUrl: request.requesterPhotoUrl,
+                username: request.requesterUsername,
+            };
+        } else {
+            memberId = request.invitedUserId;
+            memberData = {
+                email: request.invitedUserEmail,
+                isAdmin: false,
+                isOwner: false,
+                photoUrl: request.invitedUserPhotoUrl,
+                username: request.invitedUserUsername,
+            };
+        }
 
         await setDoc(
-            doc(db, "circles", request.circleId, "members", request.userId),
+            doc(db, "circles", request.circleId, "members", memberId),
             memberData
         );
 
@@ -58,8 +72,8 @@ function CirclesRequistsContainer() {
         const requestRef = doc(db, "circleRequests", requestId);
         await updateDoc(requestRef, { status: "accepted" });
 
-        // Update joinedCircles for the requesting/invited user
-        const userRef = doc(db, "users", request.userId);
+        // Update joinedCircles for the user
+        const userRef = doc(db, "users", memberId);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
             const userData = userSnap.data();

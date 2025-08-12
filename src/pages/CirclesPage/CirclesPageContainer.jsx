@@ -110,24 +110,25 @@ function CirclesPageContainer() {
         const circle = circles.find(c => c.id === circleId);
         if (!circle || !user) return;
 
-        // Find the admin member
+        // Find the owner member (not just admin)
         const members = membersByCircle[circle.id] || [];
-        const adminMember = members.find(member => member.isAdmin);
-        const adminId = adminMember ? adminMember.id : null;
+        const ownerMember = members.find(member => member.isOwner);
+        const circleOwnerId = ownerMember ? ownerMember.id : null;
 
-        if (!adminId) {
+        if (!circleOwnerId) {
             return;
         }
 
-        // Check for existing pending request
-        const q = query(
+        // Check for existing pending join request
+        const joinRequestQuery = query(
             collection(db, "circleRequests"),
             where("circleId", "==", circle.id),
-            where("userId", "==", user.uid),
-            where("status", "==", "pending")
+            where("requesterId", "==", user.uid), // renamed for clarity
+            where("status", "==", "pending"),
+            where("type", "==", "join-request")
         );
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
+        const joinRequestSnapshot = await getDocs(joinRequestQuery);
+        if (!joinRequestSnapshot.empty) {
             return;
         }
 
@@ -135,17 +136,17 @@ function CirclesPageContainer() {
             await addDoc(collection(db, "circleRequests"), {
                 circleId: circle.id,
                 type: "join-request",
-                userId: profile.uid,
-                adminId: adminId,
+                requesterId: user.uid,
+                requesterUsername: profile.username,
+                requesterEmail: profile.email,
+                requesterPhotoUrl: profile.photoUrl,
+                approverId: ownerMember.id, // owner or admin who will approve
+                approverUsername: ownerMember.username,
+                circleName: circle.circleName,
                 message: `${profile.username} wants to join your circle "${circle.circleName}".`,
                 status: "pending",
-                createdAt: serverTimestamp(),
-                username: profile.username,
-                circleName: circle.circleName,
-                avatarPhoto: profile.avatarPhoto,
-                email: profile.email
+                createdAt: serverTimestamp()
             });
-            // Update pendingRequests state immediately
             setPendingRequests(prev => [...prev, circle.id]);
             toast.success("Request Sent successfully!", toastStyles);
         } catch (error) {
@@ -197,7 +198,7 @@ function CirclesPageContainer() {
                             activeTab={activeTab}
                             circlesStatus={circlesStatus}
                             profileStatus={profileStatus}
-                            profileInterests={profile.interests}
+                            profileInterests={profile?.interests || []}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
                             pendingRequests={pendingRequests}
@@ -225,7 +226,7 @@ function CirclesPageContainer() {
                             activeTab={activeTab}
                             circlesStatus={circlesStatus}
                             profileStatus={profileStatus}
-                            profileInterests={profile.interests}
+                            profileInterests={profile?.interests || []}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
                             handleSwitchToRegister={handleSwitchToRegister}

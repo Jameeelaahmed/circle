@@ -25,14 +25,16 @@ const OnlinePresenceContext = createContext();
 
 // Provider component - Online presence feature disabled to prevent Firestore spam
 export function OnlinePresenceProvider({ children }) {
-    const mockPresenceData = {
-        onlineUsers: {},
-        isUserOnline: () => false,
-        getUserLastSeen: () => null,
-    };
+    // const mockPresenceData = {
+    //     onlineUsers: {},
+    //     isUserOnline: () => false,
+    //     getUserLastSeen: () => null,
+    // };
+
+    const presenceData = useOnlinePresence();
 
     return (
-        <OnlinePresenceContext.Provider value={mockPresenceData}>
+        <OnlinePresenceContext.Provider value={presenceData}>
             {children}
         </OnlinePresenceContext.Provider>
     );

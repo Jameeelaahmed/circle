@@ -202,7 +202,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         bio: "",
         location: location || "",
         joinDate: "",
-        avatarPhoto: user.photoURL || null,
+        photoUrl: user.photoUrl || null,
         coverPhoto:
           "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
@@ -215,7 +215,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         connectionRequests: [],
         connections: [],
         createdAt: Timestamp.now(),
-        isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",
       };
@@ -271,7 +270,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         bio: "",
         location: "",
         joinDate: "",
-        avatarPhoto: user.photoURL || null,
+        photoUrl: user.photoURL || null,
         coverPhoto:
           "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
@@ -377,6 +376,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           );
         } catch (error) {
           toast.error("Failed to fetch location.");
+          console.log(error);
         }
       },
       () => {

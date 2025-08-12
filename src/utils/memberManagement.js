@@ -59,6 +59,7 @@ export async function addMemberToCircle(circleId, newMemberUid, currentUser) {
         // Add member to circle
         await setDoc(newMemberRef, {
             email: memberProfile.email || "",
+            isOwner: false,
             isAdmin: false,
             username: memberProfile.username || "",
             photoURL: memberProfile.photoURL || "",
@@ -343,6 +344,59 @@ export async function removeMemberFromCircle(circleId, memberUid, currentUser) {
         return {
             success: false,
             message: "Failed to remove member. Please try again."
+        };
+    }
+}
+
+// On circle creation, add the creator as the first member (owner/admin)
+export async function addCreatorAsFirstMember(circleId, creatorUid) {
+    const db = getFirestore();
+
+    try {
+        // Get the creator's profile
+        const creatorDocRef = doc(db, "users", creatorUid);
+        const creatorDocSnap = await getDoc(creatorDocRef);
+
+        if (!creatorDocSnap.exists()) {
+            return {
+                success: false,
+                message: "Creator not found."
+            };
+        }
+
+        const creatorProfile = creatorDocSnap.data();
+
+        // Add creator as the first member (owner/admin) of the circle
+        await setDoc(doc(db, "circles", circleId, "members", creatorUid), {
+            email: creatorProfile.email || "",
+            isOwner: true,
+            isAdmin: true,
+            username: creatorProfile.username || "",
+            photoURL: creatorProfile.photoURL || "",
+            joinedAt: new Date(),
+            addedBy: creatorUid
+        });
+
+        return {
+            success: true,
+            message: "Creator added as the first member of the circle.",
+            member: {
+                id: creatorUid,
+                email: creatorProfile.email || "",
+                isAdmin: true,
+                isOwner: true,
+                username: creatorProfile.username || "",
+                photoURL: creatorProfile.photoURL || "",
+                joinedAt: new Date(),
+                addedBy: creatorUid
+            }
+        };
+
+    } catch (error) {
+        console.error("Error adding creator as first member:", error);
+        return {
+            success: false,
+            message: "Failed to add creator as the first member. Please try again."
         };
     }
 }
