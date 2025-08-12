@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import PresentationalForgetPassword from "./PresentationalForgetPassword";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils/ErrorMessage";
@@ -17,7 +16,8 @@ const ForgotPasswordContainer = () => {
     try {
       setIsLoading(true);
 
-      await sendPasswordResetEmail(auth, email);
+      const res = await sendPasswordResetEmail(auth, email);
+      console.log(res);
       toast.success("Your password has been successfully reset");
     } catch (error) {
       toast.error(getErrorMessage(error.code));

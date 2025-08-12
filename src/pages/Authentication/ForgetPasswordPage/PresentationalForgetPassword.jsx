@@ -210,14 +210,14 @@ export default function PresentationalForgetPassword({
               {/* Back to login link */}
               <Motion.div className="mt-6 text-center" variants={itemVariants}>
                 <Link to={"/login"}>
-                  <motion.button
+                  <Motion.button
                     className="inline-flex cursor-pointer items-center gap-2 text-gray-300 transition-colors duration-300 hover:text-white"
                     whileHover={{ x: -5 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
                     <ArrowLeft className="h-4 w-4" />
                     Back to Login
-                  </motion.button>
+                  </Motion.button>
                 </Link>
               </Motion.div>
             </Motion.div>

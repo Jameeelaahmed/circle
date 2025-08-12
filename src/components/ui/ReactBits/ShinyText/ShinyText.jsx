@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
+const ShinyText = ({ text, disabled = false, speed = 4, className = "" }) => {
   const { i18n } = useTranslation();
   const direction = i18n.dir(); // 'ltr' or 'rtl'
 
@@ -13,7 +13,7 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
     backgroundSize: "200% 100%",
     backgroundPosition: "100%",
     WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
+    WebkitTextFillColor: "rgba(255, 255, 255, 0.055)",
     display: "inline-block",
     animation: disabled ? "none" : `${animationName} ${speed}s linear infinite`,
   };
