@@ -10,7 +10,7 @@ function CirclesRequistsContainer() {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
-
+    const [requestType, setRequestType] = useState("join-request");
     useEffect(() => {
         async function fetchRequests() {
             if (!user) return;
@@ -18,8 +18,13 @@ function CirclesRequistsContainer() {
             const db = getFirestore();
             const q = query(
                 collection(db, "circleRequests"),
-                where("adminId", "==", user.uid),
-                where("status", "==", "pending")
+                where(
+                    requestType === "join-request" ? "adminId" : "userId",
+                    "==",
+                    user.uid
+                ),
+                where("status", "==", "pending"),
+                where("type", "==", requestType)
             );
 
             const snapshot = await getDocs(q);
@@ -28,7 +33,7 @@ function CirclesRequistsContainer() {
             setLoading(false);
         }
         fetchRequests();
-    }, [user]);
+    }, [user, requestType]);
 
     // Accept request
     async function handleAccept(requestId) {
@@ -36,6 +41,7 @@ function CirclesRequistsContainer() {
         const request = requests.find(r => r.id === requestId);
         if (!request) return;
 
+        // The user to add is always request.userId
         const memberData = {
             email: request.email,
             isAdmin: false,
@@ -52,7 +58,7 @@ function CirclesRequistsContainer() {
         const requestRef = doc(db, "circleRequests", requestId);
         await updateDoc(requestRef, { status: "accepted" });
 
-        // Update joinedCircles for the requesting user
+        // Update joinedCircles for the requesting/invited user
         const userRef = doc(db, "users", request.userId);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
@@ -66,9 +72,7 @@ function CirclesRequistsContainer() {
         }
 
         setRequests(prev => prev.filter(req => req.id !== requestId));
-
-        // After join request is accepted and Firestore is updated
-        dispatch(fetchUserProfile(user.uid)); // Dispatch the action to fetch updated user profile
+        dispatch(fetchUserProfile(user.uid));
     }
 
     // Cancel request
@@ -85,6 +89,8 @@ function CirclesRequistsContainer() {
             loading={loading}
             onAccept={handleAccept}
             onCancel={handleCancel}
+            requestType={requestType}
+            setRequestType={setRequestType}
         />
     );
 }

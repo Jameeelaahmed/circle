@@ -134,6 +134,7 @@ function CirclesPageContainer() {
         try {
             await addDoc(collection(db, "circleRequests"), {
                 circleId: circle.id,
+                type: "join-request",
                 userId: profile.uid,
                 adminId: adminId,
                 message: `${profile.username} wants to join your circle "${circle.circleName}".`,

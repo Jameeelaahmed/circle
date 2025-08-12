@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense } from "react";
 // Components
 import RootLayout from "../layouts/RootLayout";
-import { useAuth } from "../hooks/useAuth"; // <-- Import your hook
-import CirclesRequistsContainer from "../pages/CirclesRequists/CirclesRequestsContainer.jsx";
+import { useAuth } from "../hooks/useAuth";
+import CirclesRequistsContainer from "../pages/CirclesRequests/CirclesRequestsContainer";
 
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
@@ -25,7 +25,6 @@ const EventsContainer = lazy(() => import("../pages/Events/EventsContainer"));
 const PaymentSuccess = lazy(() => import("../pages/Payments/Success"));
 const PaymentFailure = lazy(() => import("../pages/Payments/Cancel"));
 const Explore = lazy(() => import("../pages/Explore/Explore"));
-const ProfilePage = lazy(() => import("../pages/profile/profile.jsx"));
 const ProfileContainer = lazy(
   () => import("../pages/ProfilePage/ProfileContainer.jsx"),
 );

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { fetchCircles } from "../../../../features/circles/circlesSlice";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
-import { Timestamp } from "firebase/firestore";
+import { serverTimestamp, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 // functions
@@ -129,23 +129,23 @@ export default function CreateCircleModalContainer({ closeModal }) {
     );
   };
 
-  const handleCloseModal = () => {
-    resetAllFieldsContainer();
-    closeModal();
-  };
+  // const handleCloseModal = () => {
+  //   resetAllFieldsContainer();
+  //   closeModal();
+  // };
 
   const onFormSubmit = async (data) => {
     let imageUrl = "";
 
     const formFields = {
       ...data,
-      createdAt: Timestamp.now(),
+      createdAt: serverTimestamp(),
       createdBy: {
         userEmail: user.email,
         userName: user.username,
         uid: user.uid,
       },
-      circlePrivacy,
+      circlePrivacy: circlePrivacy,
       interests: selectedInterests, // now array of strings
       imageUrl: "",
       circleType,
@@ -213,19 +213,35 @@ export default function CreateCircleModalContainer({ closeModal }) {
       const docRef = await addDoc(circlesColRef, formFields);
       const circleId = docRef.id;
 
-      // Add members using the utility function
+      // Add creator as member immediately
       await addMembersToCircle(
         circleId,
         user.uid || user.username,
         user,
-        selectedMembers,
+        [{ value: user.uid, label: user.username, isFixed: true }],
         user,
       );
+      await addCircletoUser(user.uid, circleId);
 
-      // Add circle to current user's joinedCircles
+      // Send invitations to other selected members
       for (const member of selectedMembers) {
-        await addCircletoUser(member.value, circleId);
+        if (member.value !== user.uid) {
+          await addDoc(collection(db, "circleRequests"), {
+            circleId: circleId,
+            type: "invitation",
+            userId: member.value,
+            adminId: user.uid,
+            message: `${user.username} invited you to join the circle "${formFields.circleName || ""}".`,
+            status: "pending",
+            createdAt: serverTimestamp(),
+            avatarPhoto: user.avatarPhoto || "",
+            username: user.username,
+            circleName: formFields.circleName || "",
+            email: user.email
+          });
+        }
       }
+
       toast.success("Circle created successfully!", toastStyles);
       dispatch(fetchCircles());
       resetAllFieldsContainer();
@@ -273,7 +289,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
         customStyles={customSelectStyles}
         errors={errors}
         isLoading={isLoading}
-        onClose={handleCloseModal}
         membersKey={membersKey}
         interestsKey={interestsKey}
       />
