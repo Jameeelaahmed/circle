@@ -31,11 +31,11 @@ const Stats = () => {
   ];
 
   return (
-    <section className="relative z-20 mt-14 flex w-full flex-row flex-wrap items-start justify-center gap-8">
+    <section className="relative z-20 mt-14 grid grid-cols-1 gap-8 px-10 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="hover:animate-jelly w-full rounded-2xl p-6 text-center backdrop-blur-sm will-change-transform lg:w-1/5"
+          className="hover:animate-jelly w-full rounded-2xl p-6 text-center backdrop-blur-sm will-change-transform"
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             border: "1px solid rgba(255, 255, 255, 0.1)",

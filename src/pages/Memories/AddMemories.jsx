@@ -3,94 +3,120 @@ import { Upload, Heart, Sparkles, Camera, X } from "lucide-react";
 import {
   addDoc,
   collection,
+  serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import { db } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 
 export default function MemoryUploadPage() {
-  const [memories, setMemories] = useState([]);
   const [currentMemory, setCurrentMemory] = useState({
     name: "",
     description: "",
-    image: null,
-    imagePreview: null,
+    images: [],
+    imagePreviews: null,
   });
   const [isDragging, setIsDragging] = useState(false);
   const { circleId } = useParams();
   const navigate = useNavigate();
-
-  const handleImageUpload = (file) => {
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setCurrentMemory((prev) => ({
-          ...prev,
-          image: file,
-          imagePreview: e.target.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const [isLoading, setIsloading] = useState(false);
 
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    handleImageUpload(file);
+    const files = e.dataTransfer.files;
+    handleImageUpload(files);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
+  const clearAllImages = () => {
+    setCurrentMemory((prev) => ({ ...prev, images: [], imagePreviews: [] }));
+  };
+  const removeImageAt = (idx) => {
+    setCurrentMemory((prev) => ({
+      ...prev,
+      images: (prev.images || []).filter((_, i) => i !== idx),
+      imagePreviews: (prev.imagePreviews || []).filter((_, i) => i !== idx),
+    }));
+  };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
+  const handleImageUpload = (files) => {
+    if (!files || files.length === 0) return;
 
+    const validImages = Array.from(files).filter((file) =>
+      file.type.startsWith("image/"),
+    );
+
+    if (validImages.length > 0) {
+      validImages.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setCurrentMemory((prev) => ({
+            ...prev,
+            images: [...(prev.images || []), file],
+            imagePreviews: [...(prev.imagePreviews || []), e.target.result],
+          }));
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("file", currentMemory.image);
-    formData.append("upload_at", new Date().toISOString().split("T")[0]);
-    formData.append("cloud_name", "dwh8jhaot");
-    formData.append("upload_preset", "images");
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dwh8jhaot/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
-    const uploadedImageUrl = await res.json();
-    const url = uploadedImageUrl.url;
+    setIsloading(true);
 
+    if (!currentMemory.images || currentMemory.images.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
+
+    const uploadedUrls = [];
+
+    // Upload each image to Cloudinary
+    for (const image of currentMemory.images) {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_at", new Date().toISOString().split("T")[0]);
+      formData.append("cloud_name", "dwh8jhaot");
+      formData.append("upload_preset", "images");
+
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dwh8jhaot/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const uploadedImage = await res.json();
+      if (uploadedImage.url) {
+        uploadedUrls.push(uploadedImage.url);
+      }
+    }
+    // Save all URLs to Firestore
     const memoriesRef = collection(db, "circles", circleId, "memories");
-    // const snapshot = await getDocs(memoriesRef);
-  
-      await addDoc(memoriesRef, {
-        createdAt: Timestamp.now(),
-        url,
-        name: currentMemory.name,
-        description: currentMemory.description,
-        date: new Date().toISOString().split("T")[0]
-      });
-  
 
-    toast.success("Memory added Successfully");
-    navigate(`/circles/${circleId}/memories`)
-  };
+    await addDoc(memoriesRef, {
+      createdAt: serverTimestamp(),
+      urls: uploadedUrls,
+      name: currentMemory.name,
+      description: currentMemory.description,
+      date: new Date().toISOString().split("T")[0],
+      ownerUid: auth.currentUser?.uid || null,
+    });
 
-  const clearCurrentImage = () => {
-    setCurrentMemory((prev) => ({
-      ...prev,
-      image: null,
-      imagePreview: null,
-    }));
+    setIsloading(false);
+
+    toast.success("Memories added successfully");
+    navigate(`/circles/${circleId}/memories`);
   };
 
   return (
@@ -124,10 +150,10 @@ export default function MemoryUploadPage() {
             {/* Image Upload */}
             <div>
               <label className="mb-3 block text-sm font-medium text-gray-700">
-                Upload Picture
+                Upload Pictures
               </label>
 
-              {!currentMemory.imagePreview ? (
+              {!currentMemory.imagePreviews?.length ? (
                 <div
                   className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-300 ${
                     isDragging
@@ -140,32 +166,64 @@ export default function MemoryUploadPage() {
                 >
                   <Camera className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                   <p className="mb-2 text-lg font-medium text-gray-600">
-                    Drop your image here or click to browse
+                    Drop your images here or click to browse
                   </p>
                   <p className="text-sm text-gray-500">
-                    PNG, JPG, GIF up to 10MB
+                    PNG, JPG, GIF up to 10MB each
                   </p>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload(e.target.files[0])}
+                    multiple
+                    onChange={(e) => handleImageUpload(e.target.files)}
                     className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                   />
                 </div>
               ) : (
-                <div className="relative">
-                  <img
-                    src={currentMemory.imagePreview}
-                    alt="Preview"
-                    className="h-64 w-full rounded-xl object-cover shadow-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={clearCurrentImage}
-                    className="absolute top-2 right-2 rounded-full bg-red-500 p-2 text-white shadow-lg transition-colors hover:bg-red-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+                <div className="space-y-3">
+                  {/* Previews grid */}
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {currentMemory.imagePreviews.map((src, idx) => (
+                      <div key={idx} className="group relative">
+                        <img
+                          src={src}
+                          alt={`Preview ${idx + 1}`}
+                          className="h-32 w-full rounded-xl object-cover shadow-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImageAt(idx)}
+                          className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-2 text-white shadow-lg transition-colors group-hover:block hover:bg-red-600"
+                          aria-label="Remove image"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className="relative inline-block">
+                      <span className="cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+                        Add more
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => handleImageUpload(e.target.files)}
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                      />
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={clearAllImages}
+                      className="rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                    >
+                      Clear all
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -177,7 +235,7 @@ export default function MemoryUploadPage() {
               </label>
               <input
                 type="text"
-                value={currentMemory.name}
+                value={currentMemory.name || ""}
                 onChange={(e) =>
                   setCurrentMemory((prev) => ({
                     ...prev,
@@ -196,7 +254,7 @@ export default function MemoryUploadPage() {
                 Description
               </label>
               <textarea
-                value={currentMemory.description}
+                value={currentMemory.description || ""}
                 onChange={(e) =>
                   setCurrentMemory((prev) => ({
                     ...prev,
@@ -216,13 +274,14 @@ export default function MemoryUploadPage() {
               disabled={
                 !currentMemory.name ||
                 !currentMemory.description ||
-                !currentMemory.image
+                !currentMemory.images?.length ||
+                isLoading
               }
               className="from-primary to-secondary w-full transform rounded-xl bg-gradient-to-r px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"
             >
               <div className="flex items-center justify-center gap-2">
                 <Upload className="h-5 w-5" />
-                Save Memory
+                {isLoading ? "saving memories..." : "Save Memory"}
               </div>
             </button>
           </form>
