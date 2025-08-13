@@ -26,9 +26,8 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
 
     // Add member state
     const [availableUsers, setAvailableUsers] = useState([]);
-    const [selectedNewMembers, setSelectedNewMembers] = useState([]); // Changed to array
-    const [addingMembers, setAddingMembers] = useState(false); // Changed name
-
+    const [selectedNewMembers, setSelectedNewMembers] = useState([]);
+    const [addingMembers, setAddingMembers] = useState(false);
     // Admin management state
     const [updatingAdmin, setUpdatingAdmin] = useState(null);
     const [removingMember, setRemovingMember] = useState(null);
@@ -52,12 +51,11 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
         if (circleId) {
             loadAvailableUsers();
         }
-    }, [circleId, members]); // Re-run when members change
+    }, [circleId, members]);
 
     const loadAvailableUsers = async () => {
         try {
             const users = await getAvailableUsers(circleId);
-            // Remove any duplicates and ensure unique values
             const uniqueUsers = users.filter((user, index, self) =>
                 index === self.findIndex(u => u.value === user.value)
             );
@@ -69,73 +67,60 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
     };
 
     const handleAddMembers = async () => {
-        console.log('🔍 handleAddMembers called with:', {
-            selectedMembers: selectedNewMembers,
-            selectedCount: selectedNewMembers.length,
-            user: user?.uid,
-            circleId
-        });
-
         if (!selectedNewMembers.length || !user) {
-            console.error('❌ Missing data:', {
-                hasSelectedMembers: selectedNewMembers.length > 0,
-                hasUser: !!user
-            });
             toast.error("Please select at least one member to add", toastStyles);
             return;
         }
 
         setAddingMembers(true);
-        console.log('🚀 Starting to add members...');
-
         try {
             let successCount = 0;
             let errorCount = 0;
 
-            // Extract user IDs from selected members (they are objects with {value, label} structure)
             const memberIds = selectedNewMembers.map(member => member.value);
-            console.log('📋 Extracted member IDs:', memberIds);
 
-            // Add all selected members
             for (const memberUid of memberIds) {
-                console.log(`➕ Adding member: ${memberUid}`);
-                const result = await addMemberToCircle(circleId, memberUid, user);
-                console.log(`📊 Result for ${memberUid}:`, result);
-
+                // Always add as non-owner, non-admin
+                const result = await addMemberToCircle(circleId, memberUid, {
+                    isOwner: false,
+                    isAdmin: false,
+                    addedBy: user.uid
+                });
                 if (result.success) {
                     successCount++;
                 } else {
                     errorCount++;
-                    console.error(`❌ Failed to add ${memberUid}:`, result.message);
+                    console.error(`Failed to add ${memberUid}:`, result.message);
                 }
             }
-
-            console.log('📈 Final results:', { successCount, errorCount });
 
             if (successCount > 0) {
                 toast.success(`Added ${successCount} member(s) successfully`, toastStyles);
                 setSelectedNewMembers([]);
-
-                // Refresh members and available users
                 dispatch(fetchCircleMembers(circleId));
                 loadAvailableUsers();
-                console.log('✅ Refreshed members and available users');
             }
 
             if (errorCount > 0) {
                 toast.error(`Failed to add ${errorCount} member(s)`, toastStyles);
             }
         } catch (error) {
-            console.error('❌ Error in handleAddMembers:', error);
+            console.error('Error in handleAddMembers:', error);
             toast.error("Failed to add members. Please try again.", toastStyles);
         } finally {
             setAddingMembers(false);
-            console.log('🏁 handleAddMembers completed');
         }
     };
 
     const handleToggleAdmin = async (targetMemberUid, makeAdmin) => {
         if (!targetMemberUid || !user) return;
+
+        // Prevent owner from being demoted/promoted
+        const targetMember = membersWithOnlineStatus.find(m => m.uid === targetMemberUid || m.id === targetMemberUid);
+        if (targetMember?.isOwner) {
+            toast.error("You cannot change the owner admin status.", toastStyles);
+            return;
+        }
 
         setUpdatingAdmin(targetMemberUid);
         try {
@@ -143,8 +128,6 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
 
             if (result.success) {
                 toast.success(result.message, toastStyles);
-
-                // Refresh members
                 dispatch(fetchCircleMembers(circleId));
             } else {
                 toast.error(result.message, toastStyles);
@@ -156,17 +139,22 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
         }
     };
 
-    const handleRemoveMember = async (memberUid) => {
-        if (!memberUid || !user) return;
+    const handleRemoveMember = async (memberId) => {
+        if (!memberId || !user) return;
 
-        setRemovingMember(memberUid);
+        // Prevent owner from being removed
+        const targetMember = membersWithOnlineStatus.find(m => m.uid === memberId || m.id === memberId);
+        if (targetMember?.isOwner) {
+            toast.error("You cannot remove the circle owner.", toastStyles);
+            return;
+        }
+
+        setRemovingMember(memberId);
         try {
-            const result = await removeMemberFromCircle(circleId, memberUid, user);
+            const result = await removeMemberFromCircle(circleId, memberId, user);
 
             if (result.success) {
                 toast.success(result.message, toastStyles);
-
-                // Refresh members and available users
                 dispatch(fetchCircleMembers(circleId));
                 loadAvailableUsers();
             } else {
@@ -185,17 +173,14 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
             loading={loading}
             error={error}
             onClose={closeModal}
-            // Add member functionality
             availableUsers={availableUsers}
             selectedNewMembers={selectedNewMembers}
             setSelectedNewMembers={setSelectedNewMembers}
             onAddMembers={handleAddMembers}
             addingMembers={addingMembers}
-            // Admin management
             currentUser={user}
             onToggleAdmin={handleToggleAdmin}
             updatingAdmin={updatingAdmin}
-            // Remove member functionality
             onRemoveMember={handleRemoveMember}
             removingMember={removingMember}
         />

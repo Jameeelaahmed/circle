@@ -6,7 +6,6 @@ const INITIAL_STATE = {
   error: null,
   profile: null,
   viewedProfile: null,
-  // Add other initial profile fields if needed
 };
 
 export const fetchUserProfile = createAsyncThunk(
@@ -54,7 +53,7 @@ const profileSlice = createSlice({
       const { email, username, photoURL, phoneNumber } = action.payload;
       state.email = email ?? state.email;
       state.username = username ?? state.username;
-      state.avatarPhoto = photoURL ?? state.avatarPhoto;
+      state.photoUrl = photoURL ?? state.photoUrl;
       state.phoneNumber = phoneNumber ?? state.phoneNumber;
     },
   },

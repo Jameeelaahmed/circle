@@ -10,7 +10,7 @@ export const useAuth = () => {
   const token = useSelector(getToken);
   const isAuthenticated = useSelector(getIsAuthenticated);
   return {
-    photoURL: user?.avatarPhoto,
+    photoURL: user?.photoUrl,
     user,
     token,
     // Derived values for convenience

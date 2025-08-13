@@ -49,7 +49,7 @@ const ProfileInfoPresentioal = ({
         <div className="flex flex-col pt-10 space-y-3 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-4">
           <div className="relative self-center sm:self-auto">
             <img
-              src={profileData.avatarPhoto || "/default-avatar.png"}
+              src={profileData.photoUrl || "/default-avatar.png"}
               alt={profileData.username || "User"}
               className={`h-20 w-20 border-2 object-cover sm:h-24 sm:w-24 sm:border-4 lg:h-32 lg:w-32 rounded-[var(--rounded-pill)] border-text shadow-softPrimary ${isUploading ? "opacity-70" : "opacity-100"}`}
             />

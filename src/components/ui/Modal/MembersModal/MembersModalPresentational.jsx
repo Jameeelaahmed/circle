@@ -10,17 +10,14 @@ function MembersModalPresentational({
     loading,
     error,
     onClose,
-    // Add member functionality
     availableUsers,
-    selectedNewMembers, // Changed from selectedNewMember to selectedNewMembers
-    setSelectedNewMembers, // Changed from setSelectedNewMember to setSelectedNewMembers
-    onAddMembers, // Changed from onAddMember to onAddMembers
-    addingMembers, // Changed from addingMember to addingMembers
-    // Admin management
+    selectedNewMembers,
+    setSelectedNewMembers,
+    onAddMembers,
+    addingMembers,
     currentUser,
     onToggleAdmin,
     updatingAdmin,
-    // Remove member functionality
     onRemoveMember,
     removingMember
 }) {
@@ -194,15 +191,20 @@ function MembersModalPresentational({
                                                 <p className="text-white font-medium truncate">
                                                     {member.username || 'Unknown Member'}
                                                 </p>
-                                                {member.isAdmin && (
-                                                    <Crown className="w-4 h-4 text-yellow-400" title="Admin" />
+                                                {member.isOwner && (
+                                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-semibold">
+                                                        Circle Owner
+                                                    </span>
+                                                )}
+                                                {!member.isOwner && member.isAdmin && (
+                                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">
+                                                        Admin
+                                                    </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center space-x-2 mt-1">
-                                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-400' : 'bg-gray-400'
-                                                    }`} />
-                                                <p className={`text-sm ${member.isOnline ? 'text-green-400' : 'text-gray-400'
-                                                    }`}>
+                                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-400' : 'bg-gray-400'}`} />
+                                                <p className={`text-sm ${member.isOnline ? 'text-green-400' : 'text-gray-400'}`}>
                                                     {member.isOnline ? 'Online' : 'Offline'}
                                                 </p>
                                             </div>
@@ -221,8 +223,8 @@ function MembersModalPresentational({
                                                 onClick={() => onToggleAdmin(memberId, !member.isAdmin)}
                                                 disabled={updatingAdmin === memberId}
                                                 className={`p-2 rounded-lg transition-colors ${member.isAdmin
-                                                        ? 'text-yellow-400 hover:bg-yellow-400/10'
-                                                        : 'text-gray-400 hover:bg-white/10'
+                                                    ? 'text-yellow-400 hover:bg-yellow-400/10'
+                                                    : 'text-gray-400 hover:bg-white/10'
                                                     } disabled:opacity-50`}
                                                 title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
                                             >
