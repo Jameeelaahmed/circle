@@ -66,8 +66,8 @@ function CirclesRequestsPresentational({
                                             <div className="flex flex-wrap items-baseline gap-1.5 mb-1.5">
                                                 <Link
                                                     to={`/profile/${requestType === "invitation"
-                                                            ? req.inviterId
-                                                            : req.requesterId
+                                                        ? req.inviterId
+                                                        : req.requesterId
                                                         }`}
                                                     className="font-semibold text-primary hover:text-text hover:underline truncate max-w-[120px] sm:max-w-none"
                                                 >

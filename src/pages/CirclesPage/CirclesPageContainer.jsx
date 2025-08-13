@@ -2,9 +2,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc, query, where, getDocs } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { fetchCircles } from '../../features/circles/circlesSlice';
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
@@ -33,6 +33,9 @@ function CirclesPageContainer() {
     const { isLoggedIn } = useAuth();
     const authModalRef = useRef();
     const [pendingRequests, setPendingRequests] = useState([]);
+    const deleteCircleRef = useRef();
+    const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
+
     useEffect(() => {
         circles.forEach(circle => {
             if (circle.id && !membersByCircle[circle.id]) {
@@ -140,7 +143,7 @@ function CirclesPageContainer() {
                 requesterUsername: profile.username,
                 requesterEmail: profile.email,
                 requesterPhotoUrl: profile.photoUrl,
-                approverId: ownerMember.id, // owner or admin who will approve
+                approverId: ownerMember.id,
                 approverUsername: ownerMember.username,
                 circleName: circle.circleName,
                 message: `${profile.username} wants to join your circle "${circle.circleName}".`,
@@ -174,6 +177,32 @@ function CirclesPageContainer() {
         fetchPendingRequests();
     }, [user, circles]);
 
+    function openDeleteCircleModal(circle) {
+        setSelectedCircleToDelete(circle);
+        deleteCircleRef.current.open();
+    }
+
+    function closeCircleDeleteModal() {
+        setSelectedCircleToDelete(null);
+        deleteCircleRef.current.close();
+    }
+    const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy.uid === user.uid;
+
+    // Delete logic inside the container
+    const handleDeleteCircle = async () => {
+        if (!isOwner || !selectedCircleToDelete) return;
+        try {
+            const db = getFirestore();
+            await deleteDoc(doc(db, "circles", selectedCircleToDelete.id));
+            toast.success("Circle deleted successfully!");
+            dispatch(fetchCircles());
+            closeCircleDeleteModal();
+        } catch (error) {
+            toast.error("Failed to delete circle.");
+            console.error(error);
+        }
+    };
+
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
             {user && <>
@@ -185,9 +214,7 @@ function CirclesPageContainer() {
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
-                        // Show skeletons or loading UI here
                         <div className="flex justify-center items-center h-full">
-                            {/* Replace with your actual skeleton component */}
                             <span>Loading circles...</span>
                         </div>
                     ) : (
@@ -202,6 +229,10 @@ function CirclesPageContainer() {
                             user={user}
                             handleJoinRequest={handleJoinRequest}
                             pendingRequests={pendingRequests}
+                            openDeleteCircleModal={openDeleteCircleModal}
+                            deleteCircleRef={deleteCircleRef}
+                            closeCircleDeleteModal={closeCircleDeleteModal}
+                            onDeleteCircle={handleDeleteCircle}
                         />
                     )}
                 </div>
