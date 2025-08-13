@@ -5,10 +5,12 @@ import RootLayout from "../layouts/RootLayout";
 import { useAuth } from "../hooks/useAuth"; // <-- Import your hook
 import CirclesRequistsContainer from "../pages/CirclesRequists/CirclesRequestsContainer.jsx";
 
+
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const Payments = lazy(() => import("../pages/Payments/PaymentContainer"));
 const LandingPage = lazy(() => import("../pages/Landing/LandingContainer"));
+const Notfound =lazy(()=> import ("../pages/Notfound/Notfound.jsx"));
 const ForgetPassword = lazy(
   () =>
     import(
@@ -190,6 +192,14 @@ const routes = createBrowserRouter([
           <LazyWrapper>
             <ProfileContainer />
           </LazyWrapper>)
+      },
+      {
+        path: "*",
+        element: (
+          <LazyWrapper>
+            <Notfound />
+          </LazyWrapper>
+        ),
       },
     ],
   },
