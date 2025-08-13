@@ -15,12 +15,13 @@ function MemoriesPresentational({
   selectedMemory,
   searchTerm,
   setSearchTerm,
-  filteredMemories,
+  memories,
   isUploading,
   handleFileUpload,
   formatDate,
 }) {
   const { t } = useTranslation();
+  console.log(selectedMemory);
   return (
     <div className="mt-[64px] min-h-screen text-white">
       {/* Header */}
@@ -73,40 +74,44 @@ function MemoriesPresentational({
         </div>
 
         <p className="mb-6 text-gray-300">
-          {filteredMemories.length}{" "}
-          {filteredMemories.length === 1 ? "memory" : "memories"} found
+          {memories.length} {memories.length === 1 ? "memory" : "memories"}{" "}
+          found
         </p>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredMemories.map((memory, index) => (
-            <div
-              key={memory.id}
-              className="group bg-main/80 relative cursor-pointer overflow-hidden rounded-2xl shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-purple-500/20"
-              onClick={() => openLightbox(memory)}
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <div className="aspect-square overflow-hidden">
-                <img
-                  src={memory.url}
-                  alt={memory.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="mb-2 line-clamp-1 font-semibold text-white">
-                  {memory.name}
-                </h3>
-                <div className="mb-3 flex items-center gap-2 text-sm text-gray-400">
-                  <Calendar size={14} />
-                  <span>{formatDate(memory.date)}</span>
+          {memories.map((memory, index) => {
+            return memory.urls.map((url) => {
+              return (
+                <div
+                  key={url}
+                  className="group bg-main/80 relative cursor-pointer overflow-hidden rounded-2xl shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-purple-500/20"
+                  onClick={() => openLightbox({ ...memory, url })}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={url}
+                      alt={memory.name}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="mb-2 line-clamp-1 font-semibold text-white">
+                      {memory.name}
+                    </h3>
+                    <div className="mb-3 flex items-center gap-2 text-sm text-gray-400">
+                      <Calendar size={14} />
+                      <span>{formatDate(memory.date)}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            });
+          })}
         </div>
 
-        {filteredMemories.length === 0 && (
+        {memories.length === 0 && (
           <div className="py-16 text-center text-gray-500">
             <Search size={64} className="mx-auto mb-4" />
             <h3 className="text-xl font-medium text-gray-400">

@@ -45,7 +45,7 @@ function RegisterFormPresentional({
   }));
 
   return (
-    <div className="flex w-full flex-col items-center justify-center px-8 lg:max-w-md py-4">
+    <div className="flex w-full flex-col items-center justify-center px-8 py-4 lg:max-w-md">
       {/* Logo */}
       <Motion.div
         className="mb-4 flex justify-center text-center"
@@ -53,7 +53,7 @@ function RegisterFormPresentional({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
-        <Logo className="w-24 h-24" />
+        <Logo className="h-24 w-24" />
       </Motion.div>
 
       {/* Welcome Text */}
@@ -71,7 +71,7 @@ function RegisterFormPresentional({
 
       {/* Registration Form */}
       <Motion.div
-        className="min-w-xs w-full space-y-3 py-2 max-h-[70vh] overflow-y-auto"
+        className="max-h-[70vh] w-full min-w-xs space-y-3 py-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
@@ -79,7 +79,10 @@ function RegisterFormPresentional({
         <form onSubmit={handleSignUp} className="space-y-3">
           {/* Username */}
           <div className="relative">
-            <label htmlFor="username" className="text-text mb-1 block text-sm font-medium">
+            <label
+              htmlFor="username"
+              className="text-text mb-1 block text-sm font-medium"
+            >
               Username
             </label>
             <input
@@ -95,12 +98,13 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${usernameValidation?.isValid === false || errors.username
-                ? "border-2 border-red-500"
-                : usernameValidation?.isValid === true
-                  ? "border-2 border-green-500"
-                  : ""
-                }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                usernameValidation?.isValid === false || errors.username
+                  ? "border-2 border-red-500"
+                  : usernameValidation?.isValid === true
+                    ? "border-2 border-green-500"
+                    : ""
+              }`}
             />
             {usernameValidation?.isChecking && (
               <div className="absolute top-1/2 right-3 -translate-y-1/2 transform">
@@ -109,12 +113,13 @@ function RegisterFormPresentional({
             )}
             {(errors.username || usernameValidation?.message) && (
               <p
-                className={`mt-1 text-xs ${errors.username
-                  ? "text-red-400"
-                  : usernameValidation?.isValid
-                    ? "text-green-400"
-                    : "text-red-400"
-                  }`}
+                className={`mt-1 text-xs ${
+                  errors.username
+                    ? "text-red-400"
+                    : usernameValidation?.isValid
+                      ? "text-green-400"
+                      : "text-red-400"
+                }`}
               >
                 {errors.username || usernameValidation.message}
               </p>
@@ -123,7 +128,10 @@ function RegisterFormPresentional({
 
           {/* Age */}
           <div className="relative">
-            <label htmlFor="age" className="text-text mb-1 block text-sm font-medium">
+            <label
+              htmlFor="age"
+              className="text-text mb-1 block text-sm font-medium"
+            >
               Date of Birth
             </label>
             <input
@@ -132,8 +140,9 @@ function RegisterFormPresentional({
               placeholder="Age"
               onChange={handleAgeChange}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.age ? "border-2 border-red-500" : ""
-                }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                errors.age ? "border-2 border-red-500" : ""
+              }`}
             />
             {errors.age && (
               <p className="mt-1 text-xs text-red-400">{errors.age}</p>
@@ -142,7 +151,10 @@ function RegisterFormPresentional({
 
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="text-text mb-1 block text-sm font-medium">
+            <label
+              htmlFor="email"
+              className="text-text mb-1 block text-sm font-medium"
+            >
               Email Address
             </label>
             <input
@@ -159,8 +171,9 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.email ? "border-2 border-red-500" : ""
-                }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                errors.email ? "border-2 border-red-500" : ""
+              }`}
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-400">{errors.email}</p>
@@ -169,7 +182,10 @@ function RegisterFormPresentional({
 
           {/* Password Input */}
           <div className="relative">
-            <label htmlFor="password" className="text-text mb-1 block text-sm font-medium">
+            <label
+              htmlFor="password"
+              className="text-text mb-1 block text-sm font-medium"
+            >
               Password
             </label>
             <input
@@ -186,8 +202,9 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.password ? "border-2 border-red-500" : ""
-                }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                errors.password ? "border-2 border-red-500" : ""
+              }`}
               minLength={6}
             />
             <button
@@ -205,7 +222,10 @@ function RegisterFormPresentional({
 
           {/* Confirm Password Input */}
           <div className="relative">
-            <label htmlFor="confirmPassword" className="text-text mb-1 block text-sm font-medium">
+            <label
+              htmlFor="confirmPassword"
+              className="text-text mb-1 block text-sm font-medium"
+            >
               Confirm Password
             </label>
             <input
@@ -223,8 +243,9 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.confirmPassword ? "border-2 border-red-500" : ""
-                }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                errors.confirmPassword ? "border-2 border-red-500" : ""
+              }`}
             />
             <button
               type="button"
@@ -242,17 +263,22 @@ function RegisterFormPresentional({
           </div>
 
           {/* Location Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {/* City Select */}
             <div>
-              <label htmlFor="city" className="text-text mb-1 block text-sm font-medium">
+              <label
+                htmlFor="city"
+                className="text-text mb-1 block text-sm font-medium"
+              >
                 City
               </label>
               <Select
                 inputId="city"
                 options={cityOptions}
-                value={cityOptions.find(opt => opt.value === location) || null}
-                onChange={opt => setLocation(opt ? opt.value : "")}
+                value={
+                  cityOptions.find((opt) => opt.value === location) || null
+                }
+                onChange={(opt) => setLocation(opt ? opt.value : "")}
                 isDisabled={isLoading}
                 placeholder="Select your city"
                 styles={customSelectStyles}
@@ -279,7 +305,7 @@ function RegisterFormPresentional({
                 />
                 <button
                   type="button"
-                  className="bg-primary text-white h-11 px-4 rounded-r-lg hover:bg-purple-700 transition-colors"
+                  className="bg-primary h-11 rounded-r-lg px-4 text-white transition-colors hover:bg-purple-700"
                   onClick={handleLocation}
                 >
                   Detect
@@ -292,8 +318,9 @@ function RegisterFormPresentional({
           <div className="relative pt-1">
             <label
               htmlFor="interests-search"
-              className={`text-text mb-1 block text-sm font-medium ${errors.interests ? "text-red-400" : ""
-                }`}
+              className={`text-text mb-1 block text-sm font-medium ${
+                errors.interests ? "text-red-400" : ""
+              }`}
             >
               Interests {errors.interests && "(Required)"}
             </label>
@@ -304,8 +331,9 @@ function RegisterFormPresentional({
               placeholder="Search interests..."
               defaultValue={search}
               onChange={handleSearchChange}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""
-                } mb-2`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
+                errors.interests ? "border-2 border-red-500" : ""
+              } mb-2`}
             />
             <div className="flex flex-wrap gap-2">
               {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
@@ -320,9 +348,9 @@ function RegisterFormPresentional({
                   .slice(
                     0,
                     10 -
-                    filteredInterests.filter((interest) =>
-                      selectedInterests.includes(interest.value),
-                    ).length,
+                      filteredInterests.filter((interest) =>
+                        selectedInterests.includes(interest.value),
+                      ).length,
                   ),
               ]
                 .slice(0, 10)
@@ -392,7 +420,7 @@ function RegisterFormPresentional({
         </form>
 
         {/* Redirect to sign in page */}
-        <div className="pt-3 text-center">
+        <div className="py-10 pt-3 text-center">
           <span className="text-text text-sm">Already have an account?</span>
           {onSwitchToLogin ? (
             <button
