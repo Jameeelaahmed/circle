@@ -20,6 +20,8 @@ function CirclesPagePresentational({
     openDeleteCircleModal,
     closeCircleDeleteModal,
     onDeleteCircle,
+    isDeleting,
+    circleName
     // handleCloseAuthModal
 }) {
     return (
@@ -50,7 +52,12 @@ function CirclesPagePresentational({
                 )}
             </Modal>
             <Modal ref={deleteCircleRef}>
-                <DeleteCircleModalContainer onDeleteCircle={onDeleteCircle} closeCircleDeleteModal={closeCircleDeleteModal} />
+                <DeleteCircleModalContainer
+                    onDeleteCircle={onDeleteCircle}
+                    closeCircleDeleteModal={closeCircleDeleteModal}
+                    isDeleting={isDeleting}
+                    circleName={circleName}
+                />
             </Modal>
         </>
     )

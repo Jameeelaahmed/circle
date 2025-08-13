@@ -1,10 +1,10 @@
 import ModalHeading from "../ModalHeading/ModalHeading"
 import DeleteCircleModalPresentational from "./DeleteCircleModalPresentational"
 
-function DeleteCircleModalContainer({ onDeleteCircle, closeCircleDeleteModal }) {
+function DeleteCircleModalContainer({ onDeleteCircle, closeCircleDeleteModal, isDeleting, circleName }) {
     return (
         <>
-            <DeleteCircleModalPresentational onDeleteCircle={onDeleteCircle} closeCircleDeleteModal={closeCircleDeleteModal} />
+            <DeleteCircleModalPresentational onDeleteCircle={onDeleteCircle} closeCircleDeleteModal={closeCircleDeleteModal} isDeleting={isDeleting} circleName={circleName} />
         </>
     )
 }

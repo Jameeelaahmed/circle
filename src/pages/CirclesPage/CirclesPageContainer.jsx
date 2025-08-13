@@ -189,8 +189,11 @@ function CirclesPageContainer() {
     const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy.uid === user.uid;
 
     // Delete logic inside the container
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const handleDeleteCircle = async () => {
         if (!isOwner || !selectedCircleToDelete) return;
+        setIsDeleting(true);
         try {
             const db = getFirestore();
             await deleteDoc(doc(db, "circles", selectedCircleToDelete.id));
@@ -200,6 +203,8 @@ function CirclesPageContainer() {
         } catch (error) {
             toast.error("Failed to delete circle.");
             console.error(error);
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -233,6 +238,8 @@ function CirclesPageContainer() {
                             deleteCircleRef={deleteCircleRef}
                             closeCircleDeleteModal={closeCircleDeleteModal}
                             onDeleteCircle={handleDeleteCircle}
+                            isDeleting={isDeleting}
+                            circleName={selectedCircleToDelete ? selectedCircleToDelete.circleName : ""}
                         />
                     )}
                 </div>
