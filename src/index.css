@@ -168,7 +168,8 @@ body {
 }
 
 .animate-pulse-bg {
-  animation: pulse-bg 4s ease-in-out infinite;
+  animation: pulse-bg 4s ease-in-out infinite alternate-reverse;
   background-size: 200% 200%;
 }
+
 
