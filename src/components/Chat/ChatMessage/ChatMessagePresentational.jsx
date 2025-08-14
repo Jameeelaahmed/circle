@@ -1,12 +1,11 @@
 import Modal from "../../ui/Modal/Modal";
-import DeleteMessageModalContainer from "../../ui/Modal/DeleteModal/DeleteMessageModalContainer";
+import DeleteMessageModalContainer from "../../ui/Modal/DeleteMessageModal/DeleteMessageModalContainer";
 import ImageSliderModal from "./ImageSliderModal";
 import MessageContextMenu from "./MessageContextMenu";
 import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
-import { useState, useEffect, useRef } from "react";
-import Draggable from "react-draggable";
+import { useState } from "react";
 import CircleScreen from "../../Voting/CircleScreen/CircleScreen";
 
 
@@ -31,7 +30,7 @@ function ChatMessagePresentational({
   scrollToMessage,
   canEditMessage,
 }) {
-  
+
 
 
   const [imageSlider, setImageSlider] = useState({
@@ -67,14 +66,14 @@ function ChatMessagePresentational({
   return (
     <div
       className="relative max-h-full space-y-3 overflow-y-auto px-4 py-2"
-   
+
     >
-      
-      
-          <div className="fixed top-35 right-5">
-             <CircleScreen />
-          </div>
-          
+
+
+      <div className="fixed top-35 right-5">
+        <CircleScreen />
+      </div>
+
 
       {messages.length === 0 && (
         <div className="py-8 text-center text-gray-400">
