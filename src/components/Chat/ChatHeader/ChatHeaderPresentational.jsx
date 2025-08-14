@@ -44,22 +44,25 @@ function ChatHeaderPresentational({
               />
             </>
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary">
-              {hasImage ? (
-                <img
-                  className="h-full w-full rounded-full object-cover"
-                  src={circle.imageUrl}
-                  alt={circle.circleName}
-                />
-              ) : (
-                <span
-                  className="text-xl font-bold text-white select-none"
-                  style={{ fontFamily: "var(--font-secondary)" }}
-                >
-                  {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
-                </span>
-              )}
-            </div>
+            <>
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary">
+                {hasImage ? (
+                  <img
+                    className="h-full w-full rounded-full object-cover"
+                    src={circle.imageUrl}
+                    alt={circle.circleName}
+                  />
+                ) : (
+                  <span
+                    className="text-xl font-bold text-white select-none"
+                    style={{ fontFamily: "var(--font-secondary)" }}
+                  >
+                    {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
+                  </span>
+                )}
+              </div>
+              <p className="text-white">{circle.circleName}</p>
+            </>
           )}
         </div>
 
@@ -72,35 +75,33 @@ function ChatHeaderPresentational({
             <MoreVertical size={24} color="white" />
           </button>
         </div>
-      </div >
+      </div>
 
       {/* Context Menu */}
-      {
-        menu?.visible && (
-          <div
-            className={`fixed z-50 w-48 backdrop-blur-2xl rounded-xl shadow-xl border border-white/10 
+      {menu?.visible && (
+        <div
+          className={`fixed z-50 w-48 backdrop-blur-2xl rounded-xl shadow-xl border border-white/10 
                       flex flex-col text-sm select-none overflow-hidden
-                      text-text bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
-            style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
-            onClick={(e) => e.stopPropagation()}
+                      text-white bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
+          style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-white/10 flex items-center gap-2"
+            onClick={onClearChat}
           >
-            <button
-              className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-white/10 flex items-center gap-2"
-              onClick={onClearChat}
-            >
-              <Trash2 size={16} />
-              Clear Chat
-            </button>
-            <button
-              className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors flex items-center gap-2"
-              onClick={onLeaveCircle}
-            >
-              <LogOut size={16} />
-              Leave Circle
-            </button>
-          </div>
-        )
-      }
+            <Trash2 size={16} />
+            Clear Chat
+          </button>
+          <button
+            className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors flex items-center gap-2"
+            onClick={onLeaveCircle}
+          >
+            <LogOut size={16} />
+            Leave Circle
+          </button>
+        </div>
+      )}
     </>
   );
 }
