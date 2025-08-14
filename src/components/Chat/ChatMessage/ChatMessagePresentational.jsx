@@ -5,7 +5,9 @@ import MessageContextMenu from "./MessageContextMenu";
 import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
-import { useState } from "react";
+import { useState} from "react";
+import CircleScreen from "../../Voting/CircleScreen/CircleScreen";
+
 
 function ChatMessagePresentational({
   handleReact,
@@ -28,39 +30,27 @@ function ChatMessagePresentational({
   scrollToMessage,
   canEditMessage,
 }) {
+  
+
+
   const [imageSlider, setImageSlider] = useState({
     isOpen: false,
     images: [],
     currentIndex: 0,
   });
 
-  // Open image slider
   const openImageSlider = (images, startIndex = 0) => {
-    setImageSlider({
-      isOpen: true,
-      images: images,
-      currentIndex: startIndex,
-    });
+    setImageSlider({ isOpen: true, images, currentIndex: startIndex });
   };
-
-  // Close image slider
   const closeImageSlider = () => {
-    setImageSlider({
-      isOpen: false,
-      images: [],
-      currentIndex: 0,
-    });
+    setImageSlider({ isOpen: false, images: [], currentIndex: 0 });
   };
-
-  // Navigate to next image
   const nextImage = () => {
     setImageSlider((prev) => ({
       ...prev,
       currentIndex: (prev.currentIndex + 1) % prev.images.length,
     }));
   };
-
-  // Navigate to previous image
   const prevImage = () => {
     setImageSlider((prev) => ({
       ...prev,
@@ -76,8 +66,15 @@ function ChatMessagePresentational({
   return (
     <div
       className="relative max-h-full space-y-3 overflow-y-auto px-4 py-2"
-      dir={dir}
+   
     >
+      
+      
+          <div className="fixed top-32 right-[30%] z-[99999] sm:right-[34%] md:right-[30%] xl:right-[38%] transform md:translate-x-[-50%]">
+             <CircleScreen />
+          </div>
+          
+
       {messages.length === 0 && (
         <div className="py-8 text-center text-gray-400">
           No messages yet. Start a conversation!
@@ -85,7 +82,6 @@ function ChatMessagePresentational({
       )}
 
       {groupedMessages.map((item, idx) => {
-        // Handle media groups
         if (item.type === "media_group") {
           return (
             <MediaGroupMessage
@@ -104,7 +100,6 @@ function ChatMessagePresentational({
           );
         }
 
-        // Handle regular messages
         return (
           <SingleMessage
             key={item.message.id || item.index}
@@ -126,7 +121,6 @@ function ChatMessagePresentational({
         );
       })}
 
-      {/* Context Menu */}
       <MessageContextMenu
         menu={menu}
         menuDirection={menuDirection}
@@ -137,15 +131,12 @@ function ChatMessagePresentational({
         open={open}
       />
 
-      {/* Delete Message Modals - One for each message */}
       {deleteModalRefs?.current &&
         messages.map((msg) => (
           <Modal
             key={`modal-${msg.id}`}
             ref={(ref) => {
-              if (ref && msg.id) {
-                deleteModalRefs.current[msg.id] = ref;
-              }
+              if (ref && msg.id) deleteModalRefs.current[msg.id] = ref;
             }}
           >
             <DeleteMessageModalContainer
@@ -157,7 +148,6 @@ function ChatMessagePresentational({
           </Modal>
         ))}
 
-      {/* Image Slider Modal */}
       <ImageSliderModal
         imageSlider={imageSlider}
         closeImageSlider={closeImageSlider}

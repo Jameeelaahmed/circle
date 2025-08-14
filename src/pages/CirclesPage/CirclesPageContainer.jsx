@@ -2,16 +2,21 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
+import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc, query, where, getDocs } from "firebase/firestore";
+import { toast } from "react-toastify";
+import { fetchCircles } from '../../features/circles/circlesSlice';
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
 import { getProfileData } from '../../features/userProfile/profileSlice';
 import { useAuth } from '../../hooks/useAuth';
 // components
+import { toastStyles } from "../../utils/toastStyles";
 import CirclesPagePresentational from './CirclesPagePresentational'
 import CirclesTabs from '../../components/ui/CircleTabs/CirclesTabs';
 import CirclesPrivacyFilter from '../../components/ui/CirclePrivacyFilter/CirclesPrivacyFilter';
 import CustomPaginationContainer from '../../components/Pagination/CustomPaginationContainer';
+import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkeltonCard';
 function CirclesPageContainer() {
     const membersByCircle = useSelector(state => state.members.membersByCircle);
     const navigate = useNavigate();
@@ -22,11 +27,15 @@ function CirclesPageContainer() {
     const [activeTab, setActiveTab] = useState(user ? 'my' : 'forYou');
     const [circlePrivacy, setCirclePrivacy] = useState('all');
     const [currentPage, setCurrentPage] = useState(0);
-    const circlesPerPage = 6;
+    const circlesPerPage = activeTab === "my" ? 9 : 6;
     const circlesStatus = useSelector(state => state.circles.status);
     const profileStatus = useSelector(state => state.userProfile.status);
     const { isLoggedIn } = useAuth();
     const authModalRef = useRef();
+    const [pendingRequests, setPendingRequests] = useState([]);
+    const deleteCircleRef = useRef();
+    const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
+
     useEffect(() => {
         circles.forEach(circle => {
             if (circle.id && !membersByCircle[circle.id]) {
@@ -78,7 +87,7 @@ function CirclesPageContainer() {
         );
     }
 
-    const [authFormType, setAuthFormType] = useState("login"); // "login" or "register"
+    const [authFormType, setAuthFormType] = useState("login");
 
     const handleSwitchToRegister = () => setAuthFormType("register");
     const handleSwitchToLogin = () => setAuthFormType("login");
@@ -98,9 +107,106 @@ function CirclesPageContainer() {
         }
     }
 
-    function handleJoinRequest() {
+    async function handleJoinRequest(circleId, e) {
+        e.stopPropagation();
+        const db = getFirestore();
+        const circle = circles.find(c => c.id === circleId);
+        if (!circle || !user) return;
 
+        // Find the owner member (not just admin)
+        const members = membersByCircle[circle.id] || [];
+        const ownerMember = members.find(member => member.isOwner);
+        const circleOwnerId = ownerMember ? ownerMember.id : null;
+
+        if (!circleOwnerId) {
+            return;
+        }
+
+        // Check for existing pending join request
+        const joinRequestQuery = query(
+            collection(db, "circleRequests"),
+            where("circleId", "==", circle.id),
+            where("requesterId", "==", user.uid), // renamed for clarity
+            where("status", "==", "pending"),
+            where("type", "==", "join-request")
+        );
+        const joinRequestSnapshot = await getDocs(joinRequestQuery);
+        if (!joinRequestSnapshot.empty) {
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "circleRequests"), {
+                circleId: circle.id,
+                type: "join-request",
+                requesterId: user.uid,
+                requesterUsername: profile.username,
+                requesterEmail: profile.email,
+                requesterPhotoUrl: profile.photoUrl,
+                approverId: ownerMember.id,
+                approverUsername: ownerMember.username,
+                circleName: circle.circleName,
+                message: `${profile.username} wants to join your circle "${circle.circleName}".`,
+                status: "pending",
+                createdAt: serverTimestamp()
+            });
+            setPendingRequests(prev => [...prev, circle.id]);
+            toast.success("Request Sent successfully!", toastStyles);
+        } catch (error) {
+            console.error("Join request error:", error);
+            alert("Failed to send join request.");
+        }
     }
+
+    useEffect(() => {
+        async function fetchPendingRequests() {
+            if (!user) {
+                setPendingRequests([]);
+                return;
+            }
+            const db = getFirestore();
+            const q = query(
+                collection(db, "circleRequests"),
+                where("userId", "==", user.uid),
+                where("status", "==", "pending")
+            );
+            const snapshot = await getDocs(q);
+            const requests = snapshot.docs.map(doc => doc.data().circleId);
+            setPendingRequests(requests);
+        }
+        fetchPendingRequests();
+    }, [user, circles]);
+
+    function openDeleteCircleModal(circle) {
+        setSelectedCircleToDelete(circle);
+        deleteCircleRef.current.open();
+    }
+
+    function closeCircleDeleteModal() {
+        setSelectedCircleToDelete(null);
+        deleteCircleRef.current.close();
+    }
+    const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy.uid === user.uid;
+
+    // Delete logic inside the container
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDeleteCircle = async () => {
+        if (!isOwner || !selectedCircleToDelete) return;
+        setIsDeleting(true);
+        try {
+            const db = getFirestore();
+            await deleteDoc(doc(db, "circles", selectedCircleToDelete.id));
+            toast.success("Circle deleted successfully!");
+            dispatch(fetchCircles());
+            closeCircleDeleteModal();
+        } catch (error) {
+            toast.error("Failed to delete circle.");
+            console.error(error);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
@@ -113,7 +219,9 @@ function CirclesPageContainer() {
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
-                        null // Don't render until all data is loaded
+                        <div className="flex justify-center items-center h-full">
+                            <span>Loading circles...</span>
+                        </div>
                     ) : (
                         <CirclesPagePresentational
                             circles={paginatedCircles}
@@ -122,9 +230,16 @@ function CirclesPageContainer() {
                             activeTab={activeTab}
                             circlesStatus={circlesStatus}
                             profileStatus={profileStatus}
-                            profileInterests={profile.interests}
+                            profileInterests={profile?.interests || []}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
+                            pendingRequests={pendingRequests}
+                            openDeleteCircleModal={openDeleteCircleModal}
+                            deleteCircleRef={deleteCircleRef}
+                            closeCircleDeleteModal={closeCircleDeleteModal}
+                            onDeleteCircle={handleDeleteCircle}
+                            isDeleting={isDeleting}
+                            circleName={selectedCircleToDelete ? selectedCircleToDelete.circleName : ""}
                         />
                     )}
                 </div>
@@ -139,22 +254,30 @@ function CirclesPageContainer() {
 
             {!user &&
                 <>
-                    <CirclesPagePresentational
-                        circles={paginatedCircles}
-                        membersByCircle={membersByCircle}
-                        handleCardClick={handleCardClick}
-                        activeTab={activeTab}
-                        circlesStatus={circlesStatus}
-                        profileStatus={profileStatus}
-                        profileInterests={profile.interests}
-                        user={user}
-                        handleJoinRequest={handleJoinRequest}
-                        handleSwitchToRegister={handleSwitchToRegister}
-                        handleSwitchToLogin={handleSwitchToLogin}
-                        authFormType={authFormType}
-                        authModalRef={authModalRef}
-                        handleCloseAuthModal={handleCloseAuthModal}
-                    />
+                    {(circlesStatus !== "succeeded" || !allMembersLoaded) ? (
+                        <CirclesSkeltonCard />
+                    ) : paginatedCircles.length > 0 ? (
+                        <CirclesPagePresentational
+                            circles={paginatedCircles}
+                            membersByCircle={membersByCircle}
+                            handleCardClick={handleCardClick}
+                            activeTab={activeTab}
+                            circlesStatus={circlesStatus}
+                            profileStatus={profileStatus}
+                            profileInterests={profile?.interests || []}
+                            user={user}
+                            handleJoinRequest={handleJoinRequest}
+                            handleSwitchToRegister={handleSwitchToRegister}
+                            handleSwitchToLogin={handleSwitchToLogin}
+                            authFormType={authFormType}
+                            authModalRef={authModalRef}
+                            handleCloseAuthModal={handleCloseAuthModal}
+                        />
+                    ) : (
+                        <div className="flex justify-center items-center h-full">
+                            <span>No circles found.</span>
+                        </div>
+                    )}
                 </>
             }
 

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { fetchCircles } from "../../../../features/circles/circlesSlice";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
-import { Timestamp } from "firebase/firestore";
+import { serverTimestamp, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 // functions
@@ -30,25 +30,44 @@ import interests from "../../../../constants/interests";
 
 export default function CreateCircleModalContainer({ closeModal }) {
   const dispatch = useDispatch();
+  const status = useSelector((state) => state.circles.status);
+  const { t } = useTranslation();
+  // hooks
   const { uploadedImage, setUploadedImage, handleImageUpload, removeImage } =
     useImageUpload();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { register, handleSubmit, errors, setErrors, resetAllFields } = useCircleForm();
+  // states
   const [circleType, setCircleType] = useState("");
   const [circlePrivacy, setCirclePrivacy] = useState("");
   const [expireDate, setExpireDate] = useState("");
-  const { user } = useAuth();
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [membersKey, setMembersKey] = useState(0);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [interestsKey, setInterestsKey] = useState(0);
-  const { register, handleSubmit, errors, setErrors, resetAllFields } =
-    useCircleForm();
-  const fileInputRef = useRef(null);
-  const { t } = useTranslation();
   const [memberOptions, setMemberOptions] = useState([]);
   const [membersLoading, setMembersLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const status = useSelector((state) => state.circles.status);
+  // refs
+  const fileInputRef = useRef(null);
+  // options
+  const interestOptions = interests;
+
+  const circleTypeOptions = [
+    { value: t("Permenent"), label: "Permenent" },
+    { value: t("Flash"), label: "Flash" },
+  ];
+
+  const circlePrivacyOptions = [
+    { value: t("Public"), label: "Public" },
+    { value: t("Private"), label: "Private" },
+  ];
+
+
+  const filteredInterests = interestOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(search.toLowerCase()),
+  );
   // ***************************
   useEffect(() => {
     if (status === "idle") {
@@ -92,17 +111,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
     fetchUsers();
   }, [user]);
 
-  const interestOptions = interests;
-
-  const circleTypeOptions = [
-    { value: t("Permenent"), label: "Permenent" },
-    { value: t("Flash"), label: "Flash" },
-  ];
-
-  const circlePrivacyOptions = [
-    { value: t("Public"), label: "Public" },
-    { value: t("Private"), label: "Private" },
-  ];
 
   const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
     shadow-inner focus:outline-none focus:ring-3 focus:ring-[var(--color-secondary)]
@@ -129,23 +137,23 @@ export default function CreateCircleModalContainer({ closeModal }) {
     );
   };
 
-  const handleCloseModal = () => {
-    resetAllFieldsContainer();
-    closeModal();
-  };
+  // const handleCloseModal = () => {
+  //   resetAllFieldsContainer();
+  //   closeModal();
+  // };
 
   const onFormSubmit = async (data) => {
     let imageUrl = "";
 
     const formFields = {
       ...data,
-      createdAt: Timestamp.now(),
+      createdAt: serverTimestamp(),
       createdBy: {
         userEmail: user.email,
         userName: user.username,
         uid: user.uid,
       },
-      circlePrivacy,
+      circlePrivacy: circlePrivacy,
       interests: selectedInterests, // now array of strings
       imageUrl: "",
       circleType,
@@ -213,19 +221,37 @@ export default function CreateCircleModalContainer({ closeModal }) {
       const docRef = await addDoc(circlesColRef, formFields);
       const circleId = docRef.id;
 
-      // Add members using the utility function
+      // Add creator as member immediately
       await addMembersToCircle(
         circleId,
         user.uid || user.username,
         user,
-        selectedMembers,
+        [{ value: user.uid, label: user.username, isFixed: true }],
         user,
       );
+      await addCircletoUser(user.uid, circleId);
 
-      // Add circle to current user's joinedCircles
       for (const member of selectedMembers) {
-        await addCircletoUser(member.value, circleId);
+        if (member.value !== user.uid) {
+          const memberProfile = memberOptions.find(opt => opt.value === member.value);
+
+          await addDoc(collection(db, "circleRequests"), {
+            circleId: circleId,
+            type: "invitation",
+            invitedUserId: member.value,
+            invitedUserUsername: memberProfile?.label || "",
+            invitedUserEmail: memberProfile?.userData.email || "",
+            invitedUserPhotoUrl: memberProfile?.userData.photoUrl || "",
+            inviterId: user.uid,
+            inviterUsername: user.username,
+            circleName: formFields.circleName || "",
+            message: `${user.username} invited you to join the circle "${formFields.circleName || ""}".`,
+            status: "pending",
+            createdAt: serverTimestamp()
+          });
+        }
       }
+
       toast.success("Circle created successfully!", toastStyles);
       dispatch(fetchCircles());
       resetAllFieldsContainer();
@@ -237,9 +263,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
     }
   };
 
-  const filteredInterests = interestOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase()),
-  );
 
   return (
     <Suspense fallback={<div />}>
@@ -273,7 +296,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
         customStyles={customSelectStyles}
         errors={errors}
         isLoading={isLoading}
-        onClose={handleCloseModal}
         membersKey={membersKey}
         interestsKey={interestsKey}
       />

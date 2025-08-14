@@ -156,3 +156,28 @@ body {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+
+@keyframes pulse-bg {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-pulse-bg {
+  animation: pulse-bg 4s ease-in-out infinite alternate-reverse;
+  background-size: 200% 200%;
+}
+
+
+@keyframes float {
+ 0%, 100% { transform: translateY(0); }
+ 50% { transform: translateY(-6px); }
+ }
+
+.animate-float {
+ animation: float 3s ease-in-out infinite;
+}

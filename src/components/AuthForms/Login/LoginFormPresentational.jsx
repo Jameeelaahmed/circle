@@ -10,11 +10,9 @@ import { Logo } from "../../../assets/icons/Logo";
 function LoginFormPresentational({
     handleSignIn,
     handleKeyPress,
-    handleSignInWithGoogle,
     setShowPassword,
     email,
     isLoading,
-    isGoogleLoading,
     showPassword,
     password,
     onSwitchToRegister,
@@ -65,7 +63,7 @@ function LoginFormPresentational({
                                 defaultValue={email}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             {errors.email && (
                                 <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>
@@ -80,7 +78,7 @@ function LoginFormPresentational({
                                 defaultValue={password}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-main h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             <button
                                 type="button"
@@ -116,21 +114,6 @@ function LoginFormPresentational({
                         </div>
                         {/* </div> */}
                     </form>
-
-                    <div
-                        className={`text-text relative flex justify-center before:absolute before:top-1/2 before:left-[55%] before:h-1 before:w-[45%] before:-translate-y-1/2 before:bg-white after:absolute after:top-1/2 after:right-[55%] after:h-1 after:w-[45%] after:-translate-y-1/2 after:bg-white`}
-                    >
-                        OR
-                    </div>
-
-                    <AuthButton
-                        iconSrc={GoogleIcon}
-                        size={35}
-                        authFunc={handleSignInWithGoogle}
-                        disabled={isGoogleLoading || isLoading}
-                    >
-                        {isGoogleLoading ? "Signing in..." : "Sign in With Google"}
-                    </AuthButton>
 
                     <div className="pt-4 text-center">
                         <span className="text-text text-sm">Don't have an account?</span>

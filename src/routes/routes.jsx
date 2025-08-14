@@ -2,12 +2,15 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense } from "react";
 // Components
 import RootLayout from "../layouts/RootLayout";
-import { useAuth } from "../hooks/useAuth"; // <-- Import your hook
+import { useAuth } from "../hooks/useAuth";
+import CirclesRequistsContainer from "../pages/CirclesRequests/CirclesRequestsContainer";
+
 
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const Payments = lazy(() => import("../pages/Payments/PaymentContainer"));
 const LandingPage = lazy(() => import("../pages/Landing/LandingContainer"));
+const Notfound =lazy(()=> import ("../pages/Notfound/Notfound.jsx"));
 const ForgetPassword = lazy(
   () =>
     import(
@@ -24,7 +27,6 @@ const EventsContainer = lazy(() => import("../pages/Events/EventsContainer"));
 const PaymentSuccess = lazy(() => import("../pages/Payments/Success"));
 const PaymentFailure = lazy(() => import("../pages/Payments/Cancel"));
 const Explore = lazy(() => import("../pages/Explore/Explore"));
-const ProfilePage = lazy(() => import("../pages/profile/profile.jsx"));
 const ProfileContainer = lazy(
   () => import("../pages/ProfilePage/ProfileContainer.jsx"),
 );
@@ -175,17 +177,26 @@ const routes = createBrowserRouter([
           </LazyWrapper>
         ),
       },
-    ],
-  },
-  {
-    path: "/profile/:profileId",
-    element: <RootLayout />,
-    children: [
       {
-        index: true,
+        path: "circles-requests",
+        element: (
+          <LazyWrapper>
+            <CirclesRequistsContainer />
+          </LazyWrapper>
+        ),
+      },
+      {
+        path: "/profile/:profileId",
         element: (
           <LazyWrapper>
             <ProfileContainer />
+          </LazyWrapper>)
+      },
+      {
+        path: "*",
+        element: (
+          <LazyWrapper>
+            <Notfound />
           </LazyWrapper>
         ),
       },

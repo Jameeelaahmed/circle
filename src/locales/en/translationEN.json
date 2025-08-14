@@ -77,5 +77,10 @@
     "Innovation_values_description": "Pushing boundaries",
     "Trust_description": "Building secure connections",
     "Collaboration_description": "Working together"
+  },
+  "notFound": {
+    "title": "Oops! ",
+    "message": "The page you’re looking for can’t be found.",
+    "backHome": "Back to Home"
   }
 }

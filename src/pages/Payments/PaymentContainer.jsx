@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 function PaymentContainer() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   let stripePromise;
   const getStripe = () => {
     if (!stripePromise) {
@@ -33,8 +33,15 @@ function PaymentContainer() {
       color: "#1e40af",
       icon: <UserIcon size={50} />,
       header: t("payment.Explore & Connect"),
-      price: <p className="mb-10 text-center text-5xl font-bold">{t("payment.Free")}</p>,
-      services: [t("payment.Join Public Circles"), t("payment.Up to 2 private Circles")],
+      price: (
+        <p className="mb-10 text-center text-5xl font-bold">
+          {t("payment.Free")}
+        </p>
+      ),
+      services: [
+        t("payment.Join Public Circles"),
+        t("payment.Up to 2 private Circles"),
+      ],
       actionBtn: (
         <Button size="large" variant="primary" classes={"mx-auto block"}>
           {t("payment.Get Started")}
@@ -82,7 +89,12 @@ function PaymentContainer() {
         t("payment.Scheduled hangouts & auto-reminders"),
       ],
       actionBtn: (
-        <Button size="large" variant="primary" classes={"mx-auto block"}  handleClick={() => checkout("price_1RmDpH4SCalKHrm2w7ihyGY1")}>
+        <Button
+          size="large"
+          variant="primary"
+          classes={"mx-auto block"}
+          handleClick={() => checkout("price_1RmDpH4SCalKHrm2w7ihyGY1")}
+        >
           {t("payment.Subscribe Now")}
         </Button>
       ),

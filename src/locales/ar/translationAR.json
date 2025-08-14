@@ -78,5 +78,10 @@
     "Innovation_values_description": "تجاوز الحدود",
     "Trust_description": "بناء علاقات آمنة",
     "Collaboration_description": "العمل معًا"
+  },
+  "notFound": {
+    "title": "عفوًا! ",
+    "message": "الصفحة التي تبحث عنها غير موجودة.",
+    "backHome": "العودة للصفحة الرئيسية"
   }
 }

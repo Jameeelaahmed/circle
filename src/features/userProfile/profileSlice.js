@@ -4,11 +4,29 @@ import { getUserProfile } from "../../fire_base/profileController/profileControl
 const INITIAL_STATE = {
   status: "idle",
   error: null,
-  // Add other initial profile fields if needed
+  profile: null,
+  viewedProfile: null,
 };
 
 export const fetchUserProfile = createAsyncThunk(
   "userProfile/fetchUserProfile",
+  async (profileId, thunkAPI) => {
+    try {
+      const profile = await getUserProfile(profileId);
+      const transformedProfile = {
+        ...profile,
+        createdAt: profile.createdAt?.toDate?.() ? profile.createdAt.toDate().toISOString() : profile.createdAt ?? null,
+        updatedAt: profile.updatedAt?.toDate?.() ? profile.updatedAt.toDate().toISOString() : profile.updatedAt ?? null,
+      };
+      return transformedProfile;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchViewedProfile = createAsyncThunk(
+  "userProfile/fetchViewedProfile",
   async (profileId, thunkAPI) => {
     try {
       const profile = await getUserProfile(profileId);
@@ -35,7 +53,7 @@ const profileSlice = createSlice({
       const { email, username, photoURL, phoneNumber } = action.payload;
       state.email = email ?? state.email;
       state.username = username ?? state.username;
-      state.avatarPhoto = photoURL ?? state.avatarPhoto;
+      state.photoUrl = photoURL ?? state.photoUrl;
       state.phoneNumber = phoneNumber ?? state.phoneNumber;
     },
   },
@@ -46,11 +64,24 @@ const profileSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
-        Object.assign(state, action.payload);
+        state.profile = action.payload;
         state.status = "succeeded";
         state.error = null;
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchViewedProfile.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchViewedProfile.fulfilled, (state, action) => {
+        state.viewedProfile = action.payload;
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(fetchViewedProfile.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || action.error.message;
       });
@@ -58,5 +89,5 @@ const profileSlice = createSlice({
 });
 
 export const { setProfileData, setUserInfo } = profileSlice.actions;
-export const getProfileData = (state) => state.userProfile;
+export const getProfileData = (state) => state.userProfile.profile;
 export default profileSlice.reducer;

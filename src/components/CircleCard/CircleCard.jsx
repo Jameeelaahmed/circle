@@ -107,37 +107,9 @@ export default function CircleCard({
           </>
         )}
       </div>
-<<<<<<< HEAD
-      <p
-        className="mb-2 text-xs sm:mb-3 sm:text-sm line-clamp-3"
-        style={{ color: COLORS.text }}
-      >
-        {circle.description}
-      </p>
-      <button
-        className="w-full py-1.5 text-xs font-medium transition-all duration-300 sm:py-2 sm:text-sm"
-        style={{
-          backgroundColor: COLORS.glass,
-          borderRadius: RADII.rounded,
-          color: COLORS.accent,
-          border: `1px solid ${COLORS.accent}40`,
-          fontFamily: FONTS.body,
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.backgroundColor = COLORS.accent;
-          e.target.style.color = "white";
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.backgroundColor = COLORS.glass;
-          e.target.style.color = COLORS.accent;
-        }}
-      >
-        View Circle
-      </button>
 
 
-=======
->>>>>>> 26cff8fdd9fe986f171d9c5246c3e10e8fe9ded6
+
     </div>
   );
 }

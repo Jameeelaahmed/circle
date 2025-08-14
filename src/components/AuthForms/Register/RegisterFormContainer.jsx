@@ -46,7 +46,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const searchRef = useRef(null);
 
   const filteredInterests = interestOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
+    opt.label.toLowerCase().includes(search.toLowerCase()),
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -186,7 +186,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         emailValue,
-        passwordValue
+        passwordValue,
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
@@ -202,7 +202,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         bio: "",
         location: location || "",
         joinDate: "",
-        avatarPhoto: user.photoURL || null,
+        photoUrl: user.photoUrl || null,
         coverPhoto:
           "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
@@ -215,7 +215,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         connectionRequests: [],
         connections: [],
         createdAt: Timestamp.now(),
-        isAdmin: false,
         joinedCircles: [],
         phoneNumber: "",
       };
@@ -271,7 +270,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         bio: "",
         location: "",
         joinDate: "",
-        avatarPhoto: user.photoURL || null,
+        photoUrl: user.photoURL || null,
         coverPhoto:
           "https://res.cloudinary.com/dlyfph65r/image/upload/v1753334626/coverDeafault_b5c8od.jpg",
         stats: {
@@ -297,7 +296,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         // eslint-disable-next-line no-console
         console.error(
           "Error creating/updating Google user profile:",
-          profileError
+          profileError,
         );
         toast.warning("Signed in successfully, but profile update failed.");
       }
@@ -306,7 +305,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       toast.success(
         isNewUser
           ? "Account created successfully with Google!"
-          : "Signed in successfully with Google!"
+          : "Signed in successfully with Google!",
       );
       navigate("/");
     } catch (error) {
@@ -316,7 +315,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       // Handle COOP policy error specifically
       if (error.message?.includes("Cross-Origin-Opener-Policy")) {
         toast.error(
-          "Popup blocked by security policy. Please try again or use a different browser."
+          "Popup blocked by security policy. Please try again or use a different browser.",
         );
       } else if (error.code === "auth/popup-closed-by-user") {
         toast.error("Sign-up was cancelled");
@@ -326,7 +325,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         error.code === "auth/account-exists-with-different-credential"
       ) {
         toast.error(
-          "An account with this email already exists. Please try signing in instead."
+          "An account with this email already exists. Please try signing in instead.",
         );
       } else {
         toast.error("Failed to sign up with Google. Please try again.");
@@ -371,14 +370,18 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           const response = await fetch(url);
           const data = await response.json();
           const loc = data.results[0];
-          setLocation(loc.name || loc.district || loc.country || loc.city);
+          console.log(loc);
+          setLocation(
+            loc.address_line1 || loc.formatted || loc.country || loc.city,
+          );
         } catch (error) {
           toast.error("Failed to fetch location.");
+          console.log(error);
         }
       },
       () => {
         toast.error("Unable to access your location.");
-      }
+      },
     );
   };
 

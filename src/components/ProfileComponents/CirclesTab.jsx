@@ -1,4 +1,4 @@
-import CircleCard from "../CircleCard/CircleCard";
+import CircleCard from "../CircleCard/CircleCardPresentational";
 
 const CirclesTab = ({ joinedCircles }) => {
   return (
