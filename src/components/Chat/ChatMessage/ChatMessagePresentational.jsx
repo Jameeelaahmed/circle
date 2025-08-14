@@ -31,8 +31,6 @@ function ChatMessagePresentational({
   canEditMessage,
 }) {
 
-
-
   const [imageSlider, setImageSlider] = useState({
     isOpen: false,
     images: [],
@@ -68,13 +66,6 @@ function ChatMessagePresentational({
       className="relative max-h-full space-y-3 overflow-y-auto px-4 py-2"
 
     >
-
-
-      <div className="fixed top-32 right-[30%] z-[99999] sm:right-[34%] md:right-[30%] xl:right-[38%] transform md:translate-x-[-50%]">
-        <CircleScreen />
-      </div>
-
-
       {messages.length === 0 && (
         <div className="py-8 text-center text-gray-400">
           No messages yet. Start a conversation!

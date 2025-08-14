@@ -1,6 +1,4 @@
 import { User, Trash2 } from "lucide-react";
-import Modal from "../ui/Modal/Modal";
-import DeleteCircleModalContainer from "../ui/Modal/DeleteCircleModal/DeleteCircleModalContainer";
 export default function CircleCardPresentational({
   hasImage,
   members,
@@ -34,7 +32,7 @@ export default function CircleCardPresentational({
         <div className="relative z-10">
           <div className="flex justify-between">
             <div className="mb-3 flex items-center space-x-3 sm:mb-4 sm:space-x-4">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-[var(--color-primary)] sm:h-12 sm:w-12">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary sm:h-12 sm:w-12">
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
