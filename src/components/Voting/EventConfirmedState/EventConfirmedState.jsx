@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from "react";
 import {
   CheckCircle2,
   XCircle,
@@ -7,32 +7,53 @@ import {
   PartyPopper,
   Map,
   Sparkles,
-} from 'lucide-react';
-import RsvpConfettiOverlay from '../PartyPopperCelebration/RsvpConfettiOverlay';
-
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase-config";
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import RsvpConfettiOverlay from "../PartyPopperCelebration/RsvpConfettiOverlay";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../firebase-config"; 
+import { useParams } from "react-router";
 
 const RSVP_OPTIONS = [
-  { type: 'yes', label: 'Going', icon: CheckCircle2, color: 'text-green-300' },
-  { type: 'maybe', label: 'Maybe', icon: HelpCircle, color: 'text-yellow-300' },
-  { type: 'no', label: 'Not Going', icon: XCircle, color: 'text-red-300' },
+  { type: "yes", label: "Going", icon: CheckCircle2, color: "text-green-300" },
+  { type: "maybe", label: "Maybe", icon: HelpCircle, color: "text-yellow-300" },
+  { type: "no", label: "Not Going", icon: XCircle, color: "text-red-300" },
 ];
 
 const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
+let {circleId} = useParams()
   const [showConfetti, setShowConfetti] = useState(false);
 
-const handleClick = () => {
-  console.log("Button clicked");
-  setShowConfetti(true);
+  const [isOpen, setIsOpen] = useState(true);
 
-  // Wait 3s for confetti before navigating
-  setTimeout(() => {
-    if (onStartNewPoll) onStartNewPoll();
-    setShowConfetti(false);
-  }, 2000);
-};
+  const handleClick = async () => {
+     try {
+    await addDoc(
+      collection(db, "circles", circleId, "events"),
+      {
+        activity: winningActivity || "N/A",
+        place: winningPlace || "N/A",
+        createdAt: serverTimestamp(),
+        status: "pending", 
+        rsvps: rsvps || {},
+        Location:"",
+        day:""
+      }
+    );
+    console.log("Event saved to Firestore ✅");
+  } catch (error) {
+    console.error("Error saving event:", error);
+  }
+    setShowConfetti(true);
 
+    // Wait 3s for confetti before navigating
+    setTimeout(() => {
+      if (onStartNewPoll) onStartNewPoll();
+      setShowConfetti(false);
+    }, 2000);
+  };
 
   // Preserved logic from your original component
   const { winningActivity, winningPlace, rsvps, currentUser } = eventData || {};
@@ -45,59 +66,96 @@ const handleClick = () => {
   const userRsvp = currentUser?.rsvp;
 
   return (
-    <div className="w-full max-w-sm mx-auto p-8 space-y-6 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl border border-gray-700 text-white">
-      {/* Header with a new icon and color scheme */}
-      <header className="flex flex-col items-center justify-center space-y-2 text-center">
-        <PartyPopper size={48} className="text-yellow-400 animate-pulse" />
-        <h1 className="text-3xl font-extrabold tracking-tight">Event Confirmed!</h1>
-        <p className="text-sm text-gray-400">All set, get ready to celebrate!</p>
+    <div className="mx-auto w-full backdrop-blur-lg mt-3 relative left-[50%] transform translate-x-[-10%] overflow-y-auto max-h-[400px] max-w-sm space-y-6 rounded-3xl  p-4 text-white shadow-2xl">
+     
+      
+
+      <header  onClick={() => setIsOpen(!isOpen)} className="flex flex-col items-center justify-center space-y-2 text-center">
+        {/* Header with toggle */}
+      
+        <div className="flex flex-col items-center justify-center space-y-2 text-center">
+          <PartyPopper size={40} className="animate-pulse text-yellow-400" />
+          <h1 className="text-3xl font-extrabold tracking-tight">
+            Event Confirmed!
+          </h1>
+          <p className="text-sm text-gray-400">
+            All set, get ready to celebrate!
+          </p>
+        </div>
+        {isOpen ? (
+          <ChevronUp className="h-6 w-6" />
+        ) : (
+          <ChevronDown className="h-6 w-6" />
+        )}
+      
       </header>
 
-      {/* Event details card */}
-      <div className="bg-gray-800 rounded-2xl p-6 space-y-4 shadow-inner border border-gray-700">
+       <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-4 px-4"
+          >
+
+            {/* Event details card */}
+      <div className="space-y-4 rounded-2xl border border-gray-700  p-6 shadow-inner">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-purple-500/20 rounded-full">
+          <div className="rounded-full bg-purple-500/20 p-3">
             <Sparkles size={24} className="text-purple-400" />
           </div>
-          <p className="font-semibold text-lg truncate">{winningActivity || 'N/A'}</p>
+          <p className="truncate text-lg font-semibold">
+            {winningActivity || "N/A"}
+          </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-purple-500/20 rounded-full">
+          <div className="rounded-full bg-purple-500/20 p-3">
             <Map size={24} className="text-purple-400" />
           </div>
-          <p className="font-semibold text-lg truncate">{winningPlace || 'N/A'}</p>
+          <p className="truncate text-lg font-semibold">
+            {winningPlace || "N/A"}
+          </p>
         </div>
       </div>
 
       {/* RSVP buttons with integrated counts */}
-      <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-        <h2 className="text-lg text-center font-bold mb-5">Will you be joining us?</h2>
+      <div className="rounded-2xl border border-gray-700  p-6">
+        <h2 className="mb-5 text-center text-lg font-bold">
+          Will you be joining us?
+        </h2>
         <div className="flex justify-between gap-3">
-          {RSVP_OPTIONS.map(({ type, label, icon: Icon, color, bg, border }) => {
-            const isSelected = userRsvp === type;
-            const count = rsvpCounts[type];
-            return (
-              <button
-                key={type}
-                onClick={() => onRsvp(type)}
-                className={`
-                  relative flex flex-col items-center w-full py-4 rounded-xl
-                  border-2 transition-all duration-300 ease-in-out
-                  ${isSelected ? `${bg} ${border} scale-105 shadow-md` : 'bg-gray-700 border-transparent hover:bg-gray-600 hover:scale-[1.02]'}
-                `}
-                aria-pressed={isSelected}
-                title={label}
-              >
-                <Icon className={`mb-2 ${isSelected ? color : 'text-gray-400'}`} size={28} />
-                <span className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-300'}`}>
-                  {label}
-                </span>
-                <span className={`absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center font-bold text-xs rounded-full shadow-lg border-2 ${isSelected ? 'bg-white text-gray-800' : 'bg-gray-600 text-white border-gray-800'}`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+          {RSVP_OPTIONS.map(
+            ({ type, label, icon: Icon, color, bg, border }) => {
+              const isSelected = userRsvp === type;
+              const count = rsvpCounts[type];
+              return (
+                <button
+                  key={type}
+                  onClick={() => onRsvp(type)}
+                  className={`relative flex w-full flex-col items-center rounded-xl border-2 py-4 transition-all duration-300 ease-in-out ${isSelected ? `${bg} ${border} scale-105 shadow-md` : "border-transparent bg-gray-700 hover:scale-[1.02] hover:bg-gray-600"} `}
+                  aria-pressed={isSelected}
+                  title={label}
+                >
+                  <Icon
+                    className={`mb-2 ${isSelected ? color : "text-gray-400"}`}
+                    size={28}
+                  />
+                  <span
+                    className={`text-sm font-semibold ${isSelected ? "text-white" : "text-gray-300"}`}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className={`absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-bold shadow-lg ${isSelected ? "bg-white text-gray-800" : "border-gray-800 bg-gray-600 text-white"}`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            },
+          )}
         </div>
       </div>
 
@@ -105,16 +163,20 @@ const handleClick = () => {
       {onStartNewPoll && (
         <button
           onClick={handleClick}
-          className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 transition-all duration-200 text-white font-bold text-lg shadow-lg"
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-purple-600 py-3 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:bg-purple-700 active:bg-purple-800"
         >
           <PlusCircle size={20} />
           Plan New Event
         </button>
       )}
       {showConfetti && <RsvpConfettiOverlay key={Date.now()} />}
+           
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };
-
 
 export default EventConfirmedNew;

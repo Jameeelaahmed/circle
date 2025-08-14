@@ -3,8 +3,11 @@ import { ChevronLeft } from 'lucide-react';
 import { Skeleton } from '@mui/material';
 import Modal from '../../ui/Modal/Modal';
 import MembersModalContainer from '../../ui/Modal/MembersModal/MembersModalContainer';
+import EventConfirmationStack from '../../EventConfirmation/EventConfirmationStack';
+import { useParams } from 'react-router';
 
 function ChatSidebarPresentational({ isOpen, toggleSidebar, members = [], loading = false, error = null, onShowAllMembers, membersModalRef, closeMembersModal }) {
+    let {circleId} = useParams()
     return (
         <div className="relative h-full">
             <button
@@ -135,9 +138,9 @@ function ChatSidebarPresentational({ isOpen, toggleSidebar, members = [], loadin
                     </div>
 
                     {/* EVENTS */}
-                    <div className="flex-1 p-3">
+                    <div className="flex-1 p-3 overflow-y-auto">
                         <h4 className="text-xs font-medium text-gray-300 mb-2">Events</h4>
-
+                         <EventConfirmationStack circleId={circleId} />
                     </div>
                 </div>
             </Motion.div>

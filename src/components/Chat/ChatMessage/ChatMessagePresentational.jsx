@@ -70,7 +70,7 @@ function ChatMessagePresentational({
     >
 
 
-      <div className="fixed top-35 right-5">
+      <div className="fixed top-32 right-[30%] z-[99999] sm:right-[34%] md:right-[30%] xl:right-[38%] transform md:translate-x-[-50%]">
         <CircleScreen />
       </div>
 

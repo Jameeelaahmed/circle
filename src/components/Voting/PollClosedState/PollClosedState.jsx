@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Crown } from 'lucide-react';
 
 const PollClosedState = ({ data, onPollNextStep }) => {
   const { winningOption, nextStep } = data;
@@ -13,48 +14,50 @@ const PollClosedState = ({ data, onPollNextStep }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="rounded-b-2xl p-4 sm:p-6 w-full max-w-lg mx-auto flex flex-col items-center text-white font-sans"
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className=" rounded-2xl  backdrop-blur-lg p-4 sm:p-5 mt-2 relative left-[50%] transform translate-x-[-10%] text-white shadow-lg " 
     >
+      {/* Title */}
       <motion.h2
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="mb-4 sm:mb-6 text-xl sm:text-2xl  font-extrabold tracking-wide select-none text-center px-2"
+        transition={{ delay: 0.15, duration: 0.4 }}
+        className="text-base sm:text-lg font-bold text-center text-white/90 mb-3"
       >
-        Poll Closed! The winner is...
+       Poll Closed! The winner is...
       </motion.h2>
 
+      {/* Winner display */}
       <motion.div
-        initial={{ scale: 0.8 }}
+        initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
-        transition={{ delay: 0.5, type: 'spring', stiffness: 120 }}
-        className="flex items-center space-x-3 sm:space-x-4 mb-8 sm:mb-10"
+        transition={{ delay: 0.25, type: 'spring', stiffness: 120 }}
+        className="flex items-center justify-center gap-2 sm:gap-3 mb-5"
       >
-        <motion.img
-          src="https://img.icons8.com/ios-filled/50/ffffff/crown.png"
-          alt="Crown"
-          className="w-8 h-8 sm:w-10 sm:h-10 animate-pulse"
-          animate={{ rotate: [0, 10, -10, 10, 0] }}
+        <motion.div
+          animate={{ rotate: [0, 8, -8, 8, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-        />
+          className="bg-gradient-to-tr from-primary to-secondary p-2 rounded-full shadow-md"
+        >
+          <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        </motion.div>
         <motion.span
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.1, color: '#3b82f6' }}
+          whileHover={{ scale: 1.05, color: '#ac9ffa' }}
           transition={{ type: 'spring', stiffness: 300 }}
-          className="text-2xl sm:text-3xl md:text-4xl font-extrabold select-text"
+          className="text-lg sm:text-xl font-extrabold text-center"
         >
           {winningOption.text}
         </motion.span>
       </motion.div>
 
+      {/* Next step button */}
       <motion.button
-        whileHover={{ scale: 1.05, boxShadow: 'inset 0 0 7px black' }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onPollNextStep}
-        className="w-full py-3 sm:py-4 px-4 sm:px-5 cursor-pointer shadow-2xl font-bold border-2 border-secondary rounded-full mt-4 sm:mt-6 text-transparent bg-gradient-to-l from-primary to-secondary bg-clip-text font-secondary"
+        className="w-full py-2.5 cursor-pointer sm:py-3 px-4 font-semibold rounded-full bg-gradient-to-r from-primary to-secondary text-black shadow-md transition-all hover:opacity-90"
       >
         {getButtonText()}
       </motion.button>

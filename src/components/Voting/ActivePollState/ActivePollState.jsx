@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import SendBtn from '../../ui/ReactBits/SendBtn/SendBtn';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 
-  const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
-  const [remainingTime, setRemainingTime] = useState('');
+const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
+  const [remainingTime, setRemainingTime] = useState("");
   const [isExpired, setIsExpired] = useState(false);
   const [showAddOption, setShowAddOption] = useState(false);
-  const [newOptionText, setNewOptionText] = useState('');
-  const [message, setMessage] = useState(''); // Custom message state for alerts
+  const [newOptionText, setNewOptionText] = useState("");
+  const [message, setMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(true);
 
-  // Timer logic from the first component
   useEffect(() => {
     if (!pollData || !pollData.deadline) {
-      setRemainingTime('No deadline');
+      setRemainingTime("No deadline");
       return;
     }
 
@@ -21,11 +22,9 @@ import SendBtn from '../../ui/ReactBits/SendBtn/SendBtn';
       const diff = deadlineDate.getTime() - now.getTime();
 
       if (diff <= 0) {
-        setRemainingTime('Poll ended');
+        setRemainingTime("Poll ended");
         if (!isExpired) {
           setIsExpired(true);
-          // Automatically finish voting when deadline is reached
-          // We'll use a small delay to show the "Poll ended" message first
           setTimeout(() => onFinishVoting(), 1000);
         }
         return;
@@ -38,7 +37,7 @@ import SendBtn from '../../ui/ReactBits/SendBtn/SendBtn';
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-      let timeString = '';
+      let timeString = "";
       if (days > 0) timeString += `${days}d `;
       if (hours > 0 || days > 0) timeString += `${hours}h `;
       if (minutes > 0 || hours > 0 || days > 0) timeString += `${minutes}m `;
@@ -49,41 +48,28 @@ import SendBtn from '../../ui/ReactBits/SendBtn/SendBtn';
 
     calculateRemainingTime();
     const timer = setInterval(calculateRemainingTime, 1000);
-
     return () => clearInterval(timer);
   }, [pollData, isExpired, onFinishVoting]);
 
   if (!pollData) return null;
 
-  // Logic to count votes for each option
-  const getVoteCount = (optionText) => {
-    if (!pollData.votes) return 0;
-    return Object.values(pollData.votes).filter(vote => vote === optionText).length;
-  };
+  const getVoteCount = (optionText) =>
+    Object.values(pollData.votes || {}).filter((vote) => vote === optionText)
+      .length;
 
-  // Logic to handle adding a new option
   const handleAddOption = () => {
-    if (!newOptionText.trim()) {
-      setMessage('Please enter an option.');
-      return;
-    }
-
-    if (isExpired) {
-      setMessage('Cannot add options after the poll deadline.');
-      return;
-    }
-
-    const optionExists = pollData.options.some(option =>
-      option.text.toLowerCase() === newOptionText.trim().toLowerCase()
-    );
-
-    if (optionExists) {
-      setMessage('This option already exists.');
-      return;
+    if (!newOptionText.trim()) return setMessage("Please enter an option.");
+    if (isExpired) return setMessage("Cannot add options after the deadline.");
+    if (
+      pollData.options.some(
+        (o) => o.text.toLowerCase() === newOptionText.trim().toLowerCase(),
+      )
+    ) {
+      return setMessage("This option already exists.");
     }
 
     onAddOption(newOptionText.trim());
-    setNewOptionText('');
+    setNewOptionText("");
     setShowAddOption(false);
   };
 
@@ -91,117 +77,142 @@ import SendBtn from '../../ui/ReactBits/SendBtn/SendBtn';
   const totalVotes = Object.keys(pollData.votes || {}).length;
 
   return (
-    <div className="relative h-auto w-full max-w-lg space-y-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white shadow-lg">
-      {/* Custom Message Box for alerts */}
-      {message && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 p-3 bg-red-600 text-white rounded-lg shadow-lg flex items-center justify-between min-w-[200px]">
-          <p>{message}</p>
-          <button onClick={() => setMessage('')} className="ml-4 font-bold text-lg leading-none">&times;</button>
+    <div className="relative z-[9999] mx-auto w-full backdrop-blur-lg overflow-y-auto max-h-[300px] overflow-hidden rounded-2xl  text-white shadow-2xl mt-2">
+      {/* Header with toggle */}
+      <div
+        className="from-primary/30 to-secondary/30 flex cursor-pointer items-center justify-between bg-gradient-to-r px-4 py-3"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div>
+          <h3 className="text-lg font-bold">{pollData.question}</h3>
+          {/* <p className={`text-sm ${isExpired ? 'text-red-400 font-bold' : 'text-gray-300'}`}>
+            {isExpired ? 'Poll Ended' : `Ends in: ${remainingTime}`}
+          </p> */}
         </div>
-      )}
-
-      {/* Poll Question and Timer */}
-      <h3 className="mb-2 text-2xl font-bold">{pollData.question}</h3>
-      <p className={`mb-4 text-sm ${isExpired ? 'text-red-400 font-bold' : 'text-gray-400'}`}>
-        {isExpired ? 'Poll Ended' : `Ends in: ${remainingTime}`}
-      </p>
-
-      {/* Options List */}
-      <div className="space-y-3">
-        {pollData.options.map((option, index) => {
-          const voteCount = getVoteCount(option.text);
-          const percent = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
-          const isEnabled = !isExpired;
-
-          return (
-            <div
-              key={index}
-              onClick={() => isEnabled && onVote(option.text)}
-              className={`group flex cursor-pointer flex-col gap-1 rounded-xl border px-4 py-3 transition-all ${
-                isEnabled
-                  ? "border-white/10 bg-white/5 hover:border-blue-400"
-                  : "opacity-60 cursor-not-allowed"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{option.text}</span>
-                <span className="text-xs text-blue-400">
-                  {percent}%
-                </span>
-              </div>
-
-              <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/20">
-                <div
-                  className="absolute top-0 left-0 h-full bg-blue-400 transition-all"
-                  style={{ width: `${percent}%` }}
-                />
-              </div>
-
-              {/* Voter avatars are not supported by the original logic, so we show the vote count directly */}
-              <div className="mt-1 flex items-center space-x-2">
-                <span className="ml-3 text-xs text-white/40">
-                  {voteCount} votes
-                </span>
-              </div>
-            </div>
-          );
-        })}
+        {isOpen ? (
+          <ChevronUp className="h-6 w-6" />
+        ) : (
+          <ChevronDown className="h-6 w-6" />
+        )}
       </div>
 
-      {/* Add New Option Section */}
-      {canAddOptions && (
-        <div className="mt-5">
-          {showAddOption ? (
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Add new option..."
-                value={newOptionText}
-                onChange={(e) => setNewOptionText(e.target.value)}
-                maxLength={50}
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <div className="flex justify-between gap-3">
-                <button
-                  className="w-1/2 py-2 px-5 rounded-lg bg-blue-500 text-gray-800 font-bold text-sm hover:bg-blue-600 transition-colors"
-                  onClick={handleAddOption}
-                >
-                  Add
-                </button>
-                <button
-                  className="w-1/2 py-2 px-5 rounded-lg border border-white/20 text-white font-bold text-sm hover:bg-white/10 transition-colors"
-                  onClick={() => {
-                    setShowAddOption(false);
-                    setNewOptionText('');
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <button
-              className="w-full py-3 px-5 rounded-xl border-2 border-dashed border-blue-400 text-blue-400 font-bold text-base hover:bg-white/5 transition-colors"
-              onClick={() => setShowAddOption(true)}
-            >
-              + Add Option
-            </button>
-          )}
+      {/* Alert message */}
+      {message && (
+        <div className="absolute top-4 left-1/2 z-50 flex min-w-[200px] -translate-x-1/2 items-center gap-3 rounded-lg bg-red-600 p-3 text-white shadow-lg">
+          <p className="text-sm">{message}</p>
+          <X
+            className="h-4 w-4 cursor-pointer"
+            onClick={() => setMessage("")}
+          />
         </div>
       )}
 
-      {/* Finish Voting Button */}
-      <button
-        disabled={isExpired}
-        onClick={onFinishVoting}
-        className={`w-full py-4 px-5 cursor-pointer shadow-2xl font-bold border-2 border-secondary rounded-full mt-6 text-transparent bg-gradient-to-l from-primary to-secondary bg-clip-text font-secondary
-          ${isExpired ? 'bg-gray-700 opacity-60 cursor-not-allowed text-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
-      >
-        {isExpired ? 'Poll Ended' : 'Send Vote'}
-      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-4 px-4 py-4"
+          >
+            {/* Options */}
+            <div className="space-y-3">
+              {pollData.options.map((option, i) => {
+                const voteCount = getVoteCount(option.text);
+                const percent =
+                  totalVotes > 0
+                    ? Math.round((voteCount / totalVotes) * 100)
+                    : 0;
+                const isEnabled = !isExpired;
+
+                return (
+                  <div
+                    key={i}
+                    onClick={() => isEnabled && onVote(option.text)}
+                    className={`group flex flex-col gap-1 rounded-xl border px-4 py-3 transition-all ${
+                      isEnabled
+                        ? "hover:border-primary cursor-pointer border-white/10 bg-white/5"
+                        : "cursor-not-allowed opacity-60"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{option.text}</span>
+                      <span className="text-primary text-xs">{percent}%</span>
+                    </div>
+                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/20">
+                      <div
+                        className="from-primary to-secondary absolute top-0 left-0 h-full bg-gradient-to-r transition-all"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-white/40">
+                      {voteCount} votes
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Add option */}
+            {canAddOptions && (
+              <div>
+                {showAddOption ? (
+                  <div className="flex flex-col justify-evenly">
+                    <input
+                      type="text"
+                      placeholder="Add new option..."
+                      value={newOptionText}
+                      onChange={(e) => setNewOptionText(e.target.value)}
+                      maxLength={50}
+                      className="focus:ring-primary w-full rounded-lg bg-gray-800 p-3 text-white placeholder-gray-400 outline-none focus:ring-2"
+                    />
+                    <div className="flex gap-3">
+                      <button
+                        className="bg-primary flex-1 rounded-lg py-2 font-bold text-black hover:opacity-90"
+                        onClick={handleAddOption}
+                      >
+                        Add
+                      </button>
+                      <button
+                        className="flex-1 rounded-lg border border-white/20 py-2 font-bold text-white hover:bg-white/10"
+                        onClick={() => {
+                          setShowAddOption(false);
+                          setNewOptionText("");
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    className="border-primary text-primary flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 font-bold hover:bg-white/5"
+                    onClick={() => setShowAddOption(true)}
+                  >
+                    <Plus className="h-5 w-5" /> Add Option
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Finish button */}
+            <motion.button
+              whileHover={{ scale: 1.05, boxShadow: "inset 0 0 7px black" }}
+              whileTap={{ scale: 0.95 }}
+              disabled={isExpired}
+              onClick={onFinishVoting}
+              className={`border-secondary from-primary to-secondary font-secondary mt-4 w-full cursor-pointer rounded-full border-2 bg-gradient-to-l bg-clip-text px-4 py-3 font-bold text-transparent shadow-2xl sm:mt-6 sm:px-5 sm:py-4 ${
+                isExpired && "cursor-not-allowed opacity-50"
+              }`}
+            >
+              {isExpired ? "Poll Ended" : "Send Vote"}
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
-
 
 export default ActivePollState;
