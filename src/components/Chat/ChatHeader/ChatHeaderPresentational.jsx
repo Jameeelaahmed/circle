@@ -11,6 +11,7 @@ function ChatHeaderPresentational({
   onClearChat,
   onLeaveCircle,
   closeMenu,
+  hasImage
 }) {
   // Close menu when clicking outside
   useEffect(() => {
@@ -44,11 +45,22 @@ function ChatHeaderPresentational({
             </>
           ) : (
             <>
-              <img
-                src={circle.imageUrl}
-                alt={circle.circleName}
-                className="h-10 w-10 rounded-full object-cover"
-              />
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary">
+                {hasImage ? (
+                  <img
+                    className="h-full w-full rounded-full object-cover"
+                    src={circle.imageUrl}
+                    alt={circle.circleName}
+                  />
+                ) : (
+                  <span
+                    className="text-xl font-bold text-white select-none"
+                    style={{ fontFamily: "var(--font-secondary)" }}
+                  >
+                    {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
+                  </span>
+                )}
+              </div>
               <p className="text-white">{circle.circleName}</p>
             </>
           )}

@@ -14,6 +14,7 @@ export const fetchCircles = createAsyncThunk(
                 ...data,
                 id: doc.id,
                 expiresAt: data.expiresAt?.toDate().toISOString() || null,
+                updatedAt: data.updatedAt?.toDate?.() ? data.updatedAt.toDate().toISOString() : data.updatedAt ?? null,
                 createdAt: data.createdAt?.toDate()?.toISOString() || null,
             };
             return transformedData;

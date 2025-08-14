@@ -16,6 +16,7 @@ export const fetchCircleMembers = createAsyncThunk(
                     id: doc.id,
                     ...data,
                     joinedAt: data.joinedAt ? data.joinedAt.toDate().toISOString() : null,
+                    // updatedAt: data.updatedAt?.toDate?.() ? data.updatedAt.toDate().toISOString() : data.updatedAt ?? null,
                 };
             }),
         };

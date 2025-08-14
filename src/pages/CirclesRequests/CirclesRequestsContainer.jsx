@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../../hooks/useAuth";
 import CirclesRequistsPresentational from "./CirclesRequestsPresentational";
 import { useDispatch } from "react-redux";
@@ -84,6 +84,9 @@ function CirclesRequistsContainer() {
                 });
             }
         }
+
+        await deleteDoc(requestRef);
+
 
         setRequests(prev => prev.filter(req => req.id !== requestId));
         dispatch(fetchUserProfile(user.uid));
