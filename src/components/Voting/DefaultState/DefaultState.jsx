@@ -1,60 +1,153 @@
-import React from "react";
 import { ChartColumn } from "lucide-react";
-import ShinyText from "../../ui/ReactBits/ShinyText/ShinyText";
+import styled from "styled-components";
+
 
 const DefaultState = ({ onStartPoll }) => {
   return (
-    <div
-      className="bg-glassmorphism animate-fade-slide-in flex h-[240px] flex-col items-center justify-center rounded-t-[var(--rounded-largeRounded)] p-10 shadow-[var(--shadow-glassCard)]"
-      style={{
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-      }}
-    >
-      <h2
-        className="font-primary mb-10 text-center text-3xl font-semibold text-[var(--color-text)] drop-shadow-md select-none"
-        style={{ fontFamily: "var(--font-primary)" }}
-      >
-        <ShinyText text="What’s the plan?" />
-      </h2>
-      <button
-        onClick={onStartPoll}
-        className="font-secondary shadow-inset-primary hover:shadow-inset-primary-hover relative flex cursor-pointer items-center gap-3 rounded-[var(--rounded-pill)] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] px-12 py-4 text-lg font-bold text-[var(--color-dark)] transition duration-300 ease-in-out select-none hover:brightness-110 focus:outline-none active:scale-95"
-        style={{ fontFamily: "var(--font-secondary)" }}
-        aria-label="Start a new poll"
-      >
-        <ChartColumn className="animate-float h-6 w-6" strokeWidth={2} />
-        Let’s make it official!
-      </button>
-
-      <style>{`
-  .shadow-inset-primary {
-    box-shadow: inset 0 0 15px rgba(172, 159, 250, 0.7);
-  }
-  .shadow-inset-primary-hover {
-    box-shadow: inset 0 0 25px rgba(247, 143, 179, 0.85);
-  }
-`}</style>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-6px);
-          }
-        }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-        .bg-glassmorphism {
-          background: rgba(22, 23, 30, 0.6);
-          border-radius: var(--rounded-largeRounded);
-        }
-      `}</style>
-    </div>
+    <StyledWrapper>
+      <div className="tooltip-container" onClick={onStartPoll}>
+        <span className="tooltip">Start Poll</span>
+        <div className="text">
+          <ChartColumn className="animate-float h-5 w-5" strokeWidth={2} />
+        </div>
+        <span>Let's hang out!</span>
+      </div>
+    </StyledWrapper>
   );
 };
+
+const StyledWrapper = styled.div`
+  .tooltip-container {
+    --background: var(--color-glass);
+    --color: var(--color-primary);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color);
+    padding: 0.7em 1.8em;
+    border-radius: var(--rounded-rounded);
+    text-transform: uppercase;
+    height: 60px;
+    width: 180px;
+    display: grid;
+    place-items: center;
+    background-color: transparent;
+  }
+
+  .text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    transform: scale(1);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .tooltip-container span:last-child {
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--rounded-rounded);
+    opacity: 1;
+    background-color: var(--background);
+    z-index: -1;
+    border: 2px solid var(--background);
+    transform: scale(0);
+    transform-origin: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    display: grid;
+    place-items: center;
+    color: var(--color-primary);
+  }
+
+  .tooltip {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.3em 0.6em;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--color-primary);
+    color: #081020;
+    border-radius: var(--rounded-rounded);
+    scale: 0;
+    transform-origin: 0 0;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 16px;
+    box-shadow: var(--shadow-main);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 0.6em;
+    width: 0.6em;
+    bottom: -0.2em;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    background: var(--color-primary);
+  }
+
+  .tooltip-container:hover .tooltip {
+    top: -100%;
+    opacity: 1;
+    pointer-events: auto;
+    scale: 1;
+    animation: shake 0.5s ease-in-out both;
+  }
+
+  .tooltip-container:hover {
+    box-shadow: 3px 2px 5px #081020;
+    color: var(--color-text);
+    border-color: transparent;
+    background-color:transparent ;
+  }
+
+  .tooltip-container:hover span:last-child {
+    transform: scale(1);
+    left: 0;
+  }
+
+  .tooltip-container:hover .text {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  @keyframes shake {
+    0% {
+      rotate: 0;
+    }
+    25% {
+      rotate: 7deg;
+    }
+    50% {
+      rotate: -7deg;
+    }
+    75% {
+      rotate: 1deg;
+    }
+    100% {
+      rotate: 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+`;
 
 export default DefaultState;

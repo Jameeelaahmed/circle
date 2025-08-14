@@ -7,7 +7,7 @@ const CONFETTI_OPTIONS = [
   { color: "bg-blue-500", name: "Blue" },
 ];
 
-const RsvpConfettiOverlay = ({ count = 160 }) => {
+const RsvpConfettiOverlay = ({ count = 200 }) => {
   const [confetti, setConfetti] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const RsvpConfettiOverlay = ({ count = 160 }) => {
   }, [count]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 pointer-events-none">
       {confetti}
     </div>
   );

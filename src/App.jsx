@@ -9,6 +9,7 @@ import { auth, checkIfBlocked } from "./firebase-config";
 import BlockedModal from "./components/ui/Modal/BlockModal/BlockedModal";
 import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 import { useAuth } from "./hooks/useAuth";
+
 function App() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.circles.status);
@@ -18,7 +19,6 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUserProfile(user?.uid));
-
   }, [dispatch, user?.uid]);
 
   useEffect(() => {
@@ -48,14 +48,18 @@ function App() {
     await auth.signOut();
   };
 
-
   return (
     <>
-      <AuthProvider />
-      <OnlinePresenceProvider>
-        {!isUserBlocked && <RoutesPages />}
-        <BlockedModal ref={blockedModalRef} onConfirm={handleBlockedConfirm} />
-      </OnlinePresenceProvider>
+      
+        <AuthProvider />
+        <OnlinePresenceProvider>
+          {!isUserBlocked && <RoutesPages />}
+          <BlockedModal
+            ref={blockedModalRef}
+            onConfirm={handleBlockedConfirm}
+          />
+        </OnlinePresenceProvider>
+      
     </>
   );
 }
