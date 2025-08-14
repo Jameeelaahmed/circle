@@ -4,15 +4,16 @@ export async function addMembersToCircle(circleId, creatorUid, creatorProfile, s
     const db = getFirestore();
     const membersColRef = collection(db, "circles", circleId, "members");
 
-    // Add creator
+    // Add creator as owner and admin
     await setDoc(doc(membersColRef, creatorUid), {
         email: creatorProfile.email || user.email,
+        isOwner: true, // <-- new field
         isAdmin: true,
         username: creatorProfile.username || user.username || "",
         photoURL: creatorProfile.photoURL || user.photoURL || "",
     });
 
-    // Add selected members
+    // Add selected members (not owner, not admin by default)
     for (const member of selectedMembers) {
         const memberUid = member.value;
         if (memberUid !== creatorUid) {
@@ -29,6 +30,7 @@ export async function addMembersToCircle(circleId, creatorUid, creatorProfile, s
 
             await setDoc(doc(membersColRef, memberUid), {
                 email: memberProfile.email || "",
+                isOwner: false, // <-- new field
                 isAdmin: false,
                 username: memberProfile.username || "",
                 photoURL: memberProfile.photoURL || "",

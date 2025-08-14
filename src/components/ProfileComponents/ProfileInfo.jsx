@@ -72,14 +72,14 @@ const ProfileInfo = ({
       }
 
       const data = await response.json();
-      const imageUrl = data.secure_url;
+      const photoUrl = data.secure_url;
 
       await updateUserProfile(auth.currentUser.uid, {
-        avatarPhoto: imageUrl,
+        photoUrl: photoUrl,
       });
 
       // Update local state
-      dispatch(setProfileData({ avatarPhoto: imageUrl }));
+      dispatch(setProfileData({ photoUrl: photoUrl }));
     } catch (error) {
       console.error("Error uploading avatar:", error);
       setUploadError("Failed to update profile picture. Please try again.");

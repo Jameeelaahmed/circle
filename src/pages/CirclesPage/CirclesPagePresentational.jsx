@@ -1,7 +1,8 @@
-import CircleCard from '../../components/CircleCard/CircleCard';
 import Modal from '../../components/ui/Modal/Modal'
 import LoginFormContainer from '../../components/AuthForms/Login/LoginFormContainer';
 import RegisterFormContainer from '../../components/AuthForms/Register/RegisterFormContainer';
+import CircleCardContainer from '../../components/CircleCard/CircleCardContainer';
+import DeleteCircleModalContainer from '../../components/ui/Modal/DeleteCircleModal/DeleteCircleModalContainer';
 function CirclesPagePresentational({
     circles,
     membersByCircle,
@@ -14,7 +15,13 @@ function CirclesPagePresentational({
     handleSwitchToLogin,
     authFormType,
     authModalRef,
-    pendingRequests
+    pendingRequests,
+    deleteCircleRef,
+    openDeleteCircleModal,
+    closeCircleDeleteModal,
+    onDeleteCircle,
+    isDeleting,
+    circleName
     // handleCloseAuthModal
 }) {
     return (
@@ -23,13 +30,14 @@ function CirclesPagePresentational({
             <div className='mx-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
                 {circles.map((circle) => (
                     <div key={circle.id} onClick={() => handleCardClick(circle)} user={user} className='cursor-pointer'>
-                        <CircleCard
+                        <CircleCardContainer
                             circle={circle}
                             membersByCircle={membersByCircle}
                             activeTab={activeTab}
                             profileInterests={profileInterests}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
+                            openDeleteCircleModal={openDeleteCircleModal}
                             pendingRequests={pendingRequests} />
                     </div>
                 ))}
@@ -42,6 +50,14 @@ function CirclesPagePresentational({
                 ) : (
                     <RegisterFormContainer onSwitchToLogin={handleSwitchToLogin} />
                 )}
+            </Modal>
+            <Modal ref={deleteCircleRef}>
+                <DeleteCircleModalContainer
+                    onDeleteCircle={onDeleteCircle}
+                    closeCircleDeleteModal={closeCircleDeleteModal}
+                    isDeleting={isDeleting}
+                    circleName={circleName}
+                />
             </Modal>
         </>
     )

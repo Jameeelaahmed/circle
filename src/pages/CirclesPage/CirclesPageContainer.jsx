@@ -2,9 +2,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc, query, where, getDocs } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { fetchCircles } from '../../features/circles/circlesSlice';
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
@@ -33,6 +33,9 @@ function CirclesPageContainer() {
     const { isLoggedIn } = useAuth();
     const authModalRef = useRef();
     const [pendingRequests, setPendingRequests] = useState([]);
+    const deleteCircleRef = useRef();
+    const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
+
     useEffect(() => {
         circles.forEach(circle => {
             if (circle.id && !membersByCircle[circle.id]) {
@@ -110,41 +113,43 @@ function CirclesPageContainer() {
         const circle = circles.find(c => c.id === circleId);
         if (!circle || !user) return;
 
-        // Find the admin member
+        // Find the owner member (not just admin)
         const members = membersByCircle[circle.id] || [];
-        const adminMember = members.find(member => member.isAdmin);
-        const adminId = adminMember ? adminMember.id : null;
+        const ownerMember = members.find(member => member.isOwner);
+        const circleOwnerId = ownerMember ? ownerMember.id : null;
 
-        if (!adminId) {
+        if (!circleOwnerId) {
             return;
         }
 
-        // Check for existing pending request
-        const q = query(
+        // Check for existing pending join request
+        const joinRequestQuery = query(
             collection(db, "circleRequests"),
             where("circleId", "==", circle.id),
-            where("userId", "==", user.uid),
-            where("status", "==", "pending")
+            where("requesterId", "==", user.uid), // renamed for clarity
+            where("status", "==", "pending"),
+            where("type", "==", "join-request")
         );
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
+        const joinRequestSnapshot = await getDocs(joinRequestQuery);
+        if (!joinRequestSnapshot.empty) {
             return;
         }
 
         try {
             await addDoc(collection(db, "circleRequests"), {
                 circleId: circle.id,
-                userId: profile.uid,
-                adminId: adminId,
+                type: "join-request",
+                requesterId: user.uid,
+                requesterUsername: profile.username,
+                requesterEmail: profile.email,
+                requesterPhotoUrl: profile.photoUrl,
+                approverId: ownerMember.id,
+                approverUsername: ownerMember.username,
+                circleName: circle.circleName,
                 message: `${profile.username} wants to join your circle "${circle.circleName}".`,
                 status: "pending",
-                createdAt: serverTimestamp(),
-                username: profile.username,
-                circleName: circle.circleName,
-                avatarPhoto: profile.avatarPhoto,
-                email: profile.email
+                createdAt: serverTimestamp()
             });
-            // Update pendingRequests state immediately
             setPendingRequests(prev => [...prev, circle.id]);
             toast.success("Request Sent successfully!", toastStyles);
         } catch (error) {
@@ -172,6 +177,37 @@ function CirclesPageContainer() {
         fetchPendingRequests();
     }, [user, circles]);
 
+    function openDeleteCircleModal(circle) {
+        setSelectedCircleToDelete(circle);
+        deleteCircleRef.current.open();
+    }
+
+    function closeCircleDeleteModal() {
+        setSelectedCircleToDelete(null);
+        deleteCircleRef.current.close();
+    }
+    const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy.uid === user.uid;
+
+    // Delete logic inside the container
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDeleteCircle = async () => {
+        if (!isOwner || !selectedCircleToDelete) return;
+        setIsDeleting(true);
+        try {
+            const db = getFirestore();
+            await deleteDoc(doc(db, "circles", selectedCircleToDelete.id));
+            toast.success("Circle deleted successfully!");
+            dispatch(fetchCircles());
+            closeCircleDeleteModal();
+        } catch (error) {
+            toast.error("Failed to delete circle.");
+            console.error(error);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
             {user && <>
@@ -183,9 +219,7 @@ function CirclesPageContainer() {
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
-                        // Show skeletons or loading UI here
                         <div className="flex justify-center items-center h-full">
-                            {/* Replace with your actual skeleton component */}
                             <span>Loading circles...</span>
                         </div>
                     ) : (
@@ -196,10 +230,16 @@ function CirclesPageContainer() {
                             activeTab={activeTab}
                             circlesStatus={circlesStatus}
                             profileStatus={profileStatus}
-                            profileInterests={profile.interests}
+                            profileInterests={profile?.interests || []}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
                             pendingRequests={pendingRequests}
+                            openDeleteCircleModal={openDeleteCircleModal}
+                            deleteCircleRef={deleteCircleRef}
+                            closeCircleDeleteModal={closeCircleDeleteModal}
+                            onDeleteCircle={handleDeleteCircle}
+                            isDeleting={isDeleting}
+                            circleName={selectedCircleToDelete ? selectedCircleToDelete.circleName : ""}
                         />
                     )}
                 </div>
@@ -224,7 +264,7 @@ function CirclesPageContainer() {
                             activeTab={activeTab}
                             circlesStatus={circlesStatus}
                             profileStatus={profileStatus}
-                            profileInterests={profile.interests}
+                            profileInterests={profile?.interests || []}
                             user={user}
                             handleJoinRequest={handleJoinRequest}
                             handleSwitchToRegister={handleSwitchToRegister}

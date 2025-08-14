@@ -8,14 +8,7 @@ import {
     getDocs
 } from "firebase/firestore";
 
-/**
- * Handle user leaving a circle with admin transfer logic
- * @param {string} circleId - The circle ID
- * @param {string} userId - The user ID who is leaving
- * @param {Object} circle - The circle data
- * @returns {Object} - Result with success status and redirect info
- */
-export async function leaveCircle(circleId, userId, circle) {
+export async function leaveCircle(circleId, userId) {
     const db = getFirestore();
 
     try {
@@ -28,10 +21,20 @@ export async function leaveCircle(circleId, userId, circle) {
         }));
 
         const leavingMember = allMembers.find(member => member.id === userId);
-        const isLeavingUserAdmin = leavingMember?.isAdmin || circle.createdBy?.uid === userId;
+        const isLeavingUserOwner = leavingMember?.isOwner;
+        const isLeavingUserAdmin = leavingMember?.isAdmin;
         const otherMembers = allMembers.filter(member => member.id !== userId);
 
-        // If leaving user is admin and there are other members, transfer admin
+        // Prevent owner from leaving (optional, business logic)
+        if (isLeavingUserOwner) {
+            return {
+                success: false,
+                shouldRedirect: false,
+                message: "Circle owner cannot leave the circle. Transfer ownership first."
+            };
+        }
+
+        // If leaving user is admin (but not owner) and there are other members, transfer admin
         if (isLeavingUserAdmin && otherMembers.length > 0) {
             // Select a random member to become admin
             const randomIndex = Math.floor(Math.random() * otherMembers.length);
@@ -41,16 +44,6 @@ export async function leaveCircle(circleId, userId, circle) {
             const newAdminMemberRef = doc(db, "circles", circleId, "members", newAdmin.id);
             await updateDoc(newAdminMemberRef, {
                 isAdmin: true
-            });
-
-            // Update the circle's createdBy field
-            const circleRef = doc(db, "circles", circleId);
-            await updateDoc(circleRef, {
-                createdBy: {
-                    uid: newAdmin.id,
-                    userName: newAdmin.username,
-                    userEmail: newAdmin.email
-                }
             });
         }
 
@@ -82,21 +75,10 @@ export async function leaveCircle(circleId, userId, circle) {
     }
 }
 
-/**
- * Check if user can leave the circle (business logic)
- * @param {string} userId - The user ID
- * @param {Array} members - Array of circle members
- * @param {Object} circle - The circle data
- * @returns {Object} - Can leave status and reason
- */
 export function canLeaveCircle(userId, members) {
     const user = members.find(member => member.id === userId);
     if (!user) {
         return { canLeave: false, reason: "You are not a member of this circle." };
     }
-
-    // For now, all members can leave. Add additional business rules here if needed
-    // Example: Prevent leaving if user is the only admin and there are other members
-
     return { canLeave: true, reason: null };
 }
