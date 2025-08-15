@@ -17,12 +17,14 @@ export default function CircleCardPresentational({
       <div
         className="group relative overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-xl sm:p-5 cursor-pointer"
         style={{
-          background:
-            "linear-gradient(145deg, var(--color-main) 0%, #0a142a 100%)",
+          background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
+          backdropFilter: "blur(10px)",
           border: "1px solid rgba(172, 159, 250, 0.15)",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
         }}
       >
+
+
         {/* Shiny hover effect */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-[50%] -left-[150%] h-[200%] w-[60%] rotate-[25deg] transform bg-gradient-to-r from-transparent via-[rgba(172,159,250,0.2)] to-transparent opacity-0 transition-[opacity_transform] duration-900 group-hover:left-[150%] group-hover:opacity-100"></div>
@@ -41,7 +43,7 @@ export default function CircleCardPresentational({
                   />
                 ) : (
                   <span
-                    className="text-xl font-bold text-white select-none"
+                    className="text-xl font-bold text-text select-none"
                     style={{ fontFamily: "var(--font-secondary)" }}
                   >
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
@@ -49,7 +51,7 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-base font-bold text-[var(--color-primary)] sm:text-lg">
+                <h3 className="text-base font-bold text-primary sm:text-lg">
                   {circle.circleName}
                 </h3>
                 <p
@@ -64,14 +66,18 @@ export default function CircleCardPresentational({
 
             {isOwner && (
               <button
-                className="ml-2 text-red-500 hover:text-red-700 cursor-pointer"
+                className="ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
+                style={{
+                  color: "var(--color-secondary)",
+                  background: "rgba(var(--color-secondary-rgb), 0.1)"
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   openDeleteCircleModal(circle);
                 }}
                 title="Delete Circle"
               >
-                <Trash2 size={20} />
+                <Trash2 size={18} />
               </button>
             )}
           </div>
@@ -103,7 +109,7 @@ export default function CircleCardPresentational({
                 (member) => member.id === user?.uid,
               ) && (
                   <button
-                    className="relative w-full overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-transparent py-2 text-xs font-medium text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
                     onClick={(e) => handleJoinRequest(circle.id, e)}
                   >
                     {isRequestPending ? "Request Sent" : "Join Circle"}

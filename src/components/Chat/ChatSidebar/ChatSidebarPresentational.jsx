@@ -6,6 +6,7 @@ import Modal from "../../ui/Modal/Modal";
 import MembersModalContainer from "../../ui/Modal/MembersModal/MembersModalContainer";
 import EventConfirmationStack from "../../EventConfirmation/EventConfirmationStack";
 import { useParams } from "react-router";
+import CircleDetailsContainer from "../../ui/Modal/CircleDetailsModal/CircleDetailsContainer";
 
 function ChatSidebarPresentational({
     isOpen,
@@ -15,7 +16,10 @@ function ChatSidebarPresentational({
     error = null,
     onShowAllMembers,
     membersModalRef,
-    closeMembersModal
+    closeMembersModal,
+    circleDetailsRef,
+    onOpen,
+    onClose
 }) {
     const { circleId } = useParams();
     const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -32,10 +36,9 @@ function ChatSidebarPresentational({
 
     return (
         <div className="relative h-full">
-            {/* Always render chevron button */}
             <button
                 onClick={toggleSidebar}
-                className={`absolute top-1/2 -translate-y-1/2 z-50 bg-main text-white p-1.5 rounded-lg hover:bg-primary/80 transition-colors duration-200 backdrop-blur-sm
+                className={`absolute top-1/2 -translate-y-1/2 z-50 bg-main text-text p-1.5 rounded-lg hover:bg-primary/80 transition-colors duration-200 backdrop-blur-sm
                     ${isSmallScreen
                         ? isOpen
                             ? "-right-3" // Inside edge when open
@@ -71,22 +74,26 @@ function ChatSidebarPresentational({
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className={`h-full overflow-hidden backdrop-blur-sm ltr:rounded-tl-3xl rtl:rounded-tr-3xl ltr:rounded-bl-3xl rtl:rounded-br-3xl ${isOpen
-                        ? "bg-main/95 border-white/10"
-                        : "bg-transparent border-transparent"
+                    ? "bg-main/95 border-white/10"
+                    : "bg-transparent border-transparent"
                     }`}
             >
                 <div className="w-70 h-full flex flex-col">
                     {/* Header */}
-                    <div className="p-3 border-b border-white/10">
-                        <h3 className="text-sm font-medium text-white">
+                    <div className="p-4.5 border-b border-text/10 flex justify-between items-center">
+                        <h3 className="text-sm font-medium text-text">
                             Circle Details
                         </h3>
+                        <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>see details</p>
+                        <Modal ref={circleDetailsRef}>
+                            <CircleDetailsContainer onClose={onClose} />
+                        </Modal>
                     </div>
 
                     {/* Members */}
                     <div className="flex-1 p-3 border-b border-white/10">
                         <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-xs font-medium text-gray-300">
+                            <h4 className="text-xs font-medium text-text-300">
                                 Members ({members.length})
                             </h4>
                             <button
@@ -167,7 +174,7 @@ function ChatSidebarPresentational({
                                                         className="w-full h-full object-cover"
                                                     />
                                                 ) : (
-                                                    <span className="text-white text-xs font-medium">
+                                                    <span className="text-text text-xs font-medium">
                                                         {member.username
                                                             .charAt(0)
                                                             .toUpperCase()}
@@ -178,13 +185,13 @@ function ChatSidebarPresentational({
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-medium text-white truncate">
+                                                <p className="text-xs font-medium text-text truncate">
                                                     {member.username}
                                                 </p>
                                                 <p
                                                     className={`text-xs ${member.isOnline
-                                                            ? "text-green-400"
-                                                            : "text-gray-400"
+                                                        ? "text-green-400"
+                                                        : "text-gray-400"
                                                         }`}
                                                 >
                                                     {member.isOnline
@@ -196,7 +203,7 @@ function ChatSidebarPresentational({
                                     ))
                             ) : (
                                 <div className="p-2 text-center">
-                                    <p className="text-xs text-gray-400">
+                                    <p className="text-xs text-text-400">
                                         No members found
                                     </p>
                                 </div>
@@ -206,14 +213,14 @@ function ChatSidebarPresentational({
 
                     {/* Memories */}
                     <div className="flex-1 p-3 border-b border-white/10">
-                        <h4 className="text-xs font-medium text-gray-300 mb-2">
+                        <h4 className="text-xs font-medium text-text-300 mb-2">
                             Memories
                         </h4>
                     </div>
 
                     {/* Events */}
                     <div className="flex-1 p-3 overflow-y-auto">
-                        <h4 className="text-xs font-medium text-gray-300 mb-2">
+                        <h4 className="text-xs font-medium text-text-300 mb-2">
                             Events
                         </h4>
                         <EventConfirmationStack circleId={circleId} />

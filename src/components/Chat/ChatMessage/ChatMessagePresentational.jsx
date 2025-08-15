@@ -6,8 +6,6 @@ import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
 import { useState } from "react";
-import CircleScreen from "../../Voting/CircleScreen/CircleScreen";
-
 
 function ChatMessagePresentational({
   handleReact,
@@ -72,7 +70,24 @@ function ChatMessagePresentational({
         </div>
       )}
 
+
+
       {groupedMessages.map((item, idx) => {
+        if (item.message?.messageType === "system") {
+          return (
+            <div
+              key={item.message.id || item.index}
+              className="flex justify-center my-4"
+            >
+              <div className="bg-main/80 text-text px-6 py-2 rounded-xl text-center shadow-md">
+                {item.message.text}
+                {console.log(item.message.text)}
+
+              </div>
+            </div>
+          );
+        }
+        // Media group
         if (item.type === "media_group") {
           return (
             <MediaGroupMessage

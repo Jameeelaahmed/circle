@@ -13,7 +13,6 @@ function ChatHeaderPresentational({
   closeMenu,
   hasImage
 }) {
-  // Close menu when clicking outside
   useEffect(() => {
     function handleClick() {
       if (menu?.visible) closeMenu();

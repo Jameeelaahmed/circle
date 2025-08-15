@@ -34,12 +34,9 @@ import { useTypingIndicator } from "../../../hooks/chathooks/useTypingIndicator"
 import { useAutoScroll } from "../../../hooks/chathooks/useAutoScroll";
 import { useMessageSeen } from "../../../hooks/chathooks/useMessageSeen";
 function ChatMessageContainer({
-  pollDocId,
   circleId,
   setReplyTo,
   setEditingMessage,
-  showStepper,
-  setShowStepper,
 }) {
   const messagesEndRef = useRef(null);
   const deleteModalRefs = useRef({});

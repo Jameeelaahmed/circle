@@ -13,9 +13,15 @@ export const fetchCircles = createAsyncThunk(
             const transformedData = {
                 ...data,
                 id: doc.id,
-                expiresAt: data.expiresAt?.toDate().toISOString() || null,
-                updatedAt: data.updatedAt?.toDate?.() ? data.updatedAt.toDate().toISOString() : data.updatedAt ?? null,
-                createdAt: data.createdAt?.toDate()?.toISOString() || null,
+                expiresAt: data.expiresAt && typeof data.expiresAt.toDate === "function"
+                    ? data.expiresAt.toDate().toISOString()
+                    : data.expiresAt || null,
+                updatedAt: data.updatedAt && typeof data.updatedAt.toDate === "function"
+                    ? data.updatedAt.toDate().toISOString()
+                    : data.updatedAt || null,
+                createdAt: data.createdAt && typeof data.createdAt.toDate === "function"
+                    ? data.createdAt.toDate().toISOString()
+                    : data.createdAt || null,
             };
             return transformedData;
         });

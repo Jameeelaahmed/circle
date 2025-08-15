@@ -6,11 +6,11 @@ import useOnlinePresence from "../../../hooks/chathooks/useOnlinePresence";
 import ChatSidebarPresentational from "./ChatSidebarPresentational";
 
 function ChatSidebarContainer() {
+    const circleDetailsRef = useRef();
     const [isOpen, setIsOpen] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const { circleId } = useParams();
     const dispatch = useDispatch();
-
     const { membersByCircle, status, error } = useSelector((state) => state.members);
     const members = membersByCircle[circleId] || [];
     const { isUserOnline } = useOnlinePresence();
@@ -21,6 +21,12 @@ function ChatSidebarContainer() {
 
     const membersModalRef = useRef();
 
+    function handleOpenCircleDetailsModal() {
+        circleDetailsRef.current.open();
+    }
+    function handleCloseCircleDetailsModal() {
+        circleDetailsRef.current.close();
+    }
     useEffect(() => {
         if (circleId && !membersByCircle[circleId]) {
             dispatch(fetchCircleMembers(circleId));
@@ -47,6 +53,7 @@ function ChatSidebarContainer() {
 
     return (
         <ChatSidebarPresentational
+            circleDetailsRef={circleDetailsRef}
             isOpen={isOpen}
             toggleSidebar={toggleSidebar}
             isSmallScreen={isSmallScreen}
@@ -57,6 +64,8 @@ function ChatSidebarContainer() {
             membersModalRef={membersModalRef}
             closeMembersModal={() => membersModalRef.current?.close()}
             closeSidebar={() => setIsOpen(false)}
+            onOpen={handleOpenCircleDetailsModal}
+            onClose={handleCloseCircleDetailsModal}
         />
     );
 }

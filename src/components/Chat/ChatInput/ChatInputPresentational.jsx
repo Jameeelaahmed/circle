@@ -5,8 +5,7 @@ import CameraView from "../../ui/CameraView/CameraViewPresentational";
 import Modal from "../../ui/Modal/Modal";
 import Skeleton from "@mui/material/Skeleton";
 import { Mic, Paperclip, Camera, Image, BarChart3 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useRef } from "react";
 
 function ChatInputPresentational({
   msgVal,
@@ -32,20 +31,9 @@ function ChatInputPresentational({
   showCameraModal,
   closeCameraModal,
   handleCapturedPhoto,
-  pollModalRef,
-  handleClosePollModal,
   handleOpenPollModal,
 }) {
-  const [currentUser, setCurrentUser] = useState(null);
   const mediaMenuRef = useRef(null);
-
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Close media menu when clicking outside
   useEffect(() => {
