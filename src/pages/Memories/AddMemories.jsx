@@ -69,54 +69,99 @@ export default function MemoryUploadPage() {
       });
     }
   };
+  const CLOUD_NAME = "dwh8jhaot";
+  const UPLOAD_PRESET = "images";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsloading(true);
 
-    if (!currentMemory.images || currentMemory.images.length === 0) {
-      toast.error("Please upload at least one image");
-      return;
-    }
-
-    const uploadedUrls = [];
-
-    // Upload each image to Cloudinary
-    for (const image of currentMemory.images) {
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append("upload_at", new Date().toISOString().split("T")[0]);
-      formData.append("cloud_name", "dwh8jhaot");
-      formData.append("upload_preset", "images");
-
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dwh8jhaot/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      const uploadedImage = await res.json();
-      if (uploadedImage.url) {
-        uploadedUrls.push(uploadedImage.url);
+    try {
+      // Basic validation
+      const files = currentMemory?.images ?? [];
+      if (!files.length) {
+        toast.error("Please upload at least one image");
+        return;
       }
+
+      // Helper: upload a single file to Cloudinary
+      const uploadOne = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        // Optional but handy for organization in Cloudinary
+        formData.append("folder", `circles/${circleId}`);
+        // You can attach custom context/tags too:
+        // formData.append('context', `circleId=${circleId}|name=${currentMemory?.name ?? ''}`);
+
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+
+        if (!res.ok) {
+          // Try to extract Cloudinary error message
+          let msg = "Upload failed";
+          try {
+            const err = await res.json();
+            msg = err?.error?.message || msg;
+          } catch {
+            /* ignore */
+          }
+          throw new Error(msg);
+        }
+
+        const data = await res.json();
+        // prefer https url
+        return data.secure_url || data.url;
+      };
+
+      // Upload all files in parallel
+      const results = await Promise.allSettled(files.map(uploadOne));
+      const uploadedUrls = results
+        .filter((r) => r.status === "fulfilled" && !!r.value)
+        .map((r) => r.value);
+
+      // Optionally surface per-file failures
+      const failed = results.filter((r) => r.status === "rejected");
+      if (failed.length) {
+        console.warn(
+          "Some uploads failed:",
+          failed.map((f) => f.reason),
+        );
+        toast.warning(
+          `Uploaded ${uploadedUrls.length}/${files.length} image(s). Some failed.`,
+        );
+      }
+
+      if (!uploadedUrls.length) {
+        throw new Error("All uploads failed. Please try again.");
+      }
+
+      // Save URLs to Firestore
+      const memoriesRef = collection(db, "circles", circleId, "memories");
+      await addDoc(memoriesRef, {
+        createdAt: serverTimestamp(),
+        urls: uploadedUrls,
+        name: (currentMemory?.name || "").trim(),
+        description: (currentMemory?.description || "").trim(),
+        date: new Date().toISOString().split("T")[0],
+        ownerUid: auth.currentUser?.uid || null,
+      });
+
+      toast.success("Memories added successfully");
+      navigate(`/circles/${circleId}/memories`);
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err?.message || "Something went wrong while saving your memories.",
+      );
+    } finally {
+      setIsloading(false);
     }
-    // Save all URLs to Firestore
-    const memoriesRef = collection(db, "circles", circleId, "memories");
-
-    await addDoc(memoriesRef, {
-      createdAt: serverTimestamp(),
-      urls: uploadedUrls,
-      name: currentMemory.name,
-      description: currentMemory.description,
-      date: new Date().toISOString().split("T")[0],
-      ownerUid: auth.currentUser?.uid || null,
-    });
-
-    setIsloading(false);
-
-    toast.success("Memories added successfully");
-    navigate(`/circles/${circleId}/memories`);
   };
 
   return (
