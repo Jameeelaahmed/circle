@@ -4,8 +4,8 @@ import { lazy, Suspense } from "react";
 import RootLayout from "../layouts/RootLayout";
 import { useAuth } from "../hooks/useAuth";
 import CirclesRequistsContainer from "../pages/CirclesRequests/CirclesRequestsContainer";
-
-
+import { useLocation } from "react-router";
+import { Navigate } from "react-router";
 // Lazy loaded components with dynamic imports
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const Payments = lazy(() => import("../pages/Payments/PaymentContainer"));
@@ -46,17 +46,25 @@ const LazyWrapper = ({ children }) => (
   <Suspense fallback={<div />}>{children}</Suspense>
 );
 
-// Protected route wrapper
 function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useAuth();
-  if (!isLoggedIn) {
-    // Redirect to login or show a message
-    window.location.href = "/login";
-    return null;
+  const { isLoggedIn, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
+
+  if (!isLoggedIn) {
+    return (
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(location.pathname)}`}
+        replace
+      />
+    );
+  }
+
   return children;
 }
-
 const routes = createBrowserRouter([
   {
     path: "/login",

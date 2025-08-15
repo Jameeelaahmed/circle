@@ -91,25 +91,30 @@ export function scrollToMessage(messageId, messageRefs) {
         }, 1500);
     }
 }
-
-
 export async function handleDownloadMedia(message) {
-    if (!message.imageUrl) return;
+    const url = message.mediaUrl || message.imageUrl || message.photoUrl;
+    if (!url) return;
 
     try {
-        const response = await fetch(message.imageUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
+        const response = await fetch(url, { mode: "cors" });
+        if (!response.ok) throw new Error("Network response was not ok");
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = message.fileName || `${message.messageType}-${Date.now()}`;
+        const blob = await response.blob();
+        const objectUrl = window.URL.createObjectURL(blob);
+
+        // Extract name from URL if available
+        const match = url.match(/\/([^/]+)$/);
+        const originalName = match ? match[1] : `${Date.now()}`;
+
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = originalName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        window.URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(objectUrl);
     } catch (error) {
-        console.error('Download failed:', error);
+        console.error("Download failed:", error);
     }
 }

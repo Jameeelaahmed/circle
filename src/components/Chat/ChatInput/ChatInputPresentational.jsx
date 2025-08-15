@@ -32,6 +32,7 @@ function ChatInputPresentational({
   closeCameraModal,
   handleCapturedPhoto,
   handleOpenPollModal,
+  isMember, // New prop to check if the user is a member
 }) {
   const mediaMenuRef = useRef(null);
 
@@ -114,6 +115,7 @@ function ChatInputPresentational({
                 type="submit"
                 className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors"
                 title={isEditing ? "Save changes" : "Send message"}
+                disabled={!isMember} // Disable button if not a member
               >
                 <svg
                   width="20"
@@ -136,8 +138,8 @@ function ChatInputPresentational({
                     <div
                       className="bg-main border-primary/20 fixed z-[9999] min-w-[140px] rounded-lg border py-1 shadow-lg"
                       style={{
-                        bottom: "70px", // Position above the input area
-                        right: "20px", // Align with the right side
+                        bottom: "70px",
+                        right: "20px",
                       }}
                     >
                       <button
@@ -155,14 +157,6 @@ function ChatInputPresentational({
                       >
                         <Image size={16} />
                         <span className="text-sm">Gallery</span>
-                      </button>
-                      <button
-                        onClick={handleOpenPollModal}
-                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 text-left transition-colors"
-                        type="button"
-                      >
-                        <BarChart3 size={16} />
-                        <span className="text-sm">Poll</span>
                       </button>
                     </div>
                   )}
@@ -214,6 +208,12 @@ function ChatInputPresentational({
               </div>
             )}
           </form>
+          {/* Membership Warning - Shown only when not a member */}
+          {!isMember && (
+            <div className="text-xs text-red-500 mt-2">
+              You must be a member of this circle to send messages.
+            </div>
+          )}
         </>
       )}
     </div>

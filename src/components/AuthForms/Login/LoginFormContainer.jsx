@@ -7,7 +7,7 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, GoogleProvider } from "../../../firebase-config";
+import { auth } from "../../../firebase-config";
 // components
 import LoginFormPresentational from './LoginFormPresentational';
 import { setUserInfo } from "../../../features/user/userSlice";
@@ -18,12 +18,11 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
-
+    const navigate = useNavigate()
     // Refs for form inputs
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -55,7 +54,9 @@ export default function LoginFormContainer({ onSwitchToRegister }) {
             );
             const token = await userCredential.user.getIdToken();
             dispatch(setUserInfo({ user: userCredential.user, token }));
-            navigate("/");
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get("redirect") || "/";
+            navigate(redirect, { replace: true });
         } catch (error) {
             console.error("Login error:", error);
             toast.error(getErrorMessage(error.code));

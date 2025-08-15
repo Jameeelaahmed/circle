@@ -9,6 +9,7 @@ import { fetchCircleMembers } from "../../../../features/circleMembers/circleMem
 import { addMemberToCircle, toggleMemberAdminRole, getAvailableUsers, removeMemberFromCircle } from "../../../../utils/memberManagement";
 import { toastStyles } from "../../../../utils/toastStyles";
 import MembersModalPresentational from "./MembersModalPresentational";
+import { getFirestore, doc, updateDoc, arrayRemove } from "firebase/firestore";
 
 function MembersModalContainer({ members, loading, error, closeModal }) {
     const { circleId } = useParams();
@@ -112,13 +113,73 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
         }
     };
 
+    const ownerMember = membersWithOnlineStatus.find(m => m.isOwner);
+    const isOwner = ownerMember && ownerMember.uid === user.uid;
+    const isAdmin = membersWithOnlineStatus.some(m => m.isAdmin && m.uid === user.uid);
+
+    // Remove member logic
+    const handleRemoveMember = async (memberId) => {
+        if (!memberId || !user) return;
+
+        const targetMember = membersWithOnlineStatus.find(m => m.uid === memberId || m.id === memberId);
+
+        // Prevent owner from being removed
+        if (targetMember?.isOwner) {
+            toast.error("You cannot remove the circle owner.", toastStyles);
+            return;
+        }
+
+        // Only owner or admin can remove members (except owner)
+        if (!(isOwner || isAdmin)) {
+            toast.error("Only the owner or admins can remove members.", toastStyles);
+            return;
+        }
+
+        setRemovingMember(memberId);
+        try {
+            const result = await removeMemberFromCircle(circleId, memberId, user);
+
+            if (result.success) {
+                toast.success(result.message, toastStyles);
+                dispatch(fetchCircleMembers(circleId));
+                loadAvailableUsers();
+
+                // Remove circle from user's joinedCircles
+                try {
+                    const db = getFirestore();
+                    const userDocRef = doc(db, "users", memberId);
+                    await updateDoc(userDocRef, {
+                        joinedCircles: arrayRemove(circleId)
+                    });
+                } catch (err) {
+                    console.error("Failed to update user's joinedCircles:", err);
+                    toast.error("Failed to update user's joined circles.", toastStyles);
+                }
+            } else {
+                toast.error(result.message, toastStyles);
+            }
+        } catch {
+            toast.error("Failed to remove member. Please try again.", toastStyles);
+        } finally {
+            setRemovingMember(null);
+        }
+    };
+
+    // Toggle admin logic
     const handleToggleAdmin = async (targetMemberUid, makeAdmin) => {
         if (!targetMemberUid || !user) return;
 
-        // Prevent owner from being demoted/promoted
         const targetMember = membersWithOnlineStatus.find(m => m.uid === targetMemberUid || m.id === targetMemberUid);
+
+        // Prevent owner from being demoted/promoted
         if (targetMember?.isOwner) {
             toast.error("You cannot change the owner admin status.", toastStyles);
+            return;
+        }
+
+        // Only owner can set/unset admins
+        if (!isOwner) {
+            toast.error("Only the circle owner can set or unset admins.", toastStyles);
             return;
         }
 
@@ -136,34 +197,6 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
             toast.error("Failed to update admin role. Please try again.", toastStyles);
         } finally {
             setUpdatingAdmin(null);
-        }
-    };
-
-    const handleRemoveMember = async (memberId) => {
-        if (!memberId || !user) return;
-
-        // Prevent owner from being removed
-        const targetMember = membersWithOnlineStatus.find(m => m.uid === memberId || m.id === memberId);
-        if (targetMember?.isOwner) {
-            toast.error("You cannot remove the circle owner.", toastStyles);
-            return;
-        }
-
-        setRemovingMember(memberId);
-        try {
-            const result = await removeMemberFromCircle(circleId, memberId, user);
-
-            if (result.success) {
-                toast.success(result.message, toastStyles);
-                dispatch(fetchCircleMembers(circleId));
-                loadAvailableUsers();
-            } else {
-                toast.error(result.message, toastStyles);
-            }
-        } catch {
-            toast.error("Failed to remove member. Please try again.", toastStyles);
-        } finally {
-            setRemovingMember(null);
         }
     };
 

@@ -48,6 +48,8 @@ function MembersModalPresentational({
 
         return index === self.findIndex(m => (m.id || m.uid) === memberId);
     });
+    const ownerMember = uniqueMembers.find(m => m.isOwner);
+    const ownerUid = ownerMember?.uid || ownerMember?.id;
 
     const isCurrentUserAdmin = uniqueMembers.find(m => (m.id || m.uid) === currentUser?.uid)?.isAdmin || false;
 
@@ -167,6 +169,8 @@ function MembersModalPresentational({
                     <div className="space-y-2">
                         {uniqueMembers.map((member) => {
                             const memberId = member.id || member.uid;
+                            const isOwner = member.isOwner;
+                            const isAdmin = member.isAdmin;
                             return (
                                 <div
                                     key={memberId}
@@ -189,7 +193,7 @@ function MembersModalPresentational({
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2">
                                                 <p className="text-white font-medium truncate">
-                                                    {member.username || 'Unknown Member'}
+                                                    {(memberId === currentUser?.uid) ? "Me" : (member.username || 'Unknown Member')}
                                                 </p>
                                                 {member.isOwner && (
                                                     <span className="ml-2 px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-semibold">
@@ -217,37 +221,49 @@ function MembersModalPresentational({
                                     </div>
 
                                     {/* Admin Controls - Only for admins and not for themselves */}
-                                    {isCurrentUserAdmin && memberId !== currentUser?.uid && (
+                                    {!member.isOwner && (
                                         <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => onToggleAdmin(memberId, !member.isAdmin)}
-                                                disabled={updatingAdmin === memberId}
-                                                className={`p-2 rounded-lg transition-colors ${member.isAdmin
-                                                    ? 'text-yellow-400 hover:bg-yellow-400/10'
-                                                    : 'text-gray-400 hover:bg-white/10'
-                                                    } disabled:opacity-50`}
-                                                title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
-                                            >
-                                                {updatingAdmin === memberId ? (
-                                                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                                ) : member.isAdmin ? (
-                                                    <ShieldCheck className="w-4 h-4" />
-                                                ) : (
-                                                    <Shield className="w-4 h-4" />
+                                            {/* Owner: can set/unset admin */}
+                                            {currentUser?.uid === ownerUid && (
+                                                <button
+                                                    onClick={() => onToggleAdmin(memberId, !member.isAdmin)}
+                                                    disabled={updatingAdmin === memberId}
+                                                    className={`p-2 rounded-lg transition-colors ${member.isAdmin
+                                                        ? 'text-yellow-400 hover:bg-yellow-400/10'
+                                                        : 'text-gray-400 hover:bg-white/10'
+                                                        } disabled:opacity-50`}
+                                                    title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
+                                                >
+                                                    {updatingAdmin === memberId ? (
+                                                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                    ) : member.isAdmin ? (
+                                                        <ShieldCheck className="w-4 h-4" />
+                                                    ) : (
+                                                        <Shield className="w-4 h-4" />
+                                                    )}
+                                                </button>
+                                            )}
+
+                                            {/* Remove member: owner can remove anyone except themselves, admin can remove anyone except themselves and owner */}
+                                            {(
+                                                // Owner can remove anyone except themselves
+                                                (currentUser?.uid === ownerUid) ||
+                                                // Admin can remove anyone except themselves and owner
+                                                (isCurrentUserAdmin && !member.isOwner && currentUser?.uid !== memberId)
+                                            ) && (
+                                                    <button
+                                                        onClick={() => handleRemoveClick(memberId, member.username || 'this member')}
+                                                        disabled={removingMember === memberId}
+                                                        className="p-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
+                                                        title="Remove Member"
+                                                    >
+                                                        {removingMember === memberId ? (
+                                                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                        ) : (
+                                                            <UserMinus className="w-4 h-4" />
+                                                        )}
+                                                    </button>
                                                 )}
-                                            </button>
-                                            <button
-                                                onClick={() => handleRemoveClick(memberId, member.username || 'this member')}
-                                                disabled={removingMember === memberId}
-                                                className="p-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
-                                                title="Remove Member"
-                                            >
-                                                {removingMember === memberId ? (
-                                                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                                ) : (
-                                                    <UserMinus className="w-4 h-4" />
-                                                )}
-                                            </button>
                                         </div>
                                     )}
                                 </div>

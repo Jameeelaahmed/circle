@@ -29,7 +29,9 @@ export default function CircleDetailsPresentational({
     fileInputRef,
     handleImageUpload,
     uploadedImage,
-    removeImage
+    removeImage,
+    isOwner,
+    isAdmin
 }) {
     const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
     shadow-inner focus:outline-none focus:ring-3 focus:ring-[var(--color-secondary)]
@@ -215,8 +217,26 @@ export default function CircleDetailsPresentational({
                         {t("Circle Image")}
                     </label>
 
-                    {isEditing ? (
+                    {isEditing && (
                         <>
+                            {/* Show uploaded image preview if exists, else show current image */}
+                            <div className="mt-3 flex justify-center">
+                                {uploadedImage ? (
+                                    <img
+                                        src={uploadedImage.preview}
+                                        alt="Preview"
+                                        className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
+                                    />
+                                ) : selectedCircle.imageUrl ? (
+                                    <img
+                                        src={selectedCircle.imageUrl}
+                                        alt="Circle"
+                                        className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
+                                    />
+                                ) : (
+                                    <div className="text-xs text-gray-400">{t("No image uploaded")}</div>
+                                )}
+                            </div>
                             {/* Upload Area */}
                             <div
                                 className={`${inputStyles} hover:bg-main-700 flex min-h-[100px] cursor-pointer flex-col items-center justify-center transition-colors`}
@@ -251,39 +271,17 @@ export default function CircleDetailsPresentational({
                                     Supports JPG, PNG (Max 5MB each)
                                 </p>
                             </div>
-                            {/* Image Preview */}
+                            {/* Remove button for uploaded image */}
                             {uploadedImage && (
-                                <div className="mt-3 grid grid-cols-1 gap-3">
-                                    <div className="group relative">
-                                        <img
-                                            src={uploadedImage.preview}
-                                            alt="Preview"
-                                            className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage()}
-                                            className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-text opacity-0 transition-opacity group-hover:opacity-100"
-                                        >
-                                            ×
-                                        </button>
-                                    </div>
-                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => removeImage()}
+                                    className="mt-2 px-3 py-1 rounded bg-red-500 text-white text-xs"
+                                >
+                                    {t("Remove Image")}
+                                </button>
                             )}
                         </>
-                    ) : (
-                        // View mode: show current image if exists
-                        selectedCircle.photoUrl ? (
-                            <div className="mt-3 flex justify-center">
-                                <img
-                                    src={selectedCircle.photoUrl}
-                                    alt="Circle"
-                                    className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
-                                />
-                            </div>
-                        ) : (
-                            <div className="text-xs text-gray-400">{t("No image uploaded")}</div>
-                        )
                     )}
                 </div>
             </div>
@@ -321,14 +319,16 @@ export default function CircleDetailsPresentational({
                             </button>
                         </>
                     ) : (
-                        <button
-                            type="button"
-                            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary/80 to-secondary/80 text-text hover:opacity-90 transition-opacity flex items-center gap-2"
-                            onClick={() => setIsEditing(true)}
-                        >
-                            <Edit3 size={16} />
-                            {t("Edit Circle")}
-                        </button>
+                        (isOwner || isAdmin) && (
+                            <button
+                                type="button"
+                                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary/80 to-secondary/80 text-text hover:opacity-90 transition-opacity flex items-center gap-2"
+                                onClick={() => setIsEditing(true)}
+                            >
+                                <Edit3 size={16} />
+                                {t("Edit Circle")}
+                            </button>
+                        )
                     )}
                 </div>
             </div>

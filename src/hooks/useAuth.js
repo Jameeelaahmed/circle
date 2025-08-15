@@ -9,12 +9,14 @@ export const useAuth = () => {
   const user = useSelector(getUserInfo);
   const token = useSelector(getToken);
   const isAuthenticated = useSelector(getIsAuthenticated);
+  const isAuthLoading = useSelector((state) => state.user.isAuthLoading);
+
   return {
-    photoURL: user?.photoUrl,
+    photoURL: user?.photoURL,
     user,
     token,
-    // Derived values for convenience
     isLoggedIn: isAuthenticated,
+    isLoading: isAuthLoading,
     userId: user?.uid,
     userEmail: user?.email,
     userName: user?.username,
