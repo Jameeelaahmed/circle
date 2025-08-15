@@ -7,8 +7,17 @@ const DefaultState = ({ onStartPoll }) => {
     <StyledWrapper>
       <div className="tooltip-container" onClick={onStartPoll}>
         <span className="tooltip">Start Poll</span>
-        <div className="text">
-          <ChartColumn className="animate-float h-5 w-5" strokeWidth={2} />
+        <div className="text "
+        >
+
+          <div className="mt-[-8px] bg-main p-4 rounded-bl-xl rounded-br-xl"
+            style={{
+              background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <ChartColumn className="animate-float h-5 w-5" strokeWidth={2} />
+          </div>
         </div>
         <span>Let's hang out!</span>
       </div>

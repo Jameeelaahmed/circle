@@ -19,16 +19,6 @@ const ContextualPin = ({
   onDismiss,
   onPollNextStep,
 }) => {
-  console.log("[ContextualPin] Current poll state:", currentStage);
-  console.log(
-    "[ContextualPin] Activity poll data:",
-    activityPollData ? "Present" : "Missing"
-  );
-  console.log(
-    "[ContextualPin] Place poll data:",
-    placePollData ? "Present" : "Missing"
-  );
-  console.log("[ContextualPin] Event data:", eventData);
 
   const renderContent = () => {
     switch (currentStage) {
@@ -70,9 +60,9 @@ const ContextualPin = ({
               nextStep: "finalize_event",
             }}
             onPollNextStep={onPollNextStep}
-            
+
           />
-          
+
         );
       case "Event Confirmed":
         return (

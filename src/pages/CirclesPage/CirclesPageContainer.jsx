@@ -24,7 +24,7 @@ function CirclesPageContainer() {
     const profile = useSelector(getProfileData);
     const dispatch = useDispatch();
     const { user } = useAuth()
-    const [activeTab, setActiveTab] = useState(user ? 'my' : 'forYou');
+    const [activeTab, setActiveTab] = useState('my');
     const [circlePrivacy, setCirclePrivacy] = useState('all');
     const [currentPage, setCurrentPage] = useState(0);
     const circlesPerPage = activeTab === "my" ? 9 : 6;

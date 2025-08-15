@@ -1,5 +1,5 @@
 // libs
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // hooks
 import { useAutoDir } from "../../../hooks/useAutoDir";
 import { useAuth } from "../../../hooks/useAuth";
@@ -21,19 +21,15 @@ function ChatInputContainer({
   setReplyTo,
   editingMessage,
   setEditingMessage,
-  setShowStepper,
-  showStepper,
-  setPollDocId,
-  pollDocId,
 }) {
   const { dir, handleAutoDir } = useAutoDir();
-  const { userName, userId } = useAuth();
+  const { userId, userName, photoUrl } = useAuth();
 
   // Custom hooks
   const voiceRecording = useVoiceRecording();
   const mediaUpload = useMediaUpload();
   const typing = useChatTypingIndicator(circleId, userId, userName);
-  const messageManager = useMessageManager(circleId, userId, userName);
+  const messageManager = useMessageManager(circleId, userId, userName, photoUrl);
 
   // Extracted hook implementations
   const pollModal = usePollModal();

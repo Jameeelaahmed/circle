@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   doc,
@@ -74,80 +74,80 @@ export default function CircleScreen() {
     setPollModalVisible(true);
   };
 
-const handleLaunchPoll = async (pollData) => {
-  try {
-    console.log("handleLaunchPoll called with:", pollData);
-    setPollModalVisible(false);
+  const handleLaunchPoll = async (pollData) => {
+    try {
+      console.log("handleLaunchPoll called with:", pollData);
+      setPollModalVisible(false);
 
-    const deadlineDate =
-      pollData.deadline instanceof Date
-        ? pollData.deadline
-        : new Date(pollData.deadline);
+      const deadlineDate =
+        pollData.deadline instanceof Date
+          ? pollData.deadline
+          : new Date(pollData.deadline);
 
-    const pollDataWithTimestamp = {
-      ...pollData,
-      deadline: Timestamp.fromDate(deadlineDate),
-    };
+      const pollDataWithTimestamp = {
+        ...pollData,
+        deadline: Timestamp.fromDate(deadlineDate),
+      };
 
-    if (pollType === 'activity') {
-      const pollRef = collection(db, 'circles', circleId, 'polls');
-      const docRef = await addDoc(pollRef, {
-        stage: PLANNING_STAGES.PLANNING_ACTIVITY,
-        activityPoll: { ...pollDataWithTimestamp, votes: {} },
-        timeStamp: serverTimestamp(),
-      });
+      if (pollType === 'activity') {
+        const pollRef = collection(db, 'circles', circleId, 'polls');
+        const docRef = await addDoc(pollRef, {
+          stage: PLANNING_STAGES.PLANNING_ACTIVITY,
+          activityPoll: { ...pollDataWithTimestamp, votes: {} },
+          timeStamp: serverTimestamp(),
+        });
 
-      // Immediately set the poll state with the new poll id and data
-      setPoll({
-        id: docRef.id,
-        stage: PLANNING_STAGES.PLANNING_ACTIVITY,
-        activityPoll: { ...pollDataWithTimestamp, votes: {} },
-      });
+        // Immediately set the poll state with the new poll id and data
+        setPoll({
+          id: docRef.id,
+          stage: PLANNING_STAGES.PLANNING_ACTIVITY,
+          activityPoll: { ...pollDataWithTimestamp, votes: {} },
+        });
 
-      // Add system message
-      const chatRef = collection(db, 'circles', circleId, 'chat');
-      await addDoc(chatRef, {
-        messageType: 'system',
-        text: `🗳️ Activity poll started: "${pollData.question}"`,
-        timeStamp: serverTimestamp(),
-      });
+        // Add system message
+        const chatRef = collection(db, 'circles', circleId, 'chat');
+        await addDoc(chatRef, {
+          messageType: 'system',
+          text: `🗳️ Activity poll started: "${pollData.question}"`,
+          timeStamp: serverTimestamp(),
+        });
 
-      console.log('Activity poll created successfully with ID:', docRef.id);
-    } else if (pollType === 'place') {
-      if (!poll?.id) {
-        console.error('No active poll found to update for place poll');
-        return;
+        console.log('Activity poll created successfully with ID:', docRef.id);
+      } else if (pollType === 'place') {
+        if (!poll?.id) {
+          console.error('No active poll found to update for place poll');
+          return;
+        }
+
+        const pollRef = doc(db, 'circles', circleId, 'polls', poll.id);
+        await updateDoc(pollRef, {
+          stage: PLANNING_STAGES.PLANNING_PLACE,
+          placePoll: { ...pollDataWithTimestamp, votes: {} },
+        });
+
+        // Add system message
+        const chatRef = collection(db, 'circles', circleId, 'chat');
+        await addDoc(chatRef, {
+          messageType: 'system',
+          text: `📍 Place poll started: "${pollData.question}"`,
+          timeStamp: serverTimestamp(),
+        });
+
+        console.log('Place poll updated successfully');
       }
-
-      const pollRef = doc(db, 'circles', circleId, 'polls', poll.id);
-      await updateDoc(pollRef, {
-        stage: PLANNING_STAGES.PLANNING_PLACE,
-        placePoll: { ...pollDataWithTimestamp, votes: {} },
-      });
-
-      // Add system message
-      const chatRef = collection(db, 'circles', circleId, 'chat');
-      await addDoc(chatRef, {
-        messageType: 'system',
-        text: `📍 Place poll started: "${pollData.question}"`,
-        timeStamp: serverTimestamp(),
-      });
-
-      console.log('Place poll updated successfully');
+    } catch (error) {
+      console.error('Error launching poll:', error);
     }
-  } catch (error) {
-    console.error('Error launching poll:', error);
-  }
-};
+  };
 
 
-useEffect(() => {
-  if (isPollModalVisible) {
-    pollModal.pollModalRef.current?.open();
-  } else {
-    pollModal.pollModalRef.current?.close();
-  }
-}, [isPollModalVisible]);
+  useEffect(() => {
+    if (isPollModalVisible) {
+      pollModal.pollModalRef.current?.open();
+    } else {
+      pollModal.pollModalRef.current?.close();
+    }
+  }, [isPollModalVisible]);
 
 
   const handleVote = async (option) => {
@@ -190,80 +190,80 @@ useEffect(() => {
   };
 
   const handleFinishVoting = async () => {
-  if (!poll?.id) return;
+    if (!poll?.id) return;
 
-  const pollRef = doc(db, "circles", circleId, "polls", poll.id);
+    const pollRef = doc(db, "circles", circleId, "polls", poll.id);
 
-  const getWinningOption = (votes) => {
-    if (!votes || Object.keys(votes).length === 0) return null;
-    const counts = Object.values(votes).reduce((acc, opt) => {
-      acc[opt] = (acc[opt] || 0) + 1;
-      return acc;
-    }, {});
-    return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
-  };
+    const getWinningOption = (votes) => {
+      if (!votes || Object.keys(votes).length === 0) return null;
+      const counts = Object.values(votes).reduce((acc, opt) => {
+        acc[opt] = (acc[opt] || 0) + 1;
+        return acc;
+      }, {});
+      return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
+    };
 
-  try {
-    if (currentStage === PLANNING_STAGES.PLANNING_ACTIVITY && !poll?.placePoll ) {
-      if (!poll.activityPoll) {
-        console.warn("Missing activity poll data");
-        return;
+    try {
+      if (currentStage === PLANNING_STAGES.PLANNING_ACTIVITY && !poll?.placePoll) {
+        if (!poll.activityPoll) {
+          console.warn("Missing activity poll data");
+          return;
+        }
+        const winningOption = getWinningOption(poll.activityPoll.votes);
+        if (!winningOption) {
+          console.warn("No votes cast for activity poll");
+          return;
+        }
+
+        await updateDoc(pollRef, {
+          stage: PLANNING_STAGES.ACTIVITY_POLL_CLOSED,
+          winningActivity: winningOption,
+        });
+
+        // Add system message
+        const chatRef = collection(db, "circles", circleId, "chat");
+        await addDoc(chatRef, {
+          messageType: "system",
+          text: `📊 Activity poll closed! "${winningOption}" won.`,
+          timeStamp: serverTimestamp(),
+        });
+
+        console.log(`Activity poll finished. Winner: ${winningOption}`);
+
+      } else if (currentStage === PLANNING_STAGES.PLANNING_PLACE) {
+        if (!poll.placePoll) {
+          console.warn("Missing place poll data");
+          return;
+        }
+        const winningOption = getWinningOption(poll.placePoll.votes);
+        if (!winningOption) {
+          console.warn("No votes cast for place poll");
+          return;
+        }
+
+        await updateDoc(pollRef, {
+          stage: PLANNING_STAGES.PLACE_POLL_CLOSED,
+          winningPlace: winningOption,
+        });
+
+        // Add system message
+        const chatRef = collection(db, "circles", circleId, "chat");
+        await addDoc(chatRef, {
+          messageType: "system",
+          text: `📍 Place poll closed! "${winningOption}" won.`,
+          timeStamp: serverTimestamp(),
+        });
+
+        console.log(`Place poll finished. Winner: ${winningOption}`);
       }
-      const winningOption = getWinningOption(poll.activityPoll.votes);
-      if (!winningOption) {
-        console.warn("No votes cast for activity poll");
-        return;
-      }
-
-      await updateDoc(pollRef, {
-        stage: PLANNING_STAGES.ACTIVITY_POLL_CLOSED,
-        winningActivity: winningOption,
-      });
-
-      // Add system message
-      const chatRef = collection(db, "circles", circleId, "chat");
-      await addDoc(chatRef, {
-        messageType: "system",
-        text: `📊 Activity poll closed! "${winningOption}" won.`,
-        timeStamp: serverTimestamp(),
-      });
-
-      console.log(`Activity poll finished. Winner: ${winningOption}`);
-
-    } else if (currentStage === PLANNING_STAGES.PLANNING_PLACE) {
-      if (!poll.placePoll) {
-        console.warn("Missing place poll data");
-        return;
-      }
-      const winningOption = getWinningOption(poll.placePoll.votes);
-      if (!winningOption) {
-        console.warn("No votes cast for place poll");
-        return;
-      }
-
-      await updateDoc(pollRef, {
-        stage: PLANNING_STAGES.PLACE_POLL_CLOSED,
-        winningPlace: winningOption,
-      });
-
-      // Add system message
-      const chatRef = collection(db, "circles", circleId, "chat");
-      await addDoc(chatRef, {
-        messageType: "system",
-        text: `📍 Place poll closed! "${winningOption}" won.`,
-        timeStamp: serverTimestamp(),
-      });
-
-      console.log(`Place poll finished. Winner: ${winningOption}`);
+    } catch (error) {
+      console.error("Error finishing voting:", error);
     }
-  } catch (error) {
-    console.error("Error finishing voting:", error);
-  }
-};
+  };
   const handleDismiss = () => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-          setPinVisible(false);
-      };
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setPinVisible(false);
+  };
 
   const handleRsvp = async (status) => {
     if (!poll?.id || !userProfile) return;
@@ -273,67 +273,67 @@ useEffect(() => {
     });
   };
 
-    const handlePollNextStep = async () => {
-        if (!poll?.id) return;
+  const handlePollNextStep = async () => {
+    if (!poll?.id) return;
 
+    const pollRef = doc(db, 'circles', circleId, 'polls', poll.id);
+
+    try {
+      if (currentStage === PLANNING_STAGES.ACTIVITY_POLL_CLOSED && !poll?.placePoll) {
+        // Move to place polling
+        setPollType('place');
+        setPollModalVisible(true);
+      } else if (currentStage === PLANNING_STAGES.PLACE_POLL_CLOSED) {
+        // Finalize event and enable RSVPs
+        await updateDoc(pollRef, {
+          stage: PLANNING_STAGES.EVENT_CONFIRMED,
+          rsvps: {}, // Initialize empty RSVP object
+        });
+
+        // Add system message about event confirmation
+        const chatRef = collection(db, 'circles', circleId, 'chat');
+        await addDoc(chatRef, {
+          messageType: 'system',
+          text: `🎉 Event confirmed! ${poll.winningPlace} for ${poll.winningActivity}. Please RSVP above!`,
+          timeStamp: serverTimestamp(),
+        });
+
+        console.log('Event confirmed and RSVPs enabled');
+      }
+    } catch (error) {
+      console.error('Error proceeding to next step:', error);
+    }
+  };
+
+  const handleStartNewPoll = async () => {
+    try {
+      // Archive the current poll and start fresh
+      if (poll?.id) {
         const pollRef = doc(db, 'circles', circleId, 'polls', poll.id);
+        await updateDoc(pollRef, {
+          archived: true,
+          archivedAt: serverTimestamp(),
+        });
 
-        try {
-            if (currentStage === PLANNING_STAGES.ACTIVITY_POLL_CLOSED && !poll?.placePoll) {
-                // Move to place polling
-                setPollType('place');
-                setPollModalVisible(true);
-            } else if (currentStage === PLANNING_STAGES.PLACE_POLL_CLOSED) {
-                // Finalize event and enable RSVPs
-                await updateDoc(pollRef, {
-                    stage: PLANNING_STAGES.EVENT_CONFIRMED,
-                    rsvps: {}, // Initialize empty RSVP object
-                });
+        // Add system message about starting new planning
+        const chatRef = collection(db, 'circles', circleId, 'chat');
+        await addDoc(chatRef, {
+          messageType: 'system',
+          text: '🆕 Starting new event planning!',
+          timeStamp: serverTimestamp(),
+        });
 
-                // Add system message about event confirmation
-                const chatRef = collection(db, 'circles', circleId, 'chat');
-                await addDoc(chatRef, {
-                    messageType: 'system',
-                    text: `🎉 Event confirmed! ${poll.winningPlace} for ${poll.winningActivity}. Please RSVP above!`,
-                    timeStamp: serverTimestamp(),
-                });
+        console.log('Poll archived and new planning started');
+      }
 
-                console.log('Event confirmed and RSVPs enabled');
-            }
-        } catch (error) {
-            console.error('Error proceeding to next step:', error);
-        }
-    };
-
-      const handleStartNewPoll = async () => {
-        try {
-            // Archive the current poll and start fresh
-            if (poll?.id) {
-                const pollRef = doc(db, 'circles', circleId, 'polls', poll.id);
-                await updateDoc(pollRef, {
-                    archived: true,
-                    archivedAt: serverTimestamp(),
-                });
-
-                // Add system message about starting new planning
-                const chatRef = collection(db, 'circles', circleId, 'chat');
-                await addDoc(chatRef, {
-                    messageType: 'system',
-                    text: '🆕 Starting new event planning!',
-                    timeStamp: serverTimestamp(),
-                });
-
-                console.log('Poll archived and new planning started');
-            }
-
-            // Reset local state
-            setCurrentStage(PLANNING_STAGES.IDLE);
-            setPoll(null);
-            setPollType(null);
-        } catch (error) {
-            console.error('Error starting new poll:', error);
-        }
-    };
+      // Reset local state
+      setCurrentStage(PLANNING_STAGES.IDLE);
+      setPoll(null);
+      setPollType(null);
+    } catch (error) {
+      console.error('Error starting new poll:', error);
+    }
+  };
 
 
 
@@ -357,25 +357,25 @@ useEffect(() => {
   return (
     <div className="flex flex-col">
       {isPinVisible ? (
-         <ContextualPin
-                            currentStage={currentStage}
-                            onStartPoll={handleStartPoll}
-                            activityPollData={poll?.activityPoll}
-                            placePollData={poll?.placePoll}
-                            onFinishVoting={handleFinishVoting}
-                            onVote={handleVote}
-                            onAddOption={handleAddOption}
-                            eventData={{
-                                winningActivity: poll?.winningActivity,
-                                winningPlace: poll?.winningPlace,
-                                rsvps: poll?.rsvps || {},
-                                currentUser: { id: user?.uid, rsvp: poll?.rsvps?.[user?.uid] },
-                            }}
-                            onRsvp={handleRsvp}
-                            onStartNewPoll={handleStartNewPoll}
-                            onPollNextStep={handlePollNextStep}
-                            onDismiss={handleDismiss}
-                        />
+        <ContextualPin
+          currentStage={currentStage}
+          onStartPoll={handleStartPoll}
+          activityPollData={poll?.activityPoll}
+          placePollData={poll?.placePoll}
+          onFinishVoting={handleFinishVoting}
+          onVote={handleVote}
+          onAddOption={handleAddOption}
+          eventData={{
+            winningActivity: poll?.winningActivity,
+            winningPlace: poll?.winningPlace,
+            rsvps: poll?.rsvps || {},
+            currentUser: { id: user?.uid, rsvp: poll?.rsvps?.[user?.uid] },
+          }}
+          onRsvp={handleRsvp}
+          onStartNewPoll={handleStartNewPoll}
+          onPollNextStep={handlePollNextStep}
+          onDismiss={handleDismiss}
+        />
       ) : (
         getShowPlanButtonText() && (
           <div className="absolute top-[85px] right-[15px] z-10">
@@ -390,14 +390,14 @@ useEffect(() => {
       )}
 
       {isPollModalVisible && (
-       
-          <Modal ref={pollModal.pollModalRef}>
-            <PollCreation
-              onLaunchPoll={handleLaunchPoll}
-              pollType={pollType}
-              onClose={pollModal.handleClosePollModal}
-            />
-          </Modal> 
+
+        <Modal ref={pollModal.pollModalRef}>
+          <PollCreation
+            onLaunchPoll={handleLaunchPoll}
+            pollType={pollType}
+            onClose={pollModal.handleClosePollModal}
+          />
+        </Modal>
       )}
     </div>
   );

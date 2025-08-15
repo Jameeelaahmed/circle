@@ -1,7 +1,7 @@
 // libs
 import { motion as Motion } from "framer-motion";
 import { Link } from "react-router";
-import { ChevronDown, User, Settings, LogOut, HelpCircle } from "lucide-react";
+import { ChevronDown, User, Settings, LogOut } from "lucide-react";
 
 export default function UserDropdownPresentational({
     user,
@@ -15,7 +15,6 @@ export default function UserDropdownPresentational({
     const itemIcons = {
         profile: <User className="w-4 h-4" />,
         settings: <Settings className="w-4 h-4" />,
-        help: <HelpCircle className="w-4 h-4" />,
         logout: <LogOut className="w-4 h-4" />
     };
 
@@ -28,7 +27,7 @@ export default function UserDropdownPresentational({
             >
                 {/* User avatar */}
                 <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-                    <span className="text-sm font-bold text-white">{(user && user.charAt(0).toUpperCase()) || ""}</span>
+                    <span className="text-sm font-bold text-text">{(user && user.charAt(0).toUpperCase()) || ""}</span>
                 </div>
 
                 <ChevronDown
@@ -49,7 +48,7 @@ export default function UserDropdownPresentational({
             >
                 {/* User info header */}
                 <div className="px-4 py-3 border-b border-white/10">
-                    <p className="text-sm font-medium text-white truncate">
+                    <p className="text-sm font-medium text-text truncate">
                         {user || "Guest User"}
                     </p>
                     <p className="text-xs text-gray-400 truncate">
@@ -76,7 +75,7 @@ export default function UserDropdownPresentational({
                             <Link
                                 key={index}
                                 to={item.href}
-                                className="hover:bg-primary/10 flex items-center px-4 py-3 text-sm text-white transition-colors gap-3"
+                                className="hover:bg-primary/10 flex items-center px-4 py-3 text-sm text-text transition-colors gap-3"
                                 onClick={() => setIsDropdownOpen(false)}
                             >
                                 {icon}

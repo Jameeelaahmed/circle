@@ -33,13 +33,13 @@ export default function CreateCircleModalPresentional({
   customStyles,
   errors,
   isLoading,
-  onClose,
+  closeModal,
   membersKey,
 }) {
 
   return (
     <form className="mx-auto max-w-3xl space-y-6" onSubmit={handleSubmit}>
-      <ModalHeading onClose={onClose} title={t("Create Circle")} />
+      <ModalHeading onClose={closeModal} title={t("Create Circle")} />
       <div className="mb-0">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-2">
           <div>
@@ -277,43 +277,6 @@ export default function CreateCircleModalPresentional({
             </div>
           </div>
         )}
-        {/* Upload Area */}
-        {/* <div
-          className={`${inputStyles} hover:bg-main-700 flex min-h-[100px] cursor-pointer flex-col items-center justify-center transition-colors`}
-          onClick={() => fileInputRef.current.click()}
-        >
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            id="circle-images"
-            accept="image/*"
-            name="circleImages"
-            multiple
-            onChange={handleImageUpload}
-          />
-          <svg
-            className="text-primary mb-2 h-8 w-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-            ></path>
-          </svg>
-          <p className="text-primary text-center text-sm">
-            {uploadedImages.length > 0
-              ? "Add more images"
-              : "Click to upload or drag and drop"}
-          </p>
-          <p className="mt-1 text-xs text-gray-400">
-            Supports JPG, PNG (Max 5MB each)
-          </p>
-        </div> */}
       </div >
 
       {/* Submit Button */}
