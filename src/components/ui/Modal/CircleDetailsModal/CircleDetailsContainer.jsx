@@ -5,17 +5,28 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { fetchCircles } from "../../../../features/circles/circlesSlice";
 import interests from "../../../../constants/interests";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import cloudinaryService from "../../../../services/cloudinaryService";
-
 const CircleDetailsPresentational = lazy(() => import("./CircleDetailsPresentational"));
 import { useCircleForm } from "../../../../hooks/useCircleForm";
-
+import { useParams } from "react-router";
+import { useAuth } from "../../../../hooks/useAuth";
 export default function CircleDetailsContainer({ onClose }) {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { userId } = useAuth();
+
     const [isLoading, setIsLoading] = useState(false);
     const selectedCircle = useSelector((state) => state.circles.selectedCircle);
+    const membersByCircle = useSelector(state => state.members.membersByCircle);
+    const circles = useSelector(state => state.circles.circles);
+    const { circleId } = useParams();
+    const circle = circles.find(c => c.id === circleId);
+    const members = membersByCircle[circle.id] || [];
+    const ownerMember = members.find(member => member.isOwner);
+    const adminMembers = members.filter(member => member.isAdmin);
+    const isOwner = ownerMember && ownerMember.id === userId;
+    const isAdmin = adminMembers.some(member => member.id === userId);
+
 
     // Refs for editable fields
     const nameRef = useRef();
@@ -67,9 +78,7 @@ export default function CircleDetailsContainer({ onClose }) {
     const handleSave = async () => {
         setIsLoading(true);
         try {
-            let imageUrl = selectedCircle.photoUrl || ""; // fallback to current image
-
-            // Upload new image if present
+            let imageUrl = selectedCircle.photoUrl || "";
             if (uploadedImage?.file) {
                 const uploadResult = await cloudinaryService.uploadImage(
                     uploadedImage.file,
@@ -94,7 +103,7 @@ export default function CircleDetailsContainer({ onClose }) {
                 circleType,
                 circlePrivacy,
                 interests: selectedInterests,
-                imageUrl: imageUrl, // <-- Save the Cloudinary URL
+                imageUrl: imageUrl,
                 ...(circleType === "Flash" && expireDate ? { expireDate } : {}),
             });
 
@@ -152,6 +161,8 @@ export default function CircleDetailsContainer({ onClose }) {
                 uploadedImage={uploadedImage}
                 handleImageUpload={handleImageUpload}
                 removeImage={removeImage}
+                isOwner={isOwner}
+                isAdmin={isAdmin}
             />
         </Suspense>
     );
