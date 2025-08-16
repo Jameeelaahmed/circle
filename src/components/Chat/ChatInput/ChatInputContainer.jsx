@@ -16,6 +16,7 @@ import { usePollModal } from "../../../hooks/chathooks/usePollModal";
 import ChatInputPresentational from "./ChatInputPresentational";
 
 function ChatInputContainer({
+  circleName,
   circleId,
   replyTo,
   setReplyTo,
@@ -33,7 +34,12 @@ function ChatInputContainer({
   const voiceRecording = useVoiceRecording();
   const mediaUpload = useMediaUpload();
   const typing = useChatTypingIndicator(circleId, userId, userName);
-  const messageManager = useMessageManager(circleId, userId, userName);
+  const messageManager = useMessageManager(
+    circleId,
+    circleName,
+    userId,
+    userName,
+  );
 
   // Extracted hook implementations
   const pollModal = usePollModal();

@@ -49,6 +49,7 @@ export const createNotification = ({
   senderId = "",
   avatar = "",
   isRead = false,
+  circleName = "",
 }) => {
   return {
     type,
@@ -58,6 +59,7 @@ export const createNotification = ({
     senderId,
     avatar,
     isRead,
+    circleName,
     // Remove manual ID and time generation - let Firestore handle this
   };
 };
@@ -75,6 +77,7 @@ export const pushNotificationToUser = async (uid, notificationData) => {
  */
 export const markNotificationAsRead = async (uid, notificationId) => {
   try {
+    console.log("notificationId", notificationId, "uid", uid);
     const notificationRef = doc(
       db,
       "users",

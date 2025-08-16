@@ -4,6 +4,7 @@ import ChatInputContainer from "../ChatInput/ChatInputContainer";
 import ChatMessageContainer from "../ChatMessage/ChatMessageContainer";
 
 function ChatWindowPresentational({
+  circleName,
   selectedCircle,
   circleId,
   replyTo,
@@ -21,6 +22,7 @@ function ChatWindowPresentational({
       <div className="flex min-w-0 flex-1 flex-col justify-end overflow-y-auto">
         <ChatMessageContainer
           pollDocId={pollDocId}
+          circleName={circleName}
           circleId={circleId}
           setReplyTo={setReplyTo}
           setEditingMessage={setEditingMessage}
@@ -32,6 +34,7 @@ function ChatWindowPresentational({
         <ChatInputContainer
           showStepper={showStepper}
           setShowStepper={setShowStepper}
+          circleName={circleName}
           circleId={circleId}
           replyTo={replyTo}
           setReplyTo={setReplyTo}
