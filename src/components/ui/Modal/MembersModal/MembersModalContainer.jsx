@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../../../hooks/useAuth";
-import { useOnlinePresenceContext } from "../../../../hooks/chathooks/useOnlinePresenceContext";
+import useOnlinePresence from "../../../../hooks/chathooks/useOnlinePresence";
 import { fetchCircleMembers } from "../../../../features/circleMembers/circleMembersSlice";
 import { addMemberToCircle, toggleMemberAdminRole, getAvailableUsers, removeMemberFromCircle } from "../../../../utils/memberManagement";
 import { toastStyles } from "../../../../utils/toastStyles";
@@ -15,14 +15,12 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
     const { circleId } = useParams();
     const { user } = useAuth();
     const dispatch = useDispatch();
-
-    // Online presence from context
-    const { isUserOnline } = useOnlinePresenceContext();
+    const { isUserOnline } = useOnlinePresence();
 
     // Add online status to members
     const membersWithOnlineStatus = members.map(member => ({
         ...member,
-        isOnline: isUserOnline(member.id || member.uid)
+        isOnline: isUserOnline(member.id)
     }));
 
     // Add member state
@@ -115,32 +113,16 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
 
     const ownerMember = membersWithOnlineStatus.find(m => m.isOwner);
     const isOwner = ownerMember && ownerMember.uid === user.uid;
-    const isAdmin = membersWithOnlineStatus.some(m => m.isAdmin && m.uid === user.uid);
-
     // Remove member logic
     const handleRemoveMember = async (memberId) => {
         if (!memberId || !user) return;
 
-        const targetMember = membersWithOnlineStatus.find(m => m.uid === memberId || m.id === memberId);
-
-        // Prevent owner from being removed
-        if (targetMember?.isOwner) {
-            toast.error("You cannot remove the circle owner.", toastStyles);
-            return;
-        }
-
-        // Only owner or admin can remove members (except owner)
-        if (!(isOwner || isAdmin)) {
-            toast.error("Only the owner or admins can remove members.", toastStyles);
-            return;
-        }
 
         setRemovingMember(memberId);
         try {
             const result = await removeMemberFromCircle(circleId, memberId, user);
 
             if (result.success) {
-                toast.success(result.message, toastStyles);
                 dispatch(fetchCircleMembers(circleId));
                 loadAvailableUsers();
 
@@ -171,13 +153,11 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
 
         const targetMember = membersWithOnlineStatus.find(m => m.uid === targetMemberUid || m.id === targetMemberUid);
 
-        // Prevent owner from being demoted/promoted
         if (targetMember?.isOwner) {
             toast.error("You cannot change the owner admin status.", toastStyles);
             return;
         }
 
-        // Only owner can set/unset admins
         if (!isOwner) {
             toast.error("Only the circle owner can set or unset admins.", toastStyles);
             return;
@@ -188,7 +168,6 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
             const result = await toggleMemberAdminRole(circleId, targetMemberUid, makeAdmin, user);
 
             if (result.success) {
-                toast.success(result.message, toastStyles);
                 dispatch(fetchCircleMembers(circleId));
             } else {
                 toast.error(result.message, toastStyles);
@@ -199,6 +178,17 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
             setUpdatingAdmin(null);
         }
     };
+
+    members.forEach(member => {
+        console.log(
+            "Member:",
+            member.username,
+            "UID:",
+            member.id,
+            "Online:",
+            isUserOnline(member.id)
+        );
+    });
 
     return (
         <MembersModalPresentational
