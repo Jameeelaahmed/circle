@@ -8,6 +8,7 @@ import {
   Search,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import Stack from "./Stack";
 function MemoriesPresentational({
   openLightbox,
   closeLightbox,
@@ -21,7 +22,9 @@ function MemoriesPresentational({
   formatDate,
 }) {
   const { t } = useTranslation();
-  console.log(selectedMemory);
+  const memoriesList = memories.map((m) => m.urls).flat();
+  const memoriesLength = memoriesList.length;
+  console.log(memoriesList);
   return (
     <div className="mt-[64px] min-h-screen text-white">
       {/* Header */}
@@ -74,12 +77,11 @@ function MemoriesPresentational({
         </div>
 
         <p className="mb-6 text-gray-300">
-          {memories.length} {memories.length === 1 ? "memory" : "memories"}{" "}
-          found
+          {memoriesLength} {memoriesLength === 1 ? "memory" : "memories"} found
         </p>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {memories.map((memory, index) => {
             return memory.urls.map((url) => {
               return (
@@ -109,6 +111,20 @@ function MemoriesPresentational({
               );
             });
           })}
+        </div> */}
+        <div className="flex justify-center">
+          {!!memoriesList.length && (
+            <Stack
+              randomRotation={true}
+              sensitivity={180}
+              sendToBackOnClick={false}
+              cardDimensions={{ width: 300, height: 300 }}
+              cardsData={memoriesList.map((img, idx) => ({
+                img: img,
+                id: idx,
+              }))}
+            />
+          )}
         </div>
 
         {memories.length === 0 && (

@@ -1,14 +1,11 @@
 import Modal from "../../ui/Modal/Modal";
-import DeleteMessageModalContainer from "../../ui/Modal/DeleteModal/DeleteMessageModalContainer";
+import DeleteMessageModalContainer from "../../ui/Modal/DeleteMessageModal/DeleteMessageModalContainer";
 import ImageSliderModal from "./ImageSliderModal";
 import MessageContextMenu from "./MessageContextMenu";
 import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
-import { useState, useEffect, useRef } from "react";
-import Draggable from "react-draggable";
-import CircleScreen from "../../Voting/CircleScreen/CircleScreen";
-
+import { useState } from "react";
 
 function ChatMessagePresentational({
   handleReact,
@@ -31,8 +28,6 @@ function ChatMessagePresentational({
   scrollToMessage,
   canEditMessage,
 }) {
-  
-
 
   const [imageSlider, setImageSlider] = useState({
     isOpen: false,
@@ -67,22 +62,32 @@ function ChatMessagePresentational({
   return (
     <div
       className="relative max-h-full space-y-3 overflow-y-auto px-4 py-2"
-   
-    >
-      
-      
-          <div className="fixed top-35 right-5">
-             <CircleScreen />
-          </div>
-          
 
+    >
       {messages.length === 0 && (
         <div className="py-8 text-center text-gray-400">
           No messages yet. Start a conversation!
         </div>
       )}
 
+
+
       {groupedMessages.map((item, idx) => {
+        if (item.message?.messageType === "system") {
+          return (
+            <div
+              key={item.message.id || item.index}
+              className="flex justify-center my-4"
+            >
+              <div className="bg-main/80 text-text px-6 py-2 rounded-xl text-center shadow-md">
+                {item.message.text}
+                {console.log(item.message.text)}
+
+              </div>
+            </div>
+          );
+        }
+        // Media group
         if (item.type === "media_group") {
           return (
             <MediaGroupMessage

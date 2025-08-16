@@ -1,5 +1,7 @@
 import { useRef } from 'react';
-
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { useAuth } from '../useAuth';
 export function useMessageHandlers(
     messageManager,
     typing,
@@ -7,16 +9,30 @@ export function useMessageHandlers(
     setReplyTo,
     editingMessage,
     setEditingMessage,
-    handleAutoDir
+    handleAutoDir,
+    onNotMember
 ) {
+    const { circleId } = useParams()
     const typingDebounceRef = useRef(null);
+    const { userId } = useAuth()
+    const members =
+        useSelector(state =>
+            state.members?.membersByCircle?.[circleId] || []
+        );
+    const isMember = members.some(member => member.id === userId || member.uid === userId);
 
     const handleSendMsg = async (e) => {
         e.preventDefault();
+        console.log(isMember);
+
+        if (!isMember) {
+
+            if (onNotMember) onNotMember();
+            return;
+        }
         const value = messageManager.msgVal.current.value;
         if (!value.trim()) return;
 
-        // Stop typing indicator when sending message
         typing.handleStopTyping();
 
         messageManager.clearInput();

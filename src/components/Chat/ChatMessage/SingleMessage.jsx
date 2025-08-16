@@ -17,8 +17,6 @@ function SingleMessage({
     openImageSlider,
     dir
 }) {
-    console.log(msg);
-
     const isMe = currentUser && (msg.senderId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
@@ -81,7 +79,7 @@ function SingleMessage({
                                             : (msg.replyTo.senderName || 'User')}
                                     </span>
                                     <span
-                                        className={`text-xs text-white/80 truncate max-w-[140px] ${msg.replyTo.text ? getTextDirectionClasses(msg.replyTo.text) : ''}`}
+                                        className={`text-xs text-text/80 truncate max-w-[140px] ${msg.replyTo.text ? getTextDirectionClasses(msg.replyTo.text) : ''}`}
                                         dir={msg.replyTo.text ? detectTextDirection(msg.replyTo.text) : 'ltr'}
                                     >
                                         {msg.replyTo.messageType === 'audio' ? '🎤 Voice message' :
@@ -185,7 +183,7 @@ function SingleMessage({
                                                     {Object.entries(reactionCounts).map(([emoji, count]) => (
                                                         <span
                                                             key={emoji}
-                                                            className={`text-xs px-1.5 py-0.5 rounded-full ${isMe ? 'bg-white/20' : 'bg-secondary/10'}`}
+                                                            className={`text-xs px-1.5 py-0.5 rounded-full ${isMe ? 'bg-text/20' : 'bg-secondary/10'}`}
                                                         >
                                                             {emoji} {count}
                                                         </span>

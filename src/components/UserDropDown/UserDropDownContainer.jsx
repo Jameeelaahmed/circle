@@ -38,7 +38,6 @@ function UserDropDownContainer() {
       navigate("/login");
       setIsDropdownOpen(false);
     } catch (error) {
-      // Optionally handle error (e.g., show toast)
       console.error("Logout error:", error);
     }
   };
@@ -46,7 +45,6 @@ function UserDropDownContainer() {
   const dropdownItems = [
     { label: t("Profile"), href: `/profile/${user.uid}` },
     { label: t("Settings"), href: "/settings" },
-    { label: t("Help"), href: "/help" },
     { label: t("Logout"), onClick: handleLogout },
   ];
 

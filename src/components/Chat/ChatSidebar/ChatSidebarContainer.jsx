@@ -6,59 +6,66 @@ import useOnlinePresence from "../../../hooks/chathooks/useOnlinePresence";
 import ChatSidebarPresentational from "./ChatSidebarPresentational";
 
 function ChatSidebarContainer() {
+    const circleDetailsRef = useRef();
     const [isOpen, setIsOpen] = useState(true);
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
     const { circleId } = useParams();
     const dispatch = useDispatch();
-
     const { membersByCircle, status, error } = useSelector((state) => state.members);
     const members = membersByCircle[circleId] || [];
-
-    // New online presence hook (from RTDB)
     const { isUserOnline } = useOnlinePresence();
+    const membersWithOnlineStatus = members.map(member => ({
+        ...member,
+        isOnline: isUserOnline(member.id)
+    }));
 
-    // Add online status to members
-    const membersWithOnlineStatus = members.map(member => {
-        const memberId = member.id;
-        const isOnline = isUserOnline(memberId);
-        return {
-            ...member,
-            isOnline
-        };
-    });
-
-
-
-    // Members modal ref and functions
     const membersModalRef = useRef();
 
-    const openMembersModal = () => {
-        membersModalRef.current?.open();
-    };
-
-    const closeMembersModal = () => {
-        membersModalRef.current?.close();
-    };
-
+    function handleOpenCircleDetailsModal() {
+        circleDetailsRef.current.open();
+    }
+    function handleCloseCircleDetailsModal() {
+        circleDetailsRef.current.close();
+    }
     useEffect(() => {
         if (circleId && !membersByCircle[circleId]) {
             dispatch(fetchCircleMembers(circleId));
         }
     }, [circleId, dispatch, membersByCircle]);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    // Detect screen size
+    useEffect(() => {
+        const checkScreen = () => {
+            const small = window.innerWidth < 768; // Tailwind md breakpoint
+            setIsSmallScreen(small);
+            if (small) {
+                setIsOpen(false); // start closed on mobile
+            } else {
+                setIsOpen(true); // keep open on desktop
+            }
+        };
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
+
+    const toggleSidebar = () => setIsOpen(prev => !prev);
 
     return (
         <ChatSidebarPresentational
+            circleDetailsRef={circleDetailsRef}
             isOpen={isOpen}
             toggleSidebar={toggleSidebar}
+            isSmallScreen={isSmallScreen}
             members={membersWithOnlineStatus}
             loading={status === 'loading'}
             error={error}
-            onShowAllMembers={openMembersModal}
+            onShowAllMembers={() => membersModalRef.current?.open()}
             membersModalRef={membersModalRef}
-            closeMembersModal={closeMembersModal}
+            closeMembersModal={() => membersModalRef.current?.close()}
+            closeSidebar={() => setIsOpen(false)}
+            onOpen={handleOpenCircleDetailsModal}
+            onClose={handleCloseCircleDetailsModal}
         />
     );
 }

@@ -94,6 +94,9 @@ function ChatHeaderContainer({ circle }) {
         }
     };
 
+    const hasImage = !!circle.imageUrl;
+
+
     // Close context menu
     const closeMenu = () => {
         setMenu(m => ({ ...m, visible: false }));
@@ -110,6 +113,7 @@ function ChatHeaderContainer({ circle }) {
                 onClearChat={handleClearChat}
                 onLeaveCircle={handleLeaveCircle}
                 closeMenu={closeMenu}
+                hasImage={hasImage}
             />
 
             {/* Clear Chat Confirmation Modal */}

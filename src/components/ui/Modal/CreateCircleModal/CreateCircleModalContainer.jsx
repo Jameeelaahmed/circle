@@ -268,6 +268,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
     <Suspense fallback={<div />}>
       <CreateCircleModalPresentational
         t={t}
+        closeModal={closeModal}
         register={register}
         handleSubmit={handleSubmit(onFormSubmit)}
         circlePrivacyOptions={circlePrivacyOptions}

@@ -9,6 +9,24 @@ export const groupConsecutiveMedia = (messages) => {
     const msg = messages[i];
     const prevMsg = messages[i - 1];
 
+    if (msg.messageType === "system") {
+      if (currentGroup.length) {
+        grouped.push({
+          type: "media_group",
+          messages: currentGroup,
+          firstIndex: msg - currentGroup.length,
+          lastIndex: msg - 1,
+        });
+        currentGroup = [];
+      }
+      grouped.push({
+        type: "system",
+        message: msg,
+        index: msg,
+      });
+      return;
+    }
+
     // Check if this message should be grouped with the previous one
     const shouldGroup =
       msg.messageType === "image" &&

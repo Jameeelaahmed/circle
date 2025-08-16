@@ -1,5 +1,6 @@
 // libs
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 // hooks
 import { useAutoDir } from "../../../hooks/useAutoDir";
 import { useAuth } from "../../../hooks/useAuth";
@@ -14,6 +15,8 @@ import { useMessageHandlers } from "../../../hooks/chathooks/useMessageHandlers"
 import { usePollModal } from "../../../hooks/chathooks/usePollModal";
 // components
 import ChatInputPresentational from "./ChatInputPresentational";
+import Modal from "../../ui/Modal/Modal";
+import NotMemberModalContainer from "../../ui/Modal/NotMemberModal/NotMemberModalContainer";
 
 function ChatInputContainer({
   circleName,
@@ -22,13 +25,9 @@ function ChatInputContainer({
   setReplyTo,
   editingMessage,
   setEditingMessage,
-  setShowStepper,
-  showStepper,
-  setPollDocId,
-  pollDocId,
 }) {
   const { dir, handleAutoDir } = useAutoDir();
-  const { userName, userId } = useAuth();
+  const { userId, userName, photoUrl } = useAuth();
 
   // Custom hooks
   const voiceRecording = useVoiceRecording();
@@ -39,7 +38,7 @@ function ChatInputContainer({
     circleName,
     userId,
     userName,
-  );
+  , photoUrl);
 
   // Extracted hook implementations
   const pollModal = usePollModal();
@@ -69,6 +68,7 @@ function ChatInputContainer({
     editingMessage,
     setEditingMessage,
     handleAutoDir,
+    openNotMemberModal
   );
 
   // Handle reply/edit mutual exclusion
@@ -91,6 +91,19 @@ function ChatInputContainer({
       typing.cleanup();
     };
   }, [typing]);
+
+  const members =
+    useSelector(state =>
+      state.members?.membersByCircle?.[circleId] || []
+    );
+  const isMember = members.some(member => member.id === userId || member.uid === userId);
+  const notMemberModalRef = useRef();
+  function openNotMemberModal() {
+    notMemberModalRef.current.open();
+  }
+  function closeNotMemberModal() {
+    notMemberModalRef.current.close();
+  }
   return (
     <div className="flex max-w-full flex-col overflow-hidden px-2 py-2">
       {replyTo && (
@@ -145,6 +158,9 @@ function ChatInputContainer({
           </button>
         </div>
       )}
+      <Modal ref={notMemberModalRef}>
+        <NotMemberModalContainer onClose={closeNotMemberModal} />
+      </Modal>
       <ChatInputPresentational
         pollModalRef={pollModal.pollModalRef}
         handleOpenPollModal={pollModal.handleOpenPollModal}
@@ -174,6 +190,9 @@ function ChatInputContainer({
         showCameraModal={mediaUpload.showCameraModal}
         closeCameraModal={mediaHandlers.closeCameraModal}
         handleCapturedPhoto={mediaHandlers.handleCapturedPhoto}
+
+        isMember={isMember}
+        disabled={!isMember}
       />
     </div>
   );

@@ -19,16 +19,6 @@ const ContextualPin = ({
   onDismiss,
   onPollNextStep,
 }) => {
-  console.log("[ContextualPin] Current poll state:", currentStage);
-  console.log(
-    "[ContextualPin] Activity poll data:",
-    activityPollData ? "Present" : "Missing"
-  );
-  console.log(
-    "[ContextualPin] Place poll data:",
-    placePollData ? "Present" : "Missing"
-  );
-  console.log("[ContextualPin] Event data:", eventData);
 
   const renderContent = () => {
     switch (currentStage) {
@@ -70,9 +60,9 @@ const ContextualPin = ({
               nextStep: "finalize_event",
             }}
             onPollNextStep={onPollNextStep}
-            
+
           />
-          
+
         );
       case "Event Confirmed":
         return (
@@ -93,7 +83,6 @@ const ContextualPin = ({
         className="absolute top-2 right-2 z-10 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
         onClick={onDismiss}
       >
-        <Feather name="chevron-up" size={24} className="text-gray-500" />
       </button>
       {renderContent()}
     </div>

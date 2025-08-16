@@ -7,7 +7,7 @@ import { auth, db } from "../../firebase-config";
 import { useSelector } from "react-redux";
 import ProfilePresentational from "./profilepresentational";
 import {
-  arrayRemove,
+  
   arrayUnion,
   doc,
   getDoc,

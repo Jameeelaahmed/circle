@@ -56,13 +56,12 @@ function HeaderPresentional({
           </svg>
         </button>
 
-        {/* Logo - Left on mobile, Center on desktop */}
         <Motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-shrink-0 items-center ml-4 md:hidden"
         >
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex justify-center items-center">
             <Logo />
           </Link>
         </Motion.div>

@@ -7,8 +7,7 @@ export const useOnlinePresence = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-        // console.log('Current user:', user);
-        // console.log('Database instance:', database);
+
         if (!user) {
             console.log('useOnlinePresence: No user found, skipping presence setup');
             return;
@@ -27,13 +26,11 @@ export const useOnlinePresence = () => {
             };
             try {
                 await set(userPresenceRef, userData);
-                // console.log('Set user online in RTDB:', userPresenceRef, userData);
             } catch (err) {
                 console.error('Error setting user online in RTDB:', err);
             }
         };
 
-        // Set user offline in RTDB
         const setUserOffline = async () => {
             try {
                 await set(userPresenceRef, {

@@ -48,9 +48,10 @@ function MembersModalPresentational({
 
         return index === self.findIndex(m => (m.id || m.uid) === memberId);
     });
+    const ownerMember = uniqueMembers.find(m => m.isOwner);
+    const ownerUid = ownerMember?.uid || ownerMember?.id;
 
     const isCurrentUserAdmin = uniqueMembers.find(m => (m.id || m.uid) === currentUser?.uid)?.isAdmin || false;
-
     return (
         <div className="w-full max-w-4xl">
             {/* Header */}
@@ -58,8 +59,8 @@ function MembersModalPresentational({
 
             {/* Add Member Section - Only for Admins */}
             {isCurrentUserAdmin && (
-                <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
-                    <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                <div className="mb-6 p-4 bg-text/5 rounded-lg border border-text/10">
+                    <h4 className="text-text font-medium mb-3 flex items-center gap-2">
                         <UserPlus className="w-4 h-4" />
                         Add New Member
                     </h4>
@@ -81,7 +82,7 @@ function MembersModalPresentational({
                         <button
                             onClick={() => selectedNewMembers && selectedNewMembers.length > 0 && onAddMembers(selectedNewMembers.map(member => member.value))}
                             disabled={!selectedNewMembers || selectedNewMembers.length === 0 || addingMembers}
-                            className="flex-shrink-0 px-4 py-2 h-12 bg-primary text-white rounded-lg hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                            className="flex-shrink-0 px-4 py-2 h-12 bg-primary text-text rounded-lg hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors textspace-nowrap"
                         >
                             {addingMembers ? 'Adding...' : `Add ${selectedNewMembers?.length || 0} member${selectedNewMembers?.length !== 1 ? 's' : ''}`}
                         </button>
@@ -97,26 +98,26 @@ function MembersModalPresentational({
                             <AlertTriangle className="w-5 h-5 text-red-400" />
                         </div>
                         <div className="flex-1">
-                            <h4 className="text-white font-medium mb-2">Remove Member</h4>
+                            <h4 className="text-text font-medium mb-2">Remove Member</h4>
                             <p className="text-gray-300 text-sm mb-4">
-                                Are you sure you want to remove <span className="font-medium text-white">{confirmRemoval.memberName}</span> from the circle? This action cannot be undone.
+                                Are you sure you want to remove <span className="font-medium text-text">{confirmRemoval.memberName}</span> from the circle? This action cannot be undone.
                             </p>
                             <div className="flex gap-3">
                                 <button
                                     onClick={handleCancelRemoval}
                                     disabled={removingMember === confirmRemoval.memberId}
-                                    className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors disabled:opacity-50"
+                                    className="px-4 py-2 text-gray-300 hover:text-text hover:bg-text/5 rounded-lg transition-colors disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleConfirmRemoval}
                                     disabled={removingMember === confirmRemoval.memberId}
-                                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors disabled:opacity-50"
+                                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-text rounded-lg transition-colors disabled:opacity-50"
                                 >
                                     {removingMember === confirmRemoval.memberId ? (
                                         <div className="flex items-center gap-2">
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            <div className="w-4 h-4 border-2 border-text border-t-transparent rounded-full animate-spin" />
                                             Removing...
                                         </div>
                                     ) : (
@@ -170,7 +171,7 @@ function MembersModalPresentational({
                             return (
                                 <div
                                     key={memberId}
-                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors"
+                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-text/5 transition-colors"
                                 >
                                     <div className="flex items-center space-x-3">
                                         <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-primary flex-shrink-0">
@@ -181,15 +182,15 @@ function MembersModalPresentational({
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
-                                                <span className="text-white text-lg font-medium">
+                                                <span className="text-text text-lg font-medium">
                                                     {(member.username || 'M').charAt(0).toUpperCase()}
                                                 </span>
                                             )}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2">
-                                                <p className="text-white font-medium truncate">
-                                                    {member.username || 'Unknown Member'}
+                                                <p className="text-text font-medium truncate">
+                                                    {(memberId === currentUser?.uid) ? "Me" : (member.username || 'Unknown Member')}
                                                 </p>
                                                 {member.isOwner && (
                                                     <span className="ml-2 px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-semibold">
@@ -217,37 +218,48 @@ function MembersModalPresentational({
                                     </div>
 
                                     {/* Admin Controls - Only for admins and not for themselves */}
-                                    {isCurrentUserAdmin && memberId !== currentUser?.uid && (
+                                    {!member.isOwner && (
                                         <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => onToggleAdmin(memberId, !member.isAdmin)}
-                                                disabled={updatingAdmin === memberId}
-                                                className={`p-2 rounded-lg transition-colors ${member.isAdmin
-                                                    ? 'text-yellow-400 hover:bg-yellow-400/10'
-                                                    : 'text-gray-400 hover:bg-white/10'
-                                                    } disabled:opacity-50`}
-                                                title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
-                                            >
-                                                {updatingAdmin === memberId ? (
-                                                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                                ) : member.isAdmin ? (
-                                                    <ShieldCheck className="w-4 h-4" />
-                                                ) : (
-                                                    <Shield className="w-4 h-4" />
+                                            {/* Owner: can set/unset admin */}
+                                            {currentUser?.uid === ownerUid && (
+                                                <button
+                                                    onClick={() => onToggleAdmin(memberId, !member.isAdmin)}
+                                                    disabled={updatingAdmin === memberId}
+                                                    className={`p-2 rounded-lg transition-colors ${member.isAdmin
+                                                        ? 'text-yellow-400 hover:bg-yellow-400/10'
+                                                        : 'text-gray-400 hover:bg-text/10'
+                                                        } disabled:opacity-50`}
+                                                    title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
+                                                >
+                                                    {updatingAdmin === memberId ? (
+                                                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                    ) : member.isAdmin ? (
+                                                        <ShieldCheck className="w-4 h-4" />
+                                                    ) : (
+                                                        <Shield className="w-4 h-4" />
+                                                    )}
+                                                </button>
+                                            )}
+
+                                            {(
+                                                // Owner can remove anyone except themselves
+                                                (currentUser?.uid === ownerUid) ||
+                                                // Admin can remove anyone except themselves and owner
+                                                (isCurrentUserAdmin && !member.isOwner && currentUser?.uid !== memberId)
+                                            ) && (
+                                                    <button
+                                                        onClick={() => handleRemoveClick(memberId, member.username || 'this member')}
+                                                        disabled={removingMember === memberId}
+                                                        className="p-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
+                                                        title="Remove Member"
+                                                    >
+                                                        {removingMember === memberId ? (
+                                                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                        ) : (
+                                                            <UserMinus className="w-4 h-4" />
+                                                        )}
+                                                    </button>
                                                 )}
-                                            </button>
-                                            <button
-                                                onClick={() => handleRemoveClick(memberId, member.username || 'this member')}
-                                                disabled={removingMember === memberId}
-                                                className="p-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
-                                                title="Remove Member"
-                                            >
-                                                {removingMember === memberId ? (
-                                                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                                ) : (
-                                                    <UserMinus className="w-4 h-4" />
-                                                )}
-                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -262,7 +274,7 @@ function MembersModalPresentational({
             </div>
 
             {/* Footer */}
-            <div className="mt-6 pt-4 border-t border-white/10">
+            <div className="mt-6 pt-4 border-t border-text/10">
                 <p className="text-sm text-gray-400 text-center">
                     Total members: {uniqueMembers.length}
                 </p>
