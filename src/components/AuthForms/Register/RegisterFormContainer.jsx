@@ -371,6 +371,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         try {
           const response = await fetch(url);
           const data = await response.json();
+          const loc = data.results[0];
           console.log(loc);
           setLocation(
             loc.county || loc.address_line1 || loc.country || loc.city,
