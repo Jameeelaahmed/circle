@@ -36,6 +36,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const [search, setSearch] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [errors, setErrors] = useState({});
+  const [selectCity, setSelectCity] = useState(true);
   const interestOptions = interests;
 
   // Refs for form inputs
@@ -362,6 +363,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
   const handleLocation = async () => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        setSelectCity(false);
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const apiKey = "efcadedc6ec64c51b36918c3e38a707c";
@@ -369,14 +371,12 @@ function RegisterFormContainer({ onSwitchToLogin }) {
         try {
           const response = await fetch(url);
           const data = await response.json();
-          const loc = data.results[0];
           console.log(loc);
           setLocation(
-            loc.address_line1 || loc.formatted || loc.country || loc.city,
+            loc.county || loc.address_line1 || loc.country || loc.city,
           );
         } catch (error) {
           toast.error("Failed to fetch location.");
-          console.log(error);
         }
       },
       () => {
@@ -412,6 +412,7 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       handleSearchChange={handleSearchChange}
       errors={errors}
       clearFieldError={clearFieldError}
+      selectCity={selectCity}
       // Refs
       usernameRef={usernameRef}
       emailRef={emailRef}

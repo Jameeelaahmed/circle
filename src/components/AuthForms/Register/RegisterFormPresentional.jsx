@@ -33,6 +33,7 @@ function RegisterFormPresentional({
   handleSearchChange,
   errors,
   clearFieldError,
+  selectCity,
   usernameRef,
   emailRef,
   passwordRef,
@@ -279,10 +280,11 @@ function RegisterFormPresentional({
                   cityOptions.find((opt) => opt.value === location) || null
                 }
                 onChange={(opt) => setLocation(opt ? opt.value : "")}
-                isDisabled={isLoading}
+                isDisabled={isLoading || !selectCity}
                 placeholder="Select your city"
                 styles={customSelectStyles}
                 classNamePrefix="react-select"
+                className={`${!selectCity && "opacity-20"}`}
               />
               {errors.location && (
                 <p className="mt-1 text-xs text-red-400">{errors.location}</p>
