@@ -88,6 +88,7 @@ export default function PendingEventCard({ event }) {
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{
         boxShadow: "var(--shadow-glassCard)",
+        
       }}
       className="group relative  hover:scale-[1.05] hover:border-[#17284f93] flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-transparent p-4 transition-all"
       style={{
