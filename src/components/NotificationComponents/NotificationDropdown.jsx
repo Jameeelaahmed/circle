@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bell } from "lucide-react";
 import NotificationList from "./NotificationList";
-
+import {
+  markNotificationAsRead,
+  deleteNotification,
+} from "../../fire_base/notificationController/notificationController";
+import { useAuth } from "../../hooks/useAuth";
 const NotificationDropdown = ({ notifications, loading }) => {
+  const { userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   // const [notifications, setNotifications] = useState(sampleNotifications);
 
@@ -11,27 +16,15 @@ const NotificationDropdown = ({ notifications, loading }) => {
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
-  const markAsRead = (id) => {
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, isRead: true }
-          : notification,
-      ),
-    );
+  const markAsRead = (NotificationId) => {
+    markNotificationAsRead(userId, NotificationId);
   };
 
   const removeNotification = (id) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
+    deleteNotification(userId, id);
   };
 
-  const markAllAsRead = () => {
-    setNotifications((prev) =>
-      prev.map((notification) => ({ ...notification, isRead: true })),
-    );
-  };
+  const markAllAsRead = () => {};
 
   // Close dropdown when clicking outside
   useEffect(() => {
