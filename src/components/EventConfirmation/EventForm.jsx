@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ModalHeading from "../ui/Modal/ModalHeading/ModalHeading";
 import Input from "../ui/Input/Input";
@@ -6,15 +6,71 @@ import SendBtn from "../ui/ReactBits/SendBtn/SendBtn";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useParams } from "react-router";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { Icon } from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Custom hook for map click events
+function MapClickHandler({ onLocationSelect }) {
+  useMapEvents({
+    click: (e) => {
+      onLocationSelect(e.latlng);
+    },
+  });
+  return null;
+}
+
+// Custom marker icon
+const customIcon = new Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
 
 export default function EventForm({ event, onClose }) {
   const { t } = useTranslation();
   let { circleId } = useParams();
+  
   // Local state for editable fields
   const [activity, setActivity] = useState(event.activity || "");
   const [place, setPlace] = useState(event.place || "");
   const [day, setDay] = useState(event.day || "");
   const [location, setLocation] = useState(event.Location || "");
+  
+  // Map state
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [mapCenter, setMapCenter] = useState([30.0444, 31.2357]); // Default to Cairo, Egypt
+  const [showMap, setShowMap] = useState(false);
+  
+  // Ref for the map container
+  const mapRef = useRef(null);
+
+  // Handle location selection from map
+  const handleLocationSelect = (latlng) => {
+    setSelectedLocation(latlng);
+    
+    // Reverse geocode to get address (you can enhance this with a geocoding service)
+    const { lat, lng } = latlng;
+    const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    setLocation(mapsUrl);
+    
+    // Update map center to show the selected location
+    setMapCenter([lat, lng]);
+  };
+
+  // Toggle map visibility
+  const toggleMap = () => {
+    setShowMap(!showMap);
+  };
+
+  // Clear selected location
+  const clearLocation = () => {
+    setSelectedLocation(null);
+    setLocation("");
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +87,10 @@ export default function EventForm({ event, onClose }) {
         place: place.trim(),
         day,
         Location: location.trim(),
+        coordinates: selectedLocation ? {
+          lat: selectedLocation.lat,
+          lng: selectedLocation.lng
+        } : null,
         status: "confirmed",
         updatedAt: serverTimestamp(),
       });
@@ -72,16 +132,87 @@ export default function EventForm({ event, onClose }) {
           />
         </div>
 
-        {/* Location */}
+        {/* Location with Map */}
         <div>
           <label className="text-light mb-2 block text-lg font-medium">
             {t("Location")}
           </label>
+          
+          {/* Map Toggle Button */}
+          <div className="mb-3">
+            <button
+              type="button"
+              onClick={toggleMap}
+              className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-white text-sm"
+            >
+              {showMap ? t("Hide Map") : t("Show Map & Pin Location")}
+            </button>
+          </div>
+
+          {/* Map Container */}
+          {showMap && (
+            <div className="mb-3">
+              <div className="relative">
+                <div 
+                  ref={mapRef}
+                  className="w-full h-64 rounded-xl overflow-hidden border border-white/20"
+                >
+                  <MapContainer
+                    center={mapCenter}
+                    zoom={13}
+                    style={{ height: "100%", width: "100%" }}
+                    className="rounded-xl"
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    
+                    {/* Show selected marker if exists */}
+                    {selectedLocation && (
+                      <Marker 
+                        position={[selectedLocation.lat, selectedLocation.lng]} 
+                        icon={customIcon}
+                      />
+                    )}
+                    
+                    {/* Map click handler */}
+                    <MapClickHandler onLocationSelect={handleLocationSelect} />
+                  </MapContainer>
+                </div>
+                
+                {/* Map Instructions */}
+                <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                  Click on the map to place a pin
+                </div>
+              </div>
+              
+              {/* Location Actions */}
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={clearLocation}
+                  disabled={!selectedLocation}
+                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-xl px-3 py-2 text-white text-sm"
+                >
+                  {t("Clear Pin")}
+                </button>
+                
+                {selectedLocation && (
+                  <span className="text-xs text-gray-400 self-center">
+                    Pin placed at: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Location Input Field */}
           <div className="flex gap-2">
             <input
               type="text"
               placeholder={t("Enter place or address")}
-              value={location} // stores the Google Maps link
+              value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
             />
@@ -93,8 +224,8 @@ export default function EventForm({ event, onClose }) {
                   return;
                 }
                 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`;
-                setLocation(mapsUrl); // Save link in state
-                window.open(mapsUrl, "_blank"); // Open Google Maps to preview
+                setLocation(mapsUrl);
+                window.open(mapsUrl, "_blank");
               }}
               className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-white"
             >
