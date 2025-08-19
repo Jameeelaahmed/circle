@@ -19,6 +19,7 @@ import Modal from "../../ui/Modal/Modal";
 import NotMemberModalContainer from "../../ui/Modal/NotMemberModal/NotMemberModalContainer";
 
 function ChatInputContainer({
+  circleName,
   circleId,
   replyTo,
   setReplyTo,
@@ -32,7 +33,12 @@ function ChatInputContainer({
   const voiceRecording = useVoiceRecording();
   const mediaUpload = useMediaUpload();
   const typing = useChatTypingIndicator(circleId, userId, userName);
-  const messageManager = useMessageManager(circleId, userId, userName, photoUrl);
+  const messageManager = useMessageManager(
+    circleId,
+    circleName,
+    userId,
+    userName,
+  );
 
   // Extracted hook implementations
   const pollModal = usePollModal();
@@ -62,7 +68,7 @@ function ChatInputContainer({
     editingMessage,
     setEditingMessage,
     handleAutoDir,
-    openNotMemberModal
+    openNotMemberModal,
   );
 
   // Handle reply/edit mutual exclusion
@@ -86,11 +92,12 @@ function ChatInputContainer({
     };
   }, [typing]);
 
-  const members =
-    useSelector(state =>
-      state.members?.membersByCircle?.[circleId] || []
-    );
-  const isMember = members.some(member => member.id === userId || member.uid === userId);
+  const members = useSelector(
+    (state) => state.members?.membersByCircle?.[circleId] || [],
+  );
+  const isMember = members.some(
+    (member) => member.id === userId || member.uid === userId,
+  );
   const notMemberModalRef = useRef();
   function openNotMemberModal() {
     notMemberModalRef.current.open();
@@ -184,7 +191,6 @@ function ChatInputContainer({
         showCameraModal={mediaUpload.showCameraModal}
         closeCameraModal={mediaHandlers.closeCameraModal}
         handleCapturedPhoto={mediaHandlers.handleCapturedPhoto}
-
         isMember={isMember}
         disabled={!isMember}
       />

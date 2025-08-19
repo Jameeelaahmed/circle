@@ -33,11 +33,7 @@ import {
 import { useTypingIndicator } from "../../../hooks/chathooks/useTypingIndicator";
 import { useAutoScroll } from "../../../hooks/chathooks/useAutoScroll";
 import { useMessageSeen } from "../../../hooks/chathooks/useMessageSeen";
-function ChatMessageContainer({
-  circleId,
-  setReplyTo,
-  setEditingMessage,
-}) {
+function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
   const messagesEndRef = useRef(null);
   const deleteModalRefs = useRef({});
   const messageRefs = useRef({});
