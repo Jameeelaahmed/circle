@@ -38,7 +38,7 @@ function ChatInputContainer({
     circleName,
     userId,
     userName,
-  , photoUrl);
+  );
 
   // Extracted hook implementations
   const pollModal = usePollModal();
@@ -68,7 +68,7 @@ function ChatInputContainer({
     editingMessage,
     setEditingMessage,
     handleAutoDir,
-    openNotMemberModal
+    openNotMemberModal,
   );
 
   // Handle reply/edit mutual exclusion
@@ -92,11 +92,12 @@ function ChatInputContainer({
     };
   }, [typing]);
 
-  const members =
-    useSelector(state =>
-      state.members?.membersByCircle?.[circleId] || []
-    );
-  const isMember = members.some(member => member.id === userId || member.uid === userId);
+  const members = useSelector(
+    (state) => state.members?.membersByCircle?.[circleId] || [],
+  );
+  const isMember = members.some(
+    (member) => member.id === userId || member.uid === userId,
+  );
   const notMemberModalRef = useRef();
   function openNotMemberModal() {
     notMemberModalRef.current.open();
@@ -190,7 +191,6 @@ function ChatInputContainer({
         showCameraModal={mediaUpload.showCameraModal}
         closeCameraModal={mediaHandlers.closeCameraModal}
         handleCapturedPhoto={mediaHandlers.handleCapturedPhoto}
-
         isMember={isMember}
         disabled={!isMember}
       />

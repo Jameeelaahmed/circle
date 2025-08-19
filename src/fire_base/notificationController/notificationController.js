@@ -7,6 +7,7 @@ import {
   Timestamp,
   serverTimestamp,
 } from "firebase/firestore";
+import { getCircleById } from "../circleController/circleController";
 import { db } from "../../firebase-config"; // Adjust path as needed
 
 /**
@@ -19,7 +20,7 @@ export const pushNotificationBase = async (uid, notificationBody) => {
 
     const notification = {
       ...notificationBody,
-      createdAt: serverTimestamp(), // Use serverTimestamp for better consistency
+      createdAt: serverTimestamp(),
       read: false,
     };
 
@@ -69,6 +70,18 @@ export const createNotification = ({
  */
 export const pushNotificationToUser = async (uid, notificationData) => {
   const notification = createNotification(notificationData);
+  return await pushNotificationBase(uid, notification);
+};
+export const inviteUserToCircleNotification = async (uid, circleId, sender) => {
+  const { circleName, imageUrl } = await getCircleById(circleId);
+
+  const notification = createNotification({
+    avatar: imageUrl,
+    type: "invite",
+    title: `${sender} invited you to join ${circleName}`,
+    message: "Join now to get started! ",
+    link: `/circle/${circleId}`,
+  });
   return await pushNotificationBase(uid, notification);
 };
 

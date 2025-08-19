@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { pushNotificationToUser } from "../notificationController/notificationController";
 const getCircleMembersReceivers = async (circleId, myId) => {
@@ -32,4 +32,18 @@ export const sendNotificationMembers = async (
       pushNotificationToUser(member.id, newNotification);
     }
   });
+};
+export const getCircleById = async (circleId) => {
+  try {
+    console.log("Circle ID:", circleId);
+
+    const circleRef = doc(db, "circles", circleId);
+    const circleSnap = await getDoc(circleRef);
+    console.log("Circle data:", circleSnap.data());
+
+    return circleSnap.data();
+  } catch (error) {
+    console.error("Error getting circle:", error);
+    throw error;
+  }
 };
