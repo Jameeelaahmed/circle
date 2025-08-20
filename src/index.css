@@ -2,6 +2,15 @@
 @import "tailwindcss";
 
 :root {
+ --sx-color-primary: #FF6B6B;          /* main accent */
+  --sx-color-on-primary: #ffffff;       /* text on buttons */
+  --sx-color-background: #1a1a1a;       /* main background */
+  --sx-color-on-background: #f0f0f0;    /* text color */
+  --sx-color-surface: #2a2a2a;          /* calendar cards */
+  --sx-color-on-surface: #f0f0f0;       /* text on cards */
+  --sx-color-outline: #555555;          /* borders */
+  --sx-color-shadow: rgba(0,0,0,0.5);   /* shadows */
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;

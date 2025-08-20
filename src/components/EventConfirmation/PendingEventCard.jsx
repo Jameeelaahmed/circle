@@ -87,11 +87,10 @@ export default function PendingEventCard({ event }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{
-        scale: 1.05,
         boxShadow: "var(--shadow-glassCard)",
-        borderColor: "#17284f93",
+        
       }}
-      className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-transparent p-4 transition-all"
+      className="group relative  hover:scale-[1.05] hover:border-[#17284f93] flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-transparent p-4 transition-all"
       style={{
         background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
         backdropFilter: "blur(10px)",
