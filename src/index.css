@@ -2,34 +2,24 @@
 @import "tailwindcss";
 
 :root {
- --sx-color-primary: #FF6B6B;          /* main accent */
-  --sx-color-on-primary: #ffffff;       /* text on buttons */
-  --sx-color-background: #1a1a1a;       /* main background */
-  --sx-color-on-background: #f0f0f0;    /* text color */
-  --sx-color-surface: #2a2a2a;          /* calendar cards */
-  --sx-color-on-surface: #f0f0f0;       /* text on cards */
-  --sx-color-outline: #555555;          /* borders */
-  --sx-color-shadow: rgba(0,0,0,0.5);   /* shadows */
+  --sx-color-primary: #ff6b6b; /* main accent */
+  --sx-color-on-primary: #ffffff; /* text on buttons */
+  --sx-color-background: #1a1a1a; /* main background */
+  --sx-color-on-background: #f0f0f0; /* text color */
+  --sx-color-surface: #2a2a2a; /* calendar cards */
+  --sx-color-on-surface: #f0f0f0; /* text on cards */
+  --sx-color-outline: #555555; /* borders */
+  --sx-color-shadow: rgba(0, 0, 0, 0.5); /* shadows */
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  min-height: 100vh;
-  background: radial-gradient(
-    100.5% 100% at 51.22% 0%,
-    #17284f 0%,
-    #04102b 81.66%
-  );
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-html {
-  height: 100%;
 }
 
 * {
@@ -39,6 +29,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  /* min-height: 100vh; */
 }
 
 @theme {
@@ -79,6 +70,22 @@ body {
   /** animations */
   --animate-fade-slide-in: fade-slide-in-from-top 0.3s ease-out forwards;
   --animate-jelly: jelly-105 0.25s linear forwards;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+    100.5% 100% at 51.22% 0%,
+    #17284f 0%,
+    #04102b 81.66%
+  );
+  background-attachment: fixed; /* keeps it covering even when scrolling */
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 @keyframes fade-slide-in-from-top {

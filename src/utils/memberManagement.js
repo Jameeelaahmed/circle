@@ -401,15 +401,23 @@ export async function addCreatorAsFirstMember(circleId, creatorUid) {
     const creatorProfile = creatorDocSnap.data();
 
     // Add creator as the first member (owner/admin) of the circle
-    await setDoc(doc(db, "circles", circleId, "members", creatorUid), {
-      email: creatorProfile.email || "",
-      isOwner: true,
-      isAdmin: true,
-      username: creatorProfile.username || "",
-      photoURL: creatorProfile.photoURL || "",
-      joinedAt: new Date(),
-      addedBy: creatorUid,
-    });
+    const circleRef = doc(db, "circles", circleId);
+    const circleSnap = await getDoc(circleRef);
+
+    if (circleSnap.exists()) {
+      // only add member if circle still exists
+      await setDoc(doc(db, "circles", circleId, "members", creatorUid), {
+        email: creatorProfile.email || "",
+        isOwner: true,
+        isAdmin: true,
+        username: creatorProfile.username || "",
+        photoURL: creatorProfile.photoURL || "",
+        joinedAt: new Date(),
+        addedBy: creatorUid,
+      });
+    } else {
+      console.warn("Circle was deleted, skipping member creation.");
+    }
 
     return {
       success: true,

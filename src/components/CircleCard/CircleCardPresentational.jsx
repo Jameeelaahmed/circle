@@ -15,7 +15,14 @@ export default function CircleCardPresentational({
   return (
     <>
       <div
-        className="group relative overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-xl sm:p-5 cursor-pointer"
+        className="
+    group relative overflow-hidden rounded-3xl p-3 sm:p-4 md:p-5
+    transition-all duration-300 hover:shadow-xl
+    cursor-pointer
+    w-full
+    min-w-0
+    flex flex-col
+    "
         style={{
           background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
           backdropFilter: "blur(10px)",
@@ -23,8 +30,6 @@ export default function CircleCardPresentational({
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
         }}
       >
-
-
         {/* Shiny hover effect */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-[50%] -left-[150%] h-[200%] w-[60%] rotate-[25deg] transform bg-gradient-to-r from-transparent via-[rgba(172,159,250,0.2)] to-transparent opacity-0 transition-[opacity_transform] duration-900 group-hover:left-[150%] group-hover:opacity-100"></div>
@@ -32,9 +37,9 @@ export default function CircleCardPresentational({
 
         {/* Content container */}
         <div className="relative z-10">
-          <div className="flex justify-between">
-            <div className="mb-3 flex items-center space-x-3 sm:mb-4 sm:space-x-4">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary sm:h-12 sm:w-12">
+          <div className="flex flex-col sm:flex-row justify-between gap-2">
+            <div className="mb-2 flex items-center space-x-2 sm:mb-4 sm:space-x-4">
+              <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center overflow-hidden rounded-full border border-primary">
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
@@ -51,7 +56,7 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-base font-bold text-primary sm:text-lg">
+                <h3 className="text-base font-bold text-primary sm:text-lg break-words">
                   {circle.circleName}
                 </h3>
                 <p
@@ -63,13 +68,12 @@ export default function CircleCardPresentational({
                 </p>
               </div>
             </div>
-
             {isOwner && (
               <button
-                className="ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
+                className="ml-0 sm:ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
                 style={{
                   color: "var(--color-secondary)",
-                  background: "rgba(var(--color-secondary-rgb), 0.1)"
+                  background: "rgba(var(--color-secondary-rgb), 0.1)",
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -82,31 +86,30 @@ export default function CircleCardPresentational({
             )}
           </div>
           <p
-            className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm"
+            className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm break-words"
             style={{ color: "rgba(173, 186, 199, 0.95)" }}
           >
             {circle.description}
           </p>
-
           {activeTab === "forYou" && (
             <>
-              <div className="mt-2 mb-2 flex h-10 flex-wrap gap-2">
+              <div className="mt-2 mb-2 flex flex-wrap gap-2">
                 {displayedInterests.map((interest) => (
                   <span
                     key={interest}
-                    className="border-primary text-primary mb-2 rounded-3xl border p-2"
+                    className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm"
                   >
                     {interest}
                   </span>
                 ))}
                 {circle.interests.length > 4 && (
-                  <span className="border-primary text-primary mb-2 rounded-3xl border p-2">
+                  <span className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm">
                     +{circle.interests.length - 4} more
                   </span>
                 )}
               </div>
               {!(membersByCircle?.[circle.id] || []).some(
-                (member) => member.id === user?.uid,
+                (member) => member.id === user?.uid
               ) && (
                   <button
                     className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
