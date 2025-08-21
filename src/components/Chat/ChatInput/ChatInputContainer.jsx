@@ -40,7 +40,6 @@ function ChatInputContainer({
     userName,
   );
 
-  // Extracted hook implementations
   const pollModal = usePollModal();
   const mediaHandlers = useMediaHandlers(
     mediaUpload,
@@ -71,7 +70,6 @@ function ChatInputContainer({
     openNotMemberModal,
   );
 
-  // Handle reply/edit mutual exclusion
   useReplyEditMutualExclusion(
     replyTo,
     setReplyTo,
@@ -80,12 +78,10 @@ function ChatInputContainer({
     messageManager,
   );
 
-  // Effects
   useEffect(() => {
     messageManager.adjustHeight();
   }, [messageManager]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       typing.cleanup();
@@ -128,7 +124,7 @@ function ChatInputContainer({
             </div>
           </div>
           <button
-            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-white"
+            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
             onClick={() => setReplyTo(null)}
             type="button"
           >
@@ -151,7 +147,7 @@ function ChatInputContainer({
             </div>
           </div>
           <button
-            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-white"
+            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
             onClick={messageHandlers.handleCancelEdit}
             type="button"
           >

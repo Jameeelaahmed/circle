@@ -20,6 +20,7 @@ import { validateForm } from "../../../../utils/FormValidator";
 import { useCircleForm } from "../../../../hooks/useCircleForm";
 import { useAuth } from "../../../../hooks/useAuth";
 import { useImageUpload } from "../../../../hooks/useImageUpload";
+import { sendCircleInvitations } from "../../../../hooks/useCircleInvitations";
 
 // Lazy load the presentational component
 const CreateCircleModalPresentational = lazy(
@@ -224,32 +225,24 @@ export default function CreateCircleModalContainer({ closeModal }) {
       // Add creator as member immediately
       await addMembersToCircle(
         circleId,
-        user.uid || user.username,
+        user.uid,
         user,
         [{ value: user.uid, label: user.username, isFixed: true }],
         user,
       );
       await addCircletoUser(user.uid, circleId);
 
-      for (const member of selectedMembers) {
-        if (member.value !== user.uid) {
-          const memberProfile = memberOptions.find(opt => opt.value === member.value);
+      // Only send invitations to members who are NOT the creator
+      const membersToInvite = selectedMembers.filter(m => m.value !== user.uid);
 
-          await addDoc(collection(db, "circleRequests"), {
-            circleId: circleId,
-            type: "invitation",
-            invitedUserId: member.value,
-            invitedUserUsername: memberProfile?.label || "",
-            invitedUserEmail: memberProfile?.userData.email || "",
-            invitedUserPhotoUrl: memberProfile?.userData.photoUrl || "",
-            inviterId: user.uid,
-            inviterUsername: user.username,
-            circleName: formFields.circleName || "",
-            message: `${user.username} invited you to join the circle "${formFields.circleName || ""}".`,
-            status: "pending",
-            createdAt: serverTimestamp()
-          });
-        }
+      if (membersToInvite.length > 0) {
+        await sendCircleInvitations({
+          circleId,
+          members: membersToInvite,
+          memberOptions,
+          user,
+          circleName: formFields.circleName
+        });
       }
 
       toast.success("Circle created successfully!", toastStyles);
