@@ -27,7 +27,7 @@ function GlowCardPresentational({
           maskImage: useMotionTemplate`
             radial-gradient(
               ${radius}px circle at ${mouseX}px ${mouseY}px,
-              white,
+              var(--color-text),
               transparent 80%
             )
           `,

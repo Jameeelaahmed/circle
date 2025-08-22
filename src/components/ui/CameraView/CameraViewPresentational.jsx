@@ -24,7 +24,7 @@ function CameraViewPresentational({ handleClose, switchCamera, capturePhoto, err
                             <p className="mb-4 text-secondary text-sm">{error}</p>
                             <button
                                 onClick={startCamera}
-                                className="px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 text-sm"
+                                className="px-3 py-2 bg-primary text-text rounded-lg hover:bg-primary/80 text-sm"
                                 type="button"
                             >
                                 Try Again
@@ -67,7 +67,7 @@ function CameraViewPresentational({ handleClose, switchCamera, capturePhoto, err
 
                 <button
                     onClick={capturePhoto}
-                    className="p-3 bg-primary hover:bg-primary/80 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                    className="p-3 bg-primary hover:bg-primary/80 text-text rounded-full disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                     type="button"
                     disabled={!isCameraReady}
                 >

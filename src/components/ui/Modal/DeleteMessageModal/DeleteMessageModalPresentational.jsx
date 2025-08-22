@@ -14,7 +14,7 @@ function DeleteMessageModalPresentational({
             <div className="p-4">
                 {showRadioOptions ? (
                     <>
-                        <p className="text-white mb-6">
+                        <p className="text-text mb-6">
                             You can delete messages for everyone or just for yourself.
                         </p>
 
@@ -35,11 +35,11 @@ function DeleteMessageModalPresentational({
                                             : 'border-gray-400 group-hover:border-primary'
                                         }`}>
                                         {deleteOption === 'forMe' && (
-                                            <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                                            <div className="w-2 h-2 bg-text rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                                         )}
                                     </div>
                                 </div>
-                                <p className="text-white ml-3">Delete for me</p>
+                                <p className="text-text ml-3">Delete for me</p>
                             </label>
                         </div>
 
@@ -60,16 +60,16 @@ function DeleteMessageModalPresentational({
                                             : 'border-gray-400 group-hover:border-primary'
                                         }`}>
                                         {deleteOption === 'forEveryone' && (
-                                            <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                                            <div className="w-2 h-2 bg-text rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                                         )}
                                     </div>
                                 </div>
-                                <p className="text-white ml-3">Delete for everyone</p>
+                                <p className="text-text ml-3">Delete for everyone</p>
                             </label>
                         </div>
                     </>
                 ) : (
-                    <p className="text-white mb-6">
+                    <p className="text-text mb-6">
                         Are you sure you want to delete this message? This action cannot be undone.
                     </p>
                 )}
@@ -77,7 +77,7 @@ function DeleteMessageModalPresentational({
                 <div className="flex gap-3 justify-end">
                     <button
                         onClick={handleDelete}
-                        className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white transition-colors"
+                        className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-text transition-colors"
                     >
                         Delete
                     </button>

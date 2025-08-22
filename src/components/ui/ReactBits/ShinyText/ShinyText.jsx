@@ -43,7 +43,7 @@ const ShinyText = ({ text, disabled = false, speed = 4, className = "" }) => {
           `}
         </style>
       )}
-      <span className={`text-white ${className}`} style={animationStyle}>
+      <span className={`text-text ${className}`} style={animationStyle}>
         {text}
       </span>
     </>

@@ -245,7 +245,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#060010]/50 px-4 py-6 text-white"
+      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#060010]/50 px-4 py-6 text-text"
       style={{
         "--glow-color": glowColor,
       }}
@@ -254,7 +254,7 @@ const BackgroundHoverEffect = ({
         {`
           .main-background {
             --glow-color: ${glowColor};
-            color: white;
+            color: var(--color-text);
             text-align: center;
           }
           .particle::before {
@@ -270,7 +270,7 @@ const BackgroundHoverEffect = ({
           }
           .btn-back-home {
             @apply mt-8 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600
-              px-6 py-3 font-semibold text-white shadow-lg transition
+              px-6 py-3 font-semibold text-text shadow-lg transition
               hover:from-purple-700 hover:to-indigo-700 focus:outline-none
               focus:ring-4 focus:ring-purple-500/50;
           }
@@ -363,7 +363,7 @@ const BackgroundHoverEffect = ({
 
         {/* Back home button */}
         <button
-          className="btn-back-home mt-10 cursor-pointer rounded-full border-2 border-primary bg-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text px-6 py-2.5 text-lg font-semibold tracking-wider text-transparent uppercase transition duration-300 ease-in-out hover:scale-105 hover:border-purple-700/90 hover:bg-primary hover:text-white hover:shadow-[0_0_10px_rgba(132,0,255,0.9)] focus:ring-4 focus:ring-purple-500/50 focus:outline-none"
+          className="btn-back-home mt-10 cursor-pointer rounded-full border-2 border-primary bg-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text px-6 py-2.5 text-lg font-semibold tracking-wider text-transparent uppercase transition duration-300 ease-in-out hover:scale-105 hover:border-purple-700/90 hover:bg-primary hover:text-text hover:shadow-[0_0_10px_rgba(132,0,255,0.9)] focus:ring-4 focus:ring-purple-500/50 focus:outline-none"
           onClick={() => navigate("/")}
           type="button"
           aria-label="Back to home"

@@ -27,7 +27,7 @@ export default function CreatePollModalPresentational({
       <form onSubmit={onSubmit} className="">
         {/* Question */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="text-text mb-2 block text-lg font-medium">
             {t("Question *")}
           </label>
           <Input
@@ -40,7 +40,7 @@ export default function CreatePollModalPresentational({
         {/* Options */}
         <div>
           <div className="flex items-center justify-between">
-            <label className="text-light mb-2 block text-lg font-medium">
+            <label className="text-text mb-2 block text-lg font-medium">
               {t("Options *")}
             </label>
 
@@ -73,7 +73,7 @@ export default function CreatePollModalPresentational({
             text={t("Allow multiple answers!")}
             disabled={false}
             speed={3}
-            className="custom-class text-white"
+            className="custom-class text-text"
           />
           <Toggle
             checked={allowMultiple}
@@ -88,7 +88,7 @@ export default function CreatePollModalPresentational({
           </label>
           <input
             type="date"
-            className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
+            className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-text/20 px-4 py-2 text-text focus:ring-2 focus:outline-none"
             value={expireDate}
             onChange={(e) => setExpireDate(e.target.value)}
             min={new Date().toISOString().split("T")[0]} // disables past dates

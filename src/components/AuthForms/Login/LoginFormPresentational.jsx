@@ -41,7 +41,7 @@ function LoginFormPresentational({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
                 >
-                    <h1 className="font-quick-sand mb-2 text-3xl font-bold text-white">
+                    <h1 className="font-quick-sand mb-2 text-3xl font-bold text-text">
                         Welcome to Circle
                     </h1>
                     <p className="text-text text-sm">Let's sign you in</p>
@@ -63,7 +63,7 @@ function LoginFormPresentational({
                                 defaultValue={email}
                                 onKeyUp={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             {errors.email && (
                                 <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>
@@ -78,13 +78,13 @@ function LoginFormPresentational({
                                 defaultValue={password}
                                 onKeyPress={handleKeyPress}
                                 disabled={isLoading}
-                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                                className="bg-inputsBg h-12 w-full rounded-xl border-gray-600 ps-2 pr-12 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
                                 disabled={isLoading}
-                                className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-text disabled:opacity-50"
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>

@@ -271,7 +271,7 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     border: none;
     background: ${props => props.$isMe ? 'rgba(255, 255, 255, 0.2)' : 'var(--color-secondary)'};
-    color: white;
+    color: var(--color-text);
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;

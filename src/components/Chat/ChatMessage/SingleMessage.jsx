@@ -52,8 +52,8 @@ function SingleMessage({
             {/* Date Separator */}
             {showDateSeparator && (
                 <div className="flex justify-center my-4">
-                    <div className="bg-main/30 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
-                        <span className="text-xs font-medium text-white/80">
+                    <div className="bg-main/30 backdrop-blur-sm px-4 py-2 rounded-full border border-text/10">
+                        <span className="text-xs font-medium text-text/80">
                             {formatMessageDate(msg.timestamp)}
                         </span>
                     </div>
@@ -95,7 +95,7 @@ function SingleMessage({
                         {/* Profile picture (only for other users and first in group) */}
                         {!isMe && isFirstInGroup && (
                             <div className="mr-2 self-start">
-                                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-white">
+                                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text">
                                     {msg.senderName?.[0] || 'U'}
                                 </div>
                             </div>
@@ -151,7 +151,7 @@ function SingleMessage({
                                         )}
                                     </div>
                                 ) : (
-                                    <span className={`text-sm break-word text-white}`}>
+                                    <span className={`text-sm break-word text-text}`}>
                                         {msg.text}
                                     </span>
                                 )}

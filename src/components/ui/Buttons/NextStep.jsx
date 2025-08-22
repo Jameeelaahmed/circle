@@ -5,7 +5,7 @@ const Button = ({ onClick }) => {
   return (
     <StyledWrapper>
       <button className="btn" onClick={onClick} type="button">
-        Next Stage 
+        Next Stage
         <span className="icon-right" />
         <span className="icon-right after" />
       </button>
@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
     font-family: 'Poppins', sans-serif;
     letter-spacing: 2px;
     background: none;
-    color: white;
+    color: var(--color-text);
     position: relative;
     outline: none;
     border: none;
@@ -49,7 +49,7 @@ const StyledWrapper = styled.div`
     top: 5%;
     height: 90%;
     width: 5%;
-    background: white;
+    background:  var(--color-text);
     transition: 0.4s 0.02s ease-in all;
   }
 
@@ -70,7 +70,7 @@ const StyledWrapper = styled.div`
 
   button:hover > .icon-right.after:after {
     left: -80px;
-    color: white;
+    color:  var(--color-text);
     transition: 0.2s 0.2s ease all;
   }
 
@@ -78,7 +78,7 @@ const StyledWrapper = styled.div`
     left: -104px;
     top: 14px;
     opacity: 0.2;
-    color: white;
+    color:  var(--color-text);
   }
 
   .icon-right {

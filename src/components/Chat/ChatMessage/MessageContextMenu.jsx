@@ -13,9 +13,9 @@ function MessageContextMenu({
 
     return (
         <div
-            className={`fixed z-50 w-56 backdrop-blur-2xl rounded-xl shadow-xl border border-white/10 
+            className={`fixed z-50 w-56 backdrop-blur-2xl rounded-xl shadow-xl border border-text/10 
                 flex flex-col text-sm select-none overflow-hidden
-                text-white bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
+                text-text bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
             style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
         >
             <button
@@ -77,7 +77,7 @@ function MessageContextMenu({
             </button>
 
             {/* Reactions */}
-            <div className="flex gap-2 px-3 py-3 border-t border-white/10 justify-center">
+            <div className="flex gap-2 px-3 py-3 border-t border-text/10 justify-center">
                 {reactionEmojis.map(emoji => {
                     const count = menu.message.react?.filter(r => r.emoji === emoji).length || 0;
                     return (

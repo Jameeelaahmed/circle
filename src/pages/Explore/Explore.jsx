@@ -399,7 +399,7 @@ const Explore = () => {
         <button
           onClick={() => getPosition()}
           disabled={isLoading}
-          className="bg-primary hover:bg-primary/80 rounded-lg px-4 py-2 text-white disabled:opacity-50"
+          className="bg-primary hover:bg-primary/80 rounded-lg px-4 py-2 text-text disabled:opacity-50"
         >
           {isLoading ? "Loading..." : "Get My Position"}
         </button>
