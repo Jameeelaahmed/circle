@@ -242,7 +242,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 text-white"
+      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 text-text"
       style={{
         "--glow-color": glowColor,
       }}
@@ -251,7 +251,7 @@ const BackgroundHoverEffect = ({
         {`
           .main-background {
             --glow-color: ${glowColor};
-            color: white;
+            color: var(--color-text);
             text-align: center;
           }
           .particle::before {
@@ -267,7 +267,7 @@ const BackgroundHoverEffect = ({
           }
           .btn-back-home {
             @apply mt-8 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600
-              px-6 py-3 font-semibold text-white shadow-lg transition
+              px-6 py-3 font-semibold text-text shadow-lg transition
               hover:from-purple-700 hover:to-indigo-700 focus:outline-none
               focus:ring-4 focus:ring-purple-500/50;
           }
@@ -340,7 +340,7 @@ const BackgroundHoverEffect = ({
           <div className="flex items-center justify-center gap-4">
             <img src={CalendarImg} alt="Calendar" className="h-10 w-10" />
             <div className="">
-              {/* <h1 className="text-3xl font-bold text-white">Calendar</h1> */}
+              {/* <h1 className="text-3xl font-bold text-text">Calendar</h1> */}
               {/* Animated text */}
               <SplitText
                 text="Your Upcoming Events!"
@@ -358,7 +358,7 @@ const BackgroundHoverEffect = ({
             </div>
           </div>
         </div>
-      
+
         {/* Circle info */}
         <div className=" grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {Object.entries(circlesInfo).map(([circleId, circle]) => (
@@ -377,10 +377,10 @@ const BackgroundHoverEffect = ({
                 />
               )}
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-white">
+                <span className="text-sm font-medium text-text">
                   {circle.label}
                 </span>
-                
+
                 {/* <span className="text-xs text-gray-400">{circle.eventsCount || 0} events</span> */}
               </div>
             </div>

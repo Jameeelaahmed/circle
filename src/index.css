@@ -83,7 +83,7 @@ body {
     #17284f 0%,
     #04102b 81.66%
   );
-  background-attachment: fixed; /* keeps it covering even when scrolling */
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
 }

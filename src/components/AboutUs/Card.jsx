@@ -24,7 +24,7 @@ export const ArcCard = ({ name, title, since, imgSrc }) => {
           ev.currentTarget.style.setProperty("--x", `${xPercentage * 100}%`);
           ev.currentTarget.style.setProperty("--y", `${yPercentage * 100}%`);
         }}
-        className="group relative grid w-[300px] grid-rows-[250px_120px_40px] rounded-md bg-white/5 backdrop-blur-3xl p-4 text-primary transition-transform ease-out hover:[transform:rotateX(var(--x-rotation))_rotateY(var(--y-rotation))_scale(1.1)]"
+        className="group relative grid w-[300px] grid-rows-[250px_120px_40px] rounded-md bg-text/5 backdrop-blur-3xl p-4 text-primary transition-transform ease-out hover:[transform:rotateX(var(--x-rotation))_rotateY(var(--y-rotation))_scale(1.1)]"
       >
         <figure>
           <img src={imgSrc} alt="" className="h-[250px] w-full object-cover rounded-md object-top" />

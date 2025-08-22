@@ -13,11 +13,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { useJoinCircleRequest } from '../../hooks/useJoinCircleRequest';
 import { useSyncPendingRequests } from "../../contexts/PendingRequests";
 // components
+import { Plus } from "lucide-react";
 import CirclesPagePresentational from './CirclesPagePresentational'
 import CirclesTabs from '../../components/ui/CircleTabs/CirclesTabs';
 import CirclesPrivacyFilter from '../../components/ui/CirclePrivacyFilter/CirclesPrivacyFilter';
 import CustomPaginationContainer from '../../components/Pagination/CustomPaginationContainer';
 import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkeltonCard';
+import Modal from '../../components/ui/Modal/Modal';
+import CreateCircleModalContainer from '../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer';
 function CirclesPageContainer() {
     const membersByCircle = useSelector(state => state.members.membersByCircle);
     const circles = useSelector(state => state.circles.circles);
@@ -219,7 +222,13 @@ function CirclesPageContainer() {
             if (unsubscribe) unsubscribe();
         };
     }, [dispatch]);
-
+    const createCircleRef = useRef()
+    function openCCircleModal() {
+        createCircleRef.current.open();
+    }
+    function closeCCircleModal() {
+        createCircleRef.current.close();
+    }
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
             {user && <>
@@ -229,7 +238,7 @@ function CirclesPageContainer() {
                 }
 
                 {/* Search Bar */}
-                <div className="mb-4 flex justify-center px-2">
+                <div className="mb-4 flex justify-center items-center px-2">
                     <input
                         type="text"
                         value={searchQuery}
@@ -237,7 +246,13 @@ function CirclesPageContainer() {
                         placeholder="Search circles..."
                         className="px-3 py-2 rounded-3xl border border-primary bg-transparent text-text w-full max-w-xs sm:max-w-md md:max-w-lg transition-all"
                     />
+                    <div className='bg-primary rounded-3xl p-2 ltr:ml-1.5 rtl:mr-1.5 cursor-pointer' onClick={openCCircleModal}>
+                        <Plus size={20} />
+                    </div>
                 </div>
+                <Modal ref={createCircleRef}>
+                    <CreateCircleModalContainer closeModal={closeCCircleModal} />
+                </Modal>
                 <div className="flex-1">
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||

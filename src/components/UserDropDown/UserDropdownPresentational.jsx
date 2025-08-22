@@ -22,7 +22,7 @@ export default function UserDropdownPresentational({
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
-                className="text-primary hover:bg-primary/10 flex items-center space-x-2 rounded-lg bg-inputsBg px-3 py-2 transition-all duration-200 border border-white/10"
+                className="text-primary hover:bg-primary/10 flex items-center space-x-2 rounded-lg bg-inputsBg px-3 py-2 transition-all duration-200 border border-text/10"
                 aria-label="User menu"
             >
                 {/* User avatar */}
@@ -44,10 +44,10 @@ export default function UserDropdownPresentational({
                     scale: isDropdownOpen ? 1 : 0.95
                 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className={`bg-main absolute top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 shadow-lg ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+                className={`bg-main absolute top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-text/10 shadow-lg ltr:right-0 rtl:left-0 ${isDropdownOpen ? "pointer-events-auto" : "pointer-events-none"}`}
             >
                 {/* User info header */}
-                <div className="px-4 py-3 border-b border-white/10">
+                <div className="px-4 py-3 border-b border-text/10">
                     <p className="text-sm font-medium text-text truncate">
                         {user || "Guest User"}
                     </p>
@@ -65,7 +65,7 @@ export default function UserDropdownPresentational({
                             <button
                                 key={index}
                                 onClick={item.onClick}
-                                className="hover:bg-primary/10 w-full flex items-center px-4 py-3 ltr:text-left rtl:text-right text-sm text-white transition-colors gap-3"
+                                className="hover:bg-primary/10 w-full flex items-center px-4 py-3 ltr:text-left rtl:text-right text-sm text-text transition-colors gap-3"
                                 type="button"
                             >
                                 {icon}

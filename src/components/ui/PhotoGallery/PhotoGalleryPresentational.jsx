@@ -21,7 +21,7 @@ function PhotoGalleryPresentational({
         <div className="fixed inset-0 bg-black/90 z-50 flex flex-col">
             {/* Header with controls */}
             <div className="flex-shrink-0 bg-gradient-to-b from-black/50 to-transparent p-4">
-                <div className="flex justify-between items-center text-white">
+                <div className="flex justify-between items-center text-text">
                     <div className="flex items-center gap-4">
                         <span className="text-sm">
                             {currentIndex + 1} of {photos.length}
@@ -36,7 +36,7 @@ function PhotoGalleryPresentational({
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleZoomOut}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                            className="p-2 hover:bg-text/20 rounded-full transition-colors"
                             title="Zoom out"
                         >
                             <ZoomOut size={20} />
@@ -44,7 +44,7 @@ function PhotoGalleryPresentational({
 
                         <button
                             onClick={handleZoomIn}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                            className="p-2 hover:bg-text/20 rounded-full transition-colors"
                             title="Zoom in"
                         >
                             <ZoomIn size={20} />
@@ -52,7 +52,7 @@ function PhotoGalleryPresentational({
 
                         <button
                             onClick={handleDownload}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                            className="p-2 hover:bg-text/20 rounded-full transition-colors"
                             title="Download"
                         >
                             <Download size={20} />
@@ -60,7 +60,7 @@ function PhotoGalleryPresentational({
 
                         <button
                             onClick={onClose}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                            className="p-2 hover:bg-text/20 rounded-full transition-colors"
                             title="Close"
                         >
                             <X size={20} />
@@ -76,7 +76,7 @@ function PhotoGalleryPresentational({
                     <>
                         <button
                             onClick={goToPrevious}
-                            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-white hover:bg-white/20 rounded-full transition-colors"
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-text hover:bg-text/20 rounded-full transition-colors"
                             title="Previous photo"
                         >
                             <ChevronLeft size={24} />
@@ -84,7 +84,7 @@ function PhotoGalleryPresentational({
 
                         <button
                             onClick={goToNext}
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-white hover:bg-white/20 rounded-full transition-colors"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-text hover:bg-text/20 rounded-full transition-colors"
                             title="Next photo"
                         >
                             <ChevronRight size={24} />
@@ -130,8 +130,8 @@ function PhotoGalleryPresentational({
                                     setZoomLevel(1);
                                 }}
                                 className={`flex-shrink-0 w-16 h-16 rounded border-2 overflow-hidden transition-all ${index === currentIndex
-                                    ? 'border-white scale-110'
-                                    : 'border-white/30 hover:border-white/60'
+                                    ? 'border-text scale-110'
+                                    : 'border-text/30 hover:border-text/60'
                                     }`}
                             >
                                 <img

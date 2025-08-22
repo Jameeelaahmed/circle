@@ -77,7 +77,7 @@ function ChatInputPresentational({
                 <DeleteBtn onDelete={cancelRecording} />
                 <button
                   onClick={stopRecording}
-                  className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors"
+                  className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-text transition-colors"
                   title="Send recording"
                 >
                   <svg
@@ -112,7 +112,7 @@ function ChatInputPresentational({
             {hasText || isEditing ? (
               <button
                 type="submit"
-                className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors"
+                className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-text transition-colors"
                 title={isEditing ? "Save changes" : "Send message"}
               >
                 <svg

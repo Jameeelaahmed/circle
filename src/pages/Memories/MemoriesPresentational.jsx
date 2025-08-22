@@ -26,7 +26,7 @@ function MemoriesPresentational({
   const memoriesLength = memoriesList.length;
   console.log(memoriesList);
   return (
-    <div className="mt-[64px] min-h-screen text-white">
+    <div className="mt-[64px] min-h-screen text-text">
       {/* Header */}
       <div className="bg-gray sticky top-[64px] z-40 border-b border-gray-700 shadow-sm backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 py-6">
@@ -40,7 +40,7 @@ function MemoriesPresentational({
               </p>
             </div>
             <label
-              className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-white shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
+              className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-text shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
               onClick={handleFileUpload}
             >
               <Upload size={20} />
@@ -71,7 +71,7 @@ function MemoriesPresentational({
               placeholder="Search memories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="focus:ring-primary bg-main w-full rounded-full border border-gray-600 py-3 pr-4 pl-10 text-white placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
+              className="focus:ring-primary bg-main w-full rounded-full border border-gray-600 py-3 pr-4 pl-10 text-text placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -99,7 +99,7 @@ function MemoriesPresentational({
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="mb-2 line-clamp-1 font-semibold text-white">
+                    <h3 className="mb-2 line-clamp-1 font-semibold text-text">
                       {memory.name}
                     </h3>
                     <div className="mb-3 flex items-center gap-2 text-sm text-gray-400">
@@ -145,19 +145,19 @@ function MemoriesPresentational({
           <div className="bg-main relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl">
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+              className="absolute top-4 right-4 z-10 rounded-full bg-black/20 p-2 text-text hover:bg-black/40"
             >
               <X size={24} />
             </button>
             <button
               onClick={() => navigateMemory("prev")}
-              className="absolute top-1/2 left-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+              className="absolute top-1/2 left-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-text hover:bg-black/40"
             >
               <ChevronLeft size={24} />
             </button>
             <button
               onClick={() => navigateMemory("next")}
-              className="absolute top-1/2 right-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-white hover:bg-black/40"
+              className="absolute top-1/2 right-4 z-10 -translate-y-1/2 transform rounded-full bg-black/20 p-2 text-text hover:bg-black/40"
             >
               <ChevronRight size={24} />
             </button>
@@ -171,7 +171,7 @@ function MemoriesPresentational({
                 />
               </div>
               <div className="p-6 lg:w-1/3">
-                <h2 className="mb-4 text-2xl font-bold text-white">
+                <h2 className="mb-4 text-2xl font-bold text-text">
                   {selectedMemory.name}
                 </h2>
                 <div className="mb-6 space-y-3">

@@ -64,7 +64,7 @@ function RegisterFormPresentional({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        <h1 className="font-quick-sand mb-1 text-2xl font-bold text-white">
+        <h1 className="font-quick-sand mb-1 text-2xl font-bold text-">
           Welcome to Circle
         </h1>
         <p className="text-text text-sm">Create your account to get started</p>
@@ -99,28 +99,26 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                usernameValidation?.isValid === false || errors.username
-                  ? "border-2 border-red-500"
-                  : usernameValidation?.isValid === true
-                    ? "border-2 border-green-500"
-                    : ""
-              }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${usernameValidation?.isValid === false || errors.username
+                ? "border-2 border-red-500"
+                : usernameValidation?.isValid === true
+                  ? "border-2 border-green-500"
+                  : ""
+                }`}
             />
             {usernameValidation?.isChecking && (
               <div className="absolute top-1/2 right-3 -translate-y-1/2 transform">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-white"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-text"></div>
               </div>
             )}
             {(errors.username || usernameValidation?.message) && (
               <p
-                className={`mt-1 text-xs ${
-                  errors.username
-                    ? "text-red-400"
-                    : usernameValidation?.isValid
-                      ? "text-green-400"
-                      : "text-red-400"
-                }`}
+                className={`mt-1 text-xs ${errors.username
+                  ? "text-red-400"
+                  : usernameValidation?.isValid
+                    ? "text-green-400"
+                    : "text-red-400"
+                  }`}
               >
                 {errors.username || usernameValidation.message}
               </p>
@@ -141,9 +139,8 @@ function RegisterFormPresentional({
               placeholder="Age"
               onChange={handleAgeChange}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pe-5 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.age ? "border-2 border-red-500" : ""
-              }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pe-5 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.age ? "border-2 border-red-500" : ""
+                }`}
             />
             {errors.age && (
               <p className="mt-1 text-xs text-red-400">{errors.age}</p>
@@ -172,9 +169,8 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.email ? "border-2 border-red-500" : ""
-              }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.email ? "border-2 border-red-500" : ""
+                }`}
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-400">{errors.email}</p>
@@ -203,16 +199,15 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.password ? "border-2 border-red-500" : ""
-              }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.password ? "border-2 border-red-500" : ""
+                }`}
               minLength={6}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               disabled={isLoading}
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-text disabled:opacity-50"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -244,15 +239,14 @@ function RegisterFormPresentional({
                 }
               }}
               disabled={isLoading}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.confirmPassword ? "border-2 border-red-500" : ""
-              }`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 pr-12 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.confirmPassword ? "border-2 border-red-500" : ""
+                }`}
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               disabled={isLoading}
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 transition-colors hover:text-text disabled:opacity-50"
             >
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -300,7 +294,7 @@ function RegisterFormPresentional({
                 <div
                   type="text"
                   disabled
-                  className="bg-inputsBg h-11 w-full rounded-l-lg border-gray-600 ps-2 leading-11 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
+                  className="bg-inputsBg h-11 w-full rounded-l-lg border-gray-600 ps-2 leading-11 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50"
                   required
                   minLength={6}
                 >
@@ -308,7 +302,7 @@ function RegisterFormPresentional({
                 </div>
                 <button
                   type="button"
-                  className="bg-primary h-11 rounded-r-lg px-4 text-white transition-colors hover:bg-purple-700"
+                  className="bg-primary h-11 rounded-r-lg px-4 text-text transition-colors hover:bg-purple-700"
                   onClick={handleLocation}
                 >
                   Detect
@@ -321,9 +315,8 @@ function RegisterFormPresentional({
           <div className="relative pt-1">
             <label
               htmlFor="interests-search"
-              className={`text-text mb-1 block text-sm font-medium ${
-                errors.interests ? "text-red-400" : ""
-              }`}
+              className={`text-text mb-1 block text-sm font-medium ${errors.interests ? "text-red-400" : ""
+                }`}
             >
               Interests {errors.interests && "(Required)"}
             </label>
@@ -334,9 +327,8 @@ function RegisterFormPresentional({
               placeholder="Search interests..."
               defaultValue={search}
               onChange={handleSearchChange}
-              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-white outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${
-                errors.interests ? "border-2 border-red-500" : ""
-              } mb-2`}
+              className={`bg-inputsBg h-11 w-full rounded-lg border-gray-600 ps-2 text-text outline-0 backdrop-blur-sm placeholder:text-gray-400 disabled:opacity-50 ${errors.interests ? "border-2 border-red-500" : ""
+                } mb-2`}
             />
             <div className="flex flex-wrap gap-2">
               {/* Show up to 10 interests: selected first, then unselected, always max 10 visible */}
@@ -351,9 +343,9 @@ function RegisterFormPresentional({
                   .slice(
                     0,
                     10 -
-                      filteredInterests.filter((interest) =>
-                        selectedInterests.includes(interest.value),
-                      ).length,
+                    filteredInterests.filter((interest) =>
+                      selectedInterests.includes(interest.value),
+                    ).length,
                   ),
               ]
                 .slice(0, 10)

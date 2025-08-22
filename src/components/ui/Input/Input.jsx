@@ -19,7 +19,7 @@ const Input = ({ label, value, onChange }) => {
 
   return (
     <StyledWrapper $dir={direction}>
-      <div className="input-container text-white">
+      <div className="input-container text-text">
         <input
           ref={inputRef}
           type="text"
@@ -29,12 +29,12 @@ const Input = ({ label, value, onChange }) => {
           placeholder=" "
           dir={direction}
         />
-        <label htmlFor="input" className="label text-white/80">
+        <label htmlFor="input" className="label text-text/80">
           {label}
         </label>
         <div className="underline" />
         <span
-          className="emoji-icon text-white"
+          className="emoji-icon text-text"
           onClick={() => setShowPicker(!showPicker)}
         >
           <SmilePlus />

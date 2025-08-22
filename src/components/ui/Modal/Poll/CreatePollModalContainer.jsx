@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CreatePollModalPresentational from "./CreatePollModalPresentational"; // adjust path
 import { useTranslation } from "react-i18next";
 import { getAiPollOptions } from "./aiSuggestOptions";
 
-export default function PollCreation({ onLaunchPoll, pollType , onClose }) {
+export default function PollCreation({ onLaunchPoll, pollType, onClose }) {
   const { t } = useTranslation();
 
   const [question, setQuestion] = useState("");
@@ -11,28 +11,27 @@ export default function PollCreation({ onLaunchPoll, pollType , onClose }) {
   const [allowMultiple, setAllowMultiple] = useState(false);
   const [expireDate, setExpireDate] = useState(
     new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]
-  ); // default 24h from now, date input format YYYY-MM-DD
-
+  );
   const onOptionChange = (index, value) => {
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
   };
 
-    const handleAskAi = async () => {
-      if (!question.trim()) return alert(t("Please enter a question."));
-      try {
-        const aiOptions = await getAiPollOptions(question);
-        if (!aiOptions || aiOptions.length < 2) {
-          alert(t("AI did not return enough options."));
-          return;
-        }
-        setOptions([...aiOptions, ""]);
-      } catch (error) {
-        console.error("AI suggestion error:", error);
-        alert(t("Failed to fetch AI suggestions."));
+  const handleAskAi = async () => {
+    if (!question.trim()) return alert(t("Please enter a question."));
+    try {
+      const aiOptions = await getAiPollOptions(question);
+      if (!aiOptions || aiOptions.length < 2) {
+        alert(t("AI did not return enough options."));
+        return;
       }
-    };
+      setOptions([...aiOptions, ""]);
+    } catch (error) {
+      console.error("AI suggestion error:", error);
+      alert(t("Failed to fetch AI suggestions."));
+    }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();

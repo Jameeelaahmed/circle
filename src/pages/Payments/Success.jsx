@@ -19,17 +19,15 @@ const PaymentSuccess = ({
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50 p-4">
       <div
-        className={`w-full max-w-md transform rounded-2xl bg-white p-8 shadow-2xl transition-all duration-700 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-        }`}
+        className={`w-full max-w-md transform rounded-2xl bg-text p-8 shadow-2xl transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
       >
         {/* Success Icon */}
         <div className="mb-6 text-center">
           <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
             <CheckCircle
-              className={`text-green-600 transition-transform duration-500 ease-out ${
-                iconScale ? "scale-100" : "scale-0"
-              }`}
+              className={`text-green-600 transition-transform duration-500 ease-out ${iconScale ? "scale-100" : "scale-0"
+                }`}
               size={48}
             />
           </div>
@@ -70,7 +68,7 @@ const PaymentSuccess = ({
         <div className="space-y-3">
           <button
             onClick={() => navigate("/")}
-            className="group flex w-full items-center justify-center rounded-xl bg-green-600 px-4 py-3 font-semibold text-white transition-all duration-200 hover:bg-green-700"
+            className="group flex w-full items-center justify-center rounded-xl bg-green-600 px-4 py-3 font-semibold text-text transition-all duration-200 hover:bg-green-700"
           >
             Continue to Circle
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

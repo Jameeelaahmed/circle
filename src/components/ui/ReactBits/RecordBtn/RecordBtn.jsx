@@ -2,55 +2,55 @@ import styled from "styled-components";
 import { useRef } from "react";
 
 const RecordBtn = ({ isRecording, onStart, onStop }) => {
-    const buttonRef = useRef(null);
+  const buttonRef = useRef(null);
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-        if (isRecording) {
-            console.log('RecordBtn: Stopping recording');
-            onStop && onStop();
-        } else {
-            console.log('RecordBtn: Starting recording');
-            onStart && onStart();
-        }
-    };
+    if (isRecording) {
+      console.log('RecordBtn: Stopping recording');
+      onStop && onStop();
+    } else {
+      console.log('RecordBtn: Starting recording');
+      onStart && onStart();
+    }
+  };
 
-    return (
-        <StyledWrapper>
-            <button
-                ref={buttonRef}
-                onClick={handleClick}
-                className={isRecording ? 'recording' : ''}
-                type="button"
+  return (
+    <StyledWrapper>
+      <button
+        ref={buttonRef}
+        onClick={handleClick}
+        className={isRecording ? 'recording' : ''}
+        type="button"
+      >
+        <div className="svg-wrapper-1">
+          <div className="svg-wrapper">
+            <svg
+              height={24}
+              width={24}
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-                <div className="svg-wrapper-1">
-                    <div className="svg-wrapper">
-                        <svg
-                            height={24}
-                            width={24}
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M0 0h24v24H0z" fill="none" />
-                            <path
-                                d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM19 11a1 1 0 0 1 2 0v1a7 7 0 0 1-6 6.93V21h4a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2h4v-2.07A7 7 0 0 1 3 12v-1a1 1 0 0 1 2 0v1a5 5 0 0 0 10 0v-1a1 1 0 0 1 2 0z"
-                                fill="currentColor"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </button>
-        </StyledWrapper>
-    );
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM19 11a1 1 0 0 1 2 0v1a7 7 0 0 1-6 6.93V21h4a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2h4v-2.07A7 7 0 0 1 3 12v-1a1 1 0 0 1 2 0v1a5 5 0 0 0 10 0v-1a1 1 0 0 1 2 0z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
+      </button>
+    </StyledWrapper>
+  );
 };
 
 const StyledWrapper = styled.div`
   button {
     font-family: inherit;
     font-size: 20px;
-    color: white;
+    color: var(--color-text);
     padding: 0.8em 1.2em;
     display: flex;
     align-items: center;
@@ -96,7 +96,7 @@ const StyledWrapper = styled.div`
   button svg {
     width: 18px;
     height: 18px;
-    fill: white;
+    fill: var(--color-text);
     transition: all 0.3s;
   }
 

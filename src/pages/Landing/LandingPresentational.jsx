@@ -43,7 +43,7 @@ export default function LandingPresentational({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <span className="text-white">{t("From we should..")}</span>
+            <span className="text-text">{t("From we should..")}</span>
             <span className="from-secondary to-primary block bg-gradient-to-l bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
               {t("to we did!")}
             </span>
@@ -71,7 +71,7 @@ export default function LandingPresentational({
                 setAuthFormType("login");
                 openCCircleModal();
               }}
-              className="bg-main shadow-main border-primary cursor-pointer rounded-lg border px-6 py-3 font-medium text-white transition-all hover:scale-95 hover:shadow-none"
+              className="bg-main shadow-main border-primary cursor-pointer rounded-lg border px-6 py-3 font-medium text-text transition-all hover:scale-95 hover:shadow-none"
             >
               {t("Create Circle")}
             </button>

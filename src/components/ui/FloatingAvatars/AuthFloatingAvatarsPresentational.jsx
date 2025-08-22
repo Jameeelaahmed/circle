@@ -5,7 +5,7 @@ export default function AuthFloatingAvatarsPresentational({ avatars }) {
       {avatars.map((avatar) => (
         <Motion.div
           key={avatar.id}
-          className="absolute z-20 h-12 w-12 overflow-hidden rounded-full border-2 border-white/30 shadow-xl"
+          className="absolute z-20 h-12 w-12 overflow-hidden rounded-full border-2 border-text/30 shadow-xl"
           style={{ left: avatar.x, top: avatar.y }}
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{
