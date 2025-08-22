@@ -293,14 +293,6 @@ export default function CircleDetailsPresentational({
                         <>
                             <button
                                 type="button"
-                                className="px-4 py-2.5 rounded-xl bg-texte-700 text-texte-300 hover:bg-texte-600 transition-colors"
-                                onClick={() => setIsEditing(false)}
-                                disabled={isLoading}
-                            >
-                                {t("Cancel")}
-                            </button>
-                            <button
-                                type="button"
                                 className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-text hover:opacity-90 transition-opacity flex items-center gap-2"
                                 onClick={handleSave}
                                 disabled={isLoading}
