@@ -15,14 +15,19 @@ export const fetchUserProfile = createAsyncThunk(
       const profile = await getUserProfile(profileId);
       const transformedProfile = {
         ...profile,
-        createdAt: profile.createdAt?.toDate?.() ? profile.createdAt.toDate().toISOString() : profile.createdAt ?? null,
-        updatedAt: profile.updatedAt?.toDate?.() ? profile.updatedAt.toDate().toISOString() : profile.updatedAt ?? null,
+        createdAt: profile.createdAt?.toDate?.()
+          ? profile.createdAt.toDate().toISOString()
+          : (profile.createdAt ?? null),
+        updatedAt: profile.updatedAt?.toDate?.()
+          ? profile.updatedAt.toDate().toISOString()
+          : (profile.updatedAt ?? null),
       };
+      console.log(transformedProfile);
       return transformedProfile;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const fetchViewedProfile = createAsyncThunk(
@@ -32,14 +37,18 @@ export const fetchViewedProfile = createAsyncThunk(
       const profile = await getUserProfile(profileId);
       const transformedProfile = {
         ...profile,
-        createdAt: profile.createdAt?.toDate?.() ? profile.createdAt.toDate().toISOString() : profile.createdAt ?? null,
-        updatedAt: profile.updatedAt?.toDate?.() ? profile.updatedAt.toDate().toISOString() : profile.updatedAt ?? null,
+        createdAt: profile.createdAt?.toDate?.()
+          ? profile.createdAt.toDate().toISOString()
+          : (profile.createdAt ?? null),
+        updatedAt: profile.updatedAt?.toDate?.()
+          ? profile.updatedAt.toDate().toISOString()
+          : (profile.updatedAt ?? null),
       };
       return transformedProfile;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const profileSlice = createSlice({

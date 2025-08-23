@@ -27,7 +27,6 @@ export const useAuthToken = () => {
   return useSelector(getToken);
 };
 
-
 export const useIsAuthenticated = () => {
   return useSelector(getIsAuthenticated);
 };

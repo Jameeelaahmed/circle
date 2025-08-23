@@ -1,7 +1,8 @@
 import Skeleton from "@mui/material/Skeleton";
 import { MoreVertical, Trash2, LogOut } from "lucide-react";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import ShareCircleButton from "../../ShareCircleButton/ShareCircleButton";
 function ChatHeaderPresentational({
   circle,
   isLoading,
@@ -13,6 +14,9 @@ function ChatHeaderPresentational({
   closeMenu,
   hasImage
 }) {
+  const { t } = useTranslation();
+  const [showImageModal, setShowImageModal] = useState(false);
+
   useEffect(() => {
     function handleClick() {
       if (menu?.visible) closeMenu();
@@ -20,10 +24,11 @@ function ChatHeaderPresentational({
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
   }, [menu?.visible, closeMenu]);
+  if (!circle?.id) return null;
 
   return (
     <>
-      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm ltr:rounded-tr-3xl rtl:rounded-tr-3xl">
+      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm ltr:rounded-tr-3xl rtl:rounded-tl-3xl">
         {/* Left side: Image + Circle Name */}
         <div className="flex items-center gap-2">
           {isLoading ? (
@@ -44,7 +49,10 @@ function ChatHeaderPresentational({
             </>
           ) : (
             <>
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary">
+              <div
+                className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary cursor-pointer"
+                onClick={() => hasImage && setShowImageModal(true)}
+              >
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
@@ -52,8 +60,7 @@ function ChatHeaderPresentational({
                     alt={circle.circleName}
                   />
                 ) : (
-                  <span
-                    className="text-xl font-bold text-text select-none font-secondary">
+                  <span className="text-xl font-bold text-text select-none font-secondary">
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
                   </span>
                 )}
@@ -88,15 +95,28 @@ function ChatHeaderPresentational({
             onClick={onClearChat}
           >
             <Trash2 size={16} />
-            Clear Chat
+            {t("Clear Chat")}
           </button>
+          <ShareCircleButton circleId={circle.id} />
           <button
             className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors flex items-center gap-2"
             onClick={onLeaveCircle}
           >
             <LogOut size={16} />
-            Leave Circle
+            {t("Leave Circle")}
           </button>
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {showImageModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setShowImageModal(false)}>
+          <img
+            src={circle.imageUrl}
+            alt={circle.circleName}
+            className="max-w-full max-h-full rounded-2xl shadow-lg"
+            onClick={e => e.stopPropagation()} // Prevent closing when clicking the image
+          />
         </div>
       )}
     </>

@@ -1,23 +1,22 @@
 // libs
 import { motion as Motion } from "framer-motion";
 import { Link } from "react-router";
-import { ChevronDown, User, Settings, LogOut } from "lucide-react";
-
+import { ChevronDown, User, Settings, LogOut, Globe, Moon, Sun } from "lucide-react";
+import { useTranslation } from "react-i18next";
 export default function UserDropdownPresentational({
     user,
+    userId,
     isDropdownOpen,
     setIsDropdownOpen,
     dropdownRef,
     toggleDropdown,
-    dropdownItems,
+    currentLang,
+    handleLanguageChange,
+    handleLogout,
+    toggleDark,
+    darkMode
 }) {
-    // Define icons for common dropdown items
-    const itemIcons = {
-        profile: <User className="w-4 h-4" />,
-        settings: <Settings className="w-4 h-4" />,
-        logout: <LogOut className="w-4 h-4" />
-    };
-
+    const { t } = useTranslation()
     return (
         <div className="relative" ref={dropdownRef}>
             <button
@@ -51,38 +50,86 @@ export default function UserDropdownPresentational({
                     <p className="text-sm font-medium text-text truncate">
                         {user || "Guest User"}
                     </p>
-                    <p className="text-xs text-gray-400 truncate">
+                    <p className="text-xs text-text-400 truncate">
                         {user ? "Premium Account" : "Sign in to access features"}
                     </p>
                 </div>
 
-                {/* Dropdown items */}
-                <div className="py-1">
-                    {dropdownItems.map((item, index) => {
-                        const icon = itemIcons[item.iconKey] || null;
+                {/* Dropdown items in new order */}
+                <div className="py-1 flex flex-col gap-1">
+                    {/* Profile (static) */}
+                    <Link
+                        to={`/profile/${userId}`}
+                        className="hover:bg-primary/10 flex items-center px-4 py-3 text-sm text-text transition-colors gap-x-3"
+                        onClick={() => setIsDropdownOpen(false)}
+                    >
+                        <User className="w-4 h-4" />
+                        {t("Profile")}
+                    </Link>
 
-                        return item.onClick ? (
-                            <button
-                                key={index}
-                                onClick={item.onClick}
-                                className="hover:bg-primary/10 w-full flex items-center px-4 py-3 ltr:text-left rtl:text-right text-sm text-text transition-colors gap-3"
-                                type="button"
-                            >
-                                {icon}
-                                {item.label}
-                            </button>
-                        ) : (
-                            <Link
-                                key={index}
-                                to={item.href}
-                                className="hover:bg-primary/10 flex items-center px-4 py-3 text-sm text-text transition-colors gap-3"
-                                onClick={() => setIsDropdownOpen(false)}
-                            >
-                                {icon}
-                                {item.label}
-                            </Link>
-                        )
-                    })}
+                    {/* Language toggle switcher */}
+                    <div className="flex items-center justify-between px-4 py-2">
+                        <div className="flex items-center gap-x-3">
+                            <Globe className="w-4 h-4 text-text" />
+                            <span className="text-sm text-text">
+                                {currentLang === "ar" ? "العربية" : "English"}
+                            </span>
+                        </div>
+                        <button
+                            className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none ${currentLang === "ar"
+                                ? "bg-primary/60"
+                                : "bg-secondary/60"
+                                }`}
+                            onClick={() => handleLanguageChange(currentLang === "ar" ? "en" : "ar")}
+                            aria-label="Toggle language"
+                        >
+                            <span
+                                className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-main shadow transition-transform duration-200 ${currentLang === "ar"
+                                    ? "translate-x-6"
+                                    : "translate-x-0"
+                                    }`}
+                            />
+                        </button>
+                    </div>
+
+                    {/* Dark/Light mode toggle switcher */}
+                    <div className="flex items-center justify-between px-4 py-2">
+                        <div className="flex items-center gap-x-3">
+                            {darkMode ? (
+                                <Moon className="w-4 h-4 text-text" />
+                            ) : (
+                                <Sun className="w-4 h-4 text-text" />
+                            )}
+                            <span className="text-sm text-text">
+                                {darkMode ? t("Dark Mode") : t("Light Mode")}
+                            </span>
+                        </div>
+                        <button
+                            className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none ${darkMode
+                                ? "bg-primary/60"
+                                : "bg-secondary/60"
+                                }`}
+                            onClick={toggleDark}
+                            aria-label="Toggle theme"
+                        >
+                            <span
+                                className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-main shadow transition-transform duration-200 ${darkMode
+                                    ? "translate-x-6"
+                                    : "translate-x-0"
+                                    }`}
+                            />
+                        </button>
+                    </div>
+
+                    {/* Logout (static) */}
+                    <button
+                        onClick={handleLogout}
+                        className="hover:bg-primary/10 w-full flex items-center px-4 py-3 ltr:text-left rtl:text-right text-sm text-text transition-colors gap-x-3"
+                        type="button"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        {t("Logout")}
+                    </button>
                 </div>
             </Motion.div>
         </div>

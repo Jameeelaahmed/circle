@@ -1,19 +1,20 @@
 import ModalHeading from '../ModalHeading/ModalHeading';
-
+import { useTranslation } from 'react-i18next';
 function MessageInfoModalPresentational({ onClose, message, formatTime, seenUsers, loading }) {
+    const { t } = useTranslation();
     return (
         <>
-            <ModalHeading title="Message Info" onClose={onClose} />
+            <ModalHeading title={t("Message Info")} onClose={onClose} />
 
             {/* Content */}
             <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
                 {/* Message preview */}
                 <div className="bg-primary/10 rounded-lg p-3">
-                    <div className="text-xs text-text/60 mb-1">Your message</div>
+                    <div className="text-xs text-text/60 mb-1">{t("Your message")}</div>
                     <div className="text-sm text-text">
-                        {message.messageType === 'audio' ? '🎤 Voice message' :
-                            message.messageType === 'image' ? '📷 Photo' :
-                                message.messageType === 'video' ? '🎥 Video' :
+                        {message.messageType === 'audio' ? t('Voice message') :
+                            message.messageType === 'image' ? t('Photo') :
+                                message.messageType === 'video' ? t('Video') :
                                     message.text}
                     </div>
                     <div className="text-xs text-text/60 mt-1">
@@ -24,16 +25,16 @@ function MessageInfoModalPresentational({ onClose, message, formatTime, seenUser
                 {/* Seen by section */}
                 <div>
                     <div className="text-sm font-medium text-text/80 mb-2">
-                        Seen by {seenUsers.length} {seenUsers.length === 1 ? 'person' : 'people'}
+                        {t("Seen by")} {seenUsers.length} {seenUsers.length === 1 ? t('person') : t('people')}
                     </div>
 
                     {loading ? (
                         <div className="text-center py-4">
-                            <div className="text-text/60">Loading...</div>
+                            <div className="text-text/60">{t("Loading...")}</div>
                         </div>
                     ) : seenUsers.length === 0 ? (
                         <div className="text-center py-4">
-                            <div className="text-text/60">No one has seen this message yet</div>
+                            <div className="text-text/60">{t("No one has seen this message yet")}</div>
                         </div>
                     ) : (
                         <div className="space-y-2">
@@ -45,7 +46,7 @@ function MessageInfoModalPresentational({ onClose, message, formatTime, seenUser
                                     <div className="flex-1">
                                         <div className="text-sm font-medium text-text">{user.name}</div>
                                         <div className="text-xs text-text/60">
-                                            Seen {formatTime(user.seenAt)}
+                                            {t("Seen")} {formatTime(user.seenAt)}
                                         </div>
                                     </div>
                                 </div>

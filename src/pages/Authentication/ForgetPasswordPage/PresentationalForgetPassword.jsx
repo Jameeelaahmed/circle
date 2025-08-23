@@ -108,7 +108,7 @@ export default function PresentationalForgetPassword({
                 <h1 className="mb-2 text-2xl font-bold text-text">
                   Forgot Password?
                 </h1>
-                <p className="text-gray-300">
+                <p className="text-text-300">
                   No worries! Enter your email and we'll send you a reset link
                 </p>
               </Motion.div>
@@ -118,7 +118,7 @@ export default function PresentationalForgetPassword({
                 <Motion.div className="mb-6" variants={itemVariants}>
                   <label
                     htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-gray-300"
+                    className="mb-2 block text-sm font-medium text-text-300"
                   >
                     Email Address
                   </label>
@@ -128,7 +128,7 @@ export default function PresentationalForgetPassword({
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-lg border border-text/20 bg-text/10 px-4 py-3 text-text placeholder-gray-400 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-purple-400 focus:outline-none"
+                      className="w-full rounded-lg border border-text/20 bg-text/10 px-4 py-3 text-text placeholder-text-400 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-purple-400 focus:outline-none"
                       placeholder="Enter your email"
                       required
                       whileFocus={{ scale: 1.02 }}
@@ -143,7 +143,7 @@ export default function PresentationalForgetPassword({
                       animate={{ rotate: email ? 360 : 0 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <Mail className="h-5 w-5 text-gray-400" />
+                      <Mail className="h-5 w-5 text-text-400" />
                     </Motion.div>
                   </Motion.div>
                 </Motion.div>
@@ -211,7 +211,7 @@ export default function PresentationalForgetPassword({
               <Motion.div className="mt-6 text-center" variants={itemVariants}>
                 <Link to={"/login"}>
                   <Motion.button
-                    className="inline-flex cursor-pointer items-center gap-2 text-gray-300 transition-colors duration-300 hover:text-text"
+                    className="inline-flex cursor-pointer items-center gap-2 text-text-300 transition-colors duration-300 hover:text-text"
                     whileHover={{ x: -5 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
@@ -247,7 +247,7 @@ export default function PresentationalForgetPassword({
               </Motion.h2>
 
               <Motion.p
-                className="mb-6 text-gray-300"
+                className="mb-6 text-text-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}

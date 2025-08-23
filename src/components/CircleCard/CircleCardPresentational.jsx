@@ -1,4 +1,6 @@
 import { User, Trash2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+
 export default function CircleCardPresentational({
   hasImage,
   members,
@@ -11,18 +13,13 @@ export default function CircleCardPresentational({
   membersByCircle,
   isOwner,
   openDeleteCircleModal,
+  sendingRequestId
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <div
-        className="
-    group relative overflow-hidden rounded-3xl p-3 sm:p-4 md:p-5
-    transition-all duration-300 hover:shadow-xl
-    cursor-pointer
-    w-full
-    min-w-0
-    flex flex-col
-    "
+        className="group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-3xl p-3 transition-all duration-300 hover:shadow-xl sm:p-4 md:p-5"
         style={{
           background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
           backdropFilter: "blur(10px)",
@@ -37,9 +34,9 @@ export default function CircleCardPresentational({
 
         {/* Content container */}
         <div className="relative z-10">
-          <div className="flex flex-col sm:flex-row justify-between gap-2">
+          <div className="flex flex-col justify-between gap-2 sm:flex-row">
             <div className="mb-2 flex items-center space-x-2 sm:mb-4 sm:space-x-4">
-              <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center overflow-hidden rounded-full border border-primary">
+              <div className="border-primary flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border sm:h-12 sm:w-12">
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
@@ -48,7 +45,7 @@ export default function CircleCardPresentational({
                   />
                 ) : (
                   <span
-                    className="text-xl font-bold text-text select-none"
+                    className="text-text text-xl font-bold select-none"
                     style={{ fontFamily: "var(--font-secondary)" }}
                   >
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
@@ -56,25 +53,24 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-base font-bold text-primary sm:text-lg break-words">
+                <h3
+                  className="text-base font-bold text-primary sm:text-lg break-words max-w-[240px] truncate"
+                  title={circle.circleName}
+                >
                   {circle.circleName}
                 </h3>
                 <p
                   className="mt-1 flex items-center text-xs sm:text-sm"
                   style={{ color: "var(--color-secondary)" }}
                 >
-                  <User className="mr-1.5 h-3.5 w-3.5" />
-                  {members.length} {members.length === 1 ? "Member" : "Members"}
+                  <User className="ltr:mr-1.5 rtl:ml-1.5 h-3.5 w-3.5" />
+                  {members.length} {members.length === 1 ? t("Member") : t("Members")}
                 </p>
               </div>
             </div>
             {isOwner && (
               <button
-                className="ml-0 sm:ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
-                style={{
-                  color: "var(--color-secondary)",
-                  background: "rgba(var(--color-secondary-rgb), 0.1)",
-                }}
+                className="text-secondary bg-secondary/10 ml-0 sm:ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
                 onClick={(e) => {
                   e.stopPropagation();
                   openDeleteCircleModal(circle);
@@ -86,8 +82,9 @@ export default function CircleCardPresentational({
             )}
           </div>
           <p
-            className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm break-words"
+            className="mb-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm break-words max-w-[180px]"
             style={{ color: "rgba(173, 186, 199, 0.95)" }}
+            title={circle.description}
           >
             {circle.description}
           </p>
@@ -104,18 +101,20 @@ export default function CircleCardPresentational({
                 ))}
                 {circle.interests.length > 4 && (
                   <span className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm">
-                    +{circle.interests.length - 4} more
+                    +{circle.interests.length - 4} {t("more")}
                   </span>
                 )}
               </div>
               {!(membersByCircle?.[circle.id] || []).some(
-                (member) => member.id === user?.uid
+                (member) => member.id === user?.uid,
               ) && (
                   <button
-                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm cursor-pointer"
                     onClick={(e) => handleJoinRequest(circle.id, e)}
                   >
-                    {isRequestPending ? "Request Sent" : "Join Circle"}
+                    {sendingRequestId === circle.id
+                      ? t("Sending Request...")
+                      : isRequestPending ? t("Request Sent") : t("Join Circle")}
                   </button>
                 )}
             </>

@@ -194,25 +194,25 @@ export default function MemoryUploadPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Image Upload */}
             <div>
-              <label className="mb-3 block text-sm font-medium text-gray-700">
+              <label className="mb-3 block text-sm font-medium text-text-700">
                 Upload Pictures
               </label>
 
               {!currentMemory.imagePreviews?.length ? (
                 <div
                   className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-300 ${isDragging
-                      ? "scale-105 border-purple-400 bg-purple-50"
-                      : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
+                    ? "scale-105 border-purple-400 bg-purple-50"
+                    : "border-text-300 hover:border-purple-400 hover:bg-purple-50"
                     }`}
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                 >
-                  <Camera className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-                  <p className="mb-2 text-lg font-medium text-gray-600">
+                  <Camera className="mx-auto mb-4 h-12 w-12 text-text-400" />
+                  <p className="mb-2 text-lg font-medium text-text-600">
                     Drop your images here or click to browse
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-text-500">
                     PNG, JPG, GIF up to 10MB each
                   </p>
                   <input
@@ -248,7 +248,7 @@ export default function MemoryUploadPage() {
 
                   <div className="flex items-center gap-2">
                     <label className="relative inline-block">
-                      <span className="cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+                      <span className="cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium text-text-700 transition hover:bg-text-50">
                         Add more
                       </span>
                       <input
@@ -263,7 +263,7 @@ export default function MemoryUploadPage() {
                     <button
                       type="button"
                       onClick={clearAllImages}
-                      className="rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                      className="rounded-xl border px-4 py-2 text-sm font-medium text-text-700 transition hover:bg-text-50"
                     >
                       Clear all
                     </button>
@@ -274,7 +274,7 @@ export default function MemoryUploadPage() {
 
             {/* Memory Name */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-text-700">
                 Memory Name
               </label>
               <input
@@ -287,14 +287,14 @@ export default function MemoryUploadPage() {
                   }))
                 }
                 placeholder="Give your memory a special name..."
-                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-lg transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                className="w-full rounded-xl border border-text-300 px-4 py-3 text-lg transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-text-700">
                 Description
               </label>
               <textarea
@@ -307,7 +307,7 @@ export default function MemoryUploadPage() {
                 }
                 placeholder="Tell the story behind this memory..."
                 rows={4}
-                className="w-full resize-none rounded-xl border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                className="w-full resize-none rounded-xl border border-text-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>

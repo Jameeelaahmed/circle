@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header/HeaderContainer";
 import { Outlet } from "react-router";
+import HeaderContainer from "../components/Header/HeaderContainer";
 function RootLayout() {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("darkMode");
@@ -15,7 +15,7 @@ function RootLayout() {
 
   return (
     <div className={darkMode ? "light" : ""}>
-      <Header toggleDark={() => setDarkMode(!darkMode)} darkMode={darkMode} />
+      <HeaderContainer toggleDark={() => setDarkMode(!darkMode)} darkMode={darkMode} />
       <Outlet />
     </div>
   );

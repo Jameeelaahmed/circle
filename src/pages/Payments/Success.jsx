@@ -31,34 +31,34 @@ const PaymentSuccess = ({
               size={48}
             />
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">
+          <h1 className="mb-2 text-2xl font-bold text-text-900">
             Payment Successful!
           </h1>
-          <p className="text-gray-600">
+          <p className="text-text-600">
             Thank you for your purchase. Your payment has been processed
             successfully.
           </p>
         </div>
 
         {/* Payment Details */}
-        <div className="mb-6 space-y-3 rounded-xl bg-gray-50 p-6">
+        <div className="mb-6 space-y-3 rounded-xl bg-text-50 p-6">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Amount</span>
-            <span className="font-semibold text-gray-900">{amount}</span>
+            <span className="text-sm text-text-600">Amount</span>
+            <span className="font-semibold text-text-900">{amount}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Transaction ID</span>
-            <span className="font-mono text-sm text-gray-900">
+            <span className="text-sm text-text-600">Transaction ID</span>
+            <span className="font-mono text-sm text-text-900">
               {transactionId}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Email</span>
-            <span className="text-sm text-gray-900">{email}</span>
+            <span className="text-sm text-text-600">Email</span>
+            <span className="text-sm text-text-900">{email}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Date</span>
-            <span className="text-sm text-gray-900">
+            <span className="text-sm text-text-600">Date</span>
+            <span className="text-sm text-text-900">
               {new Date().toLocaleDateString()}
             </span>
           </div>

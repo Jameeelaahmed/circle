@@ -7,6 +7,8 @@ import { db } from "../../../firebase-config";
 import { useAuth } from "../../../hooks/useAuth";
 import useContextMenu from "../../../hooks/chathooks/useContextMenu";
 import { toast } from "react-toastify";
+import Skeleton from "@mui/material/Skeleton";
+
 // utils
 import { leaveCircle } from "../../../utils/leaveCircle";
 import { toastStyles } from "../../../utils/toastStyles";
@@ -42,6 +44,25 @@ function ChatHeaderContainer({ circle }) {
         setMenu(m => ({ ...m, visible: false }));
     };
 
+    if (!circle) {
+        // Show a skeleton styled like the header
+        return (
+            <div className="flex items-center gap-3 px-4 py-2 bg-main">
+                <Skeleton
+                    variant="circular"
+                    width={40}
+                    height={40}
+                    sx={{ bgcolor: "var(--color-inputsBg)", opacity: 0.5 }}
+                />
+                <Skeleton
+                    variant="text"
+                    width={160}
+                    height={28}
+                    sx={{ bgcolor: "var(--color-inputsBg)", opacity: 0.5 }}
+                />
+            </div>
+        );
+    }
     const confirmClearChat = async () => {
         try {
             if (!circle?.id) return;

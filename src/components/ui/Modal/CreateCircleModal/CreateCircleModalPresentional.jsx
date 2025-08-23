@@ -48,7 +48,7 @@ export default function CreateCircleModalPresentional({
             </label>
             <input
               type="text"
-              placeholder="enter circle name"
+              placeholder={t("enter circle name")}
               name="circleName"
               className={inputStyles}
               {...register("circleName")}
@@ -65,7 +65,7 @@ export default function CreateCircleModalPresentional({
             <Select
               options={circleTypeOptions}
               styles={customStyles}
-              placeholder="select type..."
+              placeholder={t("select type...")}
               name="circleType"
               value={
                 circleTypeOptions.find(
@@ -109,7 +109,7 @@ export default function CreateCircleModalPresentional({
           <Select
             options={circlePrivacyOptions}
             styles={customStyles}
-            placeholder="select circle privacy..."
+            placeholder={t("select circle privacy...")}
             name="circlePrivacy"
             onChange={(selectedOption) =>
               setCirclePrivacy(selectedOption ? selectedOption.value : "")
@@ -172,7 +172,7 @@ export default function CreateCircleModalPresentional({
         <div>
           <input
             type="text"
-            placeholder="Search interests..."
+            placeholder={t("Search interests...")}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className={`${inputStyles} ${'mb-2'}`}
@@ -254,7 +254,7 @@ export default function CreateCircleModalPresentional({
           <p className="text-primary text-center text-sm">
             Click to upload or drag and drop
           </p>
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="mt-1 text-xs text-text-400">
             Supports JPG, PNG (Max 5MB each)
           </p>
         </div>

@@ -56,13 +56,13 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const interestOptions = interests;
 
   const circleTypeOptions = [
-    { value: t("Permenent"), label: "Permenent" },
-    { value: t("Flash"), label: "Flash" },
+    { value: t("Permenent"), label: t("Permenent") },
+    { value: t("Flash"), label: t("Flash") },
   ];
 
   const circlePrivacyOptions = [
-    { value: t("Public"), label: "Public" },
-    { value: t("Private"), label: "Private" },
+    { value: t("Public"), label: t("Public") },
+    { value: t("Private"), label: t("Private") },
   ];
 
 
@@ -113,9 +113,9 @@ export default function CreateCircleModalContainer({ closeModal }) {
   }, [user]);
 
 
-  const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
+  const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-text-100
     shadow-inner focus:outline-none focus:ring-3 focus:ring-[var(--color-secondary)]
-    placeholder-gray-500 transition`;
+    placeholder-text-500 transition`;
   const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
   const resetAllFieldsContainer = () => {

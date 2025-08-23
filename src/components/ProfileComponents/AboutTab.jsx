@@ -1,51 +1,78 @@
-import React from "react";
-import { Plus } from "lucide-react";
-import RecentActivities from "./RecentActivities";
+import React, { useState } from "react";
+import { Plus, Check, X } from "lucide-react";
+import { updateUserProfile } from "../../fire_base/profileController/profileController";
 
-const AboutTab = ({ interests, recentActivities }) => {
+const AboutTab = ({ interests }) => {
+  const [isAdding, setIsAdding] = useState(false);
+  const [newInterest, setNewInterest] = useState("");
+
+  const handleAddInterest = async () => {
+    if (!newInterest.trim()) return;
+    await updateUserProfile({ interests: [...interests, newInterest.trim()] });
+    setNewInterest("");
+    setIsAdding(false);
+  };
+
   return (
-    <div className="px-3 py-4 sm:px-6 sm:py-6">
+    <div className="bg-text/5 rounded-[var(--rounded-rounded)] px-3 py-4 shadow-[var(--shadow-glassCard)] sm:px-6 sm:py-6">
       <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
         <div className="space-y-4 sm:space-y-6 lg:col-span-2">
+          {/* Interests Section */}
           <div>
-            <h2
-              className="mb-3 text-lg font-bold sm:text-xl text-text font-secondary"
-            >
+            <h2 className="text-text font-secondary mb-3 text-lg font-bold sm:text-xl">
               Interests
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {interests.map((interest, index) => (
                 <span
                   key={index}
-                  className="
-                    cursor-pointer px-2 py-1 text-xs font-medium
-                    transition-all duration-300 hover:scale-105
-                    sm:px-3 sm:text-sm
-                    bg-[linear-gradient(45deg,var(--color-primary)_20%,var(--color-secondary)_80%)]
-                    text-primary
-                    border border-primary/40
-                    rounded-[var(--rounded-pill)]
-                  "
+                  className="bg-accent text-text border-accent/40 rounded-[var(--rounded-pill)] border px-2 py-1 text-xs font-medium transition-all duration-300 hover:scale-105 sm:px-3 sm:text-sm"
                 >
                   {interest}
                 </span>
               ))}
-              <button
-                className="
-                  px-2 py-1 text-xs transition-all duration-300 hover:scale-105
-                  sm:px-3 sm:text-sm
-                  border-2 border-dashed border-text/40
-                  text-text
-                  rounded-rounde"
-              >
-                <Plus className="mr-1 inline h-2 w-2 sm:h-3 sm:w-3" />
-                Add
-              </button>
+
+              {/* Add Button */}
+              {!isAdding && (
+                <button
+                  className="text-text border-text/40 rounded-[var(--rounded-pill)] border-2 border-dashed px-2 py-1 text-xs transition-all duration-300 hover:scale-105 sm:px-3 sm:text-sm"
+                  onClick={() => setIsAdding(true)}
+                >
+                  <Plus className="mr-1 inline h-3 w-3 sm:h-4 sm:w-4" />
+                  Add
+                </button>
+              )}
+
+              {/* Input field when adding */}
+              {isAdding && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newInterest}
+                    onChange={(e) => setNewInterest(e.target.value)}
+                    placeholder="Enter interest..."
+                    className="bg-glass text-text border-secondary min-w-[120px] rounded-[var(--rounded-pill)] border px-3 py-1 text-xs sm:text-sm"
+                  />
+                  <button
+                    onClick={handleAddInterest}
+                    className="text-primary rounded-full p-1 transition-all duration-200"
+                  >
+                    <Check className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsAdding(false);
+                      setNewInterest("");
+                    }}
+                    className="text-accent rounded-full p-1 transition-all duration-200"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-        <RecentActivities recentActivities={recentActivities} />
       </div>
     </div>
   );

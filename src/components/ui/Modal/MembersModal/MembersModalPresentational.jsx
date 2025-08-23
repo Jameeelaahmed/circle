@@ -4,7 +4,7 @@ import { useState } from "react";
 import Select from "react-select";
 import ModalHeading from "../ModalHeading/ModalHeading";
 import customSelectStyles from "../CreateCircleModal/customSelectStyles";
-
+import { useTranslation } from "react-i18next";
 function MembersModalPresentational({
     members,
     loading,
@@ -23,7 +23,7 @@ function MembersModalPresentational({
 }) {
     // Confirmation state - inline confirmation instead of separate modal
     const [confirmRemoval, setConfirmRemoval] = useState(null); // Will store { memberId, memberName }
-
+    const { t } = useTranslation();
     const handleRemoveClick = (memberId, memberName) => {
         setConfirmRemoval({ memberId, memberName });
     };
@@ -55,14 +55,14 @@ function MembersModalPresentational({
     return (
         <div className="w-full max-w-4xl">
             {/* Header */}
-            <ModalHeading title="Circle Members" onClose={onClose} />
+            <ModalHeading title={t("Circle Members")} onClose={onClose} />
 
             {/* Add Member Section - Only for Admins */}
             {isCurrentUserAdmin && (
                 <div className="mb-6 p-4 bg-text/5 rounded-lg border border-text/10">
                     <h4 className="text-text font-medium mb-3 flex items-center gap-2">
                         <UserPlus className="w-4 h-4" />
-                        Add New Member
+                        {t("Add New Member")}
                     </h4>
                     <div className="flex gap-3 items-start">
                         <div className="flex-1 min-w-0">
@@ -72,7 +72,7 @@ function MembersModalPresentational({
                                     options={availableUsers}
                                     value={selectedNewMembers}
                                     onChange={setSelectedNewMembers}
-                                    placeholder="Select users to add..."
+                                    placeholder={t("Select users to add...")}
                                     styles={customSelectStyles}
                                     isSearchable
                                     isClearable
@@ -82,9 +82,9 @@ function MembersModalPresentational({
                         <button
                             onClick={() => selectedNewMembers && selectedNewMembers.length > 0 && onAddMembers(selectedNewMembers.map(member => member.value))}
                             disabled={!selectedNewMembers || selectedNewMembers.length === 0 || addingMembers}
-                            className="flex-shrink-0 px-4 py-2 h-12 bg-primary text-text rounded-lg hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors textspace-nowrap"
+                            className="flex-shrink-0 px-4 py-2 h-12 bg-primary text-text rounded-lg hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                         >
-                            {addingMembers ? 'Adding...' : `Add ${selectedNewMembers?.length || 0} member${selectedNewMembers?.length !== 1 ? 's' : ''}`}
+                            {addingMembers ? t('Adding...') : `${t("Add")} ${selectedNewMembers?.length || 0} ${t("member")}${selectedNewMembers?.length !== 1 ? t('s') : ''}`}
                         </button>
                     </div>
                 </div>
@@ -99,16 +99,16 @@ function MembersModalPresentational({
                         </div>
                         <div className="flex-1">
                             <h4 className="text-text font-medium mb-2">Remove Member</h4>
-                            <p className="text-gray-300 text-sm mb-4">
-                                Are you sure you want to remove <span className="font-medium text-text">{confirmRemoval.memberName}</span> from the circle? This action cannot be undone.
+                            <p className="text-text-300 text-sm mb-4">
+                                {t("Are you sure you want to remove")} <span className="font-medium text-text">{confirmRemoval.memberName}</span> {t("from the circle? This action cannot be undone.")}
                             </p>
                             <div className="flex gap-3">
                                 <button
                                     onClick={handleCancelRemoval}
                                     disabled={removingMember === confirmRemoval.memberId}
-                                    className="px-4 py-2 text-gray-300 hover:text-text hover:bg-text/5 rounded-lg transition-colors disabled:opacity-50"
+                                    className="px-4 py-2 text-text-300 hover:text-text hover:bg-text/5 rounded-lg transition-colors disabled:opacity-50"
                                 >
-                                    Cancel
+                                    {t("Cancel")}
                                 </button>
                                 <button
                                     onClick={handleConfirmRemoval}
@@ -118,10 +118,10 @@ function MembersModalPresentational({
                                     {removingMember === confirmRemoval.memberId ? (
                                         <div className="flex items-center gap-2">
                                             <div className="w-4 h-4 border-2 border-text border-t-transparent rounded-full animate-spin" />
-                                            Removing...
+                                            {t("Removing...")}
                                         </div>
                                     ) : (
-                                        'Remove Member'
+                                        t('Remove Member')
                                     )}
                                 </button>
                             </div>
@@ -162,7 +162,7 @@ function MembersModalPresentational({
                 ) : error ? (
                     <div className="text-center py-8">
                         <p className="text-red-400 mb-2">Error loading members</p>
-                        <p className="text-gray-400 text-sm">{error}</p>
+                        <p className="text-text-400 text-sm">{error}</p>
                     </div>
                 ) : uniqueMembers.length > 0 ? (
                     <div className="space-y-2">
@@ -194,23 +194,23 @@ function MembersModalPresentational({
                                                 </p>
                                                 {member.isOwner && (
                                                     <span className="ml-2 px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-semibold">
-                                                        Circle Owner
+                                                        {t("Circle Owner")}
                                                     </span>
                                                 )}
                                                 {!member.isOwner && member.isAdmin && (
                                                     <span className="ml-2 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">
-                                                        Admin
+                                                        {t("Admin")}
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center space-x-2 mt-1">
-                                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-400' : 'bg-gray-400'}`} />
-                                                <p className={`text-sm ${member.isOnline ? 'text-green-400' : 'text-gray-400'}`}>
-                                                    {member.isOnline ? 'Online' : 'Offline'}
+                                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-400' : 'bg-text-400'}`} />
+                                                <p className={`text-sm ${member.isOnline ? 'text-green-400' : 'text-text-400'}`}>
+                                                    {member.isOnline ? t('Online') : t('Offline')}
                                                 </p>
                                             </div>
                                             {member.email && (
-                                                <p className="text-xs text-gray-400 mt-1 truncate">
+                                                <p className="text-xs text-text-400 mt-1 truncate">
                                                     {member.email}
                                                 </p>
                                             )}
@@ -227,9 +227,9 @@ function MembersModalPresentational({
                                                     disabled={updatingAdmin === memberId}
                                                     className={`p-2 rounded-lg transition-colors ${member.isAdmin
                                                         ? 'text-yellow-400 hover:bg-yellow-400/10'
-                                                        : 'text-gray-400 hover:bg-text/10'
+                                                        : 'text-text-400 hover:bg-text/10'
                                                         } disabled:opacity-50`}
-                                                    title={member.isAdmin ? 'Remove Admin' : 'Make Admin'}
+                                                    title={member.isAdmin ? t('Remove Admin') : t('Make Admin')}
                                                 >
                                                     {updatingAdmin === memberId ? (
                                                         <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -242,16 +242,14 @@ function MembersModalPresentational({
                                             )}
 
                                             {(
-                                                // Owner can remove anyone except themselves
                                                 (currentUser?.uid === ownerUid) ||
-                                                // Admin can remove anyone except themselves and owner
                                                 (isCurrentUserAdmin && !member.isOwner && currentUser?.uid !== memberId)
                                             ) && (
                                                     <button
                                                         onClick={() => handleRemoveClick(memberId, member.username || 'this member')}
                                                         disabled={removingMember === memberId}
                                                         className="p-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
-                                                        title="Remove Member"
+                                                        title={t("Remove Member")}
                                                     >
                                                         {removingMember === memberId ? (
                                                             <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -268,15 +266,15 @@ function MembersModalPresentational({
                     </div>
                 ) : (
                     <div className="text-center py-8">
-                        <p className="text-gray-400">No members found</p>
+                        <p className="text-text-400">No members found</p>
                     </div>
                 )}
             </div>
 
             {/* Footer */}
             <div className="mt-6 pt-4 border-t border-text/10">
-                <p className="text-sm text-gray-400 text-center">
-                    Total members: {uniqueMembers.length}
+                <p className="text-sm text-text-400 text-center">
+                    {t("Total members:")} {uniqueMembers.length}
                 </p>
             </div>
         </div>

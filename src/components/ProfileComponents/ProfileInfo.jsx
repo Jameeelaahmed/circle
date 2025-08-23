@@ -56,7 +56,7 @@ const ProfileInfo = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "circle");
+      formData.append("upload_preset", "coverPic");
       formData.append("folder", "profilePic");
 
       const response = await fetch(
@@ -68,6 +68,7 @@ const ProfileInfo = ({
       );
 
       if (!response.ok) {
+        console.log("Error uploading avatar:", response);
         throw new Error("Failed to upload image");
       }
 

@@ -186,7 +186,7 @@ export default function PendingEventCard({ event }) {
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-8 w-8 animate-pulse rounded-full border-2 border-gray-900"
+                  className="h-8 w-8 animate-pulse rounded-full border-2 border-text-900"
                   style={{ backgroundColor: "var(--color-dark)" }}
                 ></div>
               ))}
@@ -205,7 +205,7 @@ export default function PendingEventCard({ event }) {
                 <motion.div
                   key={user.id}
                   whileHover={{ scale: 1.1, zIndex: 10 }}
-                  className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-gray-900 object-cover"
+                  className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-text-900 object-cover"
                   title={user.displayName}
                   style={{
                     backgroundColor: user.avatarPhoto

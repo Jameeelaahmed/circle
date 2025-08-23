@@ -11,6 +11,7 @@ function CirclesRequistsContainer() {
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const [requestType, setRequestType] = useState("join-request");
+    const [actionLoading, setActionLoading] = useState({}); // { [id]: "accept" | "cancel" }
 
     useEffect(() => {
         async function fetchRequests() {
@@ -41,6 +42,7 @@ function CirclesRequistsContainer() {
         const db = getFirestore();
         const request = requests.find(r => r.id === requestId);
         if (!request) return;
+        setActionLoading(prev => ({ ...prev, [requestId]: "accept" }));
 
         let memberId, memberData;
         if (requestType === "join-request") {
@@ -96,14 +98,16 @@ function CirclesRequistsContainer() {
 
         setRequests(prev => prev.filter(req => req.id !== requestId));
         dispatch(fetchUserProfile(user.uid));
+        setActionLoading(prev => ({ ...prev, [requestId]: undefined }));
     }
 
     // Cancel request
     async function handleCancel(requestId) {
         const db = getFirestore();
         const requestRef = doc(db, "circleRequests", requestId);
-        await updateDoc(requestRef, { status: "cancelled" });
+        await deleteDoc(requestRef);
         setRequests(prev => prev.filter(req => req.id !== requestId));
+        setActionLoading(prev => ({ ...prev, [requestId]: undefined }));
     }
 
     return (
@@ -114,6 +118,7 @@ function CirclesRequistsContainer() {
             onCancel={handleCancel}
             requestType={requestType}
             setRequestType={setRequestType}
+            actionLoading={actionLoading}
         />
     );
 }
