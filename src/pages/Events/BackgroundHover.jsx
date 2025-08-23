@@ -241,7 +241,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 text-text"
+      className="bg-main relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 text-text"
       style={{
         "--glow-color": glowColor,
       }}
@@ -328,7 +328,7 @@ const BackgroundHoverEffect = ({
 
       {/* Content container */}
       <div
-        className="flex w-full flex-col  overflow-hidden  pt-10 md:flex-row md:px-6"
+        className="flex w-full flex-col   overflow-hidden  pt-13 md:flex-row md:px-6"
         style={{
           color: "#c5c6c7",
         }}

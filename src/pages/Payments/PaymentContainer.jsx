@@ -101,10 +101,6 @@ function PaymentContainer() {
       ),
     },
   ];
-  return (
-    <div className="bg-main">
-      <PaymentPresentational cards={cards} />
-    </div>
-  );
+  return <PaymentPresentational cards={cards} />;
 }
 export default memo(PaymentContainer);

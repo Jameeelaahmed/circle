@@ -17,11 +17,11 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   min-height: 100vh;
-  /* background: radial-gradient(
+  background: radial-gradient(
     100.5% 100% at 51.22% 0%,
     #17284f 0%,
     #04102b 81.66%
-  ); */
+  );
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -68,11 +68,7 @@ body {
   --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-secondary: "Kode Mono", monospace;
   /** colors */
-    --color-bg-gradient:  radial-gradient(
-    100.5% 100% at 51.22% 0%,
-    #17284f 0%,
-    #04102b 81.66%
-  );
+   
   --color-main: #081020;
   --color-primary: #ac9ffa;
   --color-secondary: #4ea8de;

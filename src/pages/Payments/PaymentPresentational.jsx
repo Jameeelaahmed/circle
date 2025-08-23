@@ -7,8 +7,8 @@ function PaymentPresentational({ cards }) {
 
   return (
     <>
-      <section className="relative z-10 mt-[64px] mb-10 pb-10">
-        <div
+      <section className="relative overflow-y-hidden h-[100%] bg-main z-10 mt-[64px] mb-0 pb-20">
+        <div 
           style={{
             width: "100%",
             height: "100%",
