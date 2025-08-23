@@ -361,16 +361,16 @@ const Explore = () => {
                 <h3 className="text-secondary text-lg font-bold">
                   {event.activity || event.name || "Event"}
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-text-600">
                   <strong>Circle:</strong> {event.circleName}
                 </p>
                 {event.place && (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-text-600">
                     <strong>Place:</strong> {event.place}
                   </p>
                 )}
                 {event.day && (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-text-600">
                     <strong>Date:</strong> {event.day}
                   </p>
                 )}

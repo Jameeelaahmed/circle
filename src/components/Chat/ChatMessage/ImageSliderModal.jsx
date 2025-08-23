@@ -35,7 +35,7 @@ function ImageSliderModal({
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
             {/* Close button */}
             <button
-                className="absolute top-4 right-4 text-text text-2xl hover:text-gray-300 z-60 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+                className="absolute top-4 right-4 text-text text-2xl hover:text-text-300 z-60 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
                 onClick={closeImageSlider}
             >
                 ×
@@ -43,7 +43,7 @@ function ImageSliderModal({
 
             {/* Download button */}
             <button
-                className="absolute top-4 right-16 text-text text-lg hover:text-gray-300 z-60 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+                className="absolute top-4 right-16 text-text text-lg hover:text-text-300 z-60 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
                 onClick={() => {
                     const currentImage = imageSlider.images[imageSlider.currentIndex];
                     const link = document.createElement('a');
@@ -66,7 +66,7 @@ function ImageSliderModal({
             {/* Previous button */}
             {imageSlider.images.length > 1 && (
                 <button
-                    className="absolute left-4 text-text text-4xl hover:text-gray-300 z-60 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+                    className="absolute left-4 text-text text-4xl hover:text-text-300 z-60 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
                     onClick={prevImage}
                 >
                     ‹
@@ -93,7 +93,7 @@ function ImageSliderModal({
             {/* Next button */}
             {imageSlider.images.length > 1 && (
                 <button
-                    className="absolute right-4 text-text text-4xl hover:text-gray-300 z-60 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+                    className="absolute right-4 text-text text-4xl hover:text-text-300 z-60 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors"
                     onClick={nextImage}
                 >
                     ›
@@ -108,7 +108,7 @@ function ImageSliderModal({
                             key={img.id || idx}
                             src={img.imageUrl}
                             alt={`Thumbnail ${idx + 1}`}
-                            className={`w-16 h-16 object-cover rounded cursor-pointer border-2 hover:border-gray-300 transition-colors ${idx === imageSlider.currentIndex ? 'border-text' : 'border-transparent'
+                            className={`w-16 h-16 object-cover rounded cursor-pointer border-2 hover:border-text-300 transition-colors ${idx === imageSlider.currentIndex ? 'border-text' : 'border-transparent'
                                 }`}
                             onClick={() => setImageSlider(prev => ({ ...prev, currentIndex: idx }))}
                         />

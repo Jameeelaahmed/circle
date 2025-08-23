@@ -17,7 +17,7 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`
-                border-b-2 px-1 py-3 text-sm font-medium whitespace-nowrap capitalize
+                border-b-2 px-1 py-3 text-sm font-medium textspace-nowrap capitalize
                 transition-all duration-300 sm:py-4 sm:text-base
                 ${activeTab === tab
                   ? "border-primary text-primary"

@@ -2,8 +2,7 @@ import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDoc
 import { toast } from "react-toastify";
 import { toastStyles } from "../utils/toastStyles";
 import { usePendingRequests } from '../contexts/PendingRequests';
-
-export function useJoinCircleRequest({ circles, membersByCircle, user, profile, onClose }) {
+export function useJoinCircleRequest({ circles, membersByCircle, user, profile, onClose, setSendingRequestId }) {
     const { pendingRequests, setPendingRequests } = usePendingRequests();
 
     async function handleJoinRequest(circleId, e) {
@@ -11,7 +10,7 @@ export function useJoinCircleRequest({ circles, membersByCircle, user, profile, 
         const db = getFirestore();
         const circle = circles.find(c => c.id === circleId);
         if (!circle || !user) return;
-
+        setSendingRequestId(circleId);
         const members = membersByCircle[circle.id] || [];
         const ownerMember = members.find(member => member.isOwner);
         const circleOwnerId = ownerMember ? ownerMember.id : null;
@@ -49,6 +48,8 @@ export function useJoinCircleRequest({ circles, membersByCircle, user, profile, 
         } catch (error) {
             console.error("Join request error:", error);
             alert("Failed to send join request.");
+        } finally {
+            setSendingRequestId(null);
         }
     }
 

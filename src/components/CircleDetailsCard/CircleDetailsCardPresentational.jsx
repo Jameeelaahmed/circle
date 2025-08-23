@@ -32,9 +32,9 @@ function CircleDetailsCardPresentational({ positionClasses, isRTLState, orb }) {
           className={`flex items-center text-sm ${isRTLState ? "flex-row-reverse" : ""}`}
         >
           <div
-            className={`h-2 w-2 rounded-full ${isRTLState ? "ml-2" : "mr-2"} ${orb.status.includes("Active") ? "bg-green-500" : "bg-gray-500"}`}
+            className={`h-2 w-2 rounded-full ${isRTLState ? "ml-2" : "mr-2"} ${orb.status.includes("Active") ? "bg-green-500" : "bg-text-500"}`}
           ></div>
-          <span className={`text-gray-300 ${isRTLState ? "text-right" : ""}`}>
+          <span className={`text-text-300 ${isRTLState ? "text-right" : ""}`}>
             {orb.status}
           </span>
         </div>

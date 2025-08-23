@@ -51,7 +51,7 @@ export default function UserDropdownPresentational({
                     <p className="text-sm font-medium text-text truncate">
                         {user || "Guest User"}
                     </p>
-                    <p className="text-xs text-gray-400 truncate">
+                    <p className="text-xs text-text-400 truncate">
                         {user ? "Premium Account" : "Sign in to access features"}
                     </p>
                 </div>

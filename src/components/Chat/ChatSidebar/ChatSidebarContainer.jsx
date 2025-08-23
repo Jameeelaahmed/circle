@@ -36,12 +36,12 @@ function ChatSidebarContainer() {
     // Detect screen size
     useEffect(() => {
         const checkScreen = () => {
-            const small = window.innerWidth < 768; // Tailwind md breakpoint
+            const small = window.innerWidth < 768;
             setIsSmallScreen(small);
             if (small) {
-                setIsOpen(false); // start closed on mobile
+                setIsOpen(false);
             } else {
-                setIsOpen(true); // keep open on desktop
+                setIsOpen(true);
             }
         };
         checkScreen();

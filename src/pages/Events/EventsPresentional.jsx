@@ -1,8 +1,8 @@
 
 import BackgroundHoverEffect from "./BackgroundHover";
 
-function EventsPresentional({ calendarApp ,circlesInfo }) {
-    
+function EventsPresentional({ calendarApp, circlesInfo }) {
+
   return (
     <BackgroundHoverEffect
       textAutoHide={true}

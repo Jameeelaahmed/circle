@@ -1,6 +1,6 @@
 import VoiceMessagePlayer from "../../ui/VoiceMessagePlayer/VoiceMessagePlayer";
 import { detectTextDirection, getTextDirectionClasses } from "../../../utils/textDirection.js";
-
+import { useTranslation } from "react-i18next";
 function SingleMessage({
     msg,
     originalIdx,
@@ -17,6 +17,7 @@ function SingleMessage({
     openImageSlider,
     dir
 }) {
+    const { t } = useTranslation();
     const isMe = currentUser && (msg.senderId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
@@ -74,17 +75,17 @@ function SingleMessage({
                                     <span className="font-semibold text-primary text-xs truncate max-w-[100px]">
                                         {(msg.replyTo.senderId === msg.senderId)
                                             ? (msg.senderId === currentUser?.id)
-                                                ? 'Replied to yourself'
-                                                : `Replied to ${msg.senderName || 'User'}`
+                                                ? t('Replied to yourself')
+                                                : `${t("Replied to")} ${msg.senderName || 'User'}`
                                             : (msg.replyTo.senderName || 'User')}
                                     </span>
                                     <span
                                         className={`text-xs text-text/80 truncate max-w-[140px] ${msg.replyTo.text ? getTextDirectionClasses(msg.replyTo.text) : ''}`}
                                         dir={msg.replyTo.text ? detectTextDirection(msg.replyTo.text) : 'ltr'}
                                     >
-                                        {msg.replyTo.messageType === 'audio' ? '🎤 Voice message' :
-                                            msg.replyTo.messageType === 'image' ? '📷 Photo' :
-                                                msg.replyTo.messageType === 'video' ? '🎥 Video' :
+                                        {msg.replyTo.messageType === 'audio' ? t('Voice message') :
+                                            msg.replyTo.messageType === 'image' ? t('Photo') :
+                                                msg.replyTo.messageType === 'video' ? t('Video') :
                                                     msg.replyTo.text}
                                     </span>
                                 </div>
@@ -172,7 +173,7 @@ function SingleMessage({
                                                 >
                                                     <span>{msg.sentTime}</span>
                                                     {msg.edited && (
-                                                        <span className="text-[9px] opacity-70">(edited)</span>
+                                                        <span className="text-[9px] opacity-70">{t("(edited)")}</span>
                                                     )}
                                                 </div>
                                             )}

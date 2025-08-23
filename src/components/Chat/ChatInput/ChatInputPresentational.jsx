@@ -1,12 +1,10 @@
-import SendBtn from "../../ui/ReactBits/SendBtn/SendBtn";
 import DeleteBtn from "../../ui/ReactBits/DeleteBtn/DeleteBtn";
 import VoiceWaveform from "../../ui/VoiceWaveform/VoiceWaveform";
 import CameraView from "../../ui/CameraView/CameraViewPresentational";
-import Modal from "../../ui/Modal/Modal";
 import Skeleton from "@mui/material/Skeleton";
-import { Mic, Paperclip, Camera, Image, BarChart3 } from "lucide-react";
-import { useEffect, useRef } from "react";
-
+import { Mic, Paperclip, Camera, Image } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 function ChatInputPresentational({
   msgVal,
   handleSendMsg,
@@ -31,10 +29,9 @@ function ChatInputPresentational({
   showCameraModal,
   closeCameraModal,
   handleCapturedPhoto,
-  handleOpenPollModal,
 }) {
   const mediaMenuRef = useRef(null);
-
+  const { t } = useTranslation();
   // Close media menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -53,6 +50,15 @@ function ChatInputPresentational({
       };
     }
   }, [showMediaMenu, setShowMediaMenu]);
+  const [direction, setDirection] = useState(document.documentElement.dir || "ltr");
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDirection(document.documentElement.dir || "ltr");
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["dir"] });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="relative">
@@ -113,7 +119,7 @@ function ChatInputPresentational({
               <button
                 type="submit"
                 className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-text transition-colors"
-                title={isEditing ? "Save changes" : "Send message"}
+                title={isEditing ? t("Save Cshanges") : t("Send message")}
               >
                 <svg
                   width="20"
@@ -136,33 +142,25 @@ function ChatInputPresentational({
                     <div
                       className="bg-main border-primary/20 fixed z-[9999] min-w-[140px] rounded-lg border py-1 shadow-lg"
                       style={{
-                        bottom: "70px", // Position above the input area
-                        right: "20px", // Align with the right side
+                        bottom: "70px",
+                        ...(direction === "rtl" ? { left: "20px" } : { right: "20px" }),
                       }}
                     >
                       <button
                         onClick={handleCameraCapture}
-                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 text-left transition-colors"
+                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 ltr:text-left rtl:text-right transition-colors"
                         type="button"
                       >
                         <Camera size={16} />
-                        <span className="text-sm">Camera</span>
+                        <span className="text-sm">{t("Camera")}</span>
                       </button>
                       <button
                         onClick={handleImageUpload}
-                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 text-left transition-colors"
+                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 ltr:text-left rtl:text-right transition-colors"
                         type="button"
                       >
                         <Image size={16} />
-                        <span className="text-sm">Gallery</span>
-                      </button>
-                      <button
-                        onClick={handleOpenPollModal}
-                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 text-left transition-colors"
-                        type="button"
-                      >
-                        <BarChart3 size={16} />
-                        <span className="text-sm">Poll</span>
+                        <span className="text-sm">{t("Gallery")}</span>
                       </button>
                     </div>
                   )}

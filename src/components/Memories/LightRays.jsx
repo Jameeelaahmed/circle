@@ -202,8 +202,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   fragColor.z *= 0.5 + brightness * 0.5;
 
   if (saturation != 1.0) {
-    float gray = dot(fragColor.rgb, vec3(0.299, 0.587, 0.114));
-    fragColor.rgb = mix(vec3(gray), fragColor.rgb, saturation);
+    float text = dot(fragColor.rgb, vec3(0.299, 0.587, 0.114));
+    fragColor.rgb = mix(vec3(text), fragColor.rgb, saturation);
   }
 
   fragColor.rgb *= raysColor;
