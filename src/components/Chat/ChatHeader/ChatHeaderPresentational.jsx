@@ -53,9 +53,7 @@ function ChatHeaderPresentational({
                   />
                 ) : (
                   <span
-                    className="text-xl font-bold text-text select-none"
-                    style={{ fontFamily: "var(--font-secondary)" }}
-                  >
+                    className="text-xl font-bold text-text select-none font-secondary">
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
                   </span>
                 )}
@@ -71,7 +69,7 @@ function ChatHeaderPresentational({
             className="p-1 rounded-full hover:bg-text/10 transition-colors"
             aria-label="More options"
           >
-            <MoreVertical size={24} color="text" />
+            <MoreVertical size={24} color="var(--color-text)" />
           </button>
         </div>
       </div>
