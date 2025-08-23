@@ -3,7 +3,7 @@ import { Skeleton } from "@mui/material";
 import { useState } from "react";
 import Select from "react-select";
 import ModalHeading from "../ModalHeading/ModalHeading";
-import customSelectStyles from "../CreateCircleModal/customSelectStyles.JS";
+import customSelectStyles from "../CreateCircleModal/customSelectStyles";
 
 function MembersModalPresentational({
     members,
