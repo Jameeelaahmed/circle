@@ -9,19 +9,14 @@ import Notificaion from "../Notifications/NotificationSection";
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
-import { useTheme } from "../../hooks/useTheme";
-
 function HeaderPresentional({
   toggleDark,
   darkMode,
   isAuthLoading,
   isLoggedIn,
-  currentLang,
   navItems,
-  handleLanguageChange,
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -103,29 +98,6 @@ function HeaderPresentional({
 
         {/* Right - Controls */}
         <div className="relative flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
-          <button
-            className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center space-x-2 rounded-lg px-2 py-1 text-sm transition-all duration-200 sm:px-3 sm:py-2"
-            onClick={() =>
-              handleLanguageChange(currentLang === "ar" ? "en" : "ar")
-            }
-          >
-            {currentLang === "ar" ? "en" : "ar"}
-          </button>
-
-           {/* Theme Toggle */}
-          <button
-          type="button"
-            onClick={toggleDark}
-            className="text-primary hover:bg-primary/20 bg-inputsBg rounded-lg p-2 transition-all duration-200"
-            aria-label="Toggle theme"
-          >
-             {darkMode ? (
-            <Sun className="w-5 h-5 text-[var(--color-secondary)]" />
-          ) : (
-            <Moon className="w-5 h-5 text-[var(--color-primary)]" />
-          )}
-          </button>
-
           {/* Notifications - Always visible on header */}
           <Notificaion />
 
@@ -147,7 +119,7 @@ function HeaderPresentional({
               height={70}
             />
           ) : isLoggedIn === true ? (
-            <UserDropDownContainer />
+            <UserDropDownContainer toggleDark={toggleDark} darkMode={darkMode} />
           ) : isLoggedIn === false ? (
             <Link to="/login">
               <button className="text-primary hover:bg-primary/20 font-secondary flex items-center space-x-2 rounded-lg bg-text/10 px-2 py-1 sm:px-3 sm:py-2 tracking-wide transition-all duration-200 text-sm">
