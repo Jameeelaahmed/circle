@@ -174,7 +174,7 @@ export default function EventsContainer() {
         }}
       >
         {/* Skeleton loader */}
-        <div className="h-10 w-1/3 rounded-xl bg-gray-700/40"></div>
+        <div className="h-10 w-1/3 rounded-xl bg-text-700/40"></div>
         <div className="grid grid-cols-7 gap-2">
           {Array.from({ length: 7 }).map((_, i) => (
             <div key={i} className="h-6 rounded-md bg-text-700/30"></div>
