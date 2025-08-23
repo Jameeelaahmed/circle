@@ -10,7 +10,7 @@ function ModalHeading({ onClose, title }) {
                 <X
                     onClick={onClose}
                     size={28}
-                    className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
+                    className="hover:bg-text/30 transition-all p-1 rounded-full cursor-pointer text-text"
                 />
             </div>
         </>

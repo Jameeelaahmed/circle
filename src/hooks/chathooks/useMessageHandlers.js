@@ -22,14 +22,13 @@ export function useMessageHandlers(
     const isMember = members.some(member => member.id === userId || member.uid === userId);
 
     const handleSendMsg = async (e) => {
-        e.preventDefault();
         console.log(isMember);
-
+        e.preventDefault();
         if (!isMember) {
-
             if (onNotMember) onNotMember();
             return;
         }
+
         const value = messageManager.msgVal.current.value;
         if (!value.trim()) return;
 

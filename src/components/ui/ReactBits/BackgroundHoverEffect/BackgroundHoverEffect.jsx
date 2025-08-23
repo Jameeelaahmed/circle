@@ -245,7 +245,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-main px-4 py-6 text-white"
+      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-main px-4 py-6 text-text"
       style={{
         "--glow-color": glowColor,
       }}
@@ -254,7 +254,7 @@ const BackgroundHoverEffect = ({
         {`
           .main-background {
             --glow-color: ${glowColor};
-            color: white;
+            color: var(--color-text);
             text-align: center;
           }
           .particle::before {
@@ -270,7 +270,7 @@ const BackgroundHoverEffect = ({
           }
           .btn-back-home {
             @apply mt-8 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600
-              px-6 py-3 font-semibold text-white shadow-lg transition
+              px-6 py-3 font-semibold text-text shadow-lg transition
               hover:from-purple-700 hover:to-indigo-700 focus:outline-none
               focus:ring-4 focus:ring-purple-500/50;
           }

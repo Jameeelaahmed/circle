@@ -62,7 +62,7 @@ export default function PresentationalForgetPassword({
         {[...Array(6)].map((_, i) => (
           <Motion.div
             key={i}
-            className="absolute h-2 w-2 rounded-full bg-white opacity-20"
+            className="absolute h-2 w-2 rounded-full bg-text opacity-20"
             animate={{
               x: [0, Math.random() * 100, 0],
               y: [0, Math.random() * 100, 0],
@@ -82,7 +82,7 @@ export default function PresentationalForgetPassword({
       </div>
 
       <Motion.div
-        className="w-full max-w-md rounded-2xl border border-white/20 bg-white/10 p-8 shadow-2xl backdrop-blur-lg"
+        className="w-full max-w-md rounded-2xl border border-text/20 bg-text/10 p-8 shadow-2xl backdrop-blur-lg"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -103,9 +103,9 @@ export default function PresentationalForgetPassword({
                   variants={floatingVariants}
                   animate="animate"
                 >
-                  <Mail className="h-8 w-8 text-white" />
+                  <Mail className="h-8 w-8 text-text" />
                 </Motion.div>
-                <h1 className="mb-2 text-2xl font-bold text-white">
+                <h1 className="mb-2 text-2xl font-bold text-text">
                   Forgot Password?
                 </h1>
                 <p className="text-gray-300">
@@ -128,7 +128,7 @@ export default function PresentationalForgetPassword({
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-gray-400 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-purple-400 focus:outline-none"
+                      className="w-full rounded-lg border border-text/20 bg-text/10 px-4 py-3 text-text placeholder-gray-400 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-purple-400 focus:outline-none"
                       placeholder="Enter your email"
                       required
                       whileFocus={{ scale: 1.02 }}
@@ -168,7 +168,7 @@ export default function PresentationalForgetPassword({
                 <Motion.button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-transparent focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-text transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-transparent focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                   variants={itemVariants}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -183,7 +183,7 @@ export default function PresentationalForgetPassword({
                         exit={{ opacity: 0 }}
                       >
                         <Motion.div
-                          className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white"
+                          className="h-4 w-4 rounded-full border-2 border-text/30 border-t-text"
                           animate={{ rotate: 360 }}
                           transition={{
                             duration: 1,
@@ -211,7 +211,7 @@ export default function PresentationalForgetPassword({
               <Motion.div className="mt-6 text-center" variants={itemVariants}>
                 <Link to={"/login"}>
                   <Motion.button
-                    className="inline-flex cursor-pointer items-center gap-2 text-gray-300 transition-colors duration-300 hover:text-white"
+                    className="inline-flex cursor-pointer items-center gap-2 text-gray-300 transition-colors duration-300 hover:text-text"
                     whileHover={{ x: -5 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
@@ -238,7 +238,7 @@ export default function PresentationalForgetPassword({
               </Motion.div>
 
               <Motion.h2
-                className="mb-4 text-2xl font-bold text-white"
+                className="mb-4 text-2xl font-bold text-text"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -258,7 +258,7 @@ export default function PresentationalForgetPassword({
               </Motion.p>
 
               <Motion.button
-                className="rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:outline-none"
+                className="rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold text-text transition-all duration-300 hover:from-purple-600 hover:to-pink-600 focus:ring-2 focus:ring-purple-400 focus:outline-none"
                 onClick={() => setIsSubmitted(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

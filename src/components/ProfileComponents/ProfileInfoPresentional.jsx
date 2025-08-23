@@ -64,7 +64,7 @@ const ProfileInfoPresentioal = ({
                   !isUploading && handleLeave(e, "var(--shadow-btnPrimary)")
                 }
               >
-                <Camera className="h-3 w-3 text-white sm:h-4 sm:w-4" />
+                <Camera className="h-3 w-3 text-text sm:h-4 sm:w-4" />
                 <input
                   type="file"
                   accept="image/*"

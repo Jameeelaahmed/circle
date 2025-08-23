@@ -380,7 +380,7 @@ export default function CircleScreen() {
         getShowPlanButtonText() && (
           <div className="absolute top-[85px] right-[15px] z-10">
             <button
-              className="bg-[var(--color-primary)] rounded-full py-2 px-4 text-white font-bold"
+              className="bg-[var(--color-primary)] rounded-full py-2 px-4 text-text font-bold"
               onClick={() => setPinVisible(true)}
             >
               {getShowPlanButtonText()}

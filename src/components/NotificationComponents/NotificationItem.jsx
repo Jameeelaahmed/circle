@@ -30,7 +30,7 @@ const NotificationItem = ({ notification, markAsRead, removeNotification }) => {
               className="flex h-10 w-10 items-center justify-center rounded-full"
               style={{ backgroundColor: "var(--color-primary)", opacity: 0.8 }}
             >
-              <User className="h-5 w-5" style={{ color: "white" }} />
+              <User className="h-5 w-5 text-text" />
             </div>
           )}
         </div>
@@ -173,9 +173,8 @@ const NotificationItem = ({ notification, markAsRead, removeNotification }) => {
 
   return (
     <div
-      className={`hover:bg-opacity-50 group relative cursor-pointer border-b p-4 transition-all duration-200 ${
-        !notification.read ? "bg-opacity-30" : ""
-      }`}
+      className={`hover:bg-opacity-50 group relative cursor-pointer border-b p-4 transition-all duration-200 ${!notification.read ? "bg-opacity-30" : ""
+        }`}
       style={{
         borderColor: "color-mix(in srgb, var(--color-text) 10%, transparent)",
         backgroundColor: !notification.read

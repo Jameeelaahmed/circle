@@ -24,7 +24,7 @@ export default customStyles = {
     }),
     input: (provided) => ({
         ...provided,
-        color: "white",
+        color: "var(--color-text)",
         margin: "0",
         padding: "0",
     }),
@@ -37,7 +37,7 @@ export default customStyles = {
     }),
     singleValue: (provided) => ({
         ...provided,
-        color: "white",
+        color: "var(--color-text)",
     }),
     multiValue: (provided) => ({
         ...provided,
@@ -48,21 +48,21 @@ export default customStyles = {
     }),
     multiValueLabel: (provided) => ({
         ...provided,
-        color: "white",
+        color: "var(--color-text)",
         padding: "2px 6px",
         fontSize: "11px", // Smaller font size
         overflow: "hidden",
         textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        maxWidth: "90px", // Leave space for remove button
+        var(--color- text) Space: "nowrap",
+            maxWidth: "90px", // Leave space for remove button
     }),
-    multiValueRemove: (provided) => ({
-        ...provided,
-        color: "white",
-        ":hover": {
-            backgroundColor: "rgba(0,0,0,0.2)",
-        },
-    }),
+multiValueRemove: (provided) => ({
+    ...provided,
+    color: "var(--color-text)",
+    ":hover": {
+        backgroundColor: "rgba(0,0,0,0.2)",
+    },
+}),
     menu: (provided) => ({
         ...provided,
         backgroundColor: "var(--color-main)",
@@ -72,34 +72,34 @@ export default customStyles = {
         width: "100%",
         maxWidth: "400px", // Match control width
     }),
-    option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isSelected
-            ? "var(--color-primary)"
-            : state.isFocused
-                ? "rgba(255, 107, 139, 0.2)"
-                : "transparent",
-        color: "white",
-        ":active": {
-            backgroundColor: "var(--color-primary)",
-        },
-    }),
-    indicatorsContainer: (provided) => ({
-        ...provided,
-        paddingRight: "6px",
-    }),
-    dropdownIndicator: (provided) => ({
-        ...provided,
-        color: "var(--color-primary)",
-        ":hover": {
-            color: "var(--color-primary)",
-        },
-    }),
-    clearIndicator: (provided) => ({
-        ...provided,
-        color: "var(--color-primary)",
-        ":hover": {
-            color: "white",
-        },
-    }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected
+                ? "var(--color-primary)"
+                : state.isFocused
+                    ? "rgba(255, 107, 139, 0.2)"
+                    : "transparent",
+            color: "var(--color-text)",
+            ":active": {
+                backgroundColor: "var(--color-primary)",
+            },
+        }),
+            indicatorsContainer: (provided) => ({
+                ...provided,
+                paddingRight: "6px",
+            }),
+                dropdownIndicator: (provided) => ({
+                    ...provided,
+                    color: "var(--color-primary)",
+                    ":hover": {
+                        color: "var(--color-primary)",
+                    },
+                }),
+                    clearIndicator: (provided) => ({
+                        ...provided,
+                        color: "var(--color-primary)",
+                        ":hover": {
+                            color: "var(--color-text)",
+                        },
+                    }),
 };

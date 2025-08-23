@@ -13,12 +13,12 @@ const BlockedModal = forwardRef((props, ref) => {
         <h2 className="text-2xl font-bold mb-3" style={{ fontFamily: "var(--font-primary)" }}>
           Account Blocked
         </h2>
-        <p className="mb-6 text-center text-[var(--color-text)] font-light" style={{ fontFamily: "var(--font-primary)" }}>
+        <p className="mb-6 text-center text-text font-light" style={{ fontFamily: "var(--font-primary)" }}>
           Your account has been blocked by admin.
         </p>
         <button
           onClick={handleClose}
-          className="px-6 py-2 bg-[var(--color-accent)] rounded-[var(--rounded-pill)] text-white font-semibold shadow-[var(--shadow-btnPrimary)] hover:shadow-[var(--shadow-btnPrimaryHover)] transition-shadow duration-300 cursor-pointer"
+          className="px-6 py-2 bg-[var(--color-accent)] rounded-[var(--rounded-pill)] text-text font-semibold shadow-[var(--shadow-btnPrimary)] hover:shadow-[var(--shadow-btnPrimaryHover)] transition-shadow duration-300 cursor-pointer"
           style={{ fontFamily: "var(--font-primary)" }}
           autoFocus
         >

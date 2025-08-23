@@ -91,30 +91,33 @@ export function scrollToMessage(messageId, messageRefs) {
         }, 1500);
     }
 }
-export async function handleDownloadMedia(message) {
-    const url = message.mediaUrl || message.imageUrl || message.photoUrl;
+export function handleDownloadMedia(message) {
+    let url = message.mediaUrl || message.imageUrl || message.photoUrl;
     if (!url) return;
 
-    try {
-        const response = await fetch(url, { mode: "cors" });
-        if (!response.ok) throw new Error("Network response was not ok");
+    // Extract filename from URL
+    const match = url.match(/\/([^/]+)$/);
+    const originalName = match ? match[1] : `${Date.now()}`;
 
-        const blob = await response.blob();
-        const objectUrl = window.URL.createObjectURL(blob);
-
-        // Extract name from URL if available
-        const match = url.match(/\/([^/]+)$/);
-        const originalName = match ? match[1] : `${Date.now()}`;
-
-        const link = document.createElement("a");
-        link.href = objectUrl;
-        link.download = originalName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        window.URL.revokeObjectURL(objectUrl);
-    } catch (error) {
-        console.error("Download failed:", error);
+    // ✅ If Cloudinary URL, inject fl_attachment to force download
+    if (url.includes("res.cloudinary.com")) {
+        url = url.replace("/upload/", `/upload/fl_attachment:${originalName}/`);
     }
+
+    // ✅ Use XHR blob download
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "blob";
+    xhr.onload = function () {
+        const a = document.createElement("a");
+        a.href = window.URL.createObjectURL(xhr.response);
+        a.download = originalName; // custom filename
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+    xhr.open("GET", url, true);
+    xhr.send();
 }
+
+

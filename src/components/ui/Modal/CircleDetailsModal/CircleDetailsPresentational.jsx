@@ -276,7 +276,7 @@ export default function CircleDetailsPresentational({
                                 <button
                                     type="button"
                                     onClick={() => removeImage()}
-                                    className="mt-2 px-3 py-1 rounded bg-red-500 text-white text-xs"
+                                    className="mt-2 px-3 py-1 rounded bg-red-500 text-text text-xs"
                                 >
                                     {t("Remove Image")}
                                 </button>

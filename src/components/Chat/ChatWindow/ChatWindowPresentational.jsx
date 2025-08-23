@@ -15,7 +15,7 @@ function ChatWindowPresentational({
   const [pollDocId, setPollDocId] = useState(null);
   const [showStepper, setShowStepper] = useState(false);
   return (
-    <div className="flex h-full relative min-h-0 max-w-full flex-col overflow-hidden bg-white/5 shadow-lg ltr:rounded-tr-3xl ltr:rounded-br-3xl rtl:rounded-tl-3xl rtl:rounded-bl-3xl">
+    <div className="flex h-full relative min-h-0 max-w-full flex-col overflow-hidden bg-text/5 shadow-lg ltr:rounded-tr-3xl ltr:rounded-br-3xl rtl:rounded-tl-3xl rtl:rounded-bl-3xl">
       <div className="shrink-0">
         <ChatHeaderContainer circle={selectedCircle} />
       </div>
