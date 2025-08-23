@@ -44,7 +44,6 @@ function NotMemberModalContainer({ onClose }) {
     }, [user, circles, setPendingRequests]);
 
     if (!selectedCircle) {
-        // Show a loading spinner or fallback UI
         return <div>Loading...</div>;
     }
     const isRequestPending = pendingRequests?.includes(selectedCircle?.id);

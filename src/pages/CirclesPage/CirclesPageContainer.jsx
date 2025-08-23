@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import { getFirestore, collection, doc, query, where, getDocs, writeBatch } from "firebase/firestore";
-import { toast } from "react-toastify";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { fetchCircles, listenToCircles } from '../../features/circles/circlesSlice';
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
@@ -13,6 +12,7 @@ import { getProfileData } from '../../features/userProfile/profileSlice';
 import { useAuth } from '../../hooks/useAuth';
 import { useJoinCircleRequest } from '../../hooks/useJoinCircleRequest';
 import { useSyncPendingRequests } from "../../contexts/PendingRequests";
+import { useDeleteCircle } from "../../hooks/useDeleteCircle";
 // components
 import { Plus } from "lucide-react";
 import CirclesPagePresentational from './CirclesPagePresentational'
@@ -165,54 +165,15 @@ function CirclesPageContainer() {
     // Delete logic inside the container
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const handleDeleteCircle = async () => {
-        if (!isOwner || !selectedCircleToDelete) return;
-        setIsDeleting(true);
+    const { deleteCircle } = useDeleteCircle({ t, dispatch, fetchCircles });
 
-        try {
-            const db = getFirestore();
-            const batch = writeBatch(db);
-
-            // 1. Remove the circle from all users' joinedCircles
-            const usersSnapshot = await getDocs(collection(db, "users"));
-            usersSnapshot.forEach(userDoc => {
-                const userData = userDoc.data();
-                if (
-                    Array.isArray(userData.joinedCircles) &&
-                    userData.joinedCircles.includes(selectedCircleToDelete.id)
-                ) {
-                    const updatedCircles = userData.joinedCircles.filter(
-                        id => id !== selectedCircleToDelete.id
-                    );
-                    batch.update(userDoc.ref, { joinedCircles: updatedCircles });
-                }
-            });
-
-            // 2. Delete related join requests and invitations
-            const requestsQuery = query(
-                collection(db, "circleRequests"),
-                where("circleId", "==", selectedCircleToDelete.id)
-            );
-            const requestsSnapshot = await getDocs(requestsQuery);
-            requestsSnapshot.forEach(requestDoc => {
-                batch.delete(requestDoc.ref);
-            });
-
-            // 3. Delete the circle document itself (inside batch!)
-            batch.delete(doc(db, "circles", selectedCircleToDelete.id));
-
-            // Commit everything together
-            await batch.commit();
-
-            toast.success(t("Circle deleted successfully!"));
-            dispatch(fetchCircles());
-            closeCircleDeleteModal();
-        } catch (error) {
-            toast.error("Failed to delete circle.");
-            console.error(error);
-        } finally {
-            setIsDeleting(false);
-        }
+    const handleDeleteCircle = () => {
+        deleteCircle({
+            selectedCircleToDelete,
+            isOwner,
+            closeCircleDeleteModal,
+            setIsDeleting,
+        });
     };
 
     useSyncPendingRequests(user);
@@ -258,9 +219,7 @@ function CirclesPageContainer() {
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
-                        <div className="flex justify-center items-center h-full">
-                            <span>{t("Loading circles...")}</span>
-                        </div>
+                        <CirclesSkeltonCard />
                     ) : (
                         <CirclesPagePresentational
                             circles={paginatedCircles}

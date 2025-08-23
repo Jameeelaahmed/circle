@@ -53,7 +53,10 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-primary text-base font-bold break-words sm:text-lg">
+                <h3
+                  className="text-base font-bold text-primary sm:text-lg break-words max-w-[240px] truncate"
+                  title={circle.circleName}
+                >
                   {circle.circleName}
                 </h3>
                 <p
@@ -67,11 +70,7 @@ export default function CircleCardPresentational({
             </div>
             {isOwner && (
               <button
-                className="ml-0 self-start rounded-full p-2 transition-transform hover:scale-110 sm:ml-2"
-                style={{
-                  color: "var(--color-secondary)",
-                  background: "rgba(var(--color-secondary-rgb), 0.1)",
-                }}
+                className="text-secondary bg-secondary/10 ml-0 sm:ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
                 onClick={(e) => {
                   e.stopPropagation();
                   openDeleteCircleModal(circle);
@@ -83,8 +82,9 @@ export default function CircleCardPresentational({
             )}
           </div>
           <p
-            className="mb-1.5 line-clamp-3 text-xs leading-relaxed break-words sm:text-sm"
+            className="mb-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm break-words max-w-[180px]"
             style={{ color: "rgba(173, 186, 199, 0.95)" }}
+            title={circle.description}
           >
             {circle.description}
           </p>
