@@ -20,8 +20,23 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../hooks/useAuth";
 
+
 export default function EventsContainer() {
   const { userId } = useAuth();
+
+  // Theme state
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved ? saved === "dark" : true;
+  });
+
+  const toggleTheme = () => {
+    setIsDark((prev) => {
+      const newTheme = prev ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      return !prev;
+    });
+  };
 
   const [events, setEvents] = useState(() => {
     const saved = localStorage.getItem("userEvents");
@@ -40,10 +55,10 @@ export default function EventsContainer() {
 
   const getRandomColor = () => {
     const colors = [
-      "#FF6B6B",
-      "#6BCB77",
-      "#4D96FF",
-      "#FFB84C",
+      "#f78fb3",
+      "#4ea8de",
+      "#ac9ffa",
+      "#17284f",
       "#845EC2",
       "#00C9A7",
       "#FF9671",
@@ -57,12 +72,13 @@ export default function EventsContainer() {
 
     const fetchCirclesAndEvents = async () => {
       setLoading(true);
+
       try {
         const circlesRef = collection(db, "circles");
         const circlesSnap = await getDocs(circlesRef);
 
+        const fetchedCalendars = {};
         let allEvents = [];
-        let fetchedCalendars = {};
 
         for (const circleDoc of circlesSnap.docs) {
           const circleId = circleDoc.id;
@@ -72,46 +88,51 @@ export default function EventsContainer() {
           const memberRef = doc(db, "circles", circleId, "members", userId);
           const memberSnap = await getDoc(memberRef);
 
-          if (memberSnap.exists()) {
-            // build calendar entry
-            if (!fetchedCalendars[circleId]) {
-              fetchedCalendars[circleId] = {
-                colorName: getRandomColor(),
-                label: circleData.circleName || "Unnamed Circle", 
-                image: circleData.imageUrl || circleData.image || "",
-              };
-            }
+          if (!memberSnap.exists()) continue;
 
-            // fetch events inside the circle
-            const eventsRef = collection(db, "circles", circleId, "events");
-            const eventsSnap = await getDocs(eventsRef);
-
-            const circleEvents = eventsSnap.docs.map((docSnap) => {
-              const data = docSnap.data();
-              let startDate;
-
-              if (data.day instanceof Timestamp) startDate = data.day.toDate();
-              else if (data.day) startDate = new Date(data.day);
-              else if (data.createdAt instanceof Timestamp)
-                startDate = data.createdAt.toDate();
-              else startDate = new Date();
-
-              const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); 
-
-              return {
-                id: docSnap.id,
-                title: data.activity || "Untitled Event",
-                start: formatDate(startDate),
-                end: formatDate(endDate),
-                calendarId: circleId,
-                description: `${data.place || ""} - ${data.Location || ""}`,
-                circleName: circleData.name || "Unnamed Circle", 
-                circleImage: circleData.imageUrl || circleData.image || "", 
-              };
-            });
-
-            allEvents = [...allEvents, ...circleEvents];
+          // Build calendar info
+          if (!fetchedCalendars[circleId]) {
+            fetchedCalendars[circleId] = {
+              colorName: getRandomColor(),
+              label: circleData.circleName || "Unnamed Circle",
+              image: circleData.imageUrl || circleData.image || "",
+              events: [],
+            };
           }
+
+          const calendarInfo = fetchedCalendars[circleId];
+
+          // Fetch events inside the circle
+          const eventsRef = collection(db, "circles", circleId, "events");
+          const eventsSnap = await getDocs(eventsRef);
+
+          const circleEvents = eventsSnap.docs.map((docSnap) => {
+            const data = docSnap.data();
+            let startDate = new Date();
+            if (data.day instanceof Timestamp) startDate = data.day.toDate();
+            else if (data.day) startDate = new Date(data.day);
+            else if (data.createdAt instanceof Timestamp)
+              startDate = data.createdAt.toDate();
+
+            const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
+
+            return {
+              id: docSnap.id,
+              title: data.activity || "Untitled Event",
+              start: formatDate(startDate),
+              end: formatDate(endDate),
+              calendarId: circleId,
+              description: `Circle : ${calendarInfo.label || ""} going to - ${
+                data.place || ""
+              } - ${data.Location || ""}`,
+              circleName: calendarInfo.label,
+              circleImage: calendarInfo.image,
+            };
+          });
+
+          fetchedCalendars[circleId].events = circleEvents;
+
+          allEvents = [...allEvents, ...circleEvents];
         }
 
         setEvents(allEvents);
@@ -129,38 +150,19 @@ export default function EventsContainer() {
     fetchCirclesAndEvents();
   }, [userId]);
 
-const calendarApp = useCalendarApp({
-  isDark: true,
-  views: [
-    createViewDay(),
-    createViewWeek(),
-    createViewMonthGrid(),
-    createViewMonthAgenda(),
-  ],
-  selectedDates: new Date().toISOString().slice(0, 10),
-  plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
-  calendars: calendars,
-  events: events,
-eventContent: (event) => {
-  return (
-    <div className="flex items-center gap-2">
-      {event.circleImage && (
-        <img
-          src={event.circleImage}
-          alt={event.circleName}
-          className="h-6 w-6 rounded-full object-cover"
-        />
-      )}
-      <div className="flex flex-col">
-        <span className="text-sm font-medium">{event.title}</span>
-        <span className="text-[10px] text-gray-400">{event.circleName}</span>
-      </div>
-    </div>
-  );
-},
-
-});
-
+  const calendarApp = useCalendarApp({
+    isDark,
+    views: [
+      createViewDay(),
+      createViewWeek(),
+      createViewMonthGrid(),
+      createViewMonthAgenda(),
+    ],
+    selectedDates: new Date().toISOString().slice(0, 10),
+    plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
+    calendars,
+    events,
+  });
 
   if (loading && !events.length) {
     return (
@@ -172,17 +174,13 @@ eventContent: (event) => {
           backdropFilter: "blur(10px)",
         }}
       >
-        {/* Calendar header skeleton */}
+        {/* Skeleton loader */}
         <div className="h-10 w-1/3 rounded-xl bg-gray-700/40"></div>
-
-        {/* Weekday headers skeleton */}
         <div className="grid grid-cols-7 gap-2">
           {Array.from({ length: 7 }).map((_, i) => (
             <div key={i} className="h-6 rounded-md bg-gray-700/30"></div>
           ))}
         </div>
-
-        {/* Calendar grid skeleton */}
         <div className="grid flex-1 grid-cols-7 gap-2">
           {Array.from({ length: 35 }).map((_, i) => (
             <div key={i} className="h-20 rounded-lg bg-gray-700/20"></div>
@@ -195,17 +193,17 @@ eventContent: (event) => {
   return (
     <div
       style={{
-        background:
-          "radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)",
         backdropFilter: "blur(10px)",
         minHeight: "100vh",
-        padding: "1rem",
+        position: "relative",
       }}
     >
+      
+
       <EventsPresentional
         calendarApp={calendarApp}
         categoryColors={Object.fromEntries(
-          Object.entries(calendars).map(([id, c]) => [id, c.colorName]),
+          Object.entries(calendars).map(([id, c]) => [id, c.colorName])
         )}
         circlesInfo={calendars}
       />

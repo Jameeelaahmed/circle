@@ -35,11 +35,11 @@ const Stats = () => {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="hover:animate-jelly w-full rounded-2xl p-6 text-center backdrop-blur-sm will-change-transform"
+          className="hover:animate-jelly shadow-gray-700/20 shadow-2xl w-full rounded-2xl p-6 text-center backdrop-blur-sm will-change-transform"
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
-            boxShadow: "var(--shadow-glassCard)",
+           
           }}
         >
           <stat.icon

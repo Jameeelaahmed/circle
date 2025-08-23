@@ -10,7 +10,7 @@ const Hero = () => {
       </h1>
       <p
         className="mx-auto mb-8 max-w-4xl text-xl opacity-90 md:text-2xl"
-        style={{ fontFamily: "var(--font-body)" }}
+        style={{ }}
       >
         {t("about.header")}
       </p>

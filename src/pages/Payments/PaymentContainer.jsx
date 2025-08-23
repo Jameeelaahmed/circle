@@ -4,6 +4,7 @@ import PaymentPresentational from "./PaymentPresentational";
 import { loadStripe } from "@stripe/stripe-js";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+
 function PaymentContainer() {
   const { t } = useTranslation();
   let stripePromise;
@@ -30,7 +31,7 @@ function PaymentContainer() {
 
   const cards = [
     {
-      color: "#1e40af",
+      color: "#5c57a1",
       icon: <UserIcon size={50} />,
       header: t("payment.Explore & Connect"),
       price: (
@@ -49,7 +50,7 @@ function PaymentContainer() {
       ),
     },
     {
-      color: "#dc2626",
+      color: "#ac9ffa",
       icon: <ZapIcon size={50} />,
       header: t("payment.More Circles, More Power"),
       price: (
@@ -74,7 +75,7 @@ function PaymentContainer() {
       ),
     },
     {
-      color: "#059669",
+      color: "#4ea8de",
       icon: <CrownIcon size={50} />,
       header: t("payment.Circle+"),
       price: (
@@ -100,6 +101,10 @@ function PaymentContainer() {
       ),
     },
   ];
-  return <PaymentPresentational cards={cards} />;
+  return (
+    <div className="bg-main">
+      <PaymentPresentational cards={cards} />
+    </div>
+  );
 }
 export default memo(PaymentContainer);

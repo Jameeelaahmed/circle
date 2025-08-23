@@ -4,8 +4,8 @@ import { useState } from "react";
 
 function GlowCardContainer({
   children,
-  radius = 350,
-  color = "#262626",
+  radius = 450,
+  color = "#ac9ffa",
   className,
 }) {
   const mouseX = useMotionValue(0);
