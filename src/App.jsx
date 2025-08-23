@@ -9,6 +9,7 @@ import { auth, checkIfBlocked } from "./firebase-config";
 import BlockedModal from "./components/ui/Modal/BlockModal/BlockedModal";
 import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 import { useAuth } from "./hooks/useAuth";
+import { PendingRequestsProvider } from "./contexts/PendingRequests";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,8 +51,9 @@ function App() {
 
   return (
     <>
-      
-        <AuthProvider />
+
+      <AuthProvider />
+      <PendingRequestsProvider>
         <OnlinePresenceProvider>
           {!isUserBlocked && <RoutesPages />}
           <BlockedModal
@@ -59,7 +61,8 @@ function App() {
             onConfirm={handleBlockedConfirm}
           />
         </OnlinePresenceProvider>
-      
+      </PendingRequestsProvider>
+
     </>
   );
 }

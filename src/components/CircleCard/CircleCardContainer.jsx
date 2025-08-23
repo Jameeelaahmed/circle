@@ -1,5 +1,6 @@
 import CircleCardPresentational from './CircleCardPresentational';
 import { useAuth } from '../../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
 function CircleCardContainer({
     profileInterests,
@@ -15,18 +16,32 @@ function CircleCardContainer({
     const hasImage = !!circle.imageUrl;
     const members = membersByCircle?.[circle.id] || [];
 
-    // Compute mutual and other interests
+    // Responsive interests count
+    const [maxInterests, setMaxInterests] = useState(4);
+
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth < 913) {
+                setMaxInterests(2);
+            } else if (window.innerWidth >= 1024 && window.innerWidth < 1330) {
+                setMaxInterests(2);
+            } else {
+                setMaxInterests(4);
+            }
+        }
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const mutualInterests = (circle.interests || []).filter((interest) =>
         profileInterests?.includes(interest),
     );
     const otherInterests = (circle.interests || []).filter(
         (interest) => !profileInterests?.includes(interest),
     );
-    // Combine, limit to 4
-    const displayedInterests = [...mutualInterests, ...otherInterests].slice(
-        0,
-        4,
-    );
+
+    const displayedInterests = [...mutualInterests, ...otherInterests].slice(0, maxInterests);
 
     const isRequestPending = pendingRequests?.includes(circle.id);
     const isOwner = user && circle.createdBy.uid === user.uid;

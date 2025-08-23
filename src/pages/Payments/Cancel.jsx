@@ -1,10 +1,10 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { XCircle, RefreshCw, MessageCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 
 
-const PaymentFailure= ({
+const PaymentFailure = ({
   errorCode = "CARD_DECLINED",
   errorMessage = "Your card was declined. Please try a different payment method or contact your bank.",
 }) => {
@@ -32,17 +32,15 @@ const PaymentFailure= ({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-50 flex items-center justify-center p-4">
-      <div className={`max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-700 ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-      }`}>
-        
+      <div className={`max-w-md w-full bg-text rounded-2xl shadow-2xl p-8 transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        }`}>
+
         {/* Error Icon */}
         <div className="text-center mb-6">
           <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
-            <XCircle 
-              className={`text-red-600 transition-transform duration-500 ease-out ${
-                iconScale ? 'scale-100' : 'scale-0'
-              }`}
+            <XCircle
+              className={`text-red-600 transition-transform duration-500 ease-out ${iconScale ? 'scale-100' : 'scale-0'
+                }`}
               size={48}
             />
           </div>
@@ -73,7 +71,7 @@ const PaymentFailure= ({
         <div className="space-y-3">
           <div className="flex gap-3">
             <button
-              onClick={()=>navigate("/payments")}
+              onClick={() => navigate("/payments")}
               className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />

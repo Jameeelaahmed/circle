@@ -15,7 +15,7 @@ export default function CircleCardPresentational({
   return (
     <>
       <div
-        className="group relative cursor-pointer overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-xl sm:p-5"
+        className="group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-3xl p-3 transition-all duration-300 hover:shadow-xl sm:p-4 md:p-5"
         style={{
           background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
           backdropFilter: "blur(10px)",
@@ -30,9 +30,9 @@ export default function CircleCardPresentational({
 
         {/* Content container */}
         <div className="relative z-10">
-          <div className="flex justify-between">
-            <div className="mb-3 flex items-center space-x-3 sm:mb-4 sm:space-x-4">
-              <div className="border-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border sm:h-12 sm:w-12">
+          <div className="flex flex-col justify-between gap-2 sm:flex-row">
+            <div className="mb-2 flex items-center space-x-2 sm:mb-4 sm:space-x-4">
+              <div className="border-primary flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border sm:h-12 sm:w-12">
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
@@ -49,7 +49,7 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-primary text-base font-bold sm:text-lg">
+                <h3 className="text-primary text-base font-bold break-words sm:text-lg">
                   {circle.circleName}
                 </h3>
                 <p
@@ -61,10 +61,9 @@ export default function CircleCardPresentational({
                 </p>
               </div>
             </div>
-
             {isOwner && (
               <button
-                className="ml-2 self-start rounded-full p-2 transition-transform hover:scale-110"
+                className="ml-0 self-start rounded-full p-2 transition-transform hover:scale-110 sm:ml-2"
                 style={{
                   color: "var(--color-secondary)",
                   background: "rgba(var(--color-secondary-rgb), 0.1)",
@@ -80,25 +79,24 @@ export default function CircleCardPresentational({
             )}
           </div>
           <p
-            className="mb-1.5 line-clamp-3 text-xs leading-relaxed sm:text-sm"
+            className="mb-1.5 line-clamp-3 text-xs leading-relaxed break-words sm:text-sm"
             style={{ color: "rgba(173, 186, 199, 0.95)" }}
           >
             {circle.description}
           </p>
-
           {activeTab === "forYou" && (
             <>
-              <div className="mt-2 mb-2 flex h-10 flex-wrap gap-2">
+              <div className="mt-2 mb-2 flex flex-wrap gap-2">
                 {displayedInterests.map((interest) => (
                   <span
                     key={interest}
-                    className="border-primary text-primary mb-2 rounded-3xl border p-2"
+                    className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm"
                   >
                     {interest}
                   </span>
                 ))}
                 {circle.interests.length > 4 && (
-                  <span className="border-primary text-primary mb-2 rounded-3xl border p-2">
+                  <span className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm">
                     +{circle.interests.length - 4} more
                   </span>
                 )}

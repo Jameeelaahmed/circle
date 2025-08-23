@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 // Fetch all circles
 export const fetchCircles = createAsyncThunk(
@@ -8,25 +8,28 @@ export const fetchCircles = createAsyncThunk(
         const db = getFirestore();
         const circlesCol = collection(db, 'circles');
         const snapshot = await getDocs(circlesCol);
-        return snapshot.docs.map((doc) => {
-            const data = doc.data();
-            const transformedData = {
-                ...data,
-                id: doc.id,
-                expiresAt: data.expiresAt && typeof data.expiresAt.toDate === "function"
-                    ? data.expiresAt.toDate().toISOString()
-                    : data.expiresAt || null,
-                updatedAt: data.updatedAt && typeof data.updatedAt.toDate === "function"
-                    ? data.updatedAt.toDate().toISOString()
-                    : data.updatedAt || null,
-                createdAt: data.createdAt && typeof data.createdAt.toDate === "function"
-                    ? data.createdAt.toDate().toISOString()
-                    : data.createdAt || null,
-            };
-            return transformedData;
-        });
+
+        return snapshot.docs
+            .filter(doc => doc.exists())
+            .map((doc) => {
+                const data = doc.data();
+                return {
+                    ...data,
+                    id: doc.id,
+                    expiresAt: data.expiresAt && typeof data.expiresAt.toDate === "function"
+                        ? data.expiresAt.toDate().toISOString()
+                        : data.expiresAt || null,
+                    updatedAt: data.updatedAt && typeof data.updatedAt.toDate === "function"
+                        ? data.updatedAt.toDate().toISOString()
+                        : data.updatedAt || null,
+                    createdAt: data.createdAt && typeof data.createdAt.toDate === "function"
+                        ? data.createdAt.toDate().toISOString()
+                        : data.createdAt || null,
+                };
+            });
     }
 );
+
 
 export const fetchCircleById = createAsyncThunk(
     'circles/fetchCircleById',
@@ -47,6 +50,16 @@ export const fetchCircleById = createAsyncThunk(
     }
 );
 
+export const listenToCircles = () => (dispatch) => {
+    const db = getFirestore();
+    const unsubscribe = onSnapshot(collection(db, "circles"), (snapshot) => {
+        const circlesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        dispatch(setCircles(circlesData));
+    });
+    // Optionally return unsubscribe to clean up
+    return unsubscribe;
+};
+
 const circlesSlice = createSlice({
     name: "circles",
     initialState: {
@@ -58,6 +71,9 @@ const circlesSlice = createSlice({
     reducers: {
         setSelectedCircle(state, action) {
             state.selectedCircle = action.payload;
+        },
+        setCircles(state, action) {
+            state.circles = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -96,4 +112,4 @@ const circlesSlice = createSlice({
 });
 
 export default circlesSlice.reducer;
-export const { setSelectedCircle } = circlesSlice.actions;
+export const { setSelectedCircle, setCircles } = circlesSlice.actions;

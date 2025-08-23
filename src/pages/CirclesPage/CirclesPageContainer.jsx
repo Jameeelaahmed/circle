@@ -2,28 +2,32 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, query, where, getDocs, writeBatch } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { fetchCircles } from '../../features/circles/circlesSlice';
+import { fetchCircles, listenToCircles } from '../../features/circles/circlesSlice';
 // slices & hooks
 import { setSelectedCircle } from '../../features/circles/circlesSlice';
 import { fetchCircleMembers } from '../../features/circleMembers/circleMembersSlice';
 import { getProfileData } from '../../features/userProfile/profileSlice';
 import { useAuth } from '../../hooks/useAuth';
+import { useJoinCircleRequest } from '../../hooks/useJoinCircleRequest';
+import { useSyncPendingRequests } from "../../contexts/PendingRequests";
 // components
-import { toastStyles } from "../../utils/toastStyles";
+import { Plus } from "lucide-react";
 import CirclesPagePresentational from './CirclesPagePresentational'
 import CirclesTabs from '../../components/ui/CircleTabs/CirclesTabs';
 import CirclesPrivacyFilter from '../../components/ui/CirclePrivacyFilter/CirclesPrivacyFilter';
 import CustomPaginationContainer from '../../components/Pagination/CustomPaginationContainer';
 import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkeltonCard';
+import Modal from '../../components/ui/Modal/Modal';
+import CreateCircleModalContainer from '../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer';
 function CirclesPageContainer() {
     const membersByCircle = useSelector(state => state.members.membersByCircle);
-    const navigate = useNavigate();
     const circles = useSelector(state => state.circles.circles);
+    const { user } = useAuth()
+    const navigate = useNavigate();
     const profile = useSelector(getProfileData);
     const dispatch = useDispatch();
-    const { user } = useAuth()
     const [activeTab, setActiveTab] = useState('my');
     const [circlePrivacy, setCirclePrivacy] = useState('all');
     const [currentPage, setCurrentPage] = useState(0);
@@ -32,9 +36,17 @@ function CirclesPageContainer() {
     const profileStatus = useSelector(state => state.userProfile.status);
     const { isLoggedIn } = useAuth();
     const authModalRef = useRef();
-    const [pendingRequests, setPendingRequests] = useState([]);
     const deleteCircleRef = useRef();
     const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const { handleJoinRequest, pendingRequests, setPendingRequests } = useJoinCircleRequest({
+        circles,
+        membersByCircle,
+        user,
+        profile
+    });
 
     useEffect(() => {
         circles.forEach(circle => {
@@ -80,6 +92,18 @@ function CirclesPageContainer() {
         } else {
             filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public' || circle.circlePrivacy === 'Public'));
         }
+
+        // --- SEARCH FILTER ---
+        if (searchQuery.trim()) {
+            const queryLower = searchQuery.trim().toLowerCase();
+            filteredCircles = filteredCircles.filter(circle =>
+                circle.circleName?.toLowerCase().includes(queryLower) ||
+                circle.description?.toLowerCase().includes(queryLower) ||
+                (circle.interests && circle.interests.some(interest => interest.toLowerCase().includes(queryLower)))
+            );
+        }
+        // --- END SEARCH FILTER ---
+
         pageCount = Math.ceil(filteredCircles.length / circlesPerPage);
         paginatedCircles = filteredCircles.slice(
             currentPage * circlesPerPage,
@@ -104,57 +128,6 @@ function CirclesPageContainer() {
             navigate(`/circles/${circle.id}`);
         } else {
             handleOpenAuthModal()
-        }
-    }
-
-    async function handleJoinRequest(circleId, e) {
-        e.stopPropagation();
-        const db = getFirestore();
-        const circle = circles.find(c => c.id === circleId);
-        if (!circle || !user) return;
-
-        // Find the owner member (not just admin)
-        const members = membersByCircle[circle.id] || [];
-        const ownerMember = members.find(member => member.isOwner);
-        const circleOwnerId = ownerMember ? ownerMember.id : null;
-
-        if (!circleOwnerId) {
-            return;
-        }
-
-        // Check for existing pending join request
-        const joinRequestQuery = query(
-            collection(db, "circleRequests"),
-            where("circleId", "==", circle.id),
-            where("requesterId", "==", user.uid), // renamed for clarity
-            where("status", "==", "pending"),
-            where("type", "==", "join-request")
-        );
-        const joinRequestSnapshot = await getDocs(joinRequestQuery);
-        if (!joinRequestSnapshot.empty) {
-            return;
-        }
-
-        try {
-            await addDoc(collection(db, "circleRequests"), {
-                circleId: circle.id,
-                type: "join-request",
-                requesterId: user.uid,
-                requesterUsername: profile.username,
-                requesterEmail: profile.email,
-                requesterPhotoUrl: profile.photoUrl,
-                approverId: ownerMember.id,
-                approverUsername: ownerMember.username,
-                circleName: circle.circleName,
-                message: `${profile.username} wants to join your circle "${circle.circleName}".`,
-                status: "pending",
-                createdAt: serverTimestamp()
-            });
-            setPendingRequests(prev => [...prev, circle.id]);
-            toast.success("Request Sent successfully!", toastStyles);
-        } catch (error) {
-            console.error("Join request error:", error);
-            alert("Failed to send join request.");
         }
     }
 
@@ -194,9 +167,42 @@ function CirclesPageContainer() {
     const handleDeleteCircle = async () => {
         if (!isOwner || !selectedCircleToDelete) return;
         setIsDeleting(true);
+
         try {
             const db = getFirestore();
-            await deleteDoc(doc(db, "circles", selectedCircleToDelete.id));
+            const batch = writeBatch(db);
+
+            // 1. Remove the circle from all users' joinedCircles
+            const usersSnapshot = await getDocs(collection(db, "users"));
+            usersSnapshot.forEach(userDoc => {
+                const userData = userDoc.data();
+                if (
+                    Array.isArray(userData.joinedCircles) &&
+                    userData.joinedCircles.includes(selectedCircleToDelete.id)
+                ) {
+                    const updatedCircles = userData.joinedCircles.filter(
+                        id => id !== selectedCircleToDelete.id
+                    );
+                    batch.update(userDoc.ref, { joinedCircles: updatedCircles });
+                }
+            });
+
+            // 2. Delete related join requests and invitations
+            const requestsQuery = query(
+                collection(db, "circleRequests"),
+                where("circleId", "==", selectedCircleToDelete.id)
+            );
+            const requestsSnapshot = await getDocs(requestsQuery);
+            requestsSnapshot.forEach(requestDoc => {
+                batch.delete(requestDoc.ref);
+            });
+
+            // 3. Delete the circle document itself (inside batch!)
+            batch.delete(doc(db, "circles", selectedCircleToDelete.id));
+
+            // Commit everything together
+            await batch.commit();
+
             toast.success("Circle deleted successfully!");
             dispatch(fetchCircles());
             closeCircleDeleteModal();
@@ -208,6 +214,21 @@ function CirclesPageContainer() {
         }
     };
 
+    useSyncPendingRequests(user);
+
+    useEffect(() => {
+        const unsubscribe = dispatch(listenToCircles());
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+    }, [dispatch]);
+    const createCircleRef = useRef()
+    function openCCircleModal() {
+        createCircleRef.current.open();
+    }
+    function closeCCircleModal() {
+        createCircleRef.current.close();
+    }
     return (
         <div className='pt-paddingTop flex flex-col min-h-screen'>
             {user && <>
@@ -215,6 +236,23 @@ function CirclesPageContainer() {
                 {activeTab === "my" &&
                     <CirclesPrivacyFilter circlePrivacy={circlePrivacy} setCirclePrivacy={setCirclePrivacy} />
                 }
+
+                {/* Search Bar */}
+                <div className="mb-4 flex justify-center items-center px-2">
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder="Search circles..."
+                        className="px-3 py-2 rounded-3xl border border-primary bg-transparent text-text w-full max-w-xs sm:max-w-md md:max-w-lg transition-all"
+                    />
+                    <div className='bg-primary rounded-3xl p-2 ltr:ml-1.5 rtl:mr-1.5 cursor-pointer' onClick={openCCircleModal}>
+                        <Plus size={20} />
+                    </div>
+                </div>
+                <Modal ref={createCircleRef}>
+                    <CreateCircleModalContainer closeModal={closeCCircleModal} />
+                </Modal>
                 <div className="flex-1">
                     {(circlesStatus !== "succeeded" ||
                         profileStatus !== "succeeded" ||

@@ -8,7 +8,6 @@ function ChatWindowContainer() {
   const selectedCircle = useSelector((state) => state.circles.selectedCircle);
   const circleId = selectedCircle?.id;
   const circleName = selectedCircle?.circleName;
-  console.log(circleName);
   const [replyTo, setReplyTo] = useState(null);
   const [editingMessage, setEditingMessage] = useState(null);
   return (

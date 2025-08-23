@@ -53,14 +53,12 @@ function ChatHeaderPresentational({
                   />
                 ) : (
                   <span
-                    className="text-xl font-bold text-white select-none"
-                    style={{ fontFamily: "var(--font-secondary)" }}
-                  >
+                    className="text-xl font-bold text-text select-none font-secondary">
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
                   </span>
                 )}
               </div>
-              <p className="text-white">{circle.circleName}</p>
+              <p className="text-text">{circle.circleName}</p>
             </>
           )}
         </div>
@@ -68,10 +66,10 @@ function ChatHeaderPresentational({
         <div className="flex items-center gap-3 relative">
           <button
             onClick={onMoreClick}
-            className="p-1 rounded-full hover:bg-white/10 transition-colors"
+            className="p-1 rounded-full hover:bg-text/10 transition-colors"
             aria-label="More options"
           >
-            <MoreVertical size={24} color="white" />
+            <MoreVertical size={24} color="var(--color-text)" />
           </button>
         </div>
       </div>
@@ -79,14 +77,14 @@ function ChatHeaderPresentational({
       {/* Context Menu */}
       {menu?.visible && (
         <div
-          className={`fixed z-50 w-48 backdrop-blur-2xl rounded-xl shadow-xl border border-white/10 
+          className={`fixed z-50 w-48 backdrop-blur-2xl rounded-xl shadow-xl border border-text/10 
                       flex flex-col text-sm select-none overflow-hidden
-                      text-white bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
+                      text-text bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
           style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-white/10 flex items-center gap-2"
+            className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-text/10 flex items-center gap-2"
             onClick={onClearChat}
           >
             <Trash2 size={16} />

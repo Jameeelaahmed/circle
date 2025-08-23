@@ -20,7 +20,7 @@ const SendBtn = () => {
             </svg>
           </div>
         </div>
-        
+
       </button>
     </StyledWrapper>
   );
@@ -30,7 +30,7 @@ const StyledWrapper = styled.div`
   button {
     font-family: inherit;
     font-size: 20px;
-    color: white;
+    color: var(--color-text);
     padding: 0.8em 1.2em;
     display: flex;
     align-items: center;
@@ -69,7 +69,7 @@ const StyledWrapper = styled.div`
   button svg {
     width: 18px;
     height: 18px;
-    fill: white;
+    fill: var(--color-text);
     transition: all 0.3s;
   }
 

@@ -166,7 +166,7 @@ export const renderMediaGrid = (mediaMessages, openImageSlider) => {
             className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-lg bg-black/60"
             onClick={() => openImageSlider(mediaMessages, 3)}
           >
-            <span className="text-lg font-bold text-white">+{remaining}</span>
+            <span className="text-lg font-bold text-text">+{remaining}</span>
           </div>
         </div>
       </div>

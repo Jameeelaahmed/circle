@@ -24,7 +24,7 @@ const NotificationDropdown = ({ notifications, loading }) => {
     deleteNotification(userId, id);
   };
 
-  const markAllAsRead = () => {};
+  const markAllAsRead = () => { };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -68,7 +68,7 @@ const NotificationDropdown = ({ notifications, loading }) => {
         {/* Notification Badge */}
         {unreadCount > 0 && (
           <span
-            className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] animate-pulse items-center justify-center rounded-full text-xs font-bold text-white"
+            className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] animate-pulse items-center justify-center rounded-full text-xs font-bold text-text"
             style={{
               backgroundColor: "var(--color-accent)",
               fontSize: "10px",

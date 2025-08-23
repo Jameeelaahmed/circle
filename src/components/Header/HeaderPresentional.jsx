@@ -8,8 +8,12 @@ import { Logo } from "../../assets/icons/Logo";
 import Notificaion from "../Notifications/NotificationSection";
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "../../hooks/useTheme";
 
 function HeaderPresentional({
+  toggleDark,
+  darkMode,
   isAuthLoading,
   isLoggedIn,
   currentLang,
@@ -17,22 +21,22 @@ function HeaderPresentional({
   handleLanguageChange,
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const { theme, toggleTheme } = useTheme();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <div className="bg-main fixed top-0 z-50 w-full border-b border-white/10">
+    <div className="bg-main fixed top-0 z-50 w-full border-b border-text/10">
       <div className="flex h-16 w-full items-center px-4 sm:px-6 lg:px-8">
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMobileMenu}
-          className="md:hidden text-white hover:text-primary transition-colors duration-200 p-2 -ml-2"
+          className="md:hidden text-text hover:text-primary transition-colors duration-200 p-2 -ml-2"
           aria-label="Toggle mobile menu"
         >
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -59,9 +63,9 @@ function HeaderPresentional({
         <Motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-shrink-0 items-center ml-4 md:hidden"
+          className="ml-4 flex flex-shrink-0 items-center md:hidden"
         >
-          <Link to="/" className="flex justify-center items-center">
+          <Link to="/" className="flex items-center justify-center">
             <Logo />
           </Link>
         </Motion.div>
@@ -74,8 +78,8 @@ function HeaderPresentional({
                 key={index}
                 to={item.href}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white/10 text-sm lg:text-base ${isActive
-                    ? "text-primary bg-white/10"
+                  `rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-text/10 text-sm lg:text-base ${isActive
+                    ? "text-primary bg-text/10"
                     : "hover:text-primary text-text"
                   }`
                 }
@@ -100,7 +104,7 @@ function HeaderPresentional({
         {/* Right - Controls */}
         <div className="relative flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
           <button
-            className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center space-x-2 rounded-lg px-2 py-1 sm:px-3 sm:py-2 transition-all duration-200 text-sm"
+            className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center space-x-2 rounded-lg px-2 py-1 text-sm transition-all duration-200 sm:px-3 sm:py-2"
             onClick={() =>
               handleLanguageChange(currentLang === "ar" ? "en" : "ar")
             }
@@ -108,15 +112,29 @@ function HeaderPresentional({
             {currentLang === "ar" ? "en" : "ar"}
           </button>
 
+           {/* Theme Toggle */}
+          <button
+          type="button"
+            onClick={toggleDark}
+            className="text-primary hover:bg-primary/20 bg-inputsBg rounded-lg p-2 transition-all duration-200"
+            aria-label="Toggle theme"
+          >
+             {darkMode ? (
+            <Sun className="w-5 h-5 text-[var(--color-secondary)]" />
+          ) : (
+            <Moon className="w-5 h-5 text-[var(--color-primary)]" />
+          )}
+          </button>
+
           {/* Notifications - Always visible on header */}
           <Notificaion />
 
           <Link to="/circles-requests">
             <button
-              className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center rounded-lg px-2 py-1 sm:px-3 sm:py-2 transition-all duration-200"
+              className="text-primary hover:bg-primary/20 bg-inputsBg flex items-center rounded-lg px-2 py-1 transition-all duration-200 sm:px-3 sm:py-2"
               title="Circle Join Requests"
             >
-              <UserPlus className="w-6 h-6" />
+              <UserPlus className="h-6 w-6" />
             </button>
           </Link>
 
@@ -132,7 +150,7 @@ function HeaderPresentional({
             <UserDropDownContainer />
           ) : isLoggedIn === false ? (
             <Link to="/login">
-              <button className="text-primary hover:bg-primary/20 font-secondary flex items-center space-x-2 rounded-lg bg-white/10 px-2 py-1 sm:px-3 sm:py-2 tracking-wide transition-all duration-200 text-sm">
+              <button className="text-primary hover:bg-primary/20 font-secondary flex items-center space-x-2 rounded-lg bg-text/10 px-2 py-1 sm:px-3 sm:py-2 tracking-wide transition-all duration-200 text-sm">
                 SignIn/Up
               </button>
             </Link>
@@ -146,17 +164,17 @@ function HeaderPresentional({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="md:hidden bg-main fixed top-16 left-0 right-0 bottom-0 z-40"
+          className="bg-main fixed top-16 right-0 bottom-0 left-0 z-40 md:hidden"
         >
-          <div className="px-4 py-6 space-y-3 h-full">
+          <div className="h-full space-y-3 px-4 py-6">
             {navItems.map((item, index) => (
               <NavLink
                 key={index}
                 to={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block rounded-lg px-4 py-3 transition-colors duration-200 hover:bg-white/10 text-lg ${isActive
-                    ? "text-primary bg-white/10"
+                  `block rounded-lg px-4 py-3 transition-colors duration-200 hover:bg-text/10 text-lg ${isActive
+                    ? "text-primary bg-text/10"
                     : "hover:text-primary text-text"
                   }`
                 }

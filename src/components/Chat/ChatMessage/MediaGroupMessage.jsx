@@ -63,8 +63,8 @@ function MediaGroupMessage({
             {/* Date Separator */}
             {showDateSeparator && (
                 <div className="my-4 flex justify-center">
-                    <div className="bg-main/60 rounded-full border border-white/10 px-4 py-2 backdrop-blur-sm">
-                        <span className="text-xs font-medium text-white/80">
+                    <div className="bg-main/60 rounded-full border border-text/10 px-4 py-2 backdrop-blur-sm">
+                        <span className="text-xs font-medium text-text/80">
                             {formatMessageDate(firstMessage.timestamp)}
                         </span>
                     </div>
@@ -113,7 +113,7 @@ function MediaGroupMessage({
                                         {Object.entries(reactionCounts).map(([emoji, count]) => (
                                             <span
                                                 key={emoji}
-                                                className={`rounded-full px-1.5 py-0.5 text-xs ${isMe ? "bg-white/20" : "bg-secondary/10"}`}
+                                                className={`rounded-full px-1.5 py-0.5 text-xs ${isMe ? "bg-text/20" : "bg-secondary/10"}`}
                                             >
                                                 {emoji} {count}
                                             </span>

@@ -170,7 +170,7 @@ export default function MemoryUploadPage() {
       <div className="bg-main/15 border-primary border-b shadow-lg backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-8">
           <div className="mb-2 flex items-center gap-3">
-            <div className="from-primary to-secondary rounded-xl bg-gradient-to-r p-3 text-white">
+            <div className="from-primary to-secondary rounded-xl bg-gradient-to-r p-3 text-text">
               <Heart className="h-6 w-6" />
             </div>
             <h1 className="from-primary to-secondary bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent">
@@ -185,7 +185,7 @@ export default function MemoryUploadPage() {
 
       <div className="mx-auto max-w-2xl px-6 py-8">
         {/* Upload Form */}
-        <div className="bg-main mb-8 rounded-2xl border border-white/50 p-8 shadow-xl backdrop-blur-sm">
+        <div className="bg-main mb-8 rounded-2xl border border-text/50 p-8 shadow-xl backdrop-blur-sm">
           <div className="mb-6 flex items-center gap-2">
             <Sparkles className="text-primary h-5 w-5" />
             <h2 className="text-text text-2xl font-semibold">Add New Memory</h2>
@@ -200,11 +200,10 @@ export default function MemoryUploadPage() {
 
               {!currentMemory.imagePreviews?.length ? (
                 <div
-                  className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-300 ${
-                    isDragging
+                  className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-300 ${isDragging
                       ? "scale-105 border-purple-400 bg-purple-50"
                       : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
-                  }`}
+                    }`}
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
@@ -238,7 +237,7 @@ export default function MemoryUploadPage() {
                         <button
                           type="button"
                           onClick={() => removeImageAt(idx)}
-                          className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-2 text-white shadow-lg transition-colors group-hover:block hover:bg-red-600"
+                          className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-2 text-text shadow-lg transition-colors group-hover:block hover:bg-red-600"
                           aria-label="Remove image"
                         >
                           <X className="h-4 w-4" />
@@ -322,7 +321,7 @@ export default function MemoryUploadPage() {
                 !currentMemory.images?.length ||
                 isLoading
               }
-              className="from-primary to-secondary w-full transform rounded-xl bg-gradient-to-r px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="from-primary to-secondary w-full transform rounded-xl bg-gradient-to-r px-6 py-4 text-lg font-semibold text-text shadow-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"
             >
               <div className="flex items-center justify-center gap-2">
                 <Upload className="h-5 w-5" />

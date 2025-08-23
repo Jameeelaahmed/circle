@@ -63,11 +63,17 @@ function CirclesRequistsContainer() {
             };
         }
 
-        await setDoc(
-            doc(db, "circles", request.circleId, "members", memberId),
-            memberData
-        );
+        const circleRef = doc(db, "circles", request.circleId);
+        const circleSnap = await getDoc(circleRef);
 
+        if (circleSnap.exists()) {
+            await setDoc(
+                doc(circleRef, "members", memberId),
+                memberData
+            );
+        } else {
+            console.warn("Circle does not exist, cannot add member.");
+        }
         // Update request status
         const requestRef = doc(db, "circleRequests", requestId);
         await updateDoc(requestRef, { status: "accepted" });

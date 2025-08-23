@@ -8,7 +8,6 @@ import useOnlinePresence from "../../../../hooks/chathooks/useOnlinePresence";
 import { fetchCircleMembers } from "../../../../features/circleMembers/circleMembersSlice";
 import { inviteUserToCircleNotification } from "../../../../fire_base/notificationController/notificationController";
 import {
-  addMemberToCircle,
   toggleMemberAdminRole,
   getAvailableUsers,
   removeMemberFromCircle,
@@ -16,13 +15,15 @@ import {
 import { toastStyles } from "../../../../utils/toastStyles";
 import MembersModalPresentational from "./MembersModalPresentational";
 import { getFirestore, doc, updateDoc, arrayRemove } from "firebase/firestore";
+import { sendCircleInvitations } from "../../../../hooks/useCircleInvitations";
+import { useSyncPendingRequests } from "../../../../contexts/PendingRequests";
 
 function MembersModalContainer({ members, loading, error, closeModal }) {
   const { circleId } = useParams();
   const { user } = useAuth();
   const dispatch = useDispatch();
   const { isUserOnline } = useOnlinePresence();
-
+  useSyncPendingRequests(user);
   // Add online status to members
   const membersWithOnlineStatus = members.map((member) => ({
     ...member,
@@ -75,7 +76,7 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
 
   const handleAddMembers = async () => {
     if (!selectedNewMembers.length || !user) {
-      toast.error("Please select at least one member to add", toastStyles);
+      toast.error("Please select at least one member to invite", toastStyles);
       return;
     }
 
@@ -87,39 +88,42 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
       const memberIds = selectedNewMembers.map((member) => member.value);
 
       for (const memberUid of memberIds) {
-        // Always add as non-owner, non-admin
-        const result = await addMemberToCircle(circleId, memberUid, {
-          isOwner: false,
-          isAdmin: false,
-          addedBy: user.uid,
+        // Only send invitation, do NOT add member yet
+        const invitationResult = await sendCircleInvitations({
+          circleId,
+          members: [{ value: memberUid }],
+          memberOptions: availableUsers,
+          user,
+          circleName: "",
+          closeModal
         });
-        console.log(user);
+
         inviteUserToCircleNotification(memberUid, circleId, user.username);
 
-        if (result.success) {
+        if (invitationResult && invitationResult[0]?.success) {
           successCount++;
         } else {
           errorCount++;
-          console.error(`Failed to add ${memberUid}:`, result.message);
+          console.error(`Failed to invite ${memberUid}`);
         }
       }
 
       if (successCount > 0) {
         toast.success(
-          `Added ${successCount} member(s) successfully`,
+          `Invited ${successCount} member(s) successfully`,
           toastStyles,
         );
         setSelectedNewMembers([]);
-        dispatch(fetchCircleMembers(circleId));
+        // Optionally refresh available users
         loadAvailableUsers();
       }
 
       if (errorCount > 0) {
-        toast.error(`Failed to add ${errorCount} member(s)`, toastStyles);
+        toast.error(`Failed to invite ${errorCount} member(s)`, toastStyles);
       }
     } catch (error) {
       console.error("Error in handleAddMembers:", error);
-      toast.error("Failed to add members. Please try again.", toastStyles);
+      toast.error("Failed to send invitations. Please try again.", toastStyles);
     } finally {
       setAddingMembers(false);
     }
@@ -196,25 +200,11 @@ function MembersModalContainer({ members, loading, error, closeModal }) {
         toast.error(result.message, toastStyles);
       }
     } catch {
-      toast.error(
-        "Failed to update admin role. Please try again.",
-        toastStyles,
-      );
+      toast.error("Failed to update admin role. Please try again.", toastStyles);
     } finally {
       setUpdatingAdmin(null);
     }
   };
-
-  members.forEach((member) => {
-    console.log(
-      "Member:",
-      member.username,
-      "UID:",
-      member.id,
-      "Online:",
-      isUserOnline(member.id),
-    );
-  });
 
   return (
     <MembersModalPresentational

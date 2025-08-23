@@ -74,7 +74,7 @@ function ChatSidebarPresentational({
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className={`h-full overflow-hidden backdrop-blur-sm ltr:rounded-tl-3xl rtl:rounded-tr-3xl ltr:rounded-bl-3xl rtl:rounded-br-3xl ${isOpen
-                    ? "bg-main/95 border-white/10"
+                    ? "bg-main/95 border-text/10"
                     : "bg-transparent border-transparent"
                     }`}
             >
@@ -91,7 +91,7 @@ function ChatSidebarPresentational({
                     </div>
 
                     {/* Members */}
-                    <div className="flex-1 p-3 border-b border-white/10">
+                    <div className="flex-1 p-3 border-b border-text/10">
                         <div className="flex items-center justify-between mb-2">
                             <h4 className="text-xs font-medium text-text-300">
                                 Members ({members.length})
@@ -164,7 +164,7 @@ function ChatSidebarPresentational({
                                     .map((member) => (
                                         <div
                                             key={member.id || member.uid}
-                                            className="flex items-center space-x-2 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                                            className="flex items-center space-x-2 p-2 rounded-lg hover:bg-text/5 transition-colors"
                                         >
                                             <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-primary relative">
                                                 {member.profileImage ? (
@@ -212,7 +212,7 @@ function ChatSidebarPresentational({
                     </div>
 
                     {/* Memories */}
-                    <div className="flex-1 p-3 border-b border-white/10">
+                    <div className="flex-1 p-3 border-b border-text/10">
                         <h4 className="text-xs font-medium text-text-300 mb-2">
                             Memories
                         </h4>

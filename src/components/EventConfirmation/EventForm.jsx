@@ -33,30 +33,30 @@ const customIcon = new Icon({
 export default function EventForm({ event, onClose }) {
   const { t } = useTranslation();
   let { circleId } = useParams();
-  
+
   // Local state for editable fields
   const [activity, setActivity] = useState(event.activity || "");
   const [place, setPlace] = useState(event.place || "");
   const [day, setDay] = useState(event.day || "");
   const [location, setLocation] = useState(event.Location || "");
-  
+
   // Map state
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState([30.0444, 31.2357]); // Default to Cairo, Egypt
   const [showMap, setShowMap] = useState(false);
-  
+
   // Ref for the map container
   const mapRef = useRef(null);
 
   // Handle location selection from map
   const handleLocationSelect = (latlng) => {
     setSelectedLocation(latlng);
-    
+
     // Reverse geocode to get address (you can enhance this with a geocoding service)
     const { lat, lng } = latlng;
     const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
     setLocation(mapsUrl);
-    
+
     // Update map center to show the selected location
     setMapCenter([lat, lng]);
   };
@@ -110,7 +110,7 @@ export default function EventForm({ event, onClose }) {
       <form onSubmit={onSubmit} className="space-y-4">
         {/* Activity */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="text-text mb-2 block text-lg font-medium">
             {t("Activity *")}
           </label>
           <Input
@@ -122,7 +122,7 @@ export default function EventForm({ event, onClose }) {
 
         {/* Place */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="text-text mb-2 block text-lg font-medium">
             {t("Place *")}
           </label>
           <Input
@@ -134,16 +134,16 @@ export default function EventForm({ event, onClose }) {
 
         {/* Location with Map */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="text-text mb-2 block text-lg font-medium">
             {t("Location")}
           </label>
-          
+
           {/* Map Toggle Button */}
           <div className="mb-3">
             <button
               type="button"
               onClick={toggleMap}
-              className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-white text-sm"
+              className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-text text-sm"
             >
               {showMap ? t("Hide Map") : t("Show Map & Pin Location")}
             </button>
@@ -153,9 +153,9 @@ export default function EventForm({ event, onClose }) {
           {showMap && (
             <div className="mb-3">
               <div className="relative">
-                <div 
+                <div
                   ref={mapRef}
-                  className="w-full h-64 rounded-xl overflow-hidden border border-white/20"
+                  className="w-full h-64 rounded-xl overflow-hidden border border-text/20"
                 >
                   <MapContainer
                     center={mapCenter}
@@ -167,37 +167,37 @@ export default function EventForm({ event, onClose }) {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    
+
                     {/* Show selected marker if exists */}
                     {selectedLocation && (
-                      <Marker 
-                        position={[selectedLocation.lat, selectedLocation.lng]} 
+                      <Marker
+                        position={[selectedLocation.lat, selectedLocation.lng]}
                         icon={customIcon}
                       />
                     )}
-                    
+
                     {/* Map click handler */}
                     <MapClickHandler onLocationSelect={handleLocationSelect} />
                   </MapContainer>
                 </div>
-                
+
                 {/* Map Instructions */}
-                <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute top-2 left-2 bg-black/70 text-text text-xs px-2 py-1 rounded">
                   Click on the map to place a pin
                 </div>
               </div>
-              
+
               {/* Location Actions */}
               <div className="flex gap-2 mt-2">
                 <button
                   type="button"
                   onClick={clearLocation}
                   disabled={!selectedLocation}
-                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-xl px-3 py-2 text-white text-sm"
+                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-xl px-3 py-2 text-text text-sm"
                 >
                   {t("Clear Pin")}
                 </button>
-                
+
                 {selectedLocation && (
                   <span className="text-xs text-gray-400 self-center">
                     Pin placed at: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
@@ -214,7 +214,7 @@ export default function EventForm({ event, onClose }) {
               placeholder={t("Enter place or address")}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
+              className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-text/20 px-4 py-2 text-text focus:ring-2 focus:outline-none"
             />
             <button
               type="button"
@@ -227,7 +227,7 @@ export default function EventForm({ event, onClose }) {
                 setLocation(mapsUrl);
                 window.open(mapsUrl, "_blank");
               }}
-              className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-white"
+              className="bg-primary hover:bg-primary/80 rounded-xl px-4 py-2 text-text"
             >
               {t("Open in Maps")}
             </button>
@@ -236,12 +236,12 @@ export default function EventForm({ event, onClose }) {
 
         {/* Event Day */}
         <div>
-          <label className="text-light mb-2 block text-lg font-medium">
+          <label className="text-text mb-2 block text-lg font-medium">
             {t("Event Day *")}
           </label>
           <input
             type="date"
-            className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-white/20 px-4 py-2 text-white focus:ring-2 focus:outline-none"
+            className="bg-inputsBg focus:ring-primary w-full rounded-xl border border-text/20 px-4 py-2 text-text focus:ring-2 focus:outline-none"
             value={day}
             onChange={(e) => setDay(e.target.value)}
             min={new Date().toISOString().split("T")[0]}

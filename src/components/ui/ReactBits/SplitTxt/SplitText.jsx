@@ -139,7 +139,8 @@ const SplitText = ({
       style={{
         textAlign,
         wordWrap: "break-word",
-         direction: "ltr" 
+         direction: "ltr" ,
+         color:"var(--color-text)"
       }}
     >
       {text}

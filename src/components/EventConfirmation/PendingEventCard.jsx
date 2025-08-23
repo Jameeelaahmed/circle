@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Clock, MapPin, Users , CalendarCheck2 } from "lucide-react";
+import { Clock, MapPin, Users, CalendarCheck2 } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { motion } from "framer-motion";
@@ -88,7 +88,7 @@ export default function PendingEventCard({ event }) {
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{
         boxShadow: "var(--shadow-glassCard)",
-        
+
       }}
       className="group relative  hover:scale-[1.05] hover:border-[#17284f93] flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-transparent p-4 transition-all"
       style={{
@@ -111,7 +111,7 @@ export default function PendingEventCard({ event }) {
             zIndex: 1,
           }}
         >
-          <CalendarCheck2 size={20} style={{ color: "var(--color-darker)"}}/>
+          <CalendarCheck2 size={20} style={{ color: "var(--color-darker)" }} />
         </motion.div>
 
         {/* Event Name & Place */}
@@ -140,9 +140,9 @@ export default function PendingEventCard({ event }) {
             <div className=" relative flex items-center">
               <MapPin
                 size={14}
-                className="text-white group flex-shrink-0 cursor-pointer hover:text-primary"
+                className="text-text group flex-shrink-0 cursor-pointer hover:text-primary"
               />
-              <span className="bg-primary absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded px-2 py-1 text-xs whitespace-nowrap text-white group-hover:block">
+              <span className="bg-primary absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded px-2 py-1 text-xs textspace-nowrap text-text group-hover:block">
                 See location
               </span>
             </div>
@@ -221,7 +221,7 @@ export default function PendingEventCard({ event }) {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs font-bold text-white">
+                    <div className="flex h-full w-full items-center justify-center text-xs font-bold text-text">
                       {user.displayName?.charAt(0).toUpperCase() || "U"}
                     </div>
                   )}
@@ -229,7 +229,7 @@ export default function PendingEventCard({ event }) {
               ))}
               {comingUsers.length > 3 && (
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-bold text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-bold text-text"
                   style={{
                     backgroundColor: "var(--color-dark)",
                     borderColor: "var(--color-darker)",
@@ -256,7 +256,7 @@ export default function PendingEventCard({ event }) {
             <span>No one has RSVP'd yet</span>
           </div>
         )}
-        <div className="flex items-center gap-1 text-[10px] text-white/60">
+        <div className="flex items-center gap-1 text-[10px] text-text/60">
           <span>{event.day}</span>
           <Clock size={12} />
         </div>

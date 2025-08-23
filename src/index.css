@@ -2,14 +2,15 @@
 @import "tailwindcss";
 
 :root {
- --sx-color-primary: #FF6B6B;          /* main accent */
-  --sx-color-on-primary: #ffffff;       /* text on buttons */
-  --sx-color-background: #1a1a1a;       /* main background */
-  --sx-color-on-background: #f0f0f0;    /* text color */
-  --sx-color-surface: #2a2a2a;          /* calendar cards */
-  --sx-color-on-surface: #f0f0f0;       /* text on cards */
-  --sx-color-outline: #555555;          /* borders */
-  --sx-color-shadow: rgba(0,0,0,0.5);   /* shadows */
+  --sx-color-primary: #ff6b6b; /* main accent */
+  --sx-color-on-primary: #ffffff; /* text on buttons */
+  --sx-color-background: #1a1a1a; /* main background */
+  --sx-color-on-background: #f0f0f0; /* text color */
+  --sx-color-surface: #2a2a2a; /* calendar cards */
+  --sx-color-on-surface: #f0f0f0; /* text on cards */
+  --sx-color-outline: #555555; /* borders */
+  --sx-color-shadow: rgba(0, 0, 0, 0.5); /* shadows */
+  
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -17,15 +18,36 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   min-height: 100vh;
-  background: radial-gradient(
+  /* background: radial-gradient(
     100.5% 100% at 51.22% 0%,
     #17284f 0%,
     #04102b 81.66%
-  );
+  ); */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.light {
+ --color-main:  #f6f4ff ;
+  --color-bg-gradient: linear-gradient(135deg, #9f8de0 0%, #c6c1e7 100%);
+  
+  --color-primary: #908bdb; /* purple text main */
+ --color-secondary: #4ea7debf; /* lighter purple text secondary */
+  
+   --color-text:#1c3161 ;
+  --color-input-bg: rgba(108, 95, 199, 0.15); /* translucent purple */
+  
+  --shadow-main: rgba(108, 95, 199, 0.7);
+  --shadow-glass: rgba(108, 95, 199, 0.4);
+  
+  --rounded-pill: 50px;
+  --rounded-rounded: 20px;
+  
+  --gradient-from: #9f8de0;
+  --gradient-via: #7c6bca;
+  --gradient-to: #6c5fc7;
 }
 
 html {
@@ -39,6 +61,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  /* min-height: 100vh; */
 }
 
 @theme {
@@ -46,6 +69,7 @@ body {
   --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-secondary: "Kode Mono", monospace;
   /** colors */
+   
   --color-main: #081020;
   --color-primary: #ac9ffa;
   --color-secondary: #4ea8de;
@@ -79,6 +103,22 @@ body {
   /** animations */
   --animate-fade-slide-in: fade-slide-in-from-top 0.3s ease-out forwards;
   --animate-jelly: jelly-105 0.25s linear forwards;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+    100.5% 100% at 51.22% 0%,
+    #17284f 0%,
+    #04102b 81.66%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 @keyframes fade-slide-in-from-top {
@@ -194,3 +234,4 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+

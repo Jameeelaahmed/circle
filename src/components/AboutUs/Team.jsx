@@ -68,7 +68,7 @@ export default function Team() {
           >
             {t("about.Our Team")}
           </h2>
-          <p className="mx-auto max-w-3xl text-xl opacity-80">
+          <p className="mx-auto max-w-3xl text-[var(--color-text)] text-xl opacity-80">
             {t("about.Our Team_description")}
           </p>
         </div>
@@ -118,25 +118,25 @@ export default function Team() {
             ].map((value, index) => (
               <div
                 key={index}
-                className="hover:animate-jelly relative z-20 rounded-2xl p-4 will-change-transform"
+                className="hover:animate-jelly relative shadow-gray-700/20 shadow-2xl z-20 rounded-2xl p-4 will-change-transform"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.03)",
                   border: "1px solid rgba(255, 255, 255, 0.08)",
                 }}
               >
-                <div className="mb-3 flex justify-center">
+                <div className="mb-3  flex justify-center">
                   <value.icon
                     size={24}
-                    style={{ color: "var(--color-primary)" }}
+                    style={{ color: "var(--color-secondary)" }}
                   />
                 </div>
                 <h4
                   className="mb-1 text-sm font-semibold"
-                  style={{ color: "var(--color-primary)" }}
+                  style={{ color: "var(--color-text)" }}
                 >
                   {value.title}
                 </h4>
-                <p className="text-xs opacity-80">{value.description}</p>
+                <p className="text-xs text-secondary opacity-80">{value.description}</p>
               </div>
             ))}
           </div>

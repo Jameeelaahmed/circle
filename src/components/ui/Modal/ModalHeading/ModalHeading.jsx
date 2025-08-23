@@ -4,13 +4,13 @@ function ModalHeading({ onClose, title }) {
     return (
         <>
             <div className="flex items-center justify-between gap-3 mb-5">
-                <h2 className="text-4xl font-bold text-transparent bg-gradient-to-l from-primary to-secondary bg-clip-text font-secondary">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-l from-primary to-secondary bg-clip-text font-secondary">
                     {title}
                 </h2>
                 <X
                     onClick={onClose}
                     size={28}
-                    className="hover:bg-white/30 transition-all p-1 rounded-full cursor-pointer text-white"
+                    className="hover:bg-text/30 transition-all p-1 rounded-full cursor-pointer text-text"
                 />
             </div>
         </>
