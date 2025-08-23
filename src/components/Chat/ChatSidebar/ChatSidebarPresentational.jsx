@@ -8,6 +8,8 @@ import EventConfirmationStack from "../../EventConfirmation/EventConfirmationSta
 import { useParams } from "react-router";
 import CircleDetailsContainer from "../../ui/Modal/CircleDetailsModal/CircleDetailsContainer";
 import { useTranslation } from "react-i18next";
+import { Trash2 } from "lucide-react";
+import DeleteCircleModalContainer from "../../ui/Modal/DeleteCircleModal/DeleteCircleModalContainer";
 function ChatSidebarPresentational({
     isOpen,
     toggleSidebar,
@@ -19,7 +21,14 @@ function ChatSidebarPresentational({
     closeMembersModal,
     circleDetailsRef,
     onOpen,
-    onClose
+    onClose,
+    handleDeleteCircle,
+    isDeleting,
+    isOwner,
+    openDeleteCircleModal,
+    closeCircleDeleteModal,
+    deleteCircleRef,
+    currentCircle
 }) {
     const { t } = useTranslation();
     const { circleId } = useParams();
@@ -98,13 +107,27 @@ function ChatSidebarPresentational({
             >
                 <div className="w-70 h-full flex flex-col">
                     {/* Header */}
-                    <div className="p-4.5 border-b border-text/10 flex justify-between items-center">
+                    <div className="p-3 border-b border-text/10 flex justify-between items-center">
                         <h3 className="text-sm font-medium text-text">
                             {t("Circle Details")}
                         </h3>
-                        <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>{t("see details")}</p>
+                        <div className="flex items-center">
+                            <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>{t("see details")}</p>
+                            {isOwner &&
+                                <button
+                                    className="ml-2 p-2 rounded-full hover:bg-red-500/10 text-red-500 transition"
+                                    title="Delete Circle"
+                                    onClick={() => openDeleteCircleModal(currentCircle)} // Pass the current circle!
+                                >
+                                    <Trash2 size={15} />
+                                </button>
+                            }
+                        </div>
                         <Modal ref={circleDetailsRef}>
                             <CircleDetailsContainer onClose={onClose} />
+                        </Modal>
+                        <Modal ref={deleteCircleRef}>
+                            <DeleteCircleModalContainer closeCircleDeleteModal={closeCircleDeleteModal} isDeleting={isDeleting} onDeleteCircle={handleDeleteCircle} />
                         </Modal>
                     </div>
 
@@ -184,10 +207,11 @@ function ChatSidebarPresentational({
                                             key={member.id || member.uid}
                                             className="flex items-center space-x-2 p-2 rounded-lg hover:bg-text/5 transition-colors"
                                         >
+                                            {console.log(member)}
                                             <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-primary relative">
                                                 {member.profileImage ? (
                                                     <img
-                                                        src={member.imageUrl}
+                                                        src={member.photoUrl}
                                                         alt={member.username}
                                                         className="w-full h-full object-cover"
                                                     />

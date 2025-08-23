@@ -33,7 +33,6 @@ function CirclesSkeltonCard() {
                     <Skeleton variant="rectangular" width="100%" height={32} sx={{ borderRadius: 1 }} />
                 </Box>
             ))}
-            )
         </div>
     )
 }

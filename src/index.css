@@ -10,7 +10,6 @@
   --sx-color-on-surface: #f0f0f0; /* text on cards */
   --sx-color-outline: #555555; /* borders */
   --sx-color-shadow: rgba(0, 0, 0, 0.5); /* shadows */
-  
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -30,21 +29,21 @@
 }
 
 .light {
- --color-main:  #f6f4ff ;
+  --color-main: #f6f4ff;
   --color-bg-gradient: linear-gradient(135deg, #9f8de0 0%, #c6c1e7 100%);
-  
+
   --color-primary: #908bdb; /* purple text main */
- --color-secondary: #4ea7debf; /* lighter purple text secondary */
-  
-   --color-text:#1c3161 ;
+  --color-secondary: #4ea7debf; /* lighter purple text secondary */
+
+  --color-text: #1c3161;
   --color-input-bg: rgba(108, 95, 199, 0.15); /* translucent purple */
-  
+
   --shadow-main: rgba(108, 95, 199, 0.7);
   --shadow-glass: rgba(108, 95, 199, 0.4);
-  
+
   --rounded-pill: 50px;
   --rounded-rounded: 20px;
-  
+
   --gradient-from: #9f8de0;
   --gradient-via: #7c6bca;
   --gradient-to: #6c5fc7;
@@ -69,7 +68,7 @@ body {
   --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-secondary: "Kode Mono", monospace;
   /** colors */
-   
+
   --color-main: #081020;
   --color-primary: #ac9ffa;
   --color-secondary: #4ea8de;
@@ -234,4 +233,3 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
-
