@@ -32,26 +32,22 @@ const ProfileInfoPresentioal = ({
   isFollowing,
 }) => {
   return (
-    <div
-      className="px-3 pb-4 sm:px-4 sm:pb-6 lg:px-6 bg-text/5 backdrop-blur-2xl mb-10 rounded-b-[var(--rounded-rounded)] shadow-[var(--shadow-glassCard)]"
-    >
+    <div className="bg-text/5 mb-10 rounded-b-[var(--rounded-rounded)] px-3 pb-4 shadow-[var(--shadow-glassCard)] sm:px-4 sm:pb-6 lg:px-6">
       <div className="relative z-10 -mt-8 flex flex-col space-y-4 sm:-mt-12 lg:-mt-16">
         {/* Error Message */}
         {uploadError && (
-          <div
-            className="rounded-lg p-3 text-sm bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] text-accent border border-accent"
-          >
+          <div className="text-accent border-accent rounded-lg border bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] p-3 text-sm">
             {uploadError}
           </div>
         )}
 
         {/* Profile Image and Basic Info */}
-        <div className="flex flex-col pt-10 space-y-3 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-4">
+        <div className="flex flex-col space-y-3 pt-10 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-4">
           <div className="relative self-center sm:self-auto">
             <img
               src={profileData.photoUrl || "/default-avatar.png"}
               alt={profileData.username || "User"}
-              className={`h-20 w-20 border-2 object-cover sm:h-24 sm:w-24 sm:border-4 lg:h-32 lg:w-32 rounded-[var(--rounded-pill)] border-text shadow-softPrimary ${isUploading ? "opacity-70" : "opacity-100"}`}
+              className={`border-text shadow-softPrimary h-20 w-20 rounded-[var(--rounded-pill)] border-2 object-cover sm:h-24 sm:w-24 sm:border-4 lg:h-32 lg:w-32 ${isUploading ? "opacity-70" : "opacity-100"}`}
             />
             {isProfileMyProfile && (
               <label
@@ -76,16 +72,16 @@ const ProfileInfoPresentioal = ({
             )}
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-text border-t-transparent"></div>
+                <div className="border-text h-6 w-6 animate-spin rounded-full border-2 border-t-transparent"></div>
               </div>
             )}
           </div>
 
           <div className="flex-1 pb-2 text-center sm:pb-4 sm:text-left">
-            <h1 className="mb-1 text-xl font-bold sm:text-2xl lg:text-3xl text-text">
+            <h1 className="text-text mb-1 text-xl font-bold sm:text-2xl lg:text-3xl">
               {profileData.displayName || profileData.username || "User"}
             </h1>
-            <p className="mb-2 text-sm sm:text-base text-text">
+            <p className="text-text mb-2 text-sm sm:text-base">
               @{profileData.username || "username"}
             </p>
 
@@ -98,23 +94,23 @@ const ProfileInfoPresentioal = ({
                     onChange={(e) => setNewBio(e.target.value)}
                     placeholder="Tell us about yourself..."
                     maxLength={160}
-                    className="w-full resize-none rounded-lg px-3 py-2 text-xs sm:text-sm bg-glass text-text border border-secondary min-h-[60px]"
+                    className="bg-glass text-text border-secondary min-h-[60px] w-full resize-none rounded-lg border px-3 py-2 text-xs sm:text-sm"
                     rows={3}
                   />
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-text">
+                    <span className="text-text text-xs">
                       {newBio.length}/160
                     </span>
                     <div className="flex space-x-2">
                       <button
                         onClick={handleUpdateBio}
-                        className="rounded-full p-1 transition-all duration-200 text-primary"
+                        className="text-primary rounded-full p-1 transition-all duration-200"
                       >
                         <Check className="h-4 w-4" />
                       </button>
                       <button
                         onClick={cancelBioEdit}
-                        className="rounded-full p-1 transition-all duration-200 text-accent"
+                        className="text-accent rounded-full p-1 transition-all duration-200"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -123,7 +119,7 @@ const ProfileInfoPresentioal = ({
                 </div>
               ) : (
                 <div className="flex items-start justify-between">
-                  <p className="flex-1 text-xs leading-relaxed sm:text-sm text-text">
+                  <p className="text-text flex-1 text-xs leading-relaxed sm:text-sm">
                     {profileData.bio ||
                       (isProfileMyProfile
                         ? "Add a bio to tell people about yourself"
@@ -132,7 +128,7 @@ const ProfileInfoPresentioal = ({
                   {isProfileMyProfile && (
                     <button
                       onClick={() => setShowEditModeBio(true)}
-                      className="ml-2 rounded-full p-1 transition-all duration-200 text-text"
+                      className="text-text ml-2 rounded-full p-1 transition-all duration-200"
                     >
                       <Edit3 className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
@@ -143,7 +139,7 @@ const ProfileInfoPresentioal = ({
 
             {/* Location and Join Date */}
             <div className="flex flex-col items-center justify-center space-y-1 text-xs sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4 sm:text-sm">
-              <div className="flex items-center text-text">
+              <div className="text-text flex items-center">
                 <MapPin className="mr-1 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
                 {showEditModeLocation ? (
                   <div className="flex items-center space-x-2">
@@ -152,17 +148,17 @@ const ProfileInfoPresentioal = ({
                       value={newLocation}
                       onChange={(e) => setNewLocation(e.target.value)}
                       placeholder="Add your location"
-                      className="rounded px-2 py-1 text-xs sm:text-sm bg-[var(--color-glass)] text-text border border-secondary min-w-[120px]"
+                      className="text-text border-secondary min-w-[120px] rounded border bg-[var(--color-glass)] px-2 py-1 text-xs sm:text-sm"
                     />
                     <button
                       onClick={handleUpdateLocation}
-                      className="rounded-full p-1 transition-all duration-200 text-primary"
+                      className="text-primary rounded-full p-1 transition-all duration-200"
                     >
                       <Check className="h-3 w-3" />
                     </button>
                     <button
                       onClick={cancelLocationEdit}
-                      className="rounded-full p-1 transition-all duration-200 text-accent"
+                      className="text-accent rounded-full p-1 transition-all duration-200"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -178,7 +174,7 @@ const ProfileInfoPresentioal = ({
                     {isProfileMyProfile && (
                       <button
                         onClick={() => setShowEditModeLocation(true)}
-                        className="ml-2 rounded-full p-1 transition-all duration-200 text-text"
+                        className="text-text ml-2 rounded-full p-1 transition-all duration-200"
                       >
                         <Edit3 className="h-3 w-3" />
                       </button>
@@ -187,7 +183,7 @@ const ProfileInfoPresentioal = ({
                 )}
               </div>
 
-              <span className="flex items-center text-text">
+              <span className="text-text flex items-center">
                 <Calendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                 Joined {profileData.joinDate || "Recently"}
               </span>
@@ -200,10 +196,11 @@ const ProfileInfoPresentioal = ({
           <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleFollow}
-              className={`transform rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base  ${isFollowing
-                ? "bg-glass text-text shadow-none"
-                : "bg-primary text-text shadow-btnPrimary"
-                }`}
+              className={`transform rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base ${
+                isFollowing
+                  ? "bg-glass text-text shadow-none"
+                  : "bg-primary text-text shadow-btnPrimary"
+              }`}
               onMouseEnter={(e) => {
                 if (!isFollowing) {
                   e.target.style.boxShadow = "var(--shadow-btnPrimaryHover)";
@@ -219,7 +216,7 @@ const ProfileInfoPresentioal = ({
             </button>
 
             <button
-              className="rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base bg-accent text-text"
+              className="bg-accent text-text rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base"
               onMouseEnter={(e) =>
                 handleHover(e, "var(--shadow-btnSecondaryHover)")
               }

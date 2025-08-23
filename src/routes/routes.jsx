@@ -129,11 +129,11 @@ const routes = createBrowserRouter([
       {
         path: "circles/:circleId",
         element: (
-          <ProtectedRoute>
-            <LazyWrapper>
-              <CirclePageContainer />
-            </LazyWrapper>
-          </ProtectedRoute>
+          // <ProtectedRoute>
+          <LazyWrapper>
+            <CirclePageContainer />
+          </LazyWrapper>
+          // </ProtectedRoute>
         ),
       },
       {
@@ -198,7 +198,8 @@ const routes = createBrowserRouter([
         element: (
           <LazyWrapper>
             <ProfileContainer />
-          </LazyWrapper>)
+          </LazyWrapper>
+        ),
       },
       {
         path: "*",

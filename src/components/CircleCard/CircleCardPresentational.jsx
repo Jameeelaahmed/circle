@@ -15,7 +15,7 @@ export default function CircleCardPresentational({
   return (
     <>
       <div
-        className="group relative overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-xl sm:p-5 cursor-pointer"
+        className="group relative cursor-pointer overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-xl sm:p-5"
         style={{
           background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
           backdropFilter: "blur(10px)",
@@ -23,8 +23,6 @@ export default function CircleCardPresentational({
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
         }}
       >
-
-
         {/* Shiny hover effect */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-[50%] -left-[150%] h-[200%] w-[60%] rotate-[25deg] transform bg-gradient-to-r from-transparent via-[rgba(172,159,250,0.2)] to-transparent opacity-0 transition-[opacity_transform] duration-900 group-hover:left-[150%] group-hover:opacity-100"></div>
@@ -34,7 +32,7 @@ export default function CircleCardPresentational({
         <div className="relative z-10">
           <div className="flex justify-between">
             <div className="mb-3 flex items-center space-x-3 sm:mb-4 sm:space-x-4">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary sm:h-12 sm:w-12">
+              <div className="border-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border sm:h-12 sm:w-12">
                 {hasImage ? (
                   <img
                     className="h-full w-full rounded-full object-cover"
@@ -43,7 +41,7 @@ export default function CircleCardPresentational({
                   />
                 ) : (
                   <span
-                    className="text-xl font-bold text-text select-none"
+                    className="text-text text-xl font-bold select-none"
                     style={{ fontFamily: "var(--font-secondary)" }}
                   >
                     {circle.circleName?.charAt(0)?.toUpperCase() || "?"}
@@ -51,7 +49,7 @@ export default function CircleCardPresentational({
                 )}
               </div>
               <div>
-                <h3 className="text-base font-bold text-primary sm:text-lg">
+                <h3 className="text-primary text-base font-bold sm:text-lg">
                   {circle.circleName}
                 </h3>
                 <p
@@ -66,10 +64,10 @@ export default function CircleCardPresentational({
 
             {isOwner && (
               <button
-                className="ml-2 hover:scale-110 transition-transform p-2 rounded-full self-start"
+                className="ml-2 self-start rounded-full p-2 transition-transform hover:scale-110"
                 style={{
                   color: "var(--color-secondary)",
-                  background: "rgba(var(--color-secondary-rgb), 0.1)"
+                  background: "rgba(var(--color-secondary-rgb), 0.1)",
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -108,13 +106,13 @@ export default function CircleCardPresentational({
               {!(membersByCircle?.[circle.id] || []).some(
                 (member) => member.id === user?.uid,
               ) && (
-                  <button
-                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
-                    onClick={(e) => handleJoinRequest(circle.id, e)}
-                  >
-                    {isRequestPending ? "Request Sent" : "Join Circle"}
-                  </button>
-                )}
+                <button
+                  className="border-primary text-primary relative w-full overflow-hidden rounded-2xl border bg-transparent py-2 text-xs font-medium transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                  onClick={(e) => handleJoinRequest(circle.id, e)}
+                >
+                  {isRequestPending ? "Request Sent" : "Join Circle"}
+                </button>
+              )}
             </>
           )}
         </div>
