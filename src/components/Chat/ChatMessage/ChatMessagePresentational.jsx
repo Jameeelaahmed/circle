@@ -6,7 +6,7 @@ import SingleMessage from "./SingleMessage";
 import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
 import { useState } from "react";
-
+import { useTranslation } from "react-i18next";
 function ChatMessagePresentational({
   handleReact,
   messages,
@@ -28,7 +28,7 @@ function ChatMessagePresentational({
   scrollToMessage,
   canEditMessage,
 }) {
-
+  const { t } = useTranslation();
   const [imageSlider, setImageSlider] = useState({
     isOpen: false,
     images: [],
@@ -65,8 +65,8 @@ function ChatMessagePresentational({
 
     >
       {messages.length === 0 && (
-        <div className="py-8 text-center text-gray-400">
-          No messages yet. Start a conversation!
+        <div className="py-8 text-center text-text-400">
+          {t("No messages yet. Start a conversation!")}
         </div>
       )}
 
@@ -81,8 +81,6 @@ function ChatMessagePresentational({
             >
               <div className="bg-main/80 text-text px-6 py-2 rounded-xl text-center shadow-md">
                 {item.message.text}
-                {console.log(item.message.text)}
-
               </div>
             </div>
           );

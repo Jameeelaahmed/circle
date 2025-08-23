@@ -1,5 +1,6 @@
 // libs
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 import { getFirestore, collection, doc, query, where, getDocs, writeBatch } from "firebase/firestore";
@@ -22,6 +23,7 @@ import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkel
 import Modal from '../../components/ui/Modal/Modal';
 import CreateCircleModalContainer from '../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer';
 function CirclesPageContainer() {
+    const { t } = useTranslation();
     const membersByCircle = useSelector(state => state.members.membersByCircle);
     const circles = useSelector(state => state.circles.circles);
     const { user } = useAuth()
@@ -38,14 +40,15 @@ function CirclesPageContainer() {
     const authModalRef = useRef();
     const deleteCircleRef = useRef();
     const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
-
     const [searchQuery, setSearchQuery] = useState("");
+    const [sendingRequestId, setSendingRequestId] = useState(null);
 
     const { handleJoinRequest, pendingRequests, setPendingRequests } = useJoinCircleRequest({
         circles,
         membersByCircle,
         user,
-        profile
+        profile,
+        setSendingRequestId
     });
 
     useEffect(() => {
@@ -93,7 +96,6 @@ function CirclesPageContainer() {
             filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public' || circle.circlePrivacy === 'Public'));
         }
 
-        // --- SEARCH FILTER ---
         if (searchQuery.trim()) {
             const queryLower = searchQuery.trim().toLowerCase();
             filteredCircles = filteredCircles.filter(circle =>
@@ -102,7 +104,6 @@ function CirclesPageContainer() {
                 (circle.interests && circle.interests.some(interest => interest.toLowerCase().includes(queryLower)))
             );
         }
-        // --- END SEARCH FILTER ---
 
         pageCount = Math.ceil(filteredCircles.length / circlesPerPage);
         paginatedCircles = filteredCircles.slice(
@@ -203,7 +204,7 @@ function CirclesPageContainer() {
             // Commit everything together
             await batch.commit();
 
-            toast.success("Circle deleted successfully!");
+            toast.success(t("Circle deleted successfully!"));
             dispatch(fetchCircles());
             closeCircleDeleteModal();
         } catch (error) {
@@ -243,7 +244,7 @@ function CirclesPageContainer() {
                         type="text"
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        placeholder="Search circles..."
+                        placeholder={t("Search circles...")}
                         className="px-3 py-2 rounded-3xl border border-primary bg-transparent text-text w-full max-w-xs sm:max-w-md md:max-w-lg transition-all"
                     />
                     <div className='bg-primary rounded-3xl p-2 ltr:ml-1.5 rtl:mr-1.5 cursor-pointer' onClick={openCCircleModal}>
@@ -258,7 +259,7 @@ function CirclesPageContainer() {
                         profileStatus !== "succeeded" ||
                         !allMembersLoaded) ? (
                         <div className="flex justify-center items-center h-full">
-                            <span>Loading circles...</span>
+                            <span>{t("Loading circles...")}</span>
                         </div>
                     ) : (
                         <CirclesPagePresentational
@@ -277,6 +278,7 @@ function CirclesPageContainer() {
                             closeCircleDeleteModal={closeCircleDeleteModal}
                             onDeleteCircle={handleDeleteCircle}
                             isDeleting={isDeleting}
+                            sendingRequestId={sendingRequestId}
                             circleName={selectedCircleToDelete ? selectedCircleToDelete.circleName : ""}
                         />
                     )}
@@ -313,7 +315,7 @@ function CirclesPageContainer() {
                         />
                     ) : (
                         <div className="flex justify-center items-center h-full">
-                            <span>No circles found.</span>
+                            <span>{t("No circles found.")}</span>
                         </div>
                     )}
                 </>

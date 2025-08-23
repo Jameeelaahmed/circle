@@ -1,4 +1,6 @@
 import { User, Trash2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+
 export default function CircleCardPresentational({
   hasImage,
   members,
@@ -11,7 +13,9 @@ export default function CircleCardPresentational({
   membersByCircle,
   isOwner,
   openDeleteCircleModal,
+  sendingRequestId
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -63,8 +67,8 @@ export default function CircleCardPresentational({
                   className="mt-1 flex items-center text-xs sm:text-sm"
                   style={{ color: "var(--color-secondary)" }}
                 >
-                  <User className="mr-1.5 h-3.5 w-3.5" />
-                  {members.length} {members.length === 1 ? "Member" : "Members"}
+                  <User className="ltr:mr-1.5 rtl:ml-1.5 h-3.5 w-3.5" />
+                  {members.length} {members.length === 1 ? t("Member") : t("Members")}
                 </p>
               </div>
             </div>
@@ -104,7 +108,7 @@ export default function CircleCardPresentational({
                 ))}
                 {circle.interests.length > 4 && (
                   <span className="border-primary text-primary mb-2 rounded-3xl border px-2 py-1 text-xs sm:text-sm">
-                    +{circle.interests.length - 4} more
+                    +{circle.interests.length - 4} {t("more")}
                   </span>
                 )}
               </div>
@@ -112,10 +116,12 @@ export default function CircleCardPresentational({
                 (member) => member.id === user?.uid
               ) && (
                   <button
-                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm"
+                    className="relative w-full overflow-hidden rounded-2xl border border-primary bg-transparent py-2 text-xs font-medium text-primary transition-all duration-300 hover:bg-[rgba(172,159,250,0.15)] sm:py-2.5 sm:text-sm cursor-pointer"
                     onClick={(e) => handleJoinRequest(circle.id, e)}
                   >
-                    {isRequestPending ? "Request Sent" : "Join Circle"}
+                    {sendingRequestId === circle.id
+                      ? t("Sending Request...")
+                      : isRequestPending ? t("Request Sent") : t("Join Circle")}
                   </button>
                 )}
             </>

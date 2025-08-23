@@ -334,7 +334,7 @@ const BackgroundHoverEffect = ({
         }}
       >
         {/* Sidebar (circles + header) */}
-        <div className="flex w-full flex-col gap-6 border-b border-gray-700/40 pb-4 md:w-80 md:border-r md:border-b-0 md:pr-6 md:pb-0">
+        <div className="flex w-full flex-col gap-6 border-b border-text-700/40 pb-4 md:w-80 md:border-r md:border-b-0 md:pr-6 md:pb-0">
           {/* Header */}
           <div className="flex items-center gap-4 px-1">
             <img
@@ -343,8 +343,8 @@ const BackgroundHoverEffect = ({
               className="h-10 w-10 drop-shadow-md"
             />
             <div>
-              <h1 className="text-3xl font-bold text-[var(--color-text)] ">Calendar</h1>
-              <p className="text-sm text-gray-400">Your Upcoming Events!</p>
+              <h1 className="text-3xl font-bold text-text">Calendar</h1>
+              <p className="text-sm text-text-400">Your Upcoming Events!</p>
             </div>
           </div>
 
@@ -353,7 +353,7 @@ const BackgroundHoverEffect = ({
             {Object.entries(circlesInfo).map(([circleId, circle]) => (
               <div
                 key={circleId}
-                className="rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/20 to-gray-900/30 p-3 shadow-sm transition-all  hover:shadow-lg"
+                className="rounded-2xl border border-text-700/50 bg-gradient-to-br from-text-800/20 to-text-900/30 p-3 shadow-sm transition-all  hover:shadow-lg"
                 style={{
                   borderLeft: `5px solid ${circle.colorName || "#f78fb3"}`,
                 }}
@@ -365,13 +365,13 @@ const BackgroundHoverEffect = ({
                       <img
                         src={circle.image}
                         alt={circle.label}
-                        className="h-10 w-10 rounded-full object-cover ring-2 ring-gray-700/50"
+                        className="h-10 w-10 rounded-full object-cover ring-2 ring-text-700/50"
                       />
                     )}
                     <span className="text-sm font-medium tracking-wide text-white">
                       {circle.label}
                     </span>
-                    <span className="ml-auto text-gray-400 transition-transform group-open:rotate-90">
+                    <span className="ml-auto text-text-400 transition-transform group-open:rotate-90">
                       ▶
                     </span>
                   </summary>
@@ -382,7 +382,7 @@ const BackgroundHoverEffect = ({
                       {circle.events.map((event, idx) => (
                         <li
                           key={idx}
-                          className="flex items-center gap-2 rounded-md bg-gray-900/30 px-2 py-2 text-xs text-gray-200 hover:bg-gray-900/50"
+                          className="flex items-center gap-2 rounded-md bg-text-900/30 px-2 py-2 text-xs text-text-200 hover:bg-text-900/50"
                         >
                           {/* Colored dot */}
                           <span
@@ -390,14 +390,14 @@ const BackgroundHoverEffect = ({
                             style={{ backgroundColor: circle.colorName }}
                           />
                           <span className="truncate">{event.title}</span>
-                          <span className="ml-auto rounded-full bg-gray-700/40 px-2 py-0.5 text-[10px] text-gray-300">
+                          <span className="ml-auto rounded-full bg-text-700/40 px-2 py-0.5 text-[10px] text-text-300">
                             {event.start?.slice(0, 10)}
                           </span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-3 pl-1 text-xs text-gray-500 italic">
+                    <p className="mt-3 pl-1 text-xs text-text-500 italic">
                       No upcoming events
                     </p>
                   )}
@@ -407,7 +407,34 @@ const BackgroundHoverEffect = ({
           </div>
         </div>
 
-        {/* Calendar Section */}
+        {/* Circle info */}
+        <div className=" grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {Object.entries(circlesInfo).map(([circleId, circle]) => (
+            <div
+              key={circleId}
+              className="flex items-center gap-3 rounded-xl border border-text-700/50 bg-text-800/30 p-2 transition-all hover:scale-105 hover:shadow-lg"
+              style={{
+                borderLeft: `4px solid ${circle.colorName || "#4D96FF"}`,
+              }}
+            >
+              {circle.image && (
+                <img
+                  src={circle.image}
+                  alt={circle.label}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              )}
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-text">
+                  {circle.label}
+                </span>
+
+                {/* <span className="text-xs text-text-400">{circle.eventsCount || 0} events</span> */}
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div
           className="relative z-10 mt-7 flex-grow overflow-auto rounded-2xl shadow-md md:ml-6"
           style={{

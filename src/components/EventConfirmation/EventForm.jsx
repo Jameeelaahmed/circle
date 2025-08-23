@@ -193,13 +193,13 @@ export default function EventForm({ event, onClose }) {
                   type="button"
                   onClick={clearLocation}
                   disabled={!selectedLocation}
-                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-xl px-3 py-2 text-text text-sm"
+                  className="bg-red-500 hover:bg-red-600 disabled:bg-text-500 disabled:cursor-not-allowed rounded-xl px-3 py-2 text-text text-sm"
                 >
                   {t("Clear Pin")}
                 </button>
 
                 {selectedLocation && (
-                  <span className="text-xs text-gray-400 self-center">
+                  <span className="text-xs text-text-400 self-center">
                     Pin placed at: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
                   </span>
                 )}

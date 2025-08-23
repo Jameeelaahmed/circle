@@ -50,7 +50,7 @@ export default function LandingPresentational({
           </Motion.h1>
 
           <Motion.p
-            className="mb-8 text-center text-lg leading-relaxed text-gray-300 md:text-xl"
+            className="mb-8 text-center text-lg leading-relaxed text-text-300 md:text-xl"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}

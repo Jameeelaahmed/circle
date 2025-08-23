@@ -1,19 +1,21 @@
 import { Link } from "react-router-dom";
 import { Check, X, Loader2 } from "lucide-react";
-
+import { useTranslation } from "react-i18next";
 function CirclesRequestsPresentational({
     requests,
     loading,
     onAccept,
     onCancel,
     requestType,
-    setRequestType
+    setRequestType,
+    actionLoading // <-- receive loading state
 }) {
+    const { t } = useTranslation();
     return (
         <div className="pt-paddingTop w-full max-w-full mx-auto pr-2 pl-2 pb-2">
             <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-3 px-2">
                 <h2 className="text-xl md:text-2xl font-bold text-primary">
-                    Circle Requests
+                    {t("Circle Requests")}
                 </h2>
                 <div className="flex gap-2 bg--main rounded-full p-1 shadow">
                     {["join-request", "invitation"].map((type) => (
@@ -26,7 +28,7 @@ function CirclesRequestsPresentational({
                             `}
                             onClick={() => setRequestType(type)}
                         >
-                            {type === "join-request" ? "Join Requests" : "Invitations"}
+                            {type === "join-request" ? t("Join Requests") : t("Invitations")}
                         </button>
                     ))}
                 </div>
@@ -45,22 +47,19 @@ function CirclesRequestsPresentational({
                             </div>
                             <h3 className="text-lg font-medium text-primary">
                                 {requestType === "join-request"
-                                    ? "No join requests yet"
-                                    : "No pending invitations"}
+                                    ? t("No join requests yet")
+                                    : t("No pending invitations")}
                             </h3>
                             <p className="mt-1 text-text max-w-md mx-auto">
                                 {requestType === "join-request"
-                                    ? "Users will appear here when they request to join your circles"
-                                    : "You'll see invitations here when you're invited to circles"}
+                                    ? t("Users will appear here when they request to join your circles")
+                                    : t("You'll see invitations here when you're invited to circles")}
                             </p>
                         </div>
                     ) : (
                         <ul className="divide-y divide-primary/30 w-full">
                             {requests.map((req) => (
-                                <li
-                                    key={req.id}
-                                    className="hover:bg-primary/10 transition-colors duration-200"
-                                >
+                                <li key={req.id} className="hover:bg-primary/10 transition-colors duration-200">
                                     <div className="flex flex-col md:flex-row items-start md:items-center p-4 w-full">
                                         <div className="flex-1 min-w-0 mr-4">
                                             <div className="flex flex-wrap items-baseline gap-1.5 mb-1.5">
@@ -77,8 +76,8 @@ function CirclesRequestsPresentational({
                                                 </Link>
                                                 <span className="text-text text-sm hidden sm:inline">
                                                     {requestType === "join-request"
-                                                        ? "requested to join"
-                                                        : `${req.inviterUsername} invited you to`}
+                                                        ? t("requested to join")
+                                                        : `${t("invited you to")}`}
                                                 </span>
                                                 <Link
                                                     to={`/circles/${req.circleId}`}
@@ -87,28 +86,27 @@ function CirclesRequestsPresentational({
                                                     {req.circleName}
                                                 </Link>
                                             </div>
-                                            {req.message && (
-                                                <div className="mt-2 flex">
-                                                    <div className="border-l-2 border-primary pl-2 text-text text-sm italic">
-                                                        "{req.message}"
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                         <div className="flex gap-2 mt-2 md:mt-0">
                                             <button
                                                 className="p-2 rounded-full bg-green-500/10 hover:bg-green-500/20 text-green-400 transition-colors"
                                                 onClick={() => onAccept(req.id)}
-                                                aria-label="Accept request"
+                                                aria-label={t("Accept request")}
+                                                disabled={actionLoading?.[req.id] === "accept"}
                                             >
-                                                <Check size={18} strokeWidth={2.5} />
+                                                {actionLoading?.[req.id] === "accept"
+                                                    ? <Loader2 className="animate-spin w-4 h-4" />
+                                                    : <Check size={18} strokeWidth={2.5} />}
                                             </button>
                                             <button
                                                 className="p-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
                                                 onClick={() => onCancel(req.id)}
-                                                aria-label="Decline request"
+                                                aria-label={t("Decline request")}
+                                                disabled={actionLoading?.[req.id] === "cancel"}
                                             >
-                                                <X size={18} strokeWidth={2.5} />
+                                                {actionLoading?.[req.id] === "cancel"
+                                                    ? <Loader2 className="animate-spin w-4 h-4" />
+                                                    : <X size={18} strokeWidth={2.5} />}
                                             </button>
                                         </div>
                                     </div>

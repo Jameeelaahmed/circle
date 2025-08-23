@@ -28,14 +28,14 @@ function MemoriesPresentational({
   return (
     <div className="mt-[64px] min-h-screen text-text">
       {/* Header */}
-      <div className="bg-gray sticky top-[64px] z-40 border-b border-gray-700 shadow-sm backdrop-blur-sm">
+      <div className="bg-text sticky top-[64px] z-40 border-b border-text-700 shadow-sm backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 py-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-4xl font-bold text-transparent">
                 {t("My Memories")}
               </h1>
-              <p className="mt-1 text-gray-300">
+              <p className="mt-1 text-text-300">
                 Capturing life's beautiful moments
               </p>
             </div>
@@ -63,7 +63,7 @@ function MemoriesPresentational({
         <div className="mb-8 flex flex-col gap-4 md:flex-row">
           <div className="relative flex-1">
             <Search
-              className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
+              className="absolute top-1/2 left-3 -translate-y-1/2 transform text-text-400"
               size={20}
             />
             <input
@@ -71,12 +71,12 @@ function MemoriesPresentational({
               placeholder="Search memories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="focus:ring-primary bg-main w-full rounded-full border border-gray-600 py-3 pr-4 pl-10 text-text placeholder-gray-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
+              className="focus:ring-primary bg-main w-full rounded-full border border-text-600 py-3 pr-4 pl-10 text-text placeholder-text-400 backdrop-blur-sm focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
 
-        <p className="mb-6 text-gray-300">
+        <p className="mb-6 text-text-300">
           {memoriesLength} {memoriesLength === 1 ? "memory" : "memories"} found
         </p>
 
@@ -102,7 +102,7 @@ function MemoriesPresentational({
                     <h3 className="mb-2 line-clamp-1 font-semibold text-text">
                       {memory.name}
                     </h3>
-                    <div className="mb-3 flex items-center gap-2 text-sm text-gray-400">
+                    <div className="mb-3 flex items-center gap-2 text-sm text-text-400">
                       <Calendar size={14} />
                       <span>{formatDate(memory.date)}</span>
                     </div>
@@ -128,12 +128,12 @@ function MemoriesPresentational({
         </div>
 
         {memories.length === 0 && (
-          <div className="py-16 text-center text-gray-500">
+          <div className="py-16 text-center text-text-500">
             <Search size={64} className="mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-400">
+            <h3 className="text-xl font-medium text-text-400">
               No memories found
             </h3>
-            <p className="mt-2 text-gray-500">
+            <p className="mt-2 text-text-500">
               Try adjusting your search or filters
             </p>
           </div>
@@ -175,16 +175,16 @@ function MemoriesPresentational({
                   {selectedMemory.name}
                 </h2>
                 <div className="mb-6 space-y-3">
-                  <div className="flex items-center gap-2 text-gray-300">
+                  <div className="flex items-center gap-2 text-text-300">
                     <Calendar size={18} />
                     <span>{formatDate(selectedMemory.date)}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-300">
+                  <div className="flex items-center gap-2 text-text-300">
                     <MapPin size={18} />
                     <span>{selectedMemory.location}</span>
                   </div>
                 </div>
-                <p className="mb-6 text-gray-300">
+                <p className="mb-6 text-text-300">
                   {selectedMemory.description}
                 </p>
               </div>

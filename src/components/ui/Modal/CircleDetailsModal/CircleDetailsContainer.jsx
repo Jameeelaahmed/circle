@@ -21,11 +21,6 @@ export default function CircleDetailsContainer({ onClose }) {
     const circles = useSelector(state => state.circles.circles);
     const { circleId } = useParams();
     const circle = circles.find(c => c.id === circleId);
-    const members = membersByCircle[circle.id] || [];
-    const ownerMember = members.find(member => member.isOwner);
-    const adminMembers = members.filter(member => member.isAdmin);
-    const isOwner = ownerMember && ownerMember.id === userId;
-    const isAdmin = adminMembers.some(member => member.id === userId);
 
 
     // Refs for editable fields
@@ -130,7 +125,16 @@ export default function CircleDetailsContainer({ onClose }) {
     }, [isEditing, selectedCircle]);
 
     if (!selectedCircle) return null;
+    if (!circle) {
+        // Show a loading spinner or fallback UI until circles are loaded
+        return <div>Loading...</div>;
+    }
 
+    const members = membersByCircle[circle.id] || [];
+    const ownerMember = members.find(member => member.isOwner);
+    const adminMembers = members.filter(member => member.isAdmin);
+    const isOwner = ownerMember && ownerMember.id === userId;
+    const isAdmin = adminMembers.some(member => member.id === userId);
     return (
         <Suspense fallback={<div />}>
             <CircleDetailsPresentational

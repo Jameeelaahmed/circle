@@ -122,9 +122,8 @@ export default function EventsContainer() {
               start: formatDate(startDate),
               end: formatDate(endDate),
               calendarId: circleId,
-              description: `Circle : ${calendarInfo.label || ""} going to - ${
-                data.place || ""
-              } - ${data.Location || ""}`,
+              description: `Circle : ${calendarInfo.label || ""} going to - ${data.place || ""
+                } - ${data.Location || ""}`,
               circleName: calendarInfo.label,
               circleImage: calendarInfo.image,
             };
@@ -178,12 +177,12 @@ export default function EventsContainer() {
         <div className="h-10 w-1/3 rounded-xl bg-gray-700/40"></div>
         <div className="grid grid-cols-7 gap-2">
           {Array.from({ length: 7 }).map((_, i) => (
-            <div key={i} className="h-6 rounded-md bg-gray-700/30"></div>
+            <div key={i} className="h-6 rounded-md bg-text-700/30"></div>
           ))}
         </div>
         <div className="grid flex-1 grid-cols-7 gap-2">
           {Array.from({ length: 35 }).map((_, i) => (
-            <div key={i} className="h-20 rounded-lg bg-gray-700/20"></div>
+            <div key={i} className="h-20 rounded-lg bg-text-700/20"></div>
           ))}
         </div>
       </div>
@@ -198,7 +197,7 @@ export default function EventsContainer() {
         position: "relative",
       }}
     >
-      
+
 
       <EventsPresentional
         calendarApp={calendarApp}

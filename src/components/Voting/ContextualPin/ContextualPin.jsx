@@ -80,7 +80,7 @@ const ContextualPin = ({
   return (
     <div className="w-full flex flex-col items-center relative">
       <button
-        className="absolute top-2 right-2 z-10 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
+        className="absolute top-2 right-2 z-10 p-2 hover:bg-text-200 dark:hover:bg-text-700 rounded-full transition"
         onClick={onDismiss}
       >
       </button>

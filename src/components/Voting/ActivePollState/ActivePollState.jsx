@@ -85,7 +85,7 @@ const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
       >
         <div>
           <h3 className="text-lg font-bold">{pollData.question}</h3>
-          {/* <p className={`text-sm ${isExpired ? 'text-red-400 font-bold' : 'text-gray-300'}`}>
+          {/* <p className={`text-sm ${isExpired ? 'text-red-400 font-bold' : 'text-text-300'}`}>
             {isExpired ? 'Poll Ended' : `Ends in: ${remainingTime}`}
           </p> */}
         </div>
@@ -131,8 +131,8 @@ const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
                     key={i}
                     onClick={() => isEnabled && onVote(option.text)}
                     className={`group flex flex-col gap-1 rounded-xl border px-4 py-3 transition-all ${isEnabled
-                        ? "hover:border-primary cursor-pointer border-text/10 bg-text/5"
-                        : "cursor-not-allowed opacity-60"
+                      ? "hover:border-primary cursor-pointer border-text/10 bg-text/5"
+                      : "cursor-not-allowed opacity-60"
                       }`}
                   >
                     <div className="flex items-center justify-between">
@@ -164,7 +164,7 @@ const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
                       value={newOptionText}
                       onChange={(e) => setNewOptionText(e.target.value)}
                       maxLength={50}
-                      className="focus:ring-primary w-full rounded-lg bg-gray-800 p-3 text-text placeholder-gray-400 outline-none focus:ring-2"
+                      className="focus:ring-primary w-full rounded-lg bg-text-800 p-3 text-text placeholder-text-400 outline-none focus:ring-2"
                     />
                     <div className="flex gap-3">
                       <button

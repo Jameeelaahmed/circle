@@ -10,7 +10,8 @@ function CircleCardContainer({
     activeTab,
     openDeleteCircleModal,
     closeCircleDeleteModal,
-    handleJoinRequest
+    handleJoinRequest,
+    sendingRequestId
 }) {
     const { user } = useAuth();
     const hasImage = !!circle.imageUrl;
@@ -48,6 +49,7 @@ function CircleCardContainer({
 
     return (
         <CircleCardPresentational
+            sendingRequestId={sendingRequestId}
             hasImage={hasImage}
             members={members}
             displayedInterests={displayedInterests}

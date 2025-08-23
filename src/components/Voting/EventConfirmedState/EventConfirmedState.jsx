@@ -78,7 +78,7 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
           <h1 className="text-3xl font-extrabold tracking-tight">
             Event Confirmed!
           </h1>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-text-400">
             All set, get ready to celebrate!
           </p>
         </div>
@@ -101,7 +101,7 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
           >
 
             {/* Event details card */}
-            <div className="space-y-4 rounded-2xl border border-gray-700  p-6 shadow-inner">
+            <div className="space-y-4 rounded-2xl border border-text-700  p-6 shadow-inner">
               <div className="flex items-center gap-4">
                 <div className="rounded-full bg-purple-500/20 p-3">
                   <Sparkles size={24} className="text-purple-400" />
@@ -121,7 +121,7 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
             </div>
 
             {/* RSVP buttons with integrated counts */}
-            <div className="rounded-2xl border border-gray-700  p-6">
+            <div className="rounded-2xl border border-text-700  p-6">
               <h2 className="mb-5 text-center text-lg font-bold">
                 Will you be joining us?
               </h2>
@@ -134,21 +134,21 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
                       <button
                         key={type}
                         onClick={() => onRsvp(type)}
-                        className={`relative flex w-full flex-col items-center rounded-xl border-2 py-4 transition-all duration-300 ease-in-out ${isSelected ? `${bg} ${border} scale-105 shadow-md` : "border-transparent bg-gray-700 hover:scale-[1.02] hover:bg-gray-600"} `}
+                        className={`relative flex w-full flex-col items-center rounded-xl border-2 py-4 transition-all duration-300 ease-in-out ${isSelected ? `${bg} ${border} scale-105 shadow-md` : "border-transparent bg-text-700 hover:scale-[1.02] hover:bg-text-600"} `}
                         aria-pressed={isSelected}
                         title={label}
                       >
                         <Icon
-                          className={`mb-2 ${isSelected ? color : "text-gray-400"}`}
+                          className={`mb-2 ${isSelected ? color : "text-text-400"}`}
                           size={28}
                         />
                         <span
-                          className={`text-sm font-semibold ${isSelected ? "text-text" : "text-gray-300"}`}
+                          className={`text-sm font-semibold ${isSelected ? "text-text" : "text-text-300"}`}
                         >
                           {label}
                         </span>
                         <span
-                          className={`absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-bold shadow-lg ${isSelected ? "bg-text text-gray-800" : "border-gray-800 bg-gray-600 text-text"}`}
+                          className={`absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-bold shadow-lg ${isSelected ? "bg-text text-text-800" : "border-text-800 bg-text-600 text-text"}`}
                         >
                           {count}
                         </span>

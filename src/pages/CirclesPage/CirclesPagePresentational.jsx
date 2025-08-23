@@ -21,7 +21,8 @@ function CirclesPagePresentational({
     closeCircleDeleteModal,
     onDeleteCircle,
     isDeleting,
-    circleName
+    circleName,
+    sendingRequestId
     // handleCloseAuthModal
 }) {
     return (
@@ -31,6 +32,7 @@ function CirclesPagePresentational({
                 {circles.map((circle) => (
                     <div key={circle.id} onClick={() => handleCardClick(circle)} user={user} className='cursor bg-main rounded-3xl'>
                         <CircleCardContainer
+                            sendingRequestId={sendingRequestId}
                             circle={circle}
                             membersByCircle={membersByCircle}
                             activeTab={activeTab}

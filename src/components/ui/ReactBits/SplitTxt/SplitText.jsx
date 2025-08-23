@@ -27,7 +27,7 @@ const SplitText = ({
     if (typeof window === "undefined" || !ref.current || !text) return;
 
     const el = ref.current;
-    
+
     animationCompletedRef.current = false;
 
     const absoluteLines = splitType === "lines";
@@ -139,8 +139,8 @@ const SplitText = ({
       style={{
         textAlign,
         wordWrap: "break-word",
-         direction: "ltr" ,
-         color:"var(--color-text)"
+        direction: "ltr",
+        color: "var(--color-text)"
       }}
     >
       {text}
