@@ -10,6 +10,7 @@
   --sx-color-on-surface: #f0f0f0; /* text on cards */
   --sx-color-outline: #555555; /* borders */
   --sx-color-shadow: rgba(0, 0, 0, 0.5); /* shadows */
+  
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -17,11 +18,11 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   min-height: 100vh;
-  background: radial-gradient(
+  /* background: radial-gradient(
     100.5% 100% at 51.22% 0%,
     #17284f 0%,
     #04102b 81.66%
-  );
+  ); */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
