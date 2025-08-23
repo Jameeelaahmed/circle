@@ -13,7 +13,7 @@ function GlowCardPresentational({
 }) {
   return (
     <div
-      className={`group relative rounded-lg border border-neutral-800 bg-black p-6 hover:border-neutral-700 ${className}`}
+      className={`group relative rounded-lg inset-shadow-xs  inset-shadow-primary p-3 ${className}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -21,7 +21,7 @@ function GlowCardPresentational({
     >
       {/* Spotlight effect */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-lg opacity-0 transition duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-px rounded-lg opacity-20 transition duration-300 group-hover:opacity-100"
         style={{
           backgroundColor: color,
           maskImage: useMotionTemplate`
@@ -43,8 +43,8 @@ function GlowCardPresentational({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-50" />
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-0 rounded-lg opacity-0" />
+          <div className="absolute inset-0 rounded-lg " />
         </motion.div>
       )}
 

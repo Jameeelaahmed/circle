@@ -35,7 +35,7 @@ const VisionAndMission = () => {
             >
               {t("about.Vision & Mission")}
             </h2>
-            <p className="mx-auto max-w-3xl text-xl opacity-80">
+            <p className="mx-auto max-w-3xl text-[var(--color-text)] text-xl opacity-80">
               {t("about.Building meaningful connections in the digital age")}
             </p>
           </div>
@@ -43,11 +43,11 @@ const VisionAndMission = () => {
           <div className="grid gap-12 md:grid-cols-2">
             {/* Vision Card */}
             <div
-              className="hover:animate-jelly rounded-3xl p-8 will-change-transform"
+              className="hover:animate-jelly rounded-3xl shadow-gray-700/20 shadow-2xl p-8 will-change-transform"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: "var(--shadow-glassCard)",
+               
                 backdropFilter: "blur(10px)",
               }}
             >
@@ -65,18 +65,17 @@ const VisionAndMission = () => {
                   {t("about.Our Vision")}
                 </h3>
               </div>
-              <p className="text-lg leading-relaxed opacity-90">
+              <p className="text-lg text-[var(--color-text)] leading-relaxed opacity-90">
                 {t("about.vision_message")}
               </p>
             </div>
 
             {/* Mission Card */}
             <div
-              className="hover:animate-jelly rounded-3xl p-8 will-change-transform"
+              className="hover:animate-jelly shadow-gray-700/20 shadow-2xl rounded-3xl p-8 will-change-transform"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow: "var(--shadow-glassCard)",
+               
                 backdropFilter: "blur(10px)",
               }}
             >
@@ -97,7 +96,7 @@ const VisionAndMission = () => {
                   {t("about.Our Mission")}
                 </h3>
               </div>
-              <p className="text-lg leading-relaxed opacity-90">
+              <p className="text-lg text-[var(--color-text)] leading-relaxed opacity-90">
                 {t("about.mission_message")}
               </p>
             </div>
@@ -115,7 +114,7 @@ const VisionAndMission = () => {
               {values.map((value, index) => (
                 <div
                   key={index}
-                  className="rounded-2xl p-6 hover:animate-jelly will-change-transform"
+                  className="rounded-2xl shadow-gray-700/20 shadow-2xl p-6 hover:animate-jelly will-change-transform"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.03)",
                     border: "1px solid rgba(255, 255, 255, 0.08)",
@@ -129,11 +128,11 @@ const VisionAndMission = () => {
                   </div>
                   <h4
                     className="mb-2 text-lg font-semibold"
-                    style={{ color: "var(--color-accent)" }}
+                    style={{ color: "var(--color-text)" }}
                   >
                     {value.title}
                   </h4>
-                  <p className="text-sm opacity-80">{value.description}</p>
+                  <p className="text-sm text-accent opacity-80">{value.description}</p>
                 </div>
               ))}
             </div>
