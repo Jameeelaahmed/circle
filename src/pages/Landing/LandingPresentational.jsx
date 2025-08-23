@@ -38,19 +38,19 @@ export default function LandingPresentational({
       >
         <div className="max-w-xl mt-18">
           <Motion.h1
-            className="mb-6 text-center text-4xl font-bold md:text-6xl"
+            className="mb-6 text-center font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <span className="text-text">{t("From we should..")}</span>
-            <span className="from-secondary to-primary block bg-gradient-to-l bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
+            <span className="text-text ltr:font-secondary">{t("From we should..")}</span>
+            <span className="ltr:font-secondary from-secondary to-primary block bg-gradient-to-l bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">
               {t("to we did!")}
             </span>
           </Motion.h1>
 
           <Motion.p
-            className="mb-8 text-center text-lg leading-relaxed text-text-300 md:text-xl"
+            className="mb-8 text-center text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-text-300"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
