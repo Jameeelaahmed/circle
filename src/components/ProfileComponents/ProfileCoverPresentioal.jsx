@@ -1,5 +1,4 @@
 import { Camera } from "lucide-react";
-import { useEffect } from "react";
 const ProfileCoverPresentional = ({
   coverImage,
   isUploading,

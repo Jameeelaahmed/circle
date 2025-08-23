@@ -44,7 +44,7 @@ const ProfilePresentational = ({
             setShowEditMode={setShowEditMode}
           />
 
-          <ProfileStats profileData={profileData} />
+          {/* <ProfileStats profileData={profileData} /> */}
         </div>
 
         <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />

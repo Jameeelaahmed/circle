@@ -52,7 +52,7 @@ const CircleCard = ({ circle, isLoading = false, circleId }) => {
 
   return (
     <div
-      // onClick={() => navigate(`/circle/${circleId}`)}
+      onClick={() => navigate(`/circles/${circleId}`)}
       className="overflow-hidden rounded-[20px] border border-white/10 bg-[rgba(22,23,30,0.7)] shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-sm transition-all duration-200 hover:border-[#ac9ffa]/30 hover:bg-[rgba(22,23,30,0.8)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)]"
     >
       {/* Cover Image */}
