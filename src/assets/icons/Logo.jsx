@@ -28,7 +28,7 @@ export const Logo = (props) => (
     <path
       d="M65,35 A15,15 0 0,1 65,65"
       fill="none"
-      stroke="white"
+      stroke="var(--color-text)"
       strokeWidth="8"
       strokeLinecap="round"
     />
