@@ -3,7 +3,6 @@ import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 
 export const createUserProfile = async (userId, profileData) => {
-
   try {
     const userRef = doc(db, "users", userId);
     await setDoc(userRef, {
@@ -16,6 +15,7 @@ export const createUserProfile = async (userId, profileData) => {
 };
 
 export const updateUserProfile = async (userId, updates) => {
+  console.log("Updates:", updates, userId);
   try {
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
