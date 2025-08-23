@@ -7,7 +7,7 @@ import MembersModalContainer from "../../ui/Modal/MembersModal/MembersModalConta
 import EventConfirmationStack from "../../EventConfirmation/EventConfirmationStack";
 import { useParams } from "react-router";
 import CircleDetailsContainer from "../../ui/Modal/CircleDetailsModal/CircleDetailsContainer";
-
+import { useTranslation } from "react-i18next";
 function ChatSidebarPresentational({
     isOpen,
     toggleSidebar,
@@ -21,9 +21,17 @@ function ChatSidebarPresentational({
     onOpen,
     onClose
 }) {
+    const { t } = useTranslation();
     const { circleId } = useParams();
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-
+    const [direction, setDirection] = useState("ltr");
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setDirection(document.documentElement.dir || "ltr");
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["dir"] });
+        return () => observer.disconnect();
+    }, []);
     // Detect screen size for responsive behavior
     useEffect(() => {
         const handleResize = () => {
@@ -39,16 +47,22 @@ function ChatSidebarPresentational({
             <button
                 onClick={toggleSidebar}
                 className={`absolute top-1/2 -translate-y-1/2 z-50 bg-main text-text p-1.5 rounded-lg hover:bg-primary/80 transition-colors duration-200 backdrop-blur-sm
-                    ${isSmallScreen
+        ${isSmallScreen
                         ? isOpen
-                            ? "-right-3" // Inside edge when open
-                            : "left-0 -translate-x-1/2" // Hug left edge when closed
-                        : "-right-3" // Outside on desktop
+                            ? direction === "rtl" ? "-left-3" : "-right-3"
+                            : direction === "rtl" ? "right-0 translate-x-1/2" : "left-0 -translate-x-1/2"
+                        : direction === "rtl" ? "-left-3" : "-right-3"
                     }
-                `}
+    `}
             >
                 <ChevronLeft
-                    className={`w-3 h-3 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                    className={`w-3 h-3 transition-transform duration-300 ${direction === "rtl"
+                        ? isOpen
+                            ? ""
+                            : "rotate-180"
+                        : isOpen
+                            ? "rotate-180"
+                            : ""
                         }`}
                 />
             </button>
@@ -57,7 +71,7 @@ function ChatSidebarPresentational({
             {isSmallScreen && isOpen && (
                 <div
                     onClick={toggleSidebar}
-                    className="fixed inset-0 bg-black/40 z-40"
+                    className="fixed inset-0 bg-main/40 z-40"
                 />
             )}
 
@@ -67,8 +81,12 @@ function ChatSidebarPresentational({
                 animate={{
                     width: isOpen ? 280 : 0,
                     position: isSmallScreen ? "fixed" : "relative",
-                    right: isSmallScreen ? 0 : "auto",
-                    top: 0,
+                    ...(isSmallScreen
+                        ? direction === "rtl"
+                            ? { left: 0, right: "auto" }
+                            : { right: 0, left: "auto" }
+                        : { right: "auto", left: "auto" }
+                    ), top: 0,
                     height: "100%",
                     zIndex: isSmallScreen ? 50 : "auto"
                 }}
@@ -82,9 +100,9 @@ function ChatSidebarPresentational({
                     {/* Header */}
                     <div className="p-4.5 border-b border-text/10 flex justify-between items-center">
                         <h3 className="text-sm font-medium text-text">
-                            Circle Details
+                            {t("Circle Details")}
                         </h3>
-                        <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>see details</p>
+                        <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>{t("see details")}</p>
                         <Modal ref={circleDetailsRef}>
                             <CircleDetailsContainer onClose={onClose} />
                         </Modal>
@@ -94,13 +112,13 @@ function ChatSidebarPresentational({
                     <div className="flex-1 p-3 border-b border-text/10">
                         <div className="flex items-center justify-between mb-2">
                             <h4 className="text-xs font-medium text-text-300">
-                                Members ({members.length})
+                                {t("Members")} ({members.length})
                             </h4>
                             <button
                                 onClick={onShowAllMembers}
                                 className="text-xs text-primary hover:text-primary/80 transition-colors"
                             >
-                                See more
+                                {t("See more")}
                             </button>
                         </div>
                         <div className="space-y-1">
@@ -148,7 +166,7 @@ function ChatSidebarPresentational({
                             ) : error ? (
                                 <div className="p-2 text-center">
                                     <p className="text-xs text-red-400">
-                                        Error loading members
+                                        {t("Error loading members")}
                                     </p>
                                 </div>
                             ) : members.length > 0 ? (
@@ -191,12 +209,12 @@ function ChatSidebarPresentational({
                                                 <p
                                                     className={`text-xs ${member.isOnline
                                                         ? "text-green-400"
-                                                        : "text-gray-400"
+                                                        : "text-text-400"
                                                         }`}
                                                 >
                                                     {member.isOnline
-                                                        ? "Online"
-                                                        : "Offline"}
+                                                        ? t("Online")
+                                                        : t("Offline")}
                                                 </p>
                                             </div>
                                         </div>
@@ -204,7 +222,7 @@ function ChatSidebarPresentational({
                             ) : (
                                 <div className="p-2 text-center">
                                     <p className="text-xs text-text-400">
-                                        No members found
+                                        {t("No members found")}
                                     </p>
                                 </div>
                             )}
@@ -214,14 +232,14 @@ function ChatSidebarPresentational({
                     {/* Memories */}
                     <div className="flex-1 p-3 border-b border-text/10">
                         <h4 className="text-xs font-medium text-text-300 mb-2">
-                            Memories
+                            {t("Memories")}
                         </h4>
                     </div>
 
                     {/* Events */}
                     <div className="flex-1 p-3 overflow-y-auto">
                         <h4 className="text-xs font-medium text-text-300 mb-2">
-                            Events
+                            {t("Events")}
                         </h4>
                         <EventConfirmationStack circleId={circleId} />
                     </div>

@@ -13,6 +13,7 @@ import { useMediaHandlers } from "../../../hooks/chathooks/useMediaHandlers";
 import { useVoiceHandlers } from "../../../hooks/chathooks/useVoiceHandlers";
 import { useMessageHandlers } from "../../../hooks/chathooks/useMessageHandlers";
 import { usePollModal } from "../../../hooks/chathooks/usePollModal";
+import { useTranslation } from "react-i18next";
 // components
 import ChatInputPresentational from "./ChatInputPresentational";
 import Modal from "../../ui/Modal/Modal";
@@ -28,7 +29,7 @@ function ChatInputContainer({
 }) {
   const { dir, handleAutoDir } = useAutoDir();
   const { userId, userName, photoUrl } = useAuth();
-
+  const { t } = useTranslation();
   // Custom hooks
   const voiceRecording = useVoiceRecording();
   const mediaUpload = useMediaUpload();
@@ -114,11 +115,11 @@ function ChatInputContainer({
             <div className="max-w-[180px] truncate">
               <span className="text-secondary truncate">
                 {replyTo.messageType === "audio"
-                  ? "🎤 Voice message"
+                  ? t("Voice message")
                   : replyTo.messageType === "image"
-                    ? "📷 Photo"
+                    ? t("Photo")
                     : replyTo.messageType === "video"
-                      ? "🎥 Video"
+                      ? t("Video")
                       : replyTo.text}
               </span>
             </div>
@@ -128,7 +129,7 @@ function ChatInputContainer({
             onClick={() => setReplyTo(null)}
             type="button"
           >
-            Cancel
+            {t("Cancel")}
           </button>
         </div>
       )}
@@ -137,7 +138,7 @@ function ChatInputContainer({
           <div className="min-w-0 flex-1 overflow-hidden">
             <div className="max-w-[120px] truncate">
               <span className="text-accent truncate font-bold">
-                Editing message
+                {t("Editing message")}
               </span>
             </div>
             <div className="max-w-[180px] truncate">
@@ -151,7 +152,7 @@ function ChatInputContainer({
             onClick={messageHandlers.handleCancelEdit}
             type="button"
           >
-            Cancel
+            {t("Cancel")}
           </button>
         </div>
       )}

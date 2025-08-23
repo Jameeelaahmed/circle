@@ -33,14 +33,14 @@ export default function CircleDetailsPresentational({
     isOwner,
     isAdmin
 }) {
-    const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-gray-100
+    const inputStyles = `w-full rounded-md bg-inputsBg px-4 py-2 text-sm text-text-100
     shadow-inner focus:outline-none focus:ring-3 focus:ring-[var(--color-secondary)]
-    placeholder-gray-500 transition`;
+    placeholder-text-500 transition`;
     const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
     return (
         <div className="mx-auto max-w-3xl rounded-2xl">
-            <ModalHeading title={isEditing ? "Edit circle details" : "Circle Details"} onClose={onClose} />
+            <ModalHeading title={isEditing ? t("Edit circle details") : t("Circle Details")} onClose={onClose} />
             <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -234,7 +234,7 @@ export default function CircleDetailsPresentational({
                                         className="border-primary max-h-48 w-auto mx-auto rounded-lg border-2 object-cover block"
                                     />
                                 ) : (
-                                    <div className="text-xs text-gray-400">{t("No image uploaded")}</div>
+                                    <div className="text-xs text-text-400">{t("No image uploaded")}</div>
                                 )}
                             </div>
                             {/* Upload Area */}
@@ -265,10 +265,10 @@ export default function CircleDetailsPresentational({
                                     ></path>
                                 </svg>
                                 <p className="text-primary text-center text-sm">
-                                    Click to upload or drag and drop
+                                    {t("Click to upload")}
                                 </p>
-                                <p className="mt-1 text-xs text-gray-400">
-                                    Supports JPG, PNG (Max 5MB each)
+                                <p className="mt-1 text-xs text-text-400">
+                                    {t("Supports JPG, PNG (Max 5MB each)")}
                                 </p>
                             </div>
                             {/* Remove button for uploaded image */}

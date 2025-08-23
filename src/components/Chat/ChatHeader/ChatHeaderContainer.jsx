@@ -42,6 +42,11 @@ function ChatHeaderContainer({ circle }) {
         setMenu(m => ({ ...m, visible: false }));
     };
 
+    if (!circle) {
+        // Show a loading spinner or fallback UI
+        return <div>Loading...</div>;
+    }
+
     const confirmClearChat = async () => {
         try {
             if (!circle?.id) return;

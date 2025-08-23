@@ -44,8 +44,8 @@ const PaymentFailure = ({
               size={48}
             />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{getErrorTitle(errorCode)}</h1>
-          <p className="text-gray-600">{errorMessage}</p>
+          <h1 className="text-2xl font-bold text-text-900 mb-2">{getErrorTitle(errorCode)}</h1>
+          <p className="text-text-600">{errorMessage}</p>
         </div>
 
         {/* Error Details */}
@@ -72,7 +72,7 @@ const PaymentFailure = ({
           <div className="flex gap-3">
             <button
               onClick={() => navigate("/payments")}
-              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
+              className="flex-1 bg-text-100 hover:bg-text-200 text-text-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Go Back
@@ -81,8 +81,8 @@ const PaymentFailure = ({
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-6 pt-6 border-t border-gray-100">
-          <p className="text-xs text-gray-500">
+        <div className="text-center mt-6 pt-6 border-t border-text-100">
+          <p className="text-xs text-text-500">
             Need help? Contact our support team 24/7
           </p>
         </div>

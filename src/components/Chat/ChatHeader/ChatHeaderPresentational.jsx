@@ -1,7 +1,7 @@
 import Skeleton from "@mui/material/Skeleton";
 import { MoreVertical, Trash2, LogOut } from "lucide-react";
 import { useEffect } from "react";
-
+import { useTranslation } from "react-i18next";
 function ChatHeaderPresentational({
   circle,
   isLoading,
@@ -13,6 +13,7 @@ function ChatHeaderPresentational({
   closeMenu,
   hasImage
 }) {
+  const { t } = useTranslation();
   useEffect(() => {
     function handleClick() {
       if (menu?.visible) closeMenu();
@@ -23,7 +24,7 @@ function ChatHeaderPresentational({
 
   return (
     <>
-      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm ltr:rounded-tr-3xl rtl:rounded-tr-3xl">
+      <div className="bg-main flex justify-between px-4 py-2 backdrop-blur-sm ltr:rounded-tr-3xl rtl:rounded-tl-3xl">
         {/* Left side: Image + Circle Name */}
         <div className="flex items-center gap-2">
           {isLoading ? (
@@ -88,14 +89,14 @@ function ChatHeaderPresentational({
             onClick={onClearChat}
           >
             <Trash2 size={16} />
-            Clear Chat
+            {t("Clear Chat")}
           </button>
           <button
             className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors flex items-center gap-2"
             onClick={onLeaveCircle}
           >
             <LogOut size={16} />
-            Leave Circle
+            {t("Leave Circle")}
           </button>
         </div>
       )}

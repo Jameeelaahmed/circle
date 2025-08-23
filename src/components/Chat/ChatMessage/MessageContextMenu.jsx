@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 function MessageContextMenu({
     menu,
     menuDirection,
@@ -7,6 +8,7 @@ function MessageContextMenu({
     canEditMessage,
     open
 }) {
+    const { t } = useTranslation();
     const reactionEmojis = ['👍', '😂', '❤️', '🔥', '🙏'];
 
     if (!menu.visible || !menu.message) return null;
@@ -19,10 +21,10 @@ function MessageContextMenu({
             style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
         >
             <button
-                className="px-4 py-3 hover:bg-primary/30 text-left transition-colors"
+                className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                 onClick={() => handleAction('reply')}
             >
-                Reply
+                {t("Reply")}
             </button>
 
             {/* Edit button - only for text messages within edit time limit */}
@@ -30,19 +32,19 @@ function MessageContextMenu({
                 (!menu.message.messageType || menu.message.messageType === 'text') &&
                 canEditMessage && canEditMessage(menu.message) && (
                     <button
-                        className="px-4 py-3 hover:bg-primary/30 text-left transition-colors"
+                        className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                         onClick={() => {
                             handleAction('edit', menu.message);
                         }}
                     >
-                        Edit
+                        {t("Edit")}
                     </button>
                 )}
 
             {/* Download button - only for image messages */}
             {menu.message.messageType === 'image' && (
                 <button
-                    className="px-4 py-3 hover:bg-primary/30 text-left transition-colors"
+                    className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                     onClick={() => {
                         const link = document.createElement('a');
                         link.href = menu.message.imageUrl;
@@ -52,28 +54,28 @@ function MessageContextMenu({
                         document.body.removeChild(link);
                     }}
                 >
-                    Download
+                    {t("Download")}
                 </button>
             )}
 
             {/* Info button - only for own messages */}
             {menu.message.senderId === currentUser?.id && (
                 <button
-                    className="px-4 py-3 hover:bg-primary/30 text-left transition-colors"
+                    className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                     onClick={() => handleAction('info')}
                 >
-                    Info
+                    {t("Info")}
                 </button>
             )}
 
             <button
-                className="px-4 py-3 hover:bg-accent/20 text-left text-accent transition-colors"
+                className="px-4 py-3 hover:bg-accent/20 ltr:text-left rtl:text-right text-accent transition-colors"
                 onClick={() => {
                     handleAction('delete');
                     open(menu.message.id || menu.message.messageId);
                 }}
             >
-                {menu.message.senderId === currentUser?.id ? 'Delete' : 'Delete for me'}
+                {menu.message.senderId === currentUser?.id ? t('Delete') : t('Delete for me')}
             </button>
 
             {/* Reactions */}

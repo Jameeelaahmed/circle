@@ -310,9 +310,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
       );
       navigate("/");
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Google signup error:", error);
-
       // Handle COOP policy error specifically
       if (error.message?.includes("Cross-Origin-Opener-Policy")) {
         toast.error(

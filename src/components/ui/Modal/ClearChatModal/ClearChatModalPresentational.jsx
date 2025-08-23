@@ -1,15 +1,16 @@
 import ModalHeading from "../ModalHeading/ModalHeading";
-
-function ClearChatModalPresentational({ close, handleClear, chatName }) {
+import { useTranslation } from "react-i18next";
+function ClearChatModalPresentational({ close, handleClear }) {
+    const { t } = useTranslation()
     return (
         <>
-            <ModalHeading title="Clear Chat" onClose={close} />
+            <ModalHeading title={t("Clear Chat")} onClose={close} />
             <div className="p-4">
                 <p className="text-text mb-6 text-center">
-                    Are you sure you want to clear all messages in <span className="font-semibold text-primary">"{chatName}"</span>?
+                    {t("Are you sure you want to clear all messages")}{t("?")}
                 </p>
                 <p className="text-text mb-6 text-center">
-                    This action cannot be undone.
+                    {t("This action cannot be undone.")}
                 </p>
 
                 <div className="flex gap-3 justify-end">
@@ -17,7 +18,7 @@ function ClearChatModalPresentational({ close, handleClear, chatName }) {
                         onClick={handleClear}
                         className="px-4 py-2 rounded-lg bg-lg bg-red-500 text-text transition-colors"
                     >
-                        Clear Chat
+                        {t("Clear Chat")}
                     </button>
                 </div>
             </div >
