@@ -133,8 +133,8 @@ function ChatSidebarPresentational({
 
                     {/* Members */}
                     <div className="flex-1 p-3 border-b border-text/10">
-                        <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-xs font-medium text-text-300">
+                        <div className="flex items-center justify-between mb-2 text-text">
+                            <h4 className="text-xs font-bold text-text-300">
                                 {t("Members")} ({members.length})
                             </h4>
                             <button
@@ -253,15 +253,15 @@ function ChatSidebarPresentational({
                     </div>
 
                     {/* Memories */}
-                    <div className="flex-1 p-3 border-b border-text/10">
-                        <h4 className="text-xs font-medium text-text-300 mb-2">
+                    <div className="flex-1 p-3 border-b border-text/10 text-text font-bold">
+                        <h4 className="text-xs text-text-300 mb-2 font-bold">
                             {t("Memories")}
                         </h4>
                     </div>
 
                     {/* Events */}
-                    <div className="flex-1 p-3 overflow-y-auto">
-                        <h4 className="text-xs font-medium text-text-300 mb-2">
+                    <div className="flex-1 p-3 overflow-y-auto text-text font-bold">
+                        <h4 className="text-xs text-text-300 mb-2">
                             {t("Events")}
                         </h4>
                         <EventConfirmationStack circleId={circleId} />
