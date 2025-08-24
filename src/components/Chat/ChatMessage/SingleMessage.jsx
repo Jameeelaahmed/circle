@@ -154,6 +154,7 @@ function SingleMessage({
                                 onTouchEnd={handleTouchEnd}
                                 onTouchCancel={handleTouchCancel}
                                 dir="auto"
+                                style={{ userSelect: "none" }}
                             >
                                 {/* Message content */}
                                 {msg.messageType === 'audio' ? (
