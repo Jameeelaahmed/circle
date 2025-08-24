@@ -207,8 +207,22 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
   const [contextMenuMsg, setContextMenuMsg] = useState(null);
 
   const handleMessageContextMenu = (e, msg, x, y) => {
-    if (e && typeof e.preventDefault === "function") e.preventDefault();
-    setContextMenuMsg({ visible: true, message: msg, x, y });
+    // Use touch coordinates if available
+    const menuWidth = 300; // or your actual menu width
+    const menuHeight = 180; // or your actual menu height
+    const padding = 8;
+
+    // Clamp x
+    let left = x;
+    if (left + menuWidth > window.innerWidth - padding) left = window.innerWidth - menuWidth - padding;
+    if (left < padding) left = padding;
+
+    // Clamp y
+    let top = y;
+    if (top + menuHeight > window.innerHeight - padding) top = window.innerHeight - menuHeight - padding;
+    if (top < padding) top = padding;
+
+    setContextMenuMsg({ visible: true, message: msg, x: left, y: top });
   };
   // Message skeleton component
   const MessageSkeleton = ({ isMe }) => (
