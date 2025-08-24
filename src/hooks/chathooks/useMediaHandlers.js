@@ -91,11 +91,33 @@ export function useMediaHandlers(
         mediaUpload.setShowCameraModal(false);
     };
 
+    const handleVideoUpload = async (event) => {
+        // Open file picker for video
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "video/*";
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            // Upload video using your mediaUpload logic
+            const videoUrl = await mediaUpload.uploadFile(file, "video");
+            // Send video message
+            await messageManager.sendTextMessage("", {
+                ...replyTo,
+                messageType: "video",
+                videoUrl,
+            });
+            setReplyTo(null);
+        };
+        input.click();
+    };
+
     return {
         handleImageUpload,
         handleCameraCapture,
         handleCapturedPhoto,
         handleMediaUpload,
-        closeCameraModal
+        closeCameraModal,
+        handleVideoUpload,
     };
 }

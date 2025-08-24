@@ -56,13 +56,13 @@ export default function CreateCircleModalContainer({ closeModal }) {
   const interestOptions = interests;
 
   const circleTypeOptions = [
-    { value: t("Permenent"), label: t("Permenent") },
-    { value: t("Flash"), label: t("Flash") },
+    { value: t("permenent"), label: t("permenent") },
+    { value: t("flash"), label: t("flash") },
   ];
 
   const circlePrivacyOptions = [
-    { value: t("Public"), label: t("Public") },
-    { value: t("Private"), label: t("Private") },
+    { value: t("public"), label: t("public") },
+    { value: t("private"), label: t("private") },
   ];
 
 
@@ -149,11 +149,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
     const formFields = {
       ...data,
       createdAt: serverTimestamp(),
-      createdBy: {
-        userEmail: user.email,
-        userName: user.username,
-        uid: user.uid,
-      },
+      createdBy: user.uid,
       circlePrivacy: circlePrivacy,
       interests: selectedInterests, // now array of strings
       imageUrl: "",

@@ -1,7 +1,10 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase-config"; // Adjust path to your firebase config
 const CircleCard = ({ circle, isLoading = false, circleId }) => {
   const navigate = useNavigate();
+
   // Format the created date
   const formatDate = (timestamp) => {
     if (!timestamp) return "";
@@ -11,10 +14,25 @@ const CircleCard = ({ circle, isLoading = false, circleId }) => {
 
   // Get privacy badge color using theme colors
   const getPrivacyBadgeColor = (privacy) => {
-    return privacy === "Public"
+    return privacy === "public"
       ? "bg-green-500/20 text-green-400 border border-green-500/30"
       : "bg-blue-500/20 text-blue-400 border border-blue-500/30";
   };
+
+  const [creatorName, setCreatorName] = useState("Unknown");
+
+  useEffect(() => {
+    async function fetchCreator() {
+      if (circle && circle.createdBy) {
+        const userRef = doc(db, "users", circle.createdBy);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setCreatorName(userSnap.data().username || "Unknown");
+        }
+      }
+    }
+    fetchCreator();
+  }, [circle]);
 
   // Show skeleton loader if loading or circle data is incomplete
   if (isLoading || !circle || !circle.circleName) {
@@ -116,7 +134,7 @@ const CircleCard = ({ circle, isLoading = false, circleId }) => {
         {/* Footer Info */}
         <div className="flex items-center justify-between text-xs text-white/60">
           <div className="flex flex-col">
-            <span>Created by {circle.createdBy?.userName || "Unknown"}</span>
+            <span>Created by {creatorName || "Unknown"}</span>
             <span>{formatDate(circle.createdAt)}</span>
           </div>
           {circle.expiresAt && (

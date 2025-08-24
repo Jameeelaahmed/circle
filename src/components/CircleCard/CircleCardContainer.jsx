@@ -45,7 +45,7 @@ function CircleCardContainer({
     const displayedInterests = [...mutualInterests, ...otherInterests].slice(0, maxInterests);
 
     const isRequestPending = pendingRequests?.includes(circle.id);
-    const isOwner = user && circle.createdBy.uid === user.uid;
+    const isOwner = user && circle.createdBy === user.uid;
 
     return (
         <CircleCardPresentational

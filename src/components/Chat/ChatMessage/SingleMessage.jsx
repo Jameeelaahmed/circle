@@ -136,7 +136,7 @@ function SingleMessage({
                                         {msg.replyTo.messageType === 'audio' ? t('Voice message') :
                                             msg.replyTo.messageType === 'image' ? t('Photo') :
                                                 msg.replyTo.messageType === 'video' ? t('Video') :
-                                                    msg.replyTo.text}
+                                                    msg.replyTo.text || t('Unsupported message')}
                                     </span>
                                 </div>
                             </div>
@@ -236,6 +236,14 @@ function SingleMessage({
                                             </span>
                                         )}
                                     </div>
+                                ) : msg.messageType === 'system' ? (
+                                    <>
+                                        {console.log("here")
+                                        }
+                                        <span className="text-xs text-accent font-semibold text-center w-full select-none" style={{ userSelect: "none" }}>
+                                            {msg.text || t("System message")}
+                                        </span>
+                                    </>
                                 ) : (
                                     <span className={`text-sm break-word text-text select-none`} style={{ userSelect: "none" }}>
                                         {msg.text}

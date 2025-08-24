@@ -34,7 +34,7 @@ export default function CircleCardPresentational({
 
         {/* Content container */}
         <div className="relative z-10">
-          <div className="flex flex-col justify-between gap-2 sm:flex-row">
+          <div className="flex justify-between gap-2">
             <div className="mb-2 flex items-center space-x-2 sm:mb-4 sm:space-x-4">
               <div className="border-primary flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border sm:h-12 sm:w-12">
                 {hasImage ? (

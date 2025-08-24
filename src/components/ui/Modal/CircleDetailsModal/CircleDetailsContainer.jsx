@@ -42,13 +42,13 @@ export default function CircleDetailsContainer({ onClose }) {
     );
 
     const circleTypeOptions = [
-        { value: "Permenent", label: t("Permenent") },
-        { value: "Flash", label: t("Flash") },
+        { value: "permenent", label: t("permenent") },
+        { value: "flash", label: t("flash") },
     ];
 
     const circlePrivacyOptions = [
-        { value: "Public", label: t("Public") },
-        { value: "Private", label: t("Private") },
+        { value: "public", label: t("public") },
+        { value: "private", label: t("private") },
     ];
 
     // Image upload state
