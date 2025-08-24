@@ -208,7 +208,7 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
 
   const handleMessageContextMenu = (e, msg) => {
     e.preventDefault();
-    setContextMenuMsg(msg);
+    setContextMenuMsg({ visible: true, message: msg, x: e.x, y: e.y });
   };
   // Message skeleton component
   const MessageSkeleton = ({ isMe }) => (
