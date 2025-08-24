@@ -119,6 +119,7 @@ function MediaGroupMessage({
                             onContextMenu={(e) =>
                                 onMessageContextMenu && onMessageContextMenu(e, firstMessage)
                             }
+                            style={{ userSelect: "none" }}
                         >
                             {/* Media Grid */}
                             {renderMediaGrid(item.messages, openImageSlider)}
