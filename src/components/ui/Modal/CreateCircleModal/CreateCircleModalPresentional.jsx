@@ -287,7 +287,7 @@ export default function CreateCircleModalPresentional({
           disabled={isLoading}
         >
           {isLoading && (
-            <Loader className="animate-spin h-5 w-5 mr-2 text-text" />
+            <Loader className="animate-spin h-5 w-5 ltr:mr-2 rtl:ml-2 text-text" />
           )}
           {t("Create Circle")}
         </button>

@@ -115,7 +115,7 @@ function ChatSidebarPresentational({
                             <p className="font-bold text-xs text-primary cursor-pointer" onClick={onOpen}>{t("see details")}</p>
                             {isOwner &&
                                 <button
-                                    className="ml-2 p-2 rounded-full hover:bg-red-500/10 text-red-500 transition"
+                                    className="ltr:ml-2 rtl:mr-2 p-2 rounded-full hover:bg-red-500/10 text-red-500 transition"
                                     title="Delete Circle"
                                     onClick={() => openDeleteCircleModal(currentCircle)} // Pass the current circle!
                                 >

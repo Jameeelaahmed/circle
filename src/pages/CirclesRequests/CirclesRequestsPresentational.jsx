@@ -61,7 +61,7 @@ function CirclesRequestsPresentational({
                             {requests.map((req) => (
                                 <li key={req.id} className="hover:bg-primary/10 transition-colors duration-200">
                                     <div className="flex flex-col md:flex-row items-start md:items-center p-4 w-full">
-                                        <div className="flex-1 min-w-0 mr-4">
+                                        <div className="flex-1 min-w-0 ltr:mr-4 rtl:ml-4">
                                             <div className="flex flex-wrap items-baseline gap-1.5 mb-1.5">
                                                 <Link
                                                     to={`/profile/${requestType === "invitation"

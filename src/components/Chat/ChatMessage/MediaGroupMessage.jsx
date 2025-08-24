@@ -1,5 +1,6 @@
 import { detectTextDirection } from "../../../utils/textDirection.js";
 import { renderMediaGrid } from "../../../utils/chatutils/mediaGridUtils.jsx";
+import { useNavigate } from "react-router-dom";
 
 function MediaGroupMessage({
     item,
@@ -13,7 +14,6 @@ function MediaGroupMessage({
     openImageSlider,
     dir,
 }) {
-
     const firstMessage = item.messages[0];
     const isMe = currentUser && (firstMessage.senderId === currentUser.id);
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
@@ -48,6 +48,7 @@ function MediaGroupMessage({
             ? "rtl"
             : "ltr";
     const isRTLMessage = messageDirection === "rtl";
+    const navigate = useNavigate();
 
     return (
         <div
@@ -73,15 +74,43 @@ function MediaGroupMessage({
 
             {/* Media Group Message */}
             <div className={`flex ${isMe ? "justify-end" : "justify-start"} group`}>
-                <div
-                    className={`flex max-w-[85%] flex-col sm:max-w-lg ${isMe ? "items-end" : "items-start"}`}
-                >
+                {/* Avatar/Spacer for alignment */}
+                {!isMe && (
+                    <div className="ltr:mr-2 rtl:ml-2 self-start">
+                        {isFirstInGroup ? (
+                            <div
+                                className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden"
+                                onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
+                                title={firstMessage.senderName}
+                            >
+                                {firstMessage.senderPhotoUrl ? (
+                                    <img
+                                        src={firstMessage.senderPhotoUrl}
+                                        alt={firstMessage.senderName || "User"}
+                                        className="w-full h-full object-cover rounded-full"
+                                    />
+                                ) : (
+                                    <span>
+                                        {firstMessage.senderName?.[0]?.toUpperCase() || 'U'}
+                                    </span>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="w-8 h-8" />
+                        )}
+                    </div>
+                )}
+                <div className={`flex max-w-[85%] flex-col sm:max-w-lg ${isMe ? "items-end" : "items-start"}`}>
                     {/* Spacer for non-first messages in group */}
                     {!isMe && !isFirstInGroup && <div className="mr-10"></div>}
                     <div className="flex flex-col">
                         {/* Sender name (only for other users and first in group) */}
                         {!isMe && isFirstInGroup && (
-                            <span className="text-accent mb-1 max-w-full truncate text-xs font-semibold">
+                            <span
+                                className="text-accent mb-1 max-w-full truncate text-xs font-semibold cursor-pointer hover:underline"
+                                onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
+                                title={firstMessage.senderName}
+                            >
                                 {firstMessage.senderName || "User"}
                             </span>
                         )}
