@@ -49,13 +49,17 @@ function SingleMessage({
     const longPressTimeout = useRef();
     const handleTouchStart = (e) => {
         longPressTimeout.current = setTimeout(() => {
-            e.preventDefault();
             setIsLongPressed(true);
+            let x, y;
+            if (e.touches && e.touches.length > 0) {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
             if (onMessageContextMenu) {
-                // For mobile, get touch coordinates
-                const x = e.touches ? e.touches[0].clientX : e.clientX;
-                const y = e.touches ? e.touches[0].clientY : e.clientY;
-                onMessageContextMenu({ ...e, x, y }, msg);
+                onMessageContextMenu(e, msg, x, y);
             }
         }, 500); // 500ms for long press
     };
