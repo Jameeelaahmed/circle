@@ -1,6 +1,7 @@
 import { detectTextDirection } from "../../../utils/textDirection.js";
 import { renderMediaGrid } from "../../../utils/chatutils/mediaGridUtils.jsx";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 function MediaGroupMessage({
     item,
@@ -49,6 +50,20 @@ function MediaGroupMessage({
             : "ltr";
     const isRTLMessage = messageDirection === "rtl";
     const navigate = useNavigate();
+    const longPressTimeout = useRef(null);
+
+    const handleTouchStart = (e) => {
+        longPressTimeout.current = setTimeout(() => {
+            e.preventDefault();
+            if (onMessageContextMenu) {
+                onMessageContextMenu(e, firstMessage);
+            }
+        }, 500);
+    };
+
+    const handleTouchEnd = () => {
+        clearTimeout(longPressTimeout.current);
+    };
 
     return (
         <div
@@ -120,6 +135,8 @@ function MediaGroupMessage({
                         onContextMenu={(e) =>
                             onMessageContextMenu && onMessageContextMenu(e, firstMessage)
                         }
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
                         style={{ userSelect: "none" }}
                     >
                         {/* Media Grid */}
