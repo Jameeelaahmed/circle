@@ -42,7 +42,6 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
           day: ""
         }
       );
-      console.log("Event saved to Firestore ✅");
     } catch (error) {
       console.error("Error saving event:", error);
     }

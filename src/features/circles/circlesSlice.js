@@ -90,7 +90,6 @@ const circlesSlice = createSlice({
             .addCase(fetchCircles.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
-                console.log(state.error);
             })
 
             //  fetchCircleById
@@ -106,7 +105,6 @@ const circlesSlice = createSlice({
             .addCase(fetchCircleById.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
-                console.log(state.error);
             });
     },
 });

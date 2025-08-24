@@ -204,7 +204,12 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
     messageInfoModalRef.current?.close();
     setSelectedMessage(null);
   }
+  const [contextMenuMsg, setContextMenuMsg] = useState(null);
 
+  const handleMessageContextMenu = (e, msg) => {
+    e.preventDefault();
+    setContextMenuMsg(msg);
+  };
   // Message skeleton component
   const MessageSkeleton = ({ isMe }) => (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3`}>
@@ -287,6 +292,8 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
               shouldShowDateSeparator={shouldShowDateSeparator}
               messageRefs={messageRefs}
               scrollToMessage={scrollToMessageWrapper}
+              contextMenuMsg={contextMenuMsg}
+              handleMessageContextMenu={handleMessageContextMenu}
             />
           </div>
         </div>

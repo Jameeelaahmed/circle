@@ -9,10 +9,8 @@ const RecordBtn = ({ isRecording, onStart, onStop }) => {
     e.stopPropagation();
 
     if (isRecording) {
-      console.log('RecordBtn: Stopping recording');
       onStop && onStop();
     } else {
-      console.log('RecordBtn: Starting recording');
       onStart && onStart();
     }
   };

@@ -185,7 +185,6 @@ const NotificationItem = ({ notification, markAsRead, removeNotification }) => {
       }}
       onClick={() => {
         markAsRead(notification.id);
-        console.log(notification);
         navigate(`/${notification.link}`);
       }}
     >

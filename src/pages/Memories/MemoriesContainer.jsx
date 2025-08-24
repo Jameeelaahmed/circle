@@ -26,7 +26,6 @@ const MemoriesGallery = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(memories);
       setMemories(memories);
     };
     getMemories();
@@ -38,7 +37,6 @@ const MemoriesGallery = () => {
   };
 
   const openLightbox = (memory) => {
-    console.log(memory);
     setSelectedMemory(memory);
   };
   const closeLightbox = () => setSelectedMemory(null);

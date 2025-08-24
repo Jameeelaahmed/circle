@@ -90,7 +90,6 @@ export const inviteUserToCircleNotification = async (uid, circleId, sender) => {
  */
 export const markNotificationAsRead = async (uid, notificationId) => {
   try {
-    console.log("notificationId", notificationId, "uid", uid);
     const notificationRef = doc(
       db,
       "users",
@@ -103,7 +102,6 @@ export const markNotificationAsRead = async (uid, notificationId) => {
       readAt: serverTimestamp(),
     });
 
-    console.log("Notification marked as read:", notificationId);
   } catch (error) {
     console.error("Error marking notification as read:", error);
     throw error;
@@ -120,7 +118,6 @@ export const markMultipleNotificationsAsRead = async (uid, notificationIds) => {
     );
 
     await Promise.all(promises);
-    console.log("Multiple notifications marked as read");
   } catch (error) {
     console.error("Error marking multiple notifications as read:", error);
     throw error;
@@ -140,8 +137,6 @@ export const deleteNotification = async (uid, notificationId) => {
       notificationId,
     );
     await deleteDoc(notificationRef);
-
-    console.log("Notification deleted:", notificationId);
   } catch (error) {
     console.error("Error deleting notification:", error);
     throw error;
@@ -158,7 +153,6 @@ export const deleteMultipleNotifications = async (uid, notificationIds) => {
     );
 
     await Promise.all(promises);
-    console.log("Multiple notifications deleted");
   } catch (error) {
     console.error("Error deleting multiple notifications:", error);
     throw error;
@@ -181,8 +175,6 @@ export const updateNotification = async (uid, notificationId, updateData) => {
       ...updateData,
       updatedAt: serverTimestamp(),
     });
-
-    console.log("Notification updated:", notificationId);
   } catch (error) {
     console.error("Error updating notification:", error);
     throw error;

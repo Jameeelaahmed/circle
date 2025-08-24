@@ -15,7 +15,6 @@ export const createUserProfile = async (userId, profileData) => {
 };
 
 export const updateUserProfile = async (userId, updates) => {
-  console.log("Updates:", updates, userId);
   try {
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {

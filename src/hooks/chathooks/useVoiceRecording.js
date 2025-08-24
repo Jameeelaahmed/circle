@@ -182,7 +182,6 @@ export function useVoiceRecording() {
                 userId,
                 userName,
                 replyTo,
-                (progress) => console.log('Audio upload progress:', progress + '%'),
                 formatTime
             );
         } catch (error) {
