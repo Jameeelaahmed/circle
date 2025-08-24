@@ -36,18 +36,19 @@ export function useMessageManager(circleId, circleName, userId, userName) {
           messageType: "text",
           senderId: userId,
           senderName: userName,
+          senderPhotoUrl: photoURL,
           sentTime: formatTime(),
           text: text.trim(),
           timestamp: serverTimestamp(),
           replyTo: replyTo
             ? {
-                id: replyTo.id,
-                messageId: replyTo.messageId || replyTo.id,
-                senderId: replyTo.senderId,
-                senderName: replyTo.senderName,
-                text: replyTo.text,
-                messageType: replyTo.messageType,
-              }
+              id: replyTo.id,
+              messageId: replyTo.messageId || replyTo.id,
+              senderId: replyTo.senderId,
+              senderName: replyTo.senderName,
+              text: replyTo.text,
+              messageType: replyTo.messageType,
+            }
             : null,
         });
         const newNotification = await createNotification({

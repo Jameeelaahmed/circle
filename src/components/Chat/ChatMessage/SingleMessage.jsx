@@ -1,6 +1,9 @@
 import VoiceMessagePlayer from "../../ui/VoiceMessagePlayer/VoiceMessagePlayer";
 import { detectTextDirection, getTextDirectionClasses } from "../../../utils/textDirection.js";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import { useRef } from "react";
+
 function SingleMessage({
     msg,
     originalIdx,
@@ -17,6 +20,7 @@ function SingleMessage({
     openImageSlider,
     dir
 }) {
+    const navigate = useNavigate()
     const { t } = useTranslation();
     const isMe = currentUser && (msg.senderId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });
@@ -39,6 +43,22 @@ function SingleMessage({
         });
     }
     const hasReactions = Object.keys(reactionCounts).length > 0;
+
+    // Long press logic
+    const longPressTimeout = useRef();
+    const handleTouchStart = (e) => {
+        longPressTimeout.current = setTimeout(() => {
+            if (onMessageContextMenu) {
+                onMessageContextMenu(e, msg);
+            }
+        }, 500); // 500ms for long press
+    };
+    const handleTouchEnd = () => {
+        clearTimeout(longPressTimeout.current);
+    };
+    const handleTouchCancel = () => {
+        clearTimeout(longPressTimeout.current);
+    };
 
     return (
         <div
@@ -66,7 +86,7 @@ function SingleMessage({
                 <div className={`max-w-[85%] sm:max-w-lg flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
                     {msg.replyTo && (
                         <div className={`mb-1 flex items-center w-fit max-w-full z-10 relative ${isMe ? 'flex-row-reverse' : ''}`}>
-                            <div className={`h-8 w-1 rounded-full bg-secondary/70 ${isMe ? 'ml-2' : 'mr-2'}`} />
+                            <div className={`h-8 w-1 rounded-full bg-secondary/70 ${isMe ? 'ltr:ml-2 rtl:mr-2' : 'ltr:mr-2 rtl:ml-2'}`} />
                             <div
                                 className="flex items-center px-2 py-1 rounded-2xl bg-black/30 border border-secondary/30 min-w-0 cursor-pointer hover:bg-black/40 transition-colors"
                                 onClick={() => scrollToMessage && scrollToMessage(msg.replyTo.messageId || msg.replyTo.id)}
@@ -94,28 +114,45 @@ function SingleMessage({
                     )}
                     <div className="flex">
                         {/* Profile picture (only for other users and first in group) */}
-                        {!isMe && isFirstInGroup && (
-                            <div className="mr-2 self-start">
-                                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text">
-                                    {msg.senderName?.[0] || 'U'}
-                                </div>
-                            </div>
-                        )}
-                        {/* Spacer for non-first messages in group */}
-                        {!isMe && !isFirstInGroup && (
-                            <div className="mr-10">
+                        {!isMe && (
+                            <div className="ltr:mr-2 rtl:ml-2 self-start">
+                                {isFirstInGroup ? (
+                                    <div
+                                        className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden"
+                                        onClick={() => navigate(`/profile/${msg.senderId}`)}
+                                        title={msg.senderName}
+                                    >
+                                        {msg.senderPhotoUrl ? (
+                                            <img
+                                                src={msg.senderPhotoUrl}
+                                                alt={msg.senderName || "User"}
+                                                className="w-full h-full object-cover rounded-full"
+                                            />
+                                        ) : (
+                                            <span>
+                                                {msg.senderName?.[0]?.toUpperCase() || 'U'}
+                                            </span>
+                                        )}
+                                    </div>
+                                ) : (
+                                    // Spacer for alignment
+                                    <div className="w-8 h-8" />
+                                )}
                             </div>
                         )}
                         <div className="flex flex-col">
                             {/* Sender name (only for other users and first in group) */}
                             {!isMe && isFirstInGroup && (
-                                <span className="text-xs font-semibold mb-1 text-accent truncate max-w-full">
+                                <span className="text-xs font-semibold mb-1 text-accent truncate max-w-full cursor-pointer" onClick={() => navigate(`/profile/${msg.senderId}`)}>
                                     {msg.senderName || 'User'}
                                 </span>
                             )}
                             <div
                                 className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words`}
                                 onContextMenu={e => onMessageContextMenu && onMessageContextMenu(e, msg)}
+                                onTouchStart={handleTouchStart}
+                                onTouchEnd={handleTouchEnd}
+                                onTouchCancel={handleTouchCancel}
                                 dir="auto"
                             >
                                 {/* Message content */}

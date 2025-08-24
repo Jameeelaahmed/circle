@@ -73,7 +73,7 @@ function CircleDetailsCardContainer({
         return "left-full ml-4 top-1/2 -translate-y-1/2";
       case "left":
         // Card appears to the left of orb
-        return "right-full mr-4 top-1/2 -translate-y-1/2";
+        return "right-full ltr:mr-4 rtl:ml-4 top-1/2 -translate-y-1/2";
       case "top":
         // Card appears above orb
         return isRTLState

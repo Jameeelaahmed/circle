@@ -74,7 +74,7 @@ const PaymentFailure = ({
               onClick={() => navigate("/payments")}
               className="flex-1 bg-text-100 hover:bg-text-200 text-text-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
               Go Back
             </button>
           </div>
