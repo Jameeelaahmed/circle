@@ -30,8 +30,8 @@ export const ArcCard = ({ name, title, since, imgSrc }) => {
           <img src={imgSrc} alt="" className="h-[250px] w-full object-cover rounded-md object-top" />
         </figure>
         <div className="pt-4">
-          <p className="text-2xl font-bold">{name}</p>
-          <p className="text-xl text-primary/85 mt-1">{title}</p>
+          <p className="text-2xl font-bold" dir="ltr">{name}</p>
+          <p className="text-xl text-primary/85 mt-1" dir='ltr'>{title}</p>
         </div>
         <footer className="flex items-end">
           <p className="flex rounded-sm border border-current px-1 py-px text-[9px] uppercase">

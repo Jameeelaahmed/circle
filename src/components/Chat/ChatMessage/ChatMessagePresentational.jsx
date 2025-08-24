@@ -122,24 +122,26 @@ function ChatMessagePresentational({
             formatMessageDate={formatMessageDate}
             messageRefs={messageRefs}
             scrollToMessage={scrollToMessage}
-            onMessageContextMenu={handleMessageContextMenu}
+            onMessageContextMenu={onMessageContextMenu} // for desktop right-click
             openImageSlider={openImageSlider}
             dir={dir}
             contextMenuMsg={contextMenuMsg}
-            handleMessageContextMenu={handleMessageContextMenu}
+            handleMessageContextMenu={handleMessageContextMenu} // for mobile long-press
           />
         );
       })}
 
-      <MessageContextMenu
-        menu={menu}
-        menuDirection={menuDirection}
-        currentUser={currentUser}
-        handleAction={handleAction}
-        handleReact={handleReact}
-        canEditMessage={canEditMessage}
-        open={open}
-      />
+      {menu.visible && (
+        <MessageContextMenu
+          menu={menu}
+          menuDirection={menuDirection}
+          currentUser={currentUser}
+          handleAction={handleAction}
+          handleReact={handleReact}
+          canEditMessage={canEditMessage}
+          open={open}
+        />
+      )}
 
       {deleteModalRefs?.current &&
         messages.map((msg) => (
@@ -166,10 +168,8 @@ function ChatMessagePresentational({
         setImageSlider={setImageSlider}
       />
 
-      {contextMenuMsg && (
+      {contextMenuMsg?.visible && (
         <YourContextMenuComponent
-          message={contextMenuMsg}
-          onClose={() => setContextMenuMsg(null)}
           menu={contextMenuMsg}
           menuDirection={menuDirection}
           currentUser={currentUser}

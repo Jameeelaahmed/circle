@@ -334,9 +334,9 @@ const BackgroundHoverEffect = ({
         }}
       >
         {/* Sidebar (circles + header) */}
-        <div className="border-text-700/40 flex w-full flex-col gap-3 border-b pb-4 md:w-80 md:border-e md:border-b-0 md:pr-6 md:pb-0">
+        <div className="border-text-700/40 pe-3  flex w-full flex-col gap-3 border-b pb-4 md:w-80 md:border-e md:border-b-0 md:pr-6 md:pb-0">
           {/* Header */}
-          <div className="flex items-center gap-4 px-1">
+          <div className="flex items-center gap-4 px-1 ">
             <img
               src={CalendarImg}
               alt="Calendar"

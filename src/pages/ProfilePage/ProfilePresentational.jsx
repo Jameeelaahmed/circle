@@ -1,7 +1,6 @@
 import ProfileHeader from "../../components/ProfileComponents/ProfileHeader";
 import ProfileCover from "../../components/ProfileComponents/ProfileCover";
 import ProfileInfo from "../../components/ProfileComponents/ProfileInfo";
-import ProfileStats from "../../components/ProfileComponents/ProfileStats";
 import ProfileTabs from "../../components/ProfileComponents/ProfileTabs";
 import ProfileContent from "../../components/ProfileComponents/ProfileContent";
 
@@ -10,19 +9,20 @@ const ProfilePresentational = ({
   showMobileMenu,
   setShowMobileMenu,
   isProfileMyProfile,
-  isFollowing,
-  handleFollow,
+  isConnected,
+  handleConnect,
   showEditMode,
   setShowEditMode,
   activeTab,
   setActiveTab,
+  isConnecting,
 }) => {
   if (!profileData) {
     return <div>Loading profile...</div>;
   }
 
   return (
-    <div className="bg-main text-text mt-16 min-h-screen">
+    <div className="from-bg-primary to-bg-secondary text-text mt-16 min-h-screen bg-gradient-to-b">
       <ProfileHeader
         showMobileMenu={showMobileMenu}
         setShowMobileMenu={setShowMobileMenu}
@@ -38,13 +38,12 @@ const ProfilePresentational = ({
           <ProfileInfo
             isProfileMyProfile={isProfileMyProfile}
             profileData={profileData}
-            isFollowing={isFollowing}
-            handleFollow={handleFollow}
+            isConnected={isConnected}
+            handleConnect={handleConnect}
             showEditMode={showEditMode}
             setShowEditMode={setShowEditMode}
+            isConnecting={isConnecting}
           />
-
-          {/* <ProfileStats profileData={profileData} /> */}
         </div>
 
         <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />

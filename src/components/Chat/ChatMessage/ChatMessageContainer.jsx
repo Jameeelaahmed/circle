@@ -39,6 +39,7 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
   const messageRefs = useRef({});
   const containerRef = useRef(null);
   const messageInfoModalRef = useRef(null);
+  const menuRef = useRef(null); // Add this if you don't have it
   const { userName, userId } = useAuth();
   const currentUser = { id: userId, username: userName };
   const { i18n } = useTranslation();
@@ -164,6 +165,27 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
     }
   }, [menu.visible]);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        menu.visible &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setMenu((m) => ({ ...m, visible: false }));
+      }
+    }
+
+    if (menu.visible) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("touchstart", handleClickOutside);
+      };
+    }
+  }, [menu.visible, setMenu]);
+
   function handleAction(action, message) {
     const targetMessage = message || menu.message;
     if (!targetMessage) return;
@@ -207,8 +229,22 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
   const [contextMenuMsg, setContextMenuMsg] = useState(null);
 
   const handleMessageContextMenu = (e, msg, x, y) => {
-    if (e && typeof e.preventDefault === "function") e.preventDefault();
-    setContextMenuMsg({ visible: true, message: msg, x, y });
+    // Use touch coordinates if available
+    const menuWidth = 300; // or your actual menu width
+    const menuHeight = 180; // or your actual menu height
+    const padding = 8;
+
+    // Clamp x
+    let left = x;
+    if (left + menuWidth > window.innerWidth - padding) left = window.innerWidth - menuWidth - padding;
+    if (left < padding) left = padding;
+
+    // Clamp y
+    let top = y;
+    if (top + menuHeight > window.innerHeight - padding) top = window.innerHeight - menuHeight - padding;
+    if (top < padding) top = padding;
+
+    setContextMenuMsg({ visible: true, message: msg, x: left, y: top });
   };
   // Message skeleton component
   const MessageSkeleton = ({ isMe }) => (
@@ -295,6 +331,7 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
               contextMenuMsg={contextMenuMsg}
               handleMessageContextMenu={handleMessageContextMenu}
               setContextMenuMsg={setContextMenuMsg}
+              menuRef={menuRef} // Pass the ref to the menu component
             />
           </div>
         </div>
