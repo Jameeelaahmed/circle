@@ -58,8 +58,8 @@ function SingleMessage({
                 x = e.clientX;
                 y = e.clientY;
             }
-            if (onMessageContextMenu) {
-                onMessageContextMenu(e, msg, x, y);
+            if (handleMessageContextMenu) {
+                handleMessageContextMenu(e, msg, x, y);
             }
         }, 500); // 500ms for long press
     };
@@ -168,7 +168,9 @@ function SingleMessage({
                             )}
                             <div
                                 className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words select-none ${isLongPressed ? "ring-2 ring-primary/60 bg-primary/10" : ""}`}
-                                onContextMenu={e => onMessageContextMenu && onMessageContextMenu(e, msg)}
+                                onContextMenu={e => {
+                                    if (onMessageContextMenu) onMessageContextMenu(e, msg);
+                                }}
                                 onTouchStart={handleTouchStart}
                                 onTouchEnd={handleTouchEnd}
                                 onTouchCancel={handleTouchCancel}
