@@ -115,40 +115,47 @@ function SingleMessage({
                     <div className="flex">
                         {/* Profile picture (only for other users and first in group) */}
                         {!isMe && (
-                            <div className="ltr:mr-2 rtl:ml-2 self-start">
+                            <div className="ltr:mr-2 rtl:ml-2 self-start select-none">
                                 {isFirstInGroup ? (
                                     <div
-                                        className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden"
+                                        className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden select-none"
                                         onClick={() => navigate(`/profile/${msg.senderId}`)}
                                         title={msg.senderName}
+                                        style={{ userSelect: "none" }}
                                     >
                                         {msg.senderPhotoUrl ? (
                                             <img
                                                 src={msg.senderPhotoUrl}
                                                 alt={msg.senderName || "User"}
-                                                className="w-full h-full object-cover rounded-full"
+                                                className="w-full h-full object-cover rounded-full select-none"
+                                                style={{ userSelect: "none" }}
+                                                draggable={false}
                                             />
                                         ) : (
-                                            <span>
+                                            <span className="select-none" style={{ userSelect: "none" }}>
                                                 {msg.senderName?.[0]?.toUpperCase() || 'U'}
                                             </span>
                                         )}
                                     </div>
                                 ) : (
                                     // Spacer for alignment
-                                    <div className="w-8 h-8" />
+                                    <div className="w-8 h-8 select-none" style={{ userSelect: "none" }} />
                                 )}
                             </div>
                         )}
-                        <div className="flex flex-col">
+                        <div className="flex flex-col select-none" style={{ userSelect: "none" }}>
                             {/* Sender name (only for other users and first in group) */}
                             {!isMe && isFirstInGroup && (
-                                <span className="text-xs font-semibold mb-1 text-accent truncate max-w-full cursor-pointer" onClick={() => navigate(`/profile/${msg.senderId}`)}>
+                                <span
+                                    className="text-xs font-semibold mb-1 text-accent truncate max-w-full cursor-pointer select-none"
+                                    style={{ userSelect: "none" }}
+                                    onClick={() => navigate(`/profile/${msg.senderId}`)}
+                                >
                                     {msg.senderName || 'User'}
                                 </span>
                             )}
                             <div
-                                className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words`}
+                                className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words select-none`}
                                 onContextMenu={e => onMessageContextMenu && onMessageContextMenu(e, msg)}
                                 onTouchStart={handleTouchStart}
                                 onTouchEnd={handleTouchEnd}
@@ -158,39 +165,49 @@ function SingleMessage({
                             >
                                 {/* Message content */}
                                 {msg.messageType === 'audio' ? (
-                                    <VoiceMessagePlayer
-                                        audioData={msg.audioUrl}
-                                        isMe={isMe}
-                                        duration={msg.duration}
-                                    />
+                                    <div className="select-none" style={{ userSelect: "none" }}>
+                                        <VoiceMessagePlayer
+                                            audioData={msg.audioUrl}
+                                            isMe={isMe}
+                                            duration={msg.duration}
+                                        />
+                                    </div>
                                 ) : msg.messageType === 'image' ? (
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col select-none" style={{ userSelect: "none" }}>
                                         <img
                                             src={msg.imageUrl}
                                             alt="Shared image"
-                                            className="max-w-full max-h-80 rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                            className="max-w-full max-h-80 rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity select-none"
+                                            style={{ userSelect: "none" }}
                                             onClick={() => openImageSlider([msg], 0)}
+                                            draggable={false}
                                         />
                                         {msg.fileName && (
-                                            <span className="text-xs mt-1 opacity-75">{msg.fileName}</span>
+                                            <span className="text-xs mt-1 opacity-75 select-none" style={{ userSelect: "none" }}>
+                                                {msg.fileName}
+                                            </span>
                                         )}
                                     </div>
                                 ) : msg.messageType === 'video' ? (
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col select-none" style={{ userSelect: "none" }}>
                                         <video
                                             src={msg.videoUrl}
                                             controls
-                                            className="max-w-full max-h-80 rounded-lg"
+                                            className="max-w-full max-h-80 rounded-lg select-none"
+                                            style={{ userSelect: "none" }}
                                             preload="metadata"
+                                            draggable={false}
                                         >
                                             Your browser does not support the video tag.
                                         </video>
                                         {msg.fileName && (
-                                            <span className="text-xs mt-1 opacity-75">{msg.fileName}</span>
+                                            <span className="text-xs mt-1 opacity-75 select-none" style={{ userSelect: "none" }}>
+                                                {msg.fileName}
+                                            </span>
                                         )}
                                     </div>
                                 ) : (
-                                    <span className={`text-sm break-word text-text}`}>
+                                    <span className={`text-sm break-word text-text select-none`} style={{ userSelect: "none" }}>
                                         {msg.text}
                                     </span>
                                 )}
