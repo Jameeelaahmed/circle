@@ -19,7 +19,7 @@ export default function CreatePollModalPresentational({
   t,
 }) {
   return (
-    <div className="relative w-full rounded-4xl backdrop-blur-lg">
+    <div className="relative w-full bg-gradient-to-b from-bg-primary to-bg-secondary rounded-4xl backdrop-blur-lg">
       {/* Header */}
       <ModalHeading onClose={onClose} title={t("Create Poll")} />
 

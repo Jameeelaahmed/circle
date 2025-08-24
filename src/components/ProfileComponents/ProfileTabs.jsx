@@ -6,8 +6,8 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
   return (
     <div
       className="
-        sticky top-[57px] z-20 overflow-x-auto border-b sm:top-[65px]
-        bg-text/5 backdrop-blur-md border-main
+        sticky top-[57px] z-20 overflow-x-auto mx-3  border-b sm:top-[65px]
+         backdrop-blur-md border-main
       "
     >
       <div className="px-3 sm:px-6">
@@ -18,7 +18,7 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
               onClick={() => setActiveTab(tab)}
               className={`
                 border-b-2 px-1 py-3 text-sm font-medium textspace-nowrap capitalize
-                transition-all duration-300 sm:py-4 sm:text-base
+                transition-all cursor-pointer duration-300 sm:py-4 sm:text-base
                 ${activeTab === tab
                   ? "border-primary text-primary"
                   : "border-transparent text-text"

@@ -12,12 +12,12 @@ function CirclesRequestsPresentational({
 }) {
     const { t } = useTranslation();
     return (
-        <div className="pt-paddingTop w-full max-w-full mx-auto pr-2 pl-2 pb-2">
+        <div className="pt-paddingTop bg-gradient-to-b from-bg-primary to-bg-secondary  h-screen w-full max-w-full mx-auto pr-2 pl-2 pb-2">
             <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-3 px-2">
                 <h2 className="text-xl md:text-2xl font-bold text-primary">
                     {t("Circle Requests")}
                 </h2>
-                <div className="flex gap-2 bg--main rounded-full p-1 shadow">
+                <div className="flex gap-2 bg-main  rounded-full p-1 shadow">
                     {["join-request", "invitation"].map((type) => (
                         <button
                             key={type}
@@ -39,7 +39,7 @@ function CirclesRequestsPresentational({
                     <Loader2 className="h-8 w-8 text-primary animate-spin" />
                 </div>
             ) : (
-                <div className="bg-main/60 backdrop-blur-sm rounded-xl border border-primary overflow-x-auto w-full">
+                <div className="bg-gradient-to-b from-bg-primary to-bg-secondary  backdrop-blur-sm rounded-xl border border-primary overflow-x-auto w-full">
                     {requests.length === 0 ? (
                         <div className="text-center py-12 px-4">
                             <div className="bg-main/80 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow">

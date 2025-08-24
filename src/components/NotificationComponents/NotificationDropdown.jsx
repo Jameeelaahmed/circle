@@ -50,7 +50,7 @@ const NotificationDropdown = ({ notifications, loading }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="relative rounded-full p-2 transition-all duration-300 hover:scale-105"
         style={{
-          backgroundColor: "var(--color-glass)",
+          backgroundColor: "transparent",
           backdropFilter: "blur(10px)",
           border: `1px solid color-mix(in srgb, var(--color-primary) 30%, transparent)`,
           boxShadow: isOpen

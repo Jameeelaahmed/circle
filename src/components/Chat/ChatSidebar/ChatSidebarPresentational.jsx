@@ -55,7 +55,7 @@ function ChatSidebarPresentational({
         <div className="relative h-full">
             <button
                 onClick={toggleSidebar}
-                className={`absolute top-1/2 -translate-y-1/2 z-50 bg-main text-text p-1.5 rounded-lg hover:bg-primary/80 transition-colors duration-200 backdrop-blur-sm
+                className={`absolute top-1/2 -translate-y-1/2 z-50 bg-gradient-to-b from-bg-primary to-bg-secondary text-text p-1.5 rounded-lg hover:bg-primary/80 transition-colors duration-200 backdrop-blur-sm
         ${isSmallScreen
                         ? isOpen
                             ? direction === "rtl" ? "-left-3" : "-right-3"

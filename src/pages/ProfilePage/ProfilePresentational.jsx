@@ -22,7 +22,7 @@ const ProfilePresentational = ({
   }
 
   return (
-    <div className="bg-main text-text mt-16 min-h-screen">
+    <div className="bg-gradient-to-b from-bg-primary to-bg-secondary text-text mt-16 min-h-screen">
       <ProfileHeader
         showMobileMenu={showMobileMenu}
         setShowMobileMenu={setShowMobileMenu}

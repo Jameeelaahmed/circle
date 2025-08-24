@@ -92,7 +92,7 @@ export default function PendingEventCard({ event }) {
       }}
       className="group relative  hover:scale-[1.05] hover:border-[#17284f93] flex flex-col gap-4 overflow-hidden rounded-2xl border-2 border-transparent p-4 transition-all"
       style={{
-        background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
+        background: `radial-gradient(ellipse at top,var(--color-main-card-top)   0%, var(--color-main-card)  60%)`,
         backdropFilter: "blur(10px)",
         fontFamily: "var(--font-primary)",
       }}
