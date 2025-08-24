@@ -73,6 +73,23 @@ function SingleMessage({
         setIsLongPressed(false);
     };
 
+    // Helper to open context menu at arrow position
+    const openMenuAtArrow = (e) => {
+        // Get button position
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height;
+
+        // Use correct handler for device
+        if (window.matchMedia("(pointer: coarse)").matches && handleMessageContextMenu) {
+            // Mobile/touch
+            handleMessageContextMenu(e, msg, x, y);
+        } else if (onMessageContextMenu) {
+            // Desktop
+            onMessageContextMenu(e, msg, x, y);
+        }
+    };
+
     return (
         <div
             data-message-id={msg.messageId || msg.id}
@@ -169,9 +186,7 @@ function SingleMessage({
                             )}
                             <div
                                 className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words select-none ${isLongPressed ? "ring-2 ring-primary/60 bg-primary/10" : ""}`}
-                                onContextMenu={e => {
-                                    if (onMessageContextMenu) onMessageContextMenu(e, msg);
-                                }}
+                                onContextMenu={e => onMessageContextMenu && onMessageContextMenu(e, msg)}
                                 onTouchStart={handleTouchStart}
                                 onTouchEnd={handleTouchEnd}
                                 onTouchCancel={handleTouchCancel}
@@ -265,6 +280,19 @@ function SingleMessage({
                                     );
                                 })()}
                             </div>
+                            {/* Arrow button for context menu */}
+                            <button
+                                className="absolute top-2 right-2 z-10 p-1 rounded-full hover:bg-main/30 focus:outline-none"
+                                aria-label="Open menu"
+                                onClick={openMenuAtArrow}
+                                tabIndex={0}
+                                type="button"
+                            >
+                                {/* Simple arrow icon (SVG) */}
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import DeleteBtn from "../../ui/ReactBits/DeleteBtn/DeleteBtn";
 import VoiceWaveform from "../../ui/VoiceWaveform/VoiceWaveform";
 import CameraView from "../../ui/CameraView/CameraViewPresentational";
 import Skeleton from "@mui/material/Skeleton";
-import { Mic, Paperclip, Camera, Image } from "lucide-react";
+import { Mic, Paperclip, Camera, Image, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 function ChatInputPresentational({
@@ -86,14 +86,7 @@ function ChatInputPresentational({
                   className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-text transition-colors"
                   title="Send recording"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                  </svg>
+                  <Send size={20} />
                 </button>
               </div>
             </div>
@@ -101,14 +94,14 @@ function ChatInputPresentational({
 
           <form
             onSubmit={(e) => handleSendMsg(e)}
-            className="bg-main/10 shadow-2xl inset-shadow-xs inset-shadow-secondary  flex items-center rounded-4xl p-2"
+            className="bg-main/10 shadow-2xl inset-shadow-xs inset-shadow-secondary flex items-center rounded-4xl p-2"
           >
             <textarea
               onInput={handleInput}
               onKeyDown={handleKeyDown}
               dir={dir}
               ref={msgVal}
-              className="bg-inputsBg text-text w-full resize-none overflow-y-auto rounded-4xl p-5 leading-6 ltr:mr-2 rtl:ml-2"
+              className="bg-inputsBg text-text w-full resize-none overflow-y-auto rounded-4xl p-2 ltr:mr-2 rtl:ml-2"
               rows={1}
               placeholder={
                 isEditing ? "Edit your message..." : "Type a message..."
@@ -121,14 +114,7 @@ function ChatInputPresentational({
                 className="bg-primary hover:bg-primary/80 flex h-12 w-12 items-center justify-center rounded-full text-text transition-colors"
                 title={isEditing ? t("Save Cshanges") : t("Send message")}
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
+                <Send size={20} />
               </button>
             ) : (
               <div
