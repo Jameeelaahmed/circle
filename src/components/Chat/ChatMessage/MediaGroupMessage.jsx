@@ -76,81 +76,84 @@ function MediaGroupMessage({
             <div className={`flex ${isMe ? "justify-end" : "justify-start"} group`}>
                 {/* Avatar/Spacer for alignment */}
                 {!isMe && (
-                    <div className="ltr:mr-2 rtl:ml-2 self-start">
+                    <div className="ltr:mr-2 rtl:ml-2 self-start select-none" style={{ userSelect: "none" }}>
                         {isFirstInGroup ? (
                             <div
-                                className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden"
+                                className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden select-none"
                                 onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
                                 title={firstMessage.senderName}
+                                style={{ userSelect: "none" }}
                             >
                                 {firstMessage.senderPhotoUrl ? (
                                     <img
                                         src={firstMessage.senderPhotoUrl}
                                         alt={firstMessage.senderName || "User"}
-                                        className="w-full h-full object-cover rounded-full"
+                                        className="w-full h-full object-cover rounded-full select-none"
+                                        style={{ userSelect: "none" }}
+                                        draggable={false}
                                     />
                                 ) : (
-                                    <span>
+                                    <span className="select-none" style={{ userSelect: "none" }}>
                                         {firstMessage.senderName?.[0]?.toUpperCase() || 'U'}
                                     </span>
                                 )}
                             </div>
                         ) : (
-                            <div className="w-8 h-8" />
+                            <div className="w-8 h-8 select-none" style={{ userSelect: "none" }} />
                         )}
                     </div>
                 )}
-                <div className={`flex max-w-[85%] flex-col sm:max-w-lg ${isMe ? "items-end" : "items-start"}`}>
-                    {/* Spacer for non-first messages in group */}
-                    {!isMe && !isFirstInGroup && <div className="mr-10"></div>}
-                    <div className="flex flex-col">
-                        {/* Sender name (only for other users and first in group) */}
-                        {!isMe && isFirstInGroup && (
-                            <span
-                                className="text-accent mb-1 max-w-full truncate text-xs font-semibold cursor-pointer hover:underline"
-                                onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
-                                title={firstMessage.senderName}
-                            >
-                                {firstMessage.senderName || "User"}
-                            </span>
-                        )}
-                        <div
-                            className={`${bubbleColor} relative z-0 flex max-w-full flex-col rounded-2xl px-4 py-2.5 break-words shadow-md sm:max-w-lg`}
-                            onContextMenu={(e) =>
-                                onMessageContextMenu && onMessageContextMenu(e, firstMessage)
-                            }
+                <div className={`flex max-w-[85%] flex-col sm:max-w-lg ${isMe ? "items-end" : "items-start"} select-none`} style={{ userSelect: "none" }}>
+                    {/* Sender name (only for other users and first in group) */}
+                    {!isMe && isFirstInGroup && (
+                        <span
+                            className="text-accent mb-1 max-w-full truncate text-xs font-semibold cursor-pointer hover:underline select-none"
                             style={{ userSelect: "none" }}
+                            onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
+                            title={firstMessage.senderName}
                         >
-                            {/* Media Grid */}
+                            {firstMessage.senderName || "User"}
+                        </span>
+                    )}
+                    <div
+                        className={`${bubbleColor} relative z-0 flex max-w-full flex-col rounded-2xl px-4 py-2.5 break-words shadow-md sm:max-w-lg select-none`}
+                        onContextMenu={(e) =>
+                            onMessageContextMenu && onMessageContextMenu(e, firstMessage)
+                        }
+                        style={{ userSelect: "none" }}
+                    >
+                        {/* Media Grid */}
+                        <div className="select-none" style={{ userSelect: "none" }}>
                             {renderMediaGrid(item.messages, openImageSlider)}
-
-                            <div className="mt-1.5 flex items-end justify-between">
-                                {/* Sent time */}
-                                {firstMessage.sentTime && (
-                                    <div
-                                        className={`text-secondary flex items-center gap-1 text-[10px] ${isRTLMessage ? "order-2 ml-2" : "order-1 mr-2"}`}
-                                        dir="ltr"
-                                    >
-                                        <span>{firstMessage.sentTime}</span>
-                                    </div>
-                                )}
-
-                                {/* Message reactions */}
-                                {hasReactions && (
-                                    <div
-                                        className={`flex gap-1 ${isRTLMessage ? "order-1 justify-start" : "order-2 justify-end"}`}
-                                    >
-                                        {Object.entries(reactionCounts).map(([emoji, count]) => (
-                                            <span
-                                                key={emoji}
-                                                className={`rounded-full px-1.5 py-0.5 text-xs ${isMe ? "bg-text/20" : "bg-secondary/10"}`}
-                                            >
-                                                {emoji} {count}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                        </div>
+                        <div className="mt-1.5 flex items-end justify-between select-none" style={{ userSelect: "none" }}>
+                            {/* Sent time */}
+                            {firstMessage.sentTime && (
+                                <div
+                                    className={`text-secondary flex items-center gap-1 text-[10px] ${isRTLMessage ? "order-2 ml-2" : "order-1 mr-2"} select-none`}
+                                    dir="ltr"
+                                    style={{ userSelect: "none" }}
+                                >
+                                    <span className="select-none" style={{ userSelect: "none" }}>{firstMessage.sentTime}</span>
+                                </div>
+                            )}
+                            {/* Message reactions */}
+                            {hasReactions && (
+                                <div
+                                    className={`flex gap-1 ${isRTLMessage ? "order-1 justify-start" : "order-2 justify-end"} select-none`}
+                                    style={{ userSelect: "none" }}
+                                >
+                                    {Object.entries(reactionCounts).map(([emoji, count]) => (
+                                        <span
+                                            key={emoji}
+                                            className={`rounded-full px-1.5 py-0.5 text-xs ${isMe ? "bg-text/20" : "bg-secondary/10"} select-none`}
+                                            style={{ userSelect: "none" }}
+                                        >
+                                            {emoji} {count}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
