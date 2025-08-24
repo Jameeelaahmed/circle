@@ -7,7 +7,7 @@ import { auth, db } from "../../firebase-config";
 import { useSelector } from "react-redux";
 import ProfilePresentational from "./profilepresentational";
 import {
-  
+
   arrayUnion,
   doc,
   getDoc,
@@ -30,7 +30,6 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       const profile = await getUserProfile(profileId);
-      console.log(profile);
       dispatch(setProfileData(profile));
 
       if (auth.currentUser.uid === profileId) {

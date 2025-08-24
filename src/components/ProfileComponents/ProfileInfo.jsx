@@ -68,7 +68,6 @@ const ProfileInfo = ({
       );
 
       if (!response.ok) {
-        console.log("Error uploading avatar:", response);
         throw new Error("Failed to upload image");
       }
 

@@ -151,11 +151,6 @@ const BackgroundHoverEffect = ({
   const shouldDisableAnimations = disableAnimations || isMobile;
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const handleAnimationComplete = () => {
-    // console.log("All letters have animated!");
-  };
-
   const clearAllParticles = () => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];

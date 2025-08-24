@@ -22,34 +22,24 @@ function MessageInfoModalContainer({ message, circleId, onClose }) {
                 if (circleSnap.exists()) {
                     const circleData = circleSnap.data();
                     members = circleData.members || [];
-                    console.log('Circle members:', members);
                 }
 
                 // Get message seen info
                 const seenBy = message.seenBy || [];
-                console.log('Message seenBy:', seenBy);
 
                 const seenWithNames = seenBy.map(seenUser => {
-                    console.log('Looking for user:', seenUser.userId);
-                    console.log('SeenUser object:', seenUser);
-
                     // Try different possible member structures
                     const member = members.find(m =>
                         m.id === seenUser.userId ||
                         m.userId === seenUser.userId ||
                         m.uid === seenUser.userId
                     );
-
-                    console.log('Found member:', member);
-
                     // Use member name first, then fallback to the userName stored in seenUser, then Unknown
                     const displayName = member?.name ||
                         member?.userName ||
                         member?.displayName ||
                         seenUser.userName ||
                         `User ${seenUser.userId.slice(-4)}`;
-
-                    console.log('Final display name:', displayName);
 
                     return {
                         ...seenUser,

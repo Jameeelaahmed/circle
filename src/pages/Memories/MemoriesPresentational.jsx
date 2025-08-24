@@ -24,7 +24,6 @@ function MemoriesPresentational({
   const { t } = useTranslation();
   const memoriesList = memories.map((m) => m.urls).flat();
   const memoriesLength = memoriesList.length;
-  console.log(memoriesList);
   return (
     <div className="mt-[64px] min-h-screen text-text">
       {/* Header */}

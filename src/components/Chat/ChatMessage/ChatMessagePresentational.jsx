@@ -7,6 +7,7 @@ import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import YourContextMenuComponent from "./YourContextMenuComponent";
 function ChatMessagePresentational({
   handleReact,
   messages,
@@ -27,6 +28,8 @@ function ChatMessagePresentational({
   messageRefs,
   scrollToMessage,
   canEditMessage,
+  handleMessageContextMenu,
+  contextMenuMsg
 }) {
   const { t } = useTranslation();
   const [imageSlider, setImageSlider] = useState({
@@ -34,6 +37,7 @@ function ChatMessagePresentational({
     images: [],
     currentIndex: 0,
   });
+  const [contextMenuMsg, setContextMenuMsg] = useState(null);
 
   const openImageSlider = (images, startIndex = 0) => {
     setImageSlider({ isOpen: true, images, currentIndex: startIndex });
@@ -55,6 +59,11 @@ function ChatMessagePresentational({
           ? prev.images.length - 1
           : prev.currentIndex - 1,
     }));
+  };
+
+  const handleMessageContextMenu = (e, msg) => {
+    e.preventDefault();
+    setContextMenuMsg(msg);
   };
 
   const groupedMessages = groupConsecutiveMedia(messages);
@@ -118,9 +127,11 @@ function ChatMessagePresentational({
             formatMessageDate={formatMessageDate}
             messageRefs={messageRefs}
             scrollToMessage={scrollToMessage}
-            onMessageContextMenu={onMessageContextMenu}
+            onMessageContextMenu={handleMessageContextMenu}
             openImageSlider={openImageSlider}
             dir={dir}
+            contextMenuMsg={contextMenuMsg}
+            handleMessageContextMenu={handleMessageContextMenu}
           />
         );
       })}
@@ -159,6 +170,13 @@ function ChatMessagePresentational({
         prevImage={prevImage}
         setImageSlider={setImageSlider}
       />
+
+      {contextMenuMsg && (
+        <YourContextMenuComponent
+          message={contextMenuMsg}
+          onClose={() => setContextMenuMsg(null)}
+        />
+      )}
 
       <div ref={messagesEndRef} />
     </div>

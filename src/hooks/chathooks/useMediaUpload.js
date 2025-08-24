@@ -26,7 +26,6 @@ export function useMediaUpload() {
                     userId,
                     userName,
                     replyTo,
-                    (progress) => console.log('Upload progress:', progress + '%'),
                     formatTime
                 );
             } else {
@@ -61,7 +60,6 @@ export function useMediaUpload() {
                 userId,
                 userName,
                 replyTo,
-                (progress) => console.log('Video upload progress:', progress + '%'),
                 formatTime
             );
 
@@ -120,7 +118,6 @@ export function useMediaUpload() {
                 userId,
                 userName,
                 replyTo,
-                (progress) => console.log('Camera upload progress:', progress + '%'),
                 formatTime
             );
 

@@ -22,7 +22,6 @@ export const fetchUserProfile = createAsyncThunk(
           ? profile.updatedAt.toDate().toISOString()
           : (profile.updatedAt ?? null),
       };
-      console.log(transformedProfile);
       return transformedProfile;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

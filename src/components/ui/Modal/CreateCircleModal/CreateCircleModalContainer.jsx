@@ -194,10 +194,6 @@ export default function CreateCircleModalContainer({ closeModal }) {
       try {
         const uploadResult = await cloudinaryService.uploadImage(
           uploadedImage.file,
-          (progress) => {
-            // You can add progress UI here if needed
-            console.log("Circle cover upload progress:", progress + "%");
-          },
           {
             folder: "circles/covers",
             tags: ["circle", "cover", "circle-creation"],
