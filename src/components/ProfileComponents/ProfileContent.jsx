@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 import AboutTab from "./AboutTab";
 import CirclesTab from "./CirclesTab";
+import ConnectionsTap from "./ConnectionsTap";
 import { getCircleById } from "../../fire_base/circleController/circleController";
 
 const ProfileContent = ({ activeTab, profileData }) => {
   const [joinedCircles, setJoinedCircles] = useState([]);
+  const [connections, setConnections] = useState([]);
   const [isLoadingCircles, setIsLoadingCircles] = useState(false);
+  const [isLoadingConnections, setIsLoadingConnections] = useState(false);
 
+  // Fetch circle data
   useEffect(() => {
     const fetchCircleData = async () => {
-      // Reset circles and set loading state
       setJoinedCircles([]);
       setIsLoadingCircles(true);
 
       try {
-        // Check if profileData and joinedCircles exist
         if (
           !profileData?.joinedCircles ||
           !Array.isArray(profileData.joinedCircles)
@@ -23,39 +27,104 @@ const ProfileContent = ({ activeTab, profileData }) => {
           return;
         }
 
-        // Fetch all circles concurrently instead of sequentially
         const circlePromises = profileData.joinedCircles.map((circleId) =>
           getCircleById(circleId).catch((error) => {
             console.error(`Error fetching circle ${circleId}:`, error);
-            return null; // Return null for failed requests
+            return null;
           }),
         );
 
         const circles = await Promise.all(circlePromises);
-
-        // Filter out null values (failed requests) and set the circles
         const validCircles = circles.filter(
           (circle) => circle !== null && circle !== undefined,
         );
         setJoinedCircles(validCircles);
-
       } catch (error) {
         console.error("Error fetching circle data:", error);
-        setJoinedCircles([]); // Set empty array on error
+        setJoinedCircles([]);
       } finally {
         setIsLoadingCircles(false);
       }
     };
 
-    // Only fetch when circles tab is active and we have profile data
     if (activeTab === "circles" && profileData) {
       fetchCircleData();
     } else if (activeTab !== "circles") {
-      // Reset state when switching away from circles tab
       setJoinedCircles([]);
       setIsLoadingCircles(false);
     }
-  }, [activeTab, profileData?.uid]); // Use uid as dependency to avoid infinite loops
+  }, [activeTab, profileData?.uid]);
+
+  // Fetch connections data
+  useEffect(() => {
+    const fetchConnectionsData = async () => {
+      setConnections([]);
+      setIsLoadingConnections(true);
+
+      try {
+        if (
+          !profileData?.connections ||
+          !Array.isArray(profileData.connections)
+        ) {
+          setIsLoadingConnections(false);
+          return;
+        }
+
+        // Fetch detailed user data for each connection ID
+        const connectionPromises = profileData.connections.map(
+          async (connectionId) => {
+            try {
+              const userRef = doc(db, "users", connectionId);
+              const userSnap = await getDoc(userRef);
+
+              if (userSnap.exists()) {
+                const userData = userSnap.data();
+                return {
+                  uid: connectionId,
+                  username: userData.username,
+                  displayName: userData.displayName || userData.username,
+                  email: userData.email,
+                  photoUrl: userData.photoUrl,
+                  bio: userData.bio,
+                  interests: userData.interests || [],
+                  location: userData.location,
+                  joinDate: userData.joinDate,
+                };
+              } else {
+                console.warn(`User with ID ${connectionId} not found`);
+                return null;
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching user data for ${connectionId}:`,
+                error,
+              );
+              return null;
+            }
+          },
+        );
+
+        const connectionsData = await Promise.all(connectionPromises);
+        const validConnections = connectionsData.filter(
+          (connection) => connection !== null && connection !== undefined,
+        );
+
+        setConnections(validConnections);
+      } catch (error) {
+        console.error("Error fetching connections data:", error);
+        setConnections([]);
+      } finally {
+        setIsLoadingConnections(false);
+      }
+    };
+
+    if (activeTab === "connections" && profileData) {
+      fetchConnectionsData();
+    } else if (activeTab !== "connections") {
+      setConnections([]);
+      setIsLoadingConnections(false);
+    }
+  }, [activeTab, profileData?.uid, profileData?.connections]);
 
   return (
     <div className="bg-text/5 mb-10 rounded-2xl shadow-md backdrop-blur-2xl">
@@ -63,15 +132,22 @@ const ProfileContent = ({ activeTab, profileData }) => {
         <AboutTab
           uid={profileData?.uid}
           interests={profileData?.interests ?? []}
-          recentActivities={profileData?.joinedEvents ?? []} // Fixed typo: joninedEvents -> joinedEvents
+          recentActivities={profileData?.joinedEvents ?? []}
         />
       )}
 
       {activeTab === "circles" && (
         <CirclesTab
           joinedCircles={joinedCircles}
-          joinedCirclesIds={profileData.joinedCircles}
+          joinedCirclesIds={profileData?.joinedCircles}
           isLoading={isLoadingCircles}
+        />
+      )}
+
+      {activeTab === "connections" && (
+        <ConnectionsTap
+          connections={connections}
+          isLoading={isLoadingConnections}
         />
       )}
     </div>

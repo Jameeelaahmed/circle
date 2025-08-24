@@ -4,11 +4,13 @@ import { updateUserProfile } from "../../fire_base/profileController/profileCont
 import { useDispatch } from "react-redux";
 import { setProfileData } from "../../features/userProfile/profileSlice";
 import ProfileInfoPresentioal from "./ProfileInfoPresentional";
+
 const ProfileInfo = ({
   isProfileMyProfile,
   profileData,
-  isFollowing,
-  handleFollow,
+  isConnected,
+  handleConnect,
+  isConnecting,
 }) => {
   const dispatch = useDispatch();
   const [showEditModeLocation, setShowEditModeLocation] = useState(false);
@@ -180,8 +182,9 @@ const ProfileInfo = ({
         handleUpdateLocation,
         cancelLocationEdit,
         handleUpdateAvatar,
-        handleFollow,
-        isFollowing,
+        handleConnect,
+        isConnected,
+        isConnecting,
       }}
     />
   );

@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Plus, Check, X } from "lucide-react";
 import { updateUserProfile } from "../../fire_base/profileController/profileController";
 
-const AboutTab = ({ interests }) => {
+const AboutTab = ({ uid, interests }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newInterest, setNewInterest] = useState("");
 
   const handleAddInterest = async () => {
     if (!newInterest.trim()) return;
-    await updateUserProfile({ interests: [...interests, newInterest.trim()] });
+    await updateUserProfile(uid, {
+      interests: [...interests, newInterest.trim()],
+    });
     setNewInterest("");
     setIsAdding(false);
   };
@@ -38,7 +40,7 @@ const AboutTab = ({ interests }) => {
                   className="text-text border-text/40 rounded-[var(--rounded-pill)] border-2 border-dashed px-2 py-1 text-xs transition-all duration-300 hover:scale-105 sm:px-3 sm:text-sm"
                   onClick={() => setIsAdding(true)}
                 >
-                  <Plus className="ltr:mr-1 rtl:ml-1 inline h-3 w-3 sm:h-4 sm:w-4" />
+                  <Plus className="inline h-3 w-3 sm:h-4 sm:w-4 ltr:mr-1 rtl:ml-1" />
                   Add
                 </button>
               )}
