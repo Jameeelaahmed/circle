@@ -294,6 +294,7 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
               scrollToMessage={scrollToMessageWrapper}
               contextMenuMsg={contextMenuMsg}
               handleMessageContextMenu={handleMessageContextMenu}
+              setContextMenuMsg={setContextMenuMsg}
             />
           </div>
         </div>
