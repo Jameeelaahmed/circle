@@ -2,7 +2,7 @@ import VoiceMessagePlayer from "../../ui/VoiceMessagePlayer/VoiceMessagePlayer";
 import { detectTextDirection, getTextDirectionClasses } from "../../../utils/textDirection.js";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 
 function SingleMessage({
     msg,
@@ -45,9 +45,12 @@ function SingleMessage({
     const hasReactions = Object.keys(reactionCounts).length > 0;
 
     // Long press logic
+    const [isLongPressed, setIsLongPressed] = useState(false);
     const longPressTimeout = useRef();
     const handleTouchStart = (e) => {
         longPressTimeout.current = setTimeout(() => {
+            e.preventDefault();
+            setIsLongPressed(true); // highlight or show overlay
             if (onMessageContextMenu) {
                 onMessageContextMenu(e, msg);
             }
@@ -55,9 +58,11 @@ function SingleMessage({
     };
     const handleTouchEnd = () => {
         clearTimeout(longPressTimeout.current);
+        setIsLongPressed(false);
     };
     const handleTouchCancel = () => {
         clearTimeout(longPressTimeout.current);
+        setIsLongPressed(false);
     };
 
     return (
@@ -155,7 +160,7 @@ function SingleMessage({
                                 </span>
                             )}
                             <div
-                                className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words select-none`}
+                                className={`${bubbleColor} ${radius} shadow-md px-4 py-2.5 flex flex-col relative z-0 max-w-full sm:max-w-lg break-words select-none ${isLongPressed ? "ring-2 ring-primary/60 bg-primary/10" : ""}`}
                                 onContextMenu={e => onMessageContextMenu && onMessageContextMenu(e, msg)}
                                 onTouchStart={handleTouchStart}
                                 onTouchEnd={handleTouchEnd}
