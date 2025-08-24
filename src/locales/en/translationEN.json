@@ -133,6 +133,7 @@
   "requested to join": "requested to join",
   "Accept request": "Accept request",
   "Decline request": "Decline request",
+  "Explore": "Explore",
   "payment": {
     "Explore & Connect": "Explore & Connect",
     "Free": "Free",
@@ -190,10 +191,9 @@
     "message": "The page you’re looking for can’t be found.",
     "backHome": "Back to Home"
   },
-    "calendar": {
+  "calendar": {
     "title": "Calendar",
     "upcomingEvents": "Your Upcoming Events!",
     "noUpcomingEvents": "No upcoming events"
   }
-
 }
