@@ -1,8 +1,16 @@
-import { useRef, forwardRef, useImperativeHandle } from "react";
+import { useRef, forwardRef, useImperativeHandle, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useTheme } from "../../../hooks/useTheme";
 
 const Modal = forwardRef(function Modal(props, ref) {
   let modalRef = useRef();
+
+  const { darkMode, setDarkMode } = useTheme();
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
+  }, [darkMode]);
 
   useImperativeHandle(ref, () => ({
     open: () => {
@@ -13,14 +21,14 @@ const Modal = forwardRef(function Modal(props, ref) {
     },
   }));
 
-
   return createPortal(
     <dialog
       ref={modalRef}
-      className="bg-gradient-to-b from-bg-primary to-bg-secondary backdrop:bg-main-90 px-rounded-4xl animate-fade-slide-in m-auto rounded-4xl p-5 backdrop:backdrop-blur-md"
+      className={`${darkMode ? "light" : ""}bg-gradient-to-b from-bg-primary to-bg-secondary backdrop:bg-main-90 px-rounded-4xl animate-fade-slide-in m-auto rounded-4xl p-5 backdrop:backdrop-blur-md`}
     >
       {props.children}
     </dialog>,
+
     document.getElementById("root"),
   );
 });

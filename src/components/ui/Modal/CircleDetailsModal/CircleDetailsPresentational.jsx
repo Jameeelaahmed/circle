@@ -39,7 +39,7 @@ export default function CircleDetailsPresentational({
     const textareaStyles = `${inputStyles} min-h-[100px] resize-y`;
 
     return (
-        <div className="mx-auto max-w-3xl rounded-2xl">
+        <div className="mx-auto max-w-3xl  rounded-2xl">
             <ModalHeading title={isEditing ? t("Edit circle details") : t("Circle Details")} onClose={onClose} />
             <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
