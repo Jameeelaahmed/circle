@@ -29,8 +29,11 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
                 messageId: replyTo.messageId || replyTo.id,
                 senderId: replyTo.senderId,
                 senderName: replyTo.senderName,
-                text: replyTo.text,
-                messageType: replyTo.messageType,
+                text: replyTo.text || null,
+                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
+                audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
+                imageUrl: replyTo.imageUrl || null,
+                videoUrl: replyTo.videoUrl || null,
             } : null,
         };
 
@@ -68,12 +71,15 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             mimeType: uploadResult.format ? `audio/${uploadResult.format}` : 'audio/webm',
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                id: replyTo.id || replyTo.messageId,
+                id: replyTo.id,
                 messageId: replyTo.messageId || replyTo.id,
                 senderId: replyTo.senderId,
                 senderName: replyTo.senderName,
-                text: replyTo.text || '',
-                messageType: replyTo.messageType || 'text',
+                text: replyTo.text || null,
+                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
+                audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
+                imageUrl: replyTo.imageUrl || null,
+                videoUrl: replyTo.videoUrl || null,
             } : null,
         };
         const docRef = await addDoc(collection(db, "circles", circleId, "chat"), messageData);
@@ -95,6 +101,7 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
             folder: `circles/${circleId}/videos`,
             tags: ['chat', 'video', circleId]
         });
+        console.log("ReplyTo being passed:", replyTo);
 
         // Send message to Firestore
         const messageData = {
@@ -116,8 +123,11 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
                 messageId: replyTo.messageId || replyTo.id,
                 senderId: replyTo.senderId,
                 senderName: replyTo.senderName,
-                text: replyTo.text,
-                messageType: replyTo.messageType,
+                text: replyTo.text || null,
+                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
+                audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
+                imageUrl: replyTo.imageUrl || null,
+                videoUrl: replyTo.videoUrl || null,
             } : null,
         };
 
@@ -167,12 +177,6 @@ export async function batchUploadImages(files, circleId, userId, userName, reply
     }
 }
 
-/**
- * Get optimized image URL with transformations
- * @param {string} publicId - Cloudinary public ID
- * @param {Object} options - Transformation options
- * @returns {string} Optimized image URL
- */
 export function getOptimizedImageUrl(publicId, options = {}) {
     const {
         width = 'auto',

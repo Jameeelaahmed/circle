@@ -64,7 +64,7 @@ function ChatSidebarContainer() {
     const currentCircle = circles.find(c => c.id === circleId);
 
     // Use currentCircle for ownership check
-    const isOwner = user && currentCircle && currentCircle.createdBy.uid === user.uid;
+    const isOwner = user && currentCircle && currentCircle.createdBy === user.uid;
 
     function handleDeleteCircle() {
         deleteCircle({

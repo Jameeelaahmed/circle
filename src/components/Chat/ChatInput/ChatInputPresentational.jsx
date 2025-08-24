@@ -2,7 +2,7 @@ import DeleteBtn from "../../ui/ReactBits/DeleteBtn/DeleteBtn";
 import VoiceWaveform from "../../ui/VoiceWaveform/VoiceWaveform";
 import CameraView from "../../ui/CameraView/CameraViewPresentational";
 import Skeleton from "@mui/material/Skeleton";
-import { Mic, Paperclip, Camera, Image, Send } from "lucide-react";
+import { Mic, Paperclip, Camera, Image, Send, Video } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 function ChatInputPresentational({
@@ -29,6 +29,7 @@ function ChatInputPresentational({
   showCameraModal,
   closeCameraModal,
   handleCapturedPhoto,
+  handleVideoUpload, // Add this prop for video upload
 }) {
   const mediaMenuRef = useRef(null);
   const { t } = useTranslation();
@@ -147,6 +148,15 @@ function ChatInputPresentational({
                       >
                         <Image size={16} />
                         <span className="text-sm">{t("Gallery")}</span>
+                      </button>
+                      {/* Add this for video upload */}
+                      <button
+                        onClick={handleVideoUpload} // You need to implement this handler
+                        className="hover:bg-primary/10 text-primary flex w-full items-center gap-3 px-3 py-2 ltr:text-left rtl:text-right transition-colors"
+                        type="button"
+                      >
+                        <Video size={16} /> {/* Import Video icon from lucide-react */}
+                        <span className="text-sm">{t("Video")}</span>
                       </button>
                     </div>
                   )}

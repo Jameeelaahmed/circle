@@ -7,9 +7,9 @@ import Modal from "../../components/ui/Modal/Modal";
 import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
 import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
 import { useEffect, useState } from "react";
-import mainImg from '../../assets/image.png' 
+import mainImg from '../../assets/image.png'
 import { useTheme } from "../../hooks/useTheme";
-
+import lightImg from '../../assets/light.png'
 export default function LandingPresentational({
   t,
   isLoggedIn,
@@ -17,23 +17,23 @@ export default function LandingPresentational({
   createCircleModalRef,
   closeCCircleModal,
 }) {
-  const [authFormType, setAuthFormType] = useState("login"); 
+  const [authFormType, setAuthFormType] = useState("login");
   const { darkMode } = useTheme();
 
-  const [bgImage, setBgImage] = useState(darkMode ? 'https://i.ibb.co/7G8m0ZV/dark-img.png' : mainImg);
+  const bgImage = darkMode ? lightImg : mainImg;
 
   const handleSwitchToRegister = () => setAuthFormType("register");
   const handleSwitchToLogin = () => setAuthFormType("login");
 
-  useEffect(() => {
-    const newImage = darkMode ? 'https://i.ibb.co/7G8m0ZV/dark-img.png' : mainImg;
-    setBgImage(newImage);
-  }, [darkMode]);
+  // useEffect(() => {
+  //   setBgImage(darkMode ? lightImg : mainImg);
+  // }, [darkMode]);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden"
+      key={darkMode ? "dark" : "light"}
       style={{
-        backgroundImage: `url(${bgImage})`, 
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -59,7 +59,7 @@ export default function LandingPresentational({
           </Motion.h1>
 
           <Motion.p
-            className="mb-8 text-center text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-text-300"
+            className="mb-8 text-center text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-text-300 text-text"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}

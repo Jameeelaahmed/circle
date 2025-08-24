@@ -185,6 +185,7 @@ function ChatInputContainer({
         setShowMediaMenu={mediaUpload.setShowMediaMenu}
         handleCameraCapture={mediaHandlers.handleCameraCapture}
         handleImageUpload={mediaHandlers.handleImageUpload}
+        handleVideoUpload={mediaHandlers.handleVideoUpload}
         showCameraModal={mediaUpload.showCameraModal}
         closeCameraModal={mediaHandlers.closeCameraModal}
         handleCapturedPhoto={mediaHandlers.handleCapturedPhoto}

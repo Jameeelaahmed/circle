@@ -72,7 +72,10 @@ function ChatHeaderPresentational({
 
         <div className="flex items-center gap-3 relative">
           <button
-            onClick={onMoreClick}
+            onClick={(e) => {
+              e.stopPropagation(); // prevent window click handler from firing
+              onMoreClick(e);
+            }}
             className="p-1 rounded-full hover:bg-text/10 transition-colors"
             aria-label="More options"
           >

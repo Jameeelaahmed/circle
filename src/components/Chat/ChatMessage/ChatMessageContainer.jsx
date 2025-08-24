@@ -39,7 +39,6 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
   const messageRefs = useRef({});
   const containerRef = useRef(null);
   const messageInfoModalRef = useRef(null);
-  const menuRef = useRef(null); // Add this if you don't have it
   const { userName, userId } = useAuth();
   const currentUser = { id: userId, username: userName };
   const { i18n } = useTranslation();
@@ -105,6 +104,8 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
           id: doc.id,
           ...doc.data(),
         }));
+        console.log(allMessages);
+
         const filteredMessages = allMessages.filter((msg) => {
           const deletedFor = msg.deletedFor || [];
           return !deletedFor.includes(userId);
@@ -164,27 +165,6 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
       };
     }
   }, [menu.visible]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        menu.visible &&
-        menuRef.current &&
-        !menuRef.current.contains(event.target)
-      ) {
-        setMenu((m) => ({ ...m, visible: false }));
-      }
-    }
-
-    if (menu.visible) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("touchstart", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        document.removeEventListener("touchstart", handleClickOutside);
-      };
-    }
-  }, [menu.visible, setMenu]);
 
   function handleAction(action, message) {
     const targetMessage = message || menu.message;
@@ -331,7 +311,6 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
               contextMenuMsg={contextMenuMsg}
               handleMessageContextMenu={handleMessageContextMenu}
               setContextMenuMsg={setContextMenuMsg}
-              menuRef={menuRef} // Pass the ref to the menu component
             />
           </div>
         </div>
