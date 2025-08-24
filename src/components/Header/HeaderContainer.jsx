@@ -10,11 +10,11 @@ function HeaderContainer({ toggleDark, darkMode }) {
   const { isLoggedIn } = useAuth();
   const navItems = [
     { label: t("Home"), href: "/" },
-    { label: t("Events"), href: "/events" },
+    { label: t("Explore"), href: "/explore" },
     { label: t("Circles"), href: "/circles" },
+    { label: t("Events"), href: "/events" },
     { label: t("Payments"), href: "/payments" },
     { label: t("About Us"), href: "/about" },
-    { label: t("Explore"), href: "/explore" },
   ];
 
   return (
