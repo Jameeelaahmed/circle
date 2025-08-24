@@ -189,5 +189,11 @@
     "title": "Oops! ",
     "message": "The page you’re looking for can’t be found.",
     "backHome": "Back to Home"
+  },
+    "calendar": {
+    "title": "Calendar",
+    "upcomingEvents": "Your Upcoming Events!",
+    "noUpcomingEvents": "No upcoming events"
   }
+
 }

@@ -65,7 +65,7 @@ const EventConfirmedNew = ({ eventData, onRsvp, onStartNewPoll }) => {
   const userRsvp = currentUser?.rsvp;
 
   return (
-    <div className="mx-auto w-full backdrop-blur-lg mt-3 relative left-[50%] transform translate-x-[-10%] overflow-y-auto max-h-[400px] max-w-sm space-y-6 rounded-3xl  p-4 text-text shadow-2xl">
+    <div className="mx-auto  fixed md:relative overflow-y-auto  max-h-[300px] overflow-hidden  backdrop-blur-lg mt-3  md:left-[50%] transform md:translate-x-[-50%]  w-[100%] md:w-[100%] space-y-6 rounded-3xl  p-4 text-text shadow-2xl">
 
 
 

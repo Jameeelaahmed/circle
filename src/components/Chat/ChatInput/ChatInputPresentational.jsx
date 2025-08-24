@@ -101,14 +101,14 @@ function ChatInputPresentational({
 
           <form
             onSubmit={(e) => handleSendMsg(e)}
-            className="bg-main/10 shadow-main flex items-center rounded-4xl p-2"
+            className="bg-main/10 shadow-2xl inset-shadow-xs inset-shadow-secondary  flex items-center rounded-4xl p-2"
           >
             <textarea
               onInput={handleInput}
               onKeyDown={handleKeyDown}
               dir={dir}
               ref={msgVal}
-              className="bg-inputsBg w-full resize-none overflow-y-auto rounded-4xl p-5 leading-6 ltr:mr-2 rtl:ml-2"
+              className="bg-inputsBg text-text w-full resize-none overflow-y-auto rounded-4xl p-5 leading-6 ltr:mr-2 rtl:ml-2"
               rows={1}
               placeholder={
                 isEditing ? "Edit your message..." : "Type a message..."

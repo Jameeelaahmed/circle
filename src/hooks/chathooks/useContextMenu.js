@@ -17,47 +17,35 @@ export default function useContextMenu({ menuWidth = 300, menuHeight = 180, head
         e.preventDefault();
         const viewportHeight = window.innerHeight;
 
-        // Use mouse coordinates for positioning
+        // Horizontal position
         let left = e.clientX;
+        if (left + menuWidth > window.innerWidth - 8) left = window.innerWidth - menuWidth - 8;
+        if (left < 8) left = 8;
 
-        // Adjust position to stay within screen bounds
-        if (left + menuWidth > window.innerWidth - 8) {
-            left = window.innerWidth - menuWidth - 8;
-        }
-        if (left < 8) {
-            left = 8;
-        }
+        // Vertical position + direction
+        let direction = "down";
+        let finalTop = e.clientY + 10;
 
-        // Determine direction based on available space
-        let direction = 'down'; // Default to down
-        let finalTop = e.clientY + 10; // Show below click point by default
-
-        // Check if there's enough space below
         if (e.clientY + menuHeight + 10 > viewportHeight - inputHeight - padding) {
-            // Not enough space below, show above
-            direction = 'up';
+            direction = "up";
             finalTop = e.clientY - menuHeight - 10;
         }
 
-        // Apply header constraints
         if (finalTop < headerHeight + padding) {
             finalTop = headerHeight + padding;
-            direction = 'down';
+            direction = "down";
         }
 
-        // Final boundary checks
         if (finalTop + menuHeight > window.innerHeight - 8) {
             finalTop = window.innerHeight - menuHeight - 8;
         }
-        if (finalTop < 8) {
-            finalTop = 8;
-        }
-        setMenu(m => ({ ...m, visible: false }));
-        setTimeout(() => {
-            setMenu({ visible: true, x: left, y: finalTop, message: msg });
-            setMenuDirection(direction);
-        }, 10);
+        if (finalTop < 8) finalTop = 8;
+
+        // ✅ Directly open menu
+        setMenu({ visible: true, x: left, y: finalTop, message: msg });
+        setMenuDirection(direction);
     }
+
 
     return { menu, setMenu, menuDirection, handleContextMenu };
 }

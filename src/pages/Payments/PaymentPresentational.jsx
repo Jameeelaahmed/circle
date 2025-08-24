@@ -7,7 +7,7 @@ function PaymentPresentational({ cards }) {
 
   return (
     <>
-      <section className="relative overflow-y-hidden h-[100%] bg-main z-10 mt-[64px] mb-0 pb-20">
+      <section className="relative overflow-y-hidden h-[100%] bg-gradient-to-b from-bg-primary to-bg-secondary z-10 mt-[64px] mb-0 pb-20">
         <div 
           style={{
             width: "100%",
@@ -26,10 +26,10 @@ function PaymentPresentational({ cards }) {
             <p className="relative z-10 mb-10 pt-10 text-center text-2xl  font-bold lg:text-3xl">
               {t("payment.Choose Your Circle. Unlock the Experience.")}
             </p>
-            <div className="relative z-10 mx-7 grid grid-cols-1 justify-center gap-4 select-none sm:mx-16 md:mx-10 md:grid-cols-2 xl:grid-cols-3">
+            <div className="relative z-10 mx-7 grid grid-cols-1 justify-center gap-8 select-none sm:mx-16 md:mx-10 md:grid-cols-2 xl:grid-cols-3">
               {cards.map((card, idx) => (
                 <GlowCardContainer
-                  className={`z-10 grid bg-transparent p-7 backdrop-blur-2xl ${idx == 1 && "xl:scale-105"}`}
+                  className={`z-10 grid bg-transparent py-7 px-13 backdrop-blur-2xl ${idx == 1 && "xl:scale-105"}`}
                   color={card.color}
                   key={card.header}
                 >
@@ -38,7 +38,7 @@ function PaymentPresentational({ cards }) {
                     {card.header}
                   </p>
                   {card.price}
-                  <ul className="mb-10 text-[var(--color-text)] h-40 [&>*]:list-disc">
+                  <ul className=" text-[var(--color-text)] h-40 [&>*]:list-disc">
                     {card.services.map((service) => (
                       <li key={service}>{service}</li>
                     ))}

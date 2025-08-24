@@ -10,9 +10,9 @@ const DefaultState = ({ onStartPoll }) => {
         <div className="text "
         >
 
-          <div className="mt-[-8px] bg-main p-4 rounded-bl-xl rounded-br-xl"
+          <div className="mt-[-8px] bg-main p-4 rounded-full"
             style={{
-              background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
+              background: `radial-gradient(ellipse at top,var(--color-main-card-top)   0%, var(--color-main-card)  60%)`,
               backdropFilter: "blur(10px)",
             }}
           >

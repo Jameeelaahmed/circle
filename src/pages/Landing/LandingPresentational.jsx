@@ -6,8 +6,10 @@ import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleMo
 import Modal from "../../components/ui/Modal/Modal";
 import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
 import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
-import { useState } from "react";
-import mainImg from '../../assets/image.png'
+import { useEffect, useState } from "react";
+import mainImg from '../../assets/image.png' 
+import { useTheme } from "../../hooks/useTheme";
+
 export default function LandingPresentational({
   t,
   isLoggedIn,
@@ -15,21 +17,28 @@ export default function LandingPresentational({
   createCircleModalRef,
   closeCCircleModal,
 }) {
-  const [authFormType, setAuthFormType] = useState("login"); // "login" or "register"
+  const [authFormType, setAuthFormType] = useState("login"); 
+  const { darkMode } = useTheme();
+
+  const [bgImage, setBgImage] = useState(darkMode ? 'https://i.ibb.co/7G8m0ZV/dark-img.png' : mainImg);
 
   const handleSwitchToRegister = () => setAuthFormType("register");
   const handleSwitchToLogin = () => setAuthFormType("login");
 
+  useEffect(() => {
+    const newImage = darkMode ? 'https://i.ibb.co/7G8m0ZV/dark-img.png' : mainImg;
+    setBgImage(newImage);
+  }, [darkMode]);
+
   return (
     <div className="flex h-screen flex-col overflow-hidden"
       style={{
-        backgroundImage: `url(${mainImg})`,
+        backgroundImage: `url(${bgImage})`, 
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* <div className="h-screen w-full flex-col items-center justify-center px-4 md:flex-row overflow-hidden"> */}
       <Motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -90,17 +99,14 @@ export default function LandingPresentational({
         </div>
       </Motion.div>
 
-      {/* Right: Child Development Section */}
       <Motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="z-10 hidden md:flex w-full justify-center p-8 md:w-1/2"
       >
-        {/* <LandingIrregularCirclePaths /> */}
         <FloatingAvatarContainer />
       </Motion.div>
-      {/* </div> */}
     </div>
   );
 }

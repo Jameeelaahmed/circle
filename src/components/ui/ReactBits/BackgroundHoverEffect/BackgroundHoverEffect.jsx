@@ -240,7 +240,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-main px-4 py-6 text-text"
+      className="main-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-bg-primary to-bg-secondary px-4 py-6 text-text"
       style={{
         "--glow-color": glowColor,
       }}

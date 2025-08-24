@@ -77,7 +77,7 @@ const ActivePollState = ({ pollData, onFinishVoting, onVote, onAddOption }) => {
   const totalVotes = Object.keys(pollData.votes || {}).length;
 
   return (
-    <div className="relative z-[9999] mx-auto w-full backdrop-blur-lg overflow-y-auto max-h-[300px] overflow-hidden rounded-2xl  text-text shadow-2xl mt-2">
+    <div className="fixed md:relative z-[9999] mx-auto w-[100%] md:w-[100%] backdrop-blur-lg overflow-y-auto  max-h-[300px] overflow-hidden rounded-2xl  text-text shadow-2xl mt-2">
       {/* Header with toggle */}
       <div
         className="from-primary/30 to-secondary/30 flex cursor-pointer items-center justify-between bg-gradient-to-r px-4 py-3"

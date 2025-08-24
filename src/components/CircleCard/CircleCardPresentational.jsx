@@ -21,7 +21,7 @@ export default function CircleCardPresentational({
       <div
         className="group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-3xl p-3 transition-all duration-300 hover:shadow-xl sm:p-4 md:p-5"
         style={{
-          background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse at top,var(--color-main-card-top)   0%, var(--color-main-card)  60%)`,
           backdropFilter: "blur(10px)",
           border: "1px solid rgba(172, 159, 250, 0.15)",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
