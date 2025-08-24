@@ -29,7 +29,8 @@ function ChatMessagePresentational({
   scrollToMessage,
   canEditMessage,
   handleMessageContextMenu,
-  contextMenuMsg
+  contextMenuMsg,
+  setContextMenuMsg
 }) {
   const { t } = useTranslation();
   const [imageSlider, setImageSlider] = useState({
@@ -37,7 +38,6 @@ function ChatMessagePresentational({
     images: [],
     currentIndex: 0,
   });
-  const [contextMenuMsg, setContextMenuMsg] = useState(null);
 
   const openImageSlider = (images, startIndex = 0) => {
     setImageSlider({ isOpen: true, images, currentIndex: startIndex });
@@ -59,11 +59,6 @@ function ChatMessagePresentational({
           ? prev.images.length - 1
           : prev.currentIndex - 1,
     }));
-  };
-
-  const handleMessageContextMenu = (e, msg) => {
-    e.preventDefault();
-    setContextMenuMsg(msg);
   };
 
   const groupedMessages = groupConsecutiveMedia(messages);
@@ -175,6 +170,13 @@ function ChatMessagePresentational({
         <YourContextMenuComponent
           message={contextMenuMsg}
           onClose={() => setContextMenuMsg(null)}
+          menu={contextMenuMsg}
+          menuDirection={menuDirection}
+          currentUser={currentUser}
+          handleAction={handleAction}
+          handleReact={handleReact}
+          canEditMessage={canEditMessage}
+          open={open}
         />
       )}
 

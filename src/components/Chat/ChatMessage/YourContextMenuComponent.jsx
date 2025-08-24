@@ -1,48 +1,101 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-export default function YourContextMenuComponent({ message, onClose }) {
+export default function YourContextMenuComponent({
+    menu,
+    menuDirection,
+    currentUser,
+    handleAction,
+    handleReact,
+    canEditMessage,
+    open
+}) {
+    const { t } = useTranslation();
+    const reactionEmojis = ['👍', '😂', '❤️', '🔥', '🙏'];
+
+    if (!menu.visible || !menu.message) return null;
+
     return (
         <div
-            className="fixed inset-0 z-50 flex items-end justify-center bg-black/40"
-            onClick={onClose}
+            className={`fixed z-50 w-56 backdrop-blur-2xl rounded-xl shadow-xl border border-text/10 
+                flex flex-col text-sm select-none overflow-hidden
+                text-text bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
+            style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
         >
-            <div
-                className="bg-main rounded-t-2xl shadow-lg w-full max-w-sm mx-auto p-4"
-                onClick={e => e.stopPropagation()}
+            <button
+                className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
+                onClick={() => handleAction('reply')}
             >
-                <div className="mb-4 text-center text-lg font-semibold text-text">
-                    Message Actions
-                </div>
-                <div className="flex flex-col gap-2">
+                {t("Reply")}
+            </button>
+
+            {/* Edit button - only for text messages within edit time limit */}
+            {menu.message.senderId === currentUser?.id &&
+                (!menu.message.messageType || menu.message.messageType === 'text') &&
+                canEditMessage && canEditMessage(menu.message) && (
                     <button
-                        className="w-full py-2 rounded bg-primary/10 text-primary font-medium hover:bg-primary/20 transition"
+                        className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                         onClick={() => {
-                            // Example: reply action
-                            // You can call your reply handler here
-                            alert("Reply to message: " + (message.text || message.fileName || "Media"));
-                            onClose();
+                            handleAction('edit', menu.message);
                         }}
                     >
-                        Reply
+                        {t("Edit")}
                     </button>
-                    <button
-                        className="w-full py-2 rounded bg-secondary/10 text-secondary font-medium hover:bg-secondary/20 transition"
-                        onClick={() => {
-                            // Example: delete action
-                            alert("Delete message: " + (message.text || message.fileName || "Media"));
-                            onClose();
-                        }}
-                    >
-                        Delete
-                    </button>
-                    {/* Add more actions as needed */}
-                </div>
+                )}
+
+            {/* Download button - only for image messages */}
+            {menu.message.messageType === 'image' && (
                 <button
-                    className="mt-4 w-full py-2 rounded bg-text/10 text-text font-medium hover:bg-text/20 transition"
-                    onClick={onClose}
+                    className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
+                    onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = menu.message.imageUrl;
+                        link.download = menu.message.fileName || `image-${Date.now()}.jpg`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }}
                 >
-                    Cancel
+                    {t("Download")}
                 </button>
+            )}
+
+            {/* Info button - only for own messages */}
+            {menu.message.senderId === currentUser?.id && (
+                <button
+                    className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
+                    onClick={() => handleAction('info')}
+                >
+                    {t("Info")}
+                </button>
+            )}
+
+            <button
+                className="px-4 py-3 hover:bg-accent/20 ltr:text-left rtl:text-right text-accent transition-colors"
+                onClick={() => {
+                    handleAction('delete');
+                    open(menu.message.id || menu.message.messageId);
+                }}
+            >
+                {menu.message.senderId === currentUser?.id ? t('Delete') : t('Delete for me')}
+            </button>
+
+            {/* Reactions */}
+            <div className="flex gap-2 px-3 py-3 border-t border-text/10 justify-center">
+                {reactionEmojis.map(emoji => {
+                    const count = menu.message.react?.filter(r => r.emoji === emoji).length || 0;
+                    return (
+                        <button
+                            key={emoji}
+                            className={`text-xl w-8 h-8 flex items-center justify-center rounded-full transition-all
+                                hover:bg-secondary/20 hover:scale-110 ${count ? 'bg-secondary/10' : ''}`}
+                            onClick={() => handleReact(menu.message.id, emoji)}
+                            title={`React with ${emoji}`}
+                        >
+                            {emoji}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );
