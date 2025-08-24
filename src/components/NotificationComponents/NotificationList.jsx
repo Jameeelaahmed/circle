@@ -14,7 +14,7 @@ const NotificationList = ({
     <>
       {/* Header */}
       <div
-        className="flex items-center justify-between border-b p-4"
+        className="flex items-center bg-gradient-to-b from-bg-primary to-bg-secondary justify-between border-b p-4"
         style={{
           borderColor: "color-mix(in srgb, var(--color-text) 20%, transparent)",
         }}
@@ -22,7 +22,7 @@ const NotificationList = ({
         <h3
           className="text-lg font-semibold"
           style={{
-            color: "var(--color-light)",
+            color: "var(--color-text)",
             fontFamily: "var(--font-primary)",
           }}
         >
@@ -41,7 +41,7 @@ const NotificationList = ({
 
       {/* Notifications List */}
       <div
-        className="max-h-96 overflow-y-auto"
+        className="max-h-96 bg-gradient-to-b from-bg-primary to-bg-secondary overflow-y-auto"
         style={{ scrollbarWidth: "thin" }}
       >
         {notifications.length === 0 ? (
@@ -67,7 +67,7 @@ const NotificationList = ({
       {/* Footer */}
       {notifications.length > 0 && (
         <div
-          className="border-t p-3 text-center"
+          className="border-t bg-gradient-to-b from-bg-primary to-bg-secondary p-3 text-center"
           style={{
             borderColor:
               "color-mix(in srgb, var(--color-text) 20%, transparent)",

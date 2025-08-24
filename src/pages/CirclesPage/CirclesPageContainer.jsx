@@ -192,7 +192,7 @@ function CirclesPageContainer() {
         createCircleRef.current.close();
     }
     return (
-        <div className='pt-paddingTop flex flex-col min-h-screen'>
+        <div className='pt-paddingTop bg-gradient-to-b from-bg-primary to-bg-secondary flex flex-col min-h-screen'>
             {user && <>
                 <CirclesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
                 {activeTab === "my" &&

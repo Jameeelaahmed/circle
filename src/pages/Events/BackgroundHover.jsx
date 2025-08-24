@@ -241,7 +241,7 @@ const BackgroundHoverEffect = ({
   return (
     <div
       ref={containerRef}
-      className="bg-main relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 text-text"
+      className="from-bg-primary to-bg-secondary text-text relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b px-4 py-6"
       style={{
         "--glow-color": glowColor,
       }}
@@ -328,13 +328,13 @@ const BackgroundHoverEffect = ({
 
       {/* Content container */}
       <div
-        className="flex w-full flex-col   overflow-hidden  pt-13 md:flex-row md:px-6"
+        className="flex w-full flex-col overflow-hidden pt-13 md:flex-row md:px-6"
         style={{
           color: "#c5c6c7",
         }}
       >
         {/* Sidebar (circles + header) */}
-        <div className="flex w-full flex-col gap-6 border-b border-text-700/40 pb-4 md:w-80 md:border-r md:border-b-0 md:pr-6 md:pb-0">
+        <div className="border-text-700/40 flex w-full flex-col gap-3 border-b pb-4 md:w-80 md:border-e md:border-b-0 md:pr-6 md:pb-0">
           {/* Header */}
           <div className="flex items-center gap-4 px-1">
             <img
@@ -343,8 +343,13 @@ const BackgroundHoverEffect = ({
               className="h-10 w-10 drop-shadow-md"
             />
             <div>
-              <h1 className="text-3xl font-bold text-[var(--color-text)] ">Calendar</h1>
-              <p className="text-sm text-text-400">Your Upcoming Events!</p>
+              <h1 className="text-3xl font-bold text-[var(--color-text)]">
+                {t("calendar.title")}
+              </h1>
+              <p className="text-text-400 text-sm">
+                {t("calendar.upcomingEvents")}{" "}
+                {/* e.g., "Your Upcoming Events!" */}
+              </p>
             </div>
           </div>
 
@@ -353,7 +358,7 @@ const BackgroundHoverEffect = ({
             {Object.entries(circlesInfo).map(([circleId, circle]) => (
               <div
                 key={circleId}
-                className="rounded-2xl border border-text-700/50 bg-gradient-to-br from-text-800/20 to-text-900/30 p-3 shadow-sm transition-all  hover:shadow-lg"
+                className="border-text-700/50 from-text-800/20 to-text-900/30 rounded-2xl border bg-gradient-to-br p-3 shadow-sm transition-all hover:shadow-lg"
                 style={{
                   borderLeft: `5px solid ${circle.colorName || "#f78fb3"}`,
                 }}
@@ -365,13 +370,13 @@ const BackgroundHoverEffect = ({
                       <img
                         src={circle.image}
                         alt={circle.label}
-                        className="h-10 w-10 rounded-full object-cover ring-2 ring-text-700/50"
+                        className="ring-text-700/50 h-10 w-10 rounded-full object-cover ring-2"
                       />
                     )}
-                    <span className="text-sm font-medium tracking-wide text-white">
+                    <span className="text-sm font-medium tracking-wide text-text">
                       {circle.label}
                     </span>
-                    <span className="ml-auto text-text-400 transition-transform group-open:rotate-90">
+                    <span className="text-text-400 ml-auto transition-transform group-open:rotate-90">
                       ▶
                     </span>
                   </summary>
@@ -382,7 +387,7 @@ const BackgroundHoverEffect = ({
                       {circle.events.map((event, idx) => (
                         <li
                           key={idx}
-                          className="flex items-center gap-2 rounded-md bg-text-900/30 px-2 py-2 text-xs text-text-200 hover:bg-text-900/50"
+                          className="bg-text-900/30 text-text-200 hover:bg-text-900/50 flex items-center gap-2 rounded-md px-2 py-2 text-xs"
                         >
                           {/* Colored dot */}
                           <span
@@ -390,15 +395,15 @@ const BackgroundHoverEffect = ({
                             style={{ backgroundColor: circle.colorName }}
                           />
                           <span className="truncate">{event.title}</span>
-                          <span className="ml-auto rounded-full bg-text-700/40 px-2 py-0.5 text-[10px] text-text-300">
+                          <span className="bg-text-700/40 text-text-300 ml-auto rounded-full px-2 py-0.5 text-[10px]">
                             {event.start?.slice(0, 10)}
                           </span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-3 pl-1 text-xs text-text-500 italic">
-                      No upcoming events
+                    <p className="text-text-500 mt-3 pl-1 text-xs italic">
+                      {t("calendar.noUpcomingEvents")}{" "}
                     </p>
                   )}
                 </details>
@@ -409,7 +414,7 @@ const BackgroundHoverEffect = ({
 
         {/* Calendar Section */}
         <div
-          className="relative z-10 mt-7 flex-grow overflow-auto rounded-2xl shadow-md md:ml-6"
+          className="relative z-10 mt-7 flex-grow overflow-auto rounded-2xl shadow-md md:ms-6"
           style={{
             background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
             backdropFilter: "blur(10px)",

@@ -7,7 +7,7 @@ const ChatWindowContainer = lazy(() => import("../../components/Chat/ChatWindow/
 
 function CirclePagePresentational({ user }) {
     return (
-        <div className="pt-paddingTop pr-1.5 pl-1.5 pb-1.5 flex h-screen">
+        <div className="pt-paddingTop bg-gradient-to-b from-bg-primary to-bg-secondary pr-1.5 pl-1.5 pb-1.5 flex h-screen">
             {user ? (
                 <ChatSidebarContainer />
             ) : (

@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router";
 import HeaderContainer from "../components/Header/HeaderContainer";
+import { useTheme } from "../hooks/useTheme";
 function RootLayout() {
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("darkMode");
-    return saved === "true" || false;
-  });
 
-  // Save to localStorage on change
+  const {darkMode, setDarkMode} = useTheme();
+
+// Save to localStorage on change
   useEffect(() => {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);

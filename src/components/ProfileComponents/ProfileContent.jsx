@@ -60,7 +60,7 @@ const ProfileContent = ({ activeTab, profileData }) => {
   }, [activeTab, profileData?.uid]); // Use uid as dependency to avoid infinite loops
 
   return (
-    <div className="bg-text/5 mb-8 rounded-b-2xl shadow-md backdrop-blur-2xl">
+    <div className="bg-text/5 mb-10 rounded-2xl shadow-md backdrop-blur-2xl">
       {activeTab === "about" && (
         <AboutTab
           uid={profileData?.uid}

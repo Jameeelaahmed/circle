@@ -6,7 +6,7 @@ import Team from "../../components/AboutUs/Team";
 
 const AboutUs = () => {
   return (
-    <div className="text-color-text bg-main relative min-h-screen pt-[64px]">
+    <div className="text-color-text bg-gradient-to-b from-bg-primary to-bg-secondary relative min-h-screen pt-[64px]">
       <Hero />
       <Stats />
       <VisionAndMission />

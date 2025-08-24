@@ -9,7 +9,7 @@ const BlockedModal = forwardRef((props, ref) => {
 
   return (
     <Modal ref={ref}>
-      <div className="flex flex-col items-center p-6 bg-[var(--color-glass)] rounded-[var(--rounded-rounded)] shadow-[var(--shadow-glassCard)] max-w-sm mx-auto text-[var(--color-text)] font-sans select-none">
+      <div className="flex flex-col items-center p-6 bg-gradient-to-b from-bg-primary to-bg-secondary rounded-[var(--rounded-rounded)] shadow-[var(--shadow-glassCard)] max-w-sm mx-auto text-[var(--color-text)] font-sans select-none">
         <h2 className="text-2xl font-bold mb-3" style={{ fontFamily: "var(--font-primary)" }}>
           Account Blocked
         </h2>

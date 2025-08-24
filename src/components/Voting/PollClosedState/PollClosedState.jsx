@@ -17,7 +17,7 @@ const PollClosedState = ({ data, onPollNextStep }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className=" rounded-2xl  backdrop-blur-lg p-4 sm:p-5 mt-2 relative left-[50%] transform translate-x-[-10%] text-text shadow-lg "
+      className=" rounded-2xl fixed md:relative w-full backdrop-blur-lg p-4 sm:p-5 mt-2  md:left-[50%] transform md:translate-x-[-50%] text-text shadow-lg "
     >
       {/* Title */}
       <motion.h2

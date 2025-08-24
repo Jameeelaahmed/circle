@@ -65,7 +65,7 @@ function ChatMessagePresentational({
 
     >
       {messages.length === 0 && (
-        <div className="py-8 text-center text-text-400">
+        <div className="py-8 text-center text-text text-text-400">
           {t("No messages yet. Start a conversation!")}
         </div>
       )}

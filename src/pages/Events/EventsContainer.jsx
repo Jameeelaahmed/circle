@@ -19,24 +19,16 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { useAuth } from "../../hooks/useAuth";
-
+import { useTheme } from "../../hooks/useTheme";
 
 export default function EventsContainer() {
   const { userId } = useAuth();
-
-  // Theme state
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    return saved ? saved === "dark" : true;
-  });
-
-  const toggleTheme = () => {
-    setIsDark((prev) => {
-      const newTheme = prev ? "light" : "dark";
-      localStorage.setItem("theme", newTheme);
-      return !prev;
-    });
-  };
+ 
+  const { darkMode } = useTheme();
+  useEffect(() => {
+    
+  }, [darkMode]);
+  const [isDark, setDark] = useState(!darkMode);
 
   const [events, setEvents] = useState(() => {
     const saved = localStorage.getItem("userEvents");
@@ -122,8 +114,9 @@ export default function EventsContainer() {
               start: formatDate(startDate),
               end: formatDate(endDate),
               calendarId: circleId,
-              description: `Circle : ${calendarInfo.label || ""} going to - ${data.place || ""
-                } - ${data.Location || ""}`,
+              description: `Circle : ${calendarInfo.label || ""} going to - ${
+                data.place || ""
+              } - ${data.Location || ""}`,
               circleName: calendarInfo.label,
               circleImage: calendarInfo.image,
             };
@@ -149,14 +142,21 @@ export default function EventsContainer() {
     fetchCirclesAndEvents();
   }, [userId]);
 
+
+
   const calendarApp = useCalendarApp({
     isDark,
     views: [
-      createViewDay(),
-      createViewWeek(),
+      // createViewDay({ hourStep: 2,    // each row = 2 hours
+      // startHour: 8,   // start at 8 AM
+      // endHour: 20, }),
+      // createViewWeek({ hourStep: 2,    // each row = 2 hours
+      // startHour: 8,   // start at 8 AM
+      // endHour: 20, }),
       createViewMonthGrid(),
       createViewMonthAgenda(),
     ],
+    defaultView: "Month",
     selectedDates: new Date().toISOString().slice(0, 10),
     plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
     calendars,
@@ -174,15 +174,15 @@ export default function EventsContainer() {
         }}
       >
         {/* Skeleton loader */}
-        <div className="h-10 w-1/3 rounded-xl bg-text-700/40"></div>
+        <div className="bg-text-700/40 h-10 w-1/3 rounded-xl"></div>
         <div className="grid grid-cols-7 gap-2">
           {Array.from({ length: 7 }).map((_, i) => (
-            <div key={i} className="h-6 rounded-md bg-text-700/30"></div>
+            <div key={i} className="bg-text-700/30 h-6 rounded-md"></div>
           ))}
         </div>
         <div className="grid flex-1 grid-cols-7 gap-2">
           {Array.from({ length: 35 }).map((_, i) => (
-            <div key={i} className="h-20 rounded-lg bg-text-700/20"></div>
+            <div key={i} className="bg-text-700/20 h-20 rounded-lg"></div>
           ))}
         </div>
       </div>
@@ -197,12 +197,10 @@ export default function EventsContainer() {
         position: "relative",
       }}
     >
-
-
       <EventsPresentional
         calendarApp={calendarApp}
         categoryColors={Object.fromEntries(
-          Object.entries(calendars).map(([id, c]) => [id, c.colorName])
+          Object.entries(calendars).map(([id, c]) => [id, c.colorName]),
         )}
         circlesInfo={calendars}
       />

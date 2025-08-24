@@ -30,8 +30,11 @@
 
 .light {
   --color-main: #f6f4ff;
+  --color-main-card: #dddaf2;
+  --color-main-card-top:transparent;
   --color-bg-gradient: linear-gradient(135deg, #9f8de0 0%, #c6c1e7 100%);
-
+    --color-bg-primary: #ffffff;
+  --color-bg-secondary: #dbe8fc;
   --color-primary: #908bdb; /* purple text main */
   --color-secondary: #4ea7debf; /* lighter purple text secondary */
 
@@ -70,6 +73,10 @@ body {
   /** colors */
 
   --color-main: #081020;
+  --color-main-card: transparent;
+  --color-main-card-top: #17284f93;
+   --color-bg-primary: #04102b;
+  --color-bg-secondary: #17284f;
   --color-primary: #ac9ffa;
   --color-secondary: #4ea8de;
   --color-accent: #f78fb3;
@@ -110,11 +117,11 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: radial-gradient(
+  /* background: radial-gradient(
     100.5% 100% at 51.22% 0%,
     #17284f 0%,
     #04102b 81.66%
-  );
+  ); */
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
