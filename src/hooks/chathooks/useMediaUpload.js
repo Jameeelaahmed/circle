@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { format } from 'date-fns';
 import {
     uploadAndSendImage,
     uploadAndSendVideo,
@@ -11,7 +12,9 @@ export function useMediaUpload() {
     const [showMediaMenu, setShowMediaMenu] = useState(false);
     const [showCameraModal, setShowCameraModal] = useState(false);
 
-    const handleImageUpload = async (files, circleId, userId, userName, replyTo, formatTime) => {
+    const defaultFormatTime = () => format(new Date(), 'hh:mm a');
+
+    const handleImageUpload = async (files, circleId, userId, userName, replyTo, formatTime = defaultFormatTime) => {
         if (!files || files.length === 0) return;
 
         try {
@@ -50,7 +53,7 @@ export function useMediaUpload() {
         }
     };
 
-    const handleVideoUpload = async (file, circleId, userId, userName, replyTo, formatTime) => {
+    const handleVideoUpload = async (file, circleId, userId, userName, replyTo, formatTime = defaultFormatTime) => {
         try {
             setIsUploading(true);
 
@@ -100,7 +103,7 @@ export function useMediaUpload() {
         });
     };
 
-    const handleCapturedPhoto = async (imageBlob, circleId, userId, userName, replyTo, formatTime) => {
+    const handleCapturedPhoto = async (imageBlob, circleId, userId, userName, replyTo, formatTime = defaultFormatTime) => {
         setShowCameraModal(false);
 
         try {

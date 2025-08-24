@@ -30,7 +30,6 @@ function ChatMessagePresentational({
   canEditMessage,
   handleMessageContextMenu,
   contextMenuMsg,
-  setContextMenuMsg
 }) {
   const { t } = useTranslation();
   const [imageSlider, setImageSlider] = useState({
@@ -91,9 +90,11 @@ function ChatMessagePresentational({
         }
         // Media group
         if (item.type === "media_group") {
+          // Use a unique key: combine firstIndex, lastIndex, and first message id
+          const firstMsgId = item.messages?.[0]?.id || item.firstIndex;
           return (
             <MediaGroupMessage
-              key={`group-${item.firstIndex}-${item.lastIndex}`}
+              key={`group-${item.firstIndex}-${item.lastIndex}-${firstMsgId}`}
               item={item}
               currentUser={currentUser}
               groupedMessages={groupedMessages}

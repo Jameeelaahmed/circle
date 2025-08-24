@@ -1,5 +1,5 @@
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase-config"; 
+import { db } from "../firebase-config";
 
 export const sendStageCreatedMessages = async (circleId, stages) => {
   if (!circleId || !stages) return;
@@ -19,7 +19,7 @@ export const sendStageCreatedMessages = async (circleId, stages) => {
       await addDoc(chatRef, {
         messageType: "system",
         text: `🔹 ${stageNameMessage}`,
-        timeStamp: serverTimestamp(),
+        timestamp: serverTimestamp(),
       });
     }
   } catch (error) {

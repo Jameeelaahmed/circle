@@ -112,7 +112,7 @@ export default function CircleDetailsPresentational({
                             isClearable
                         />
                     ) : (
-                        <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${selectedCircle.circlePrivacy === "Public"
+                        <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${selectedCircle.circlePrivacy === "public"
                             ? "bg-green-900/30 text-green-400"
                             : "bg-purple-900/30 text-purple-400"
                             }`}>
