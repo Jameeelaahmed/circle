@@ -77,10 +77,6 @@ export default function CircleDetailsContainer({ onClose }) {
             if (uploadedImage?.file) {
                 const uploadResult = await cloudinaryService.uploadImage(
                     uploadedImage.file,
-                    (progress) => {
-                        // Optional: show progress
-                        console.log("Circle cover upload progress:", progress + "%");
-                    },
                     {
                         folder: "circles/covers",
                         tags: ["circle", "cover", "circle-edit"],

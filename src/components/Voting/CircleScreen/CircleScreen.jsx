@@ -76,7 +76,6 @@ export default function CircleScreen() {
 
   const handleLaunchPoll = async (pollData) => {
     try {
-      console.log("handleLaunchPoll called with:", pollData);
       setPollModalVisible(false);
 
       const deadlineDate =
@@ -112,7 +111,6 @@ export default function CircleScreen() {
           timeStamp: serverTimestamp(),
         });
 
-        console.log('Activity poll created successfully with ID:', docRef.id);
       } else if (pollType === 'place') {
         if (!poll?.id) {
           console.error('No active poll found to update for place poll');
@@ -132,8 +130,6 @@ export default function CircleScreen() {
           text: `📍 Place poll started: "${pollData.question}"`,
           timeStamp: serverTimestamp(),
         });
-
-        console.log('Place poll updated successfully');
       }
     } catch (error) {
       console.error('Error launching poll:', error);
@@ -227,9 +223,6 @@ export default function CircleScreen() {
           text: `📊 Activity poll closed! "${winningOption}" won.`,
           timeStamp: serverTimestamp(),
         });
-
-        console.log(`Activity poll finished. Winner: ${winningOption}`);
-
       } else if (currentStage === PLANNING_STAGES.PLANNING_PLACE) {
         if (!poll.placePoll) {
           console.warn("Missing place poll data");
@@ -254,7 +247,6 @@ export default function CircleScreen() {
           timeStamp: serverTimestamp(),
         });
 
-        console.log(`Place poll finished. Winner: ${winningOption}`);
       }
     } catch (error) {
       console.error("Error finishing voting:", error);
@@ -297,8 +289,6 @@ export default function CircleScreen() {
           text: `🎉 Event confirmed! ${poll.winningPlace} for ${poll.winningActivity}. Please RSVP above!`,
           timeStamp: serverTimestamp(),
         });
-
-        console.log('Event confirmed and RSVPs enabled');
       }
     } catch (error) {
       console.error('Error proceeding to next step:', error);
@@ -322,8 +312,6 @@ export default function CircleScreen() {
           text: '🆕 Starting new event planning!',
           timeStamp: serverTimestamp(),
         });
-
-        console.log('Poll archived and new planning started');
       }
 
       // Reset local state

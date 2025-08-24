@@ -291,8 +291,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
 
       try {
         await createUserProfile(user.uid, profileData);
-        // eslint-disable-next-line no-console
-        console.log("Profile created/updated successfully for Google user");
       } catch (profileError) {
         // eslint-disable-next-line no-console
         console.error(
@@ -369,7 +367,6 @@ function RegisterFormContainer({ onSwitchToLogin }) {
           const response = await fetch(url);
           const data = await response.json();
           const loc = data.results[0];
-          console.log(loc);
           setLocation(
             loc.county || loc.address_line1 || loc.country || loc.city,
           );

@@ -71,7 +71,7 @@ const PaymentSuccess = ({
             className="group flex w-full items-center justify-center rounded-xl bg-green-600 px-4 py-3 font-semibold text-text transition-all duration-200 hover:bg-green-700"
           >
             Continue to Circle
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="ltr:ml-2 rtl:mr-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </div>

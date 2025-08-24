@@ -7,6 +7,7 @@ import MediaGroupMessage from "./MediaGroupMessage";
 import { groupConsecutiveMedia } from "../../../utils/chatutils/mediaGridUtils";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import YourContextMenuComponent from "./YourContextMenuComponent";
 function ChatMessagePresentational({
   handleReact,
   messages,
@@ -27,6 +28,9 @@ function ChatMessagePresentational({
   messageRefs,
   scrollToMessage,
   canEditMessage,
+  handleMessageContextMenu,
+  contextMenuMsg,
+  setContextMenuMsg
 }) {
   const { t } = useTranslation();
   const [imageSlider, setImageSlider] = useState({
@@ -118,9 +122,11 @@ function ChatMessagePresentational({
             formatMessageDate={formatMessageDate}
             messageRefs={messageRefs}
             scrollToMessage={scrollToMessage}
-            onMessageContextMenu={onMessageContextMenu}
+            onMessageContextMenu={handleMessageContextMenu}
             openImageSlider={openImageSlider}
             dir={dir}
+            contextMenuMsg={contextMenuMsg}
+            handleMessageContextMenu={handleMessageContextMenu}
           />
         );
       })}
@@ -159,6 +165,20 @@ function ChatMessagePresentational({
         prevImage={prevImage}
         setImageSlider={setImageSlider}
       />
+
+      {contextMenuMsg && (
+        <YourContextMenuComponent
+          message={contextMenuMsg}
+          onClose={() => setContextMenuMsg(null)}
+          menu={contextMenuMsg}
+          menuDirection={menuDirection}
+          currentUser={currentUser}
+          handleAction={handleAction}
+          handleReact={handleReact}
+          canEditMessage={canEditMessage}
+          open={open}
+        />
+      )}
 
       <div ref={messagesEndRef} />
     </div>

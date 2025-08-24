@@ -28,7 +28,7 @@ function ChatInputContainer({
   setEditingMessage,
 }) {
   const { dir, handleAutoDir } = useAutoDir();
-  const { userId, userName, photoUrl } = useAuth();
+  const { userId, userName } = useAuth();
   const { t } = useTranslation();
   // Custom hooks
   const voiceRecording = useVoiceRecording();
@@ -125,7 +125,7 @@ function ChatInputContainer({
             </div>
           </div>
           <button
-            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
+            className="bg-secondary hover:bg-main ltr:ml-2 rtl:mr-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
             onClick={() => setReplyTo(null)}
             type="button"
           >
@@ -148,7 +148,7 @@ function ChatInputContainer({
             </div>
           </div>
           <button
-            className="bg-secondary hover:bg-main ml-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
+            className="bg-secondary hover:bg-main ltr:ml-2 rtl:mr-2 flex-shrink-0 rounded px-2 py-1 text-xs text-text"
             onClick={messageHandlers.handleCancelEdit}
             type="button"
           >

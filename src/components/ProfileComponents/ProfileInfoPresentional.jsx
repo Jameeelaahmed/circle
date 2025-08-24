@@ -137,6 +137,10 @@ const ProfileInfoPresentioal = ({
               )}
             </div>
 
+            {/* Location and Join Date */}
+            <div className="flex flex-col items-center justify-center space-y-1 text-xs sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4 sm:text-sm">
+              <div className="text-text flex items-center">
+                <MapPin className="ltr:mr-1 rtl:ml-1 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
             {/* Divider */}
             <div className="my-4 border-t border-gray-600/30"></div>
 
@@ -187,11 +191,10 @@ const ProfileInfoPresentioal = ({
                 )}
               </div>
 
-              {/* Join Date */}
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-gray-500" />
-                <span>Joined {profileData.joinDate || "Recently"}</span>
-              </div>
+              <span className="text-text flex items-center">
+                <Calendar className="ltr:mr-1 rtl:ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+                Joined {profileData.joinDate || "Recently"}
+              </span>
             </div>
           </div>
         </div>
@@ -201,11 +204,10 @@ const ProfileInfoPresentioal = ({
           <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleFollow}
-              className={`transform rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base ${
-                isFollowing
-                  ? "bg-glass text-text "
-                  : "bg-primary text-text "
-              }`}
+              className={`transform rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base ${isFollowing
+                ? "bg-glass text-text shadow-none"
+                : "bg-primary text-text shadow-btnPrimary"
+                }`}
               onMouseEnter={(e) => {
                 if (!isFollowing) {
                   e.target.style.boxShadow = "var(--shadow-btnSecondaryHover)";
@@ -227,7 +229,7 @@ const ProfileInfoPresentioal = ({
               }
               onMouseLeave={(e) => handleLeave(e)}
             >
-              <MessageCircle className="mr-2 inline h-3 w-3 sm:h-4 sm:w-4" />
+              <MessageCircle className="ltr:mr-2 rtl:ml-2 inline h-3 w-3 sm:h-4 sm:w-4" />
               Message
             </button>
           </div>

@@ -12,8 +12,6 @@ import { addCircletoUser } from "./addCircletoUser";
 
 export async function addMemberToCircle(circleId, newMemberUid, currentUser) {
   const db = getFirestore();
-  console.log(circleId, newMemberUid, currentUser);
-
   try {
     // Check if current user is admin
     const currentUserMemberRef = doc(
@@ -59,7 +57,6 @@ export async function addMemberToCircle(circleId, newMemberUid, currentUser) {
     }
 
     const memberProfile = userDocSnap.data();
-    console.log(memberProfile);
     // Add member to circle
     await setDoc(newMemberRef, {
       email: memberProfile.email || "",

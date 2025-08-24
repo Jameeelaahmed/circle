@@ -19,7 +19,6 @@ const ProfileContent = ({ activeTab, profileData }) => {
           !profileData?.joinedCircles ||
           !Array.isArray(profileData.joinedCircles)
         ) {
-          console.log("No joined circles found or invalid data");
           setIsLoadingCircles(false);
           return;
         }
@@ -40,7 +39,6 @@ const ProfileContent = ({ activeTab, profileData }) => {
         );
         setJoinedCircles(validCircles);
 
-        console.log("Fetched circles:", validCircles);
       } catch (error) {
         console.error("Error fetching circle data:", error);
         setJoinedCircles([]); // Set empty array on error

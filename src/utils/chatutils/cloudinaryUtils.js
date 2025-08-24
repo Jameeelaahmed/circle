@@ -76,11 +76,7 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
                 messageType: replyTo.messageType || 'text',
             } : null,
         };
-
-        console.log('Sending audio message to Firestore:', messageData);
         const docRef = await addDoc(collection(db, "circles", circleId, "chat"), messageData);
-        console.log('Audio message sent successfully with ID:', docRef.id);
-
         return {
             messageId: docRef.id,
             uploadResult,
