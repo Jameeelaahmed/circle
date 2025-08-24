@@ -19,6 +19,7 @@ function SingleMessage({
     onMessageContextMenu,
     openImageSlider,
     dir,
+    handleMessageContextMenu
 }) {
     const navigate = useNavigate();
     const { t } = useTranslation();
