@@ -170,6 +170,13 @@ function ChatMessagePresentational({
         <YourContextMenuComponent
           message={contextMenuMsg}
           onClose={() => setContextMenuMsg(null)}
+          menu={contextMenuMsg}
+          menuDirection={menuDirection}
+          currentUser={currentUser}
+          handleAction={handleAction}
+          handleReact={handleReact}
+          canEditMessage={canEditMessage}
+          open={open}
         />
       )}
 
