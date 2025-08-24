@@ -141,14 +141,6 @@ const ProfileInfoPresentioal = ({
             <div className="flex flex-col items-center justify-center space-y-1 text-xs sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4 sm:text-sm">
               <div className="text-text flex items-center">
                 <MapPin className="ltr:mr-1 rtl:ml-1 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
-            {/* Divider */}
-            <div className="my-4 border-t border-gray-600/30"></div>
-
-            {/* Location + Join Date */}
-            <div className="flex flex-col text-sm text-gray-400 sm:flex-row sm:items-center sm:gap-6">
-              {/* Location */}
-              <div className="mb-2 flex items-center gap-2 sm:mb-0">
-                <MapPin className="h-4 w-4 text-gray-500" />
                 {showEditModeLocation ? (
                   <div className="animate-fadeIn flex items-center gap-2">
                     <input
