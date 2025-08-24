@@ -22,7 +22,6 @@ export function useMessageHandlers(
     const isMember = members.some(member => member.id === userId || member.uid === userId);
 
     const handleSendMsg = async (e) => {
-        console.log(isMember);
         e.preventDefault();
         if (!isMember) {
             if (onNotMember) onNotMember();

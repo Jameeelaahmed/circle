@@ -31,34 +31,24 @@ const Explore = () => {
 
   // Free geocoding function using OpenStreetMap Nominatim
   const geocodeWithNominatim = async (query) => {
-    console.log(`🌍 Starting geocoding for query: "${query}"`);
 
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
-      console.log(`🌍 Geocoding URL: ${url}`);
 
       const response = await fetch(url);
-      console.log(`🌍 Response status: ${response.status}`);
-      console.log(`🌍 Response ok: ${response.ok}`);
 
       if (!response.ok) {
-        console.log(`❌ HTTP error! status: ${response.status}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log(`🌍 Geocoding response data:`, data);
 
       if (data && data.length > 0) {
         const result = data[0];
-        console.log(`🌍 First result:`, result);
-
         const lat = parseFloat(result.lat);
         const lon = parseFloat(result.lon);
-        console.log(`🌍 Parsed coordinates: lat=${lat}, lon=${lon}`);
 
         if (!isNaN(lat) && !isNaN(lon)) {
-          console.log(`✅ Geocoding successful: [${lat}, ${lon}]`);
           return [lat, lon];
         } else {
           console.log(`❌ Invalid coordinates: lat=${lat}, lon=${lon}`);
@@ -69,46 +59,34 @@ const Explore = () => {
 
       return null;
     } catch (error) {
-      console.log(`❌ Geocoding error:`, error);
       return null;
     }
   };
 
   // Enhanced function to extract coordinates from Google Maps URL OR geocode search queries
   const extractCoordinatesFromUrlOrGeocode = async (url) => {
-    console.log(`🔍 Starting coordinate extraction for: ${url}`);
-
     if (!url || !url.includes("google.com/maps")) {
-      console.log(`❌ Not a Google Maps URL: ${url}`);
       return null;
     }
 
     try {
       // Handle query format: https://www.google.com/maps/search/?api=1&query=cairo%20tower
       if (url.includes("query=")) {
-        console.log(`🔍 Detected query format URL`);
         const queryMatch = url.match(/[?&]query=([^&]+)/);
         if (queryMatch) {
           const query = decodeURIComponent(queryMatch[1]);
-          console.log(`🔍 Extracted query: ${query}`);
 
           // Try to get coordinates from geocoding
-          console.log(`🌍 Starting geocoding for: ${query}`);
           const coordinates = await geocodeWithNominatim(query);
           if (coordinates) {
-            console.log(
-              `✅ Geocoding successful: [${coordinates[0]}, ${coordinates[1]}]`,
-            );
             return coordinates;
           } else {
-            console.log(`❌ Geocoding failed for: ${query}`);
             return null;
           }
         }
       }
 
       // Handle place URLs with embedded coordinates
-      console.log(`🔍 Checking for embedded coordinates...`);
 
       // Format 1: @30.0459751,31.2242988,17z (most common)
       const atCoordsMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
@@ -116,7 +94,6 @@ const Explore = () => {
         const lat = parseFloat(atCoordsMatch[1]);
         const lng = parseFloat(atCoordsMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found @ coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -127,7 +104,6 @@ const Explore = () => {
         const lat = parseFloat(dataMatch[1]);
         const lng = parseFloat(dataMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found 3d!4d coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -138,7 +114,6 @@ const Explore = () => {
         const lat = parseFloat(llMatch[1]);
         const lng = parseFloat(llMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found ll coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -149,7 +124,6 @@ const Explore = () => {
         const lat = parseFloat(qMatch[1]);
         const lng = parseFloat(qMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found q coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -160,7 +134,6 @@ const Explore = () => {
         const lat = parseFloat(centerMatch[1]);
         const lng = parseFloat(centerMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found center coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -171,7 +144,6 @@ const Explore = () => {
         const lat = parseFloat(saddrMatch[1]);
         const lng = parseFloat(saddrMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found saddr coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -182,7 +154,6 @@ const Explore = () => {
         const lat = parseFloat(daddrMatch[1]);
         const lng = parseFloat(daddrMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found daddr coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -193,7 +164,6 @@ const Explore = () => {
         const lat = parseFloat(cidMatch[1]);
         const lng = parseFloat(cidMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found cid coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -206,7 +176,6 @@ const Explore = () => {
         const lat = parseFloat(complexDataMatch[1]);
         const lng = parseFloat(complexDataMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found complex data coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -219,7 +188,6 @@ const Explore = () => {
         const lat = parseFloat(placePathMatch[1]);
         const lng = parseFloat(placePathMatch[2]);
         if (!isNaN(lat) && !isNaN(lng)) {
-          console.log(`✅ Found place path coordinates: [${lat}, ${lng}]`);
           return [lat, lng];
         }
       }
@@ -246,36 +214,18 @@ const Explore = () => {
       return eventsWithLocations;
     }
 
-    console.log("🔍 Starting to process events...");
-    console.log("User joined circles:", profile.joinedCircles);
-    console.log("Available circles:", Object.keys(eventsByCircle));
-
     for (const circleId of Object.keys(eventsByCircle)) {
       const circle = circles.find((c) => c.id === circleId);
       const events = eventsByCircle[circleId] || [];
 
-      console.log(`📍 Processing circle: ${circle?.circleName || circleId}`);
-      console.log(`Events in this circle: ${events.length}`);
-
       for (const event of events) {
-        console.log(
-          `🎯 Processing event: ${event.activity || event.name || event.id}`,
-        );
-        console.log(`Event Location field:`, event.Location);
-
         if (event.Location && event.Location.trim()) {
-          console.log(`📍 Found Location field: ${event.Location}`);
-
           // Always try to extract coordinates from the Location field
           const coordinates = await extractCoordinatesFromUrlOrGeocode(
             event.Location,
           );
-          console.log(`🎯 Extracted coordinates:`, coordinates);
 
           if (coordinates) {
-            console.log(
-              `✅ Successfully extracted coordinates for event: ${event.activity || event.name}`,
-            );
             eventsWithLocations.push({
               ...event,
               circleId,
@@ -294,34 +244,17 @@ const Explore = () => {
         }
       }
     }
-
-    console.log(
-      `🎉 Final result: ${eventsWithLocations.length} events with coordinates found`,
-    );
     return eventsWithLocations;
   };
 
   // Load events with locations when data changes
   useEffect(() => {
-    console.log("🔄 useEffect triggered with:", {
-      hasProfile: !!profile,
-      hasJoinedCircles: !!profile?.joinedCircles,
-      hasCircles: !!circles,
-      hasEventsByCircle: !!eventsByCircle,
-      profile,
-      circlesLength: circles?.length,
-      eventsByCircleKeys: eventsByCircle ? Object.keys(eventsByCircle) : [],
-    });
-
     const loadEvents = async () => {
       if (profile?.joinedCircles && circles && eventsByCircle) {
-        console.log("🔄 Starting to load events...");
         setIsGeocoding(true);
         try {
           const events = await getEventsWithLocations();
-          console.log("🔄 Events loaded:", events);
           setEventsWithLocations(events);
-          console.log("🔄 State updated with events");
         } catch (error) {
           console.error("❌ Error loading events:", error);
         } finally {

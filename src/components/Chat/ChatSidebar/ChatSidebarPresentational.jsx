@@ -207,7 +207,6 @@ function ChatSidebarPresentational({
                                             key={member.id || member.uid}
                                             className="flex items-center space-x-2 p-2 rounded-lg hover:bg-text/5 transition-colors"
                                         >
-                                            {console.log(member)}
                                             <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-primary relative">
                                                 {member.profileImage ? (
                                                     <img

@@ -18,9 +18,9 @@ function SingleMessage({
     scrollToMessage,
     onMessageContextMenu,
     openImageSlider,
-    dir
+    dir,
 }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const isMe = currentUser && (msg.senderId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });

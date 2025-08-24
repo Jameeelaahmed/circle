@@ -9,7 +9,6 @@ export const useOnlinePresence = () => {
     useEffect(() => {
 
         if (!user) {
-            console.log('useOnlinePresence: No user found, skipping presence setup');
             return;
         }
 
@@ -37,7 +36,6 @@ export const useOnlinePresence = () => {
                     isOnline: false,
                     lastSeen: Date.now()
                 });
-                // console.log('Set user offline in RTDB:', userPresenceRef);
             } catch (err) {
                 console.error('Error setting user offline in RTDB:', err);
             }
@@ -46,7 +44,6 @@ export const useOnlinePresence = () => {
         // Listen to all users' presence using RTDB
         const unsubscribe = onValue(presenceRef, (snapshot) => {
             const presenceData = snapshot.val() || {};
-            // console.log('Presence data from RTDB:', presenceData);
             setOnlineUsers(presenceData);
         }, (error) => {
             console.error('Error listening to presence:', error);

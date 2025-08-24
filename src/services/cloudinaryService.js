@@ -224,14 +224,6 @@ class CloudinaryService {
             // Note: Deletion requires authentication and is typically done on the server side
             // This is a placeholder for client-side deletion (not recommended for production)
             console.warn('File deletion should be handled on the server side for security');
-            console.log('Delete request for:', publicId, 'type:', resourceType);
-
-            // You would typically call your backend API here
-            // const response = await fetch('/api/delete-media', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ publicId, resourceType })
-            // });
 
             return { message: 'Delete request would be sent to server' };
         } catch (error) {

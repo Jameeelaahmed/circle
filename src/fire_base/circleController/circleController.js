@@ -13,7 +13,6 @@ const getCircleMembersReceivers = async (circleId, myId) => {
       };
     });
 
-    console.log("Members:", members);
     return members;
   } catch (error) {
     console.error("Error getting circle members:", error);
@@ -35,12 +34,9 @@ export const sendNotificationMembers = async (
 };
 export const getCircleById = async (circleId) => {
   try {
-    console.log("Circle ID:", circleId);
 
     const circleRef = doc(db, "circles", circleId);
     const circleSnap = await getDoc(circleRef);
-    console.log("Circle data:", circleSnap.data());
-
     return circleSnap.data();
   } catch (error) {
     console.error("Error getting circle:", error);
