@@ -16,14 +16,14 @@ function CirclesPrivacyFilter({ circlePrivacy, setCirclePrivacy }) {
                 onClick={() => setCirclePrivacy('public')}
             >
                 <Globe2 size={18} />
-                {t("Public")}
+                {t("public")}
             </button>
             <button
                 className={`flex items-center gap-2 px-3 py-1 cursor-pointer rounded-full border font-medium transition-colors ${circlePrivacy === 'private' ? 'bg-primary text-text' : 'bg-main text-primary'}`}
                 onClick={() => setCirclePrivacy('private')}
             >
                 <Lock size={18} />
-                {t("Private")}
+                {t("private")}
             </button>
         </div>
     );

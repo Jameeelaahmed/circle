@@ -101,7 +101,6 @@ export const markNotificationAsRead = async (uid, notificationId) => {
       read: true,
       readAt: serverTimestamp(),
     });
-
   } catch (error) {
     console.error("Error marking notification as read:", error);
     throw error;
@@ -217,20 +216,39 @@ export const sendCommentNotification = async (
   });
 };
 
-/**
- * Send a follow notification
- */
-export const sendFollowNotification = async (
+export const sendConnectionRequestNotification = async (
   recipientUid,
   senderName,
   senderId,
   senderAvatar = "",
+  senderUsername = "",
 ) => {
   return await pushNotificationToUser(recipientUid, {
-    type: "follow",
-    title: `${senderName} started following you`,
-    message: "Check out their profile!",
+    type: "connection_request",
+    title: `${senderName} wants to connect`,
+    message: `@${senderUsername} sent you a connection request. Accept to start networking!`,
+    link: `profile/${senderId}`,
     senderId,
     avatar: senderAvatar,
+  });
+};
+
+/**
+ * Send a connection accepted notification
+ */
+export const sendConnectionAcceptedNotification = async (
+  recipientUid,
+  accepterName,
+  accepterId,
+  accepterAvatar = "",
+  accepterUsername = "",
+) => {
+  return await pushNotificationToUser(recipientUid, {
+    type: "connection_accepted",
+    title: `${accepterName} accepted your connection request`,
+    message: `You are now connected with @${accepterUsername}. Start networking!`,
+    link: `profile/${accepterId}`,
+    senderId: accepterId,
+    avatar: accepterAvatar,
   });
 };

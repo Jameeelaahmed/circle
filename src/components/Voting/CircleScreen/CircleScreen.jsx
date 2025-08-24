@@ -93,7 +93,7 @@ export default function CircleScreen() {
         const docRef = await addDoc(pollRef, {
           stage: PLANNING_STAGES.PLANNING_ACTIVITY,
           activityPoll: { ...pollDataWithTimestamp, votes: {} },
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
 
         // Immediately set the poll state with the new poll id and data
@@ -108,7 +108,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: 'system',
           text: `🗳️ Activity poll started: "${pollData.question}"`,
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
 
       } else if (pollType === 'place') {
@@ -128,7 +128,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: 'system',
           text: `📍 Place poll started: "${pollData.question}"`,
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
       }
     } catch (error) {
@@ -181,7 +181,7 @@ export default function CircleScreen() {
     await addDoc(collection(db, "circles", circleId, "chat"), {
       messageType: "system",
       text: `➕ ${userProfile?.username || "Someone"} added a new ${pollType} option: "${optionText}"`,
-      timeStamp: serverTimestamp(),
+      timestamp: serverTimestamp(),
     });
   };
 
@@ -221,7 +221,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: "system",
           text: `📊 Activity poll closed! "${winningOption}" won.`,
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
       } else if (currentStage === PLANNING_STAGES.PLANNING_PLACE) {
         if (!poll.placePoll) {
@@ -244,7 +244,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: "system",
           text: `📍 Place poll closed! "${winningOption}" won.`,
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
 
       }
@@ -287,7 +287,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: 'system',
           text: `🎉 Event confirmed! ${poll.winningPlace} for ${poll.winningActivity}. Please RSVP above!`,
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
       }
     } catch (error) {
@@ -310,7 +310,7 @@ export default function CircleScreen() {
         await addDoc(chatRef, {
           messageType: 'system',
           text: '🆕 Starting new event planning!',
-          timeStamp: serverTimestamp(),
+          timestamp: serverTimestamp(),
         });
       }
 

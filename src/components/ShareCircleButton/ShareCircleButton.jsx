@@ -18,7 +18,7 @@ export default function ShareCircleButton({ circleId }) {
 
     return (
         <button
-            className="flex items-center gap-2 px-3 py-1 rounded-lg bg-secondary/10 hover:bg-secondary/20 text-secondary transition"
+            className="px-4 py-3 hover:bg-primary/30 text-left transition-colors border-b border-text/10 flex items-center gap-2"
             onClick={handleShare}
             title="Share Circle"
         >

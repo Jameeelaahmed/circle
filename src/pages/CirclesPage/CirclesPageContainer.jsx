@@ -75,9 +75,9 @@ function CirclesPageContainer() {
         if (user && activeTab === 'my') {
             filteredCircles = circles.filter(circle => profile?.joinedCircles?.includes(circle.id));
             if (circlePrivacy === 'public') {
-                filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'Public');
+                filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'public');
             } else if (circlePrivacy === 'private') {
-                filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'Private');
+                filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'private');
             }
         } else if (user && profile?.interests && profile.interests.length > 0) {
             filteredCircles = circles
@@ -88,12 +88,12 @@ function CirclesPageContainer() {
                     ) || []
                 }))
                 .filter(circle =>
-                    (circle.matchedInterests.length > 0 && circle.circlePrivacy === 'Public') &&
+                    (circle.matchedInterests.length > 0 && circle.circlePrivacy === 'public') &&
                     !((membersByCircle?.[circle.id] || []).some(member => member.id === user.uid))
                 )
                 .sort((a, b) => b.matchedInterests.length - a.matchedInterests.length);
         } else {
-            filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public' || circle.circlePrivacy === 'Public'));
+            filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public'));
         }
 
         if (searchQuery.trim()) {
@@ -160,7 +160,7 @@ function CirclesPageContainer() {
         setSelectedCircleToDelete(null);
         deleteCircleRef.current.close();
     }
-    const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy.uid === user.uid;
+    const isOwner = user && selectedCircleToDelete && selectedCircleToDelete.createdBy === user.uid;
 
     // Delete logic inside the container
     const [isDeleting, setIsDeleting] = useState(false);

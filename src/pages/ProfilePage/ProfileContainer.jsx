@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { auth, db } from "../../firebase-config";
-import {
-  arrayUnion,
-  doc,
-  getDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { auth } from "../../firebase-config";
 import { getUserInfo } from "../../features/user/userSlice";
 import ProfilePresentational from "./ProfilePresentational";
+import { updateUserProfile } from "../../fire_base/profileController/profileController";
 import {
   fetchUserProfile,
   fetchViewedProfile,
 } from "../../features/userProfile/profileSlice";
-
+import { sendConnectionRequestNotification } from "../../fire_base/notificationController/notificationController";
 const ProfileContainer = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector(getUserInfo);
@@ -28,11 +22,12 @@ const ProfileContainer = () => {
       : state.userProfile.viewedProfile,
   );
 
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
   const [showEditMode, setShowEditMode] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isProfileMyProfile, setIsProfileMyProfile] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   // Fetch profile data
   useEffect(() => {
@@ -46,38 +41,69 @@ const ProfileContainer = () => {
     }
   }, [profileId, dispatch]);
 
-  // Update isFollowing state based on profile
+  // Update isConnected state based on profile
   useEffect(() => {
-    if (!profile?.id || !profile.connectionRequests || !userInfo?.uid) return;
-    setIsFollowing(
-      profile.connectionRequests.some((user) => user.uid === userInfo.uid),
-    );
-  }, [profile?.connectionRequests, userInfo?.uid, profile?.id]);
+    if (!profile?.connectionRequests || !userInfo?.uid) {
+      setIsConnected(false);
+      return;
+    }
 
-  const handleFollow = async () => {
-    setIsFollowing(!isFollowing);
-    const userRef = doc(db, "users", profileId);
-    if (isFollowing) {
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        const data = snap.data();
-        const requests = data.connectionRequests || [];
-        const updatedRequests = requests.filter(
-          (req) => req.uid !== userInfo.uid,
+    // Check if current user's UID is in the profile's connectionRequests array
+    const isCurrentUserConnected = profile.connectionRequests.some(
+      (request) => request.uid === userInfo.uid || request === userInfo.uid,
+    );
+    setIsConnected(isCurrentUserConnected);
+  }, [profile?.connectionRequests, userInfo?.uid]);
+
+  const handleConnect = async () => {
+    if (isConnecting) return; // Prevent multiple clicks
+
+    setIsConnecting(true);
+
+    try {
+      const currentConnectionRequests = profile.connectionRequests || [];
+      let updatedConnectionRequests;
+
+      if (isConnected) {
+        // Remove connection - filter out current user's UID
+        updatedConnectionRequests = currentConnectionRequests.filter(
+          (request) => {
+            // Handle both object format and string format
+            const requestUid =
+              typeof request === "object" ? request.uid : request;
+            return requestUid !== userInfo.uid;
+          },
         );
-        await updateDoc(userRef, {
-          connectionRequests: updatedRequests,
-        });
+        setIsConnected(false);
+      } else {
+        // Add connection - add current user's UID
+        updatedConnectionRequests = [
+          ...currentConnectionRequests,
+          userInfo.uid,
+        ];
+        setIsConnected(true);
+        sendConnectionRequestNotification(
+          profileId,
+          userInfo.username,
+          userInfo.uid,
+          userInfo.photoURL,
+          userInfo.username,
+        );
       }
-    } else {
-      await updateDoc(userRef, {
-        ["connectionRequests"]: arrayUnion({
-          email: userInfo.email,
-          uid: userInfo.uid,
-          username: userInfo.username,
-          sentAt: Timestamp.now(),
-        }),
+
+      // Update the profile with new connection requests
+      await updateUserProfile(profileId, {
+        connectionRequests: updatedConnectionRequests,
       });
+
+      // Optionally refresh the profile data
+      dispatch(fetchViewedProfile(profileId));
+    } catch (error) {
+      console.error("Error updating connection:", error);
+      // Revert the state on error
+      setIsConnected(!isConnected);
+    } finally {
+      setIsConnecting(false);
     }
   };
 
@@ -88,12 +114,13 @@ const ProfileContainer = () => {
         setShowMobileMenu,
         profileData: profile,
         isProfileMyProfile,
-        isFollowing,
-        handleFollow,
+        isConnected,
+        handleConnect,
         showEditMode,
         setShowEditMode,
         activeTab,
         setActiveTab,
+        isConnecting,
       }}
     />
   );
