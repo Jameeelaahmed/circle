@@ -16,10 +16,15 @@ const ProfilePresentational = ({
   activeTab,
   setActiveTab,
   isConnecting,
+  handleReport,
+  reported,
+  isReporting
 }) => {
   if (!profileData) {
     return <div>Loading profile...</div>;
   }
+
+
 
   return (
     <div className="from-bg-primary to-bg-secondary text-text mt-16 min-h-screen bg-gradient-to-b">
@@ -43,6 +48,9 @@ const ProfilePresentational = ({
             showEditMode={showEditMode}
             setShowEditMode={setShowEditMode}
             isConnecting={isConnecting}
+            handleReport={handleReport}
+            reported={reported}
+            isReporting={isReporting}
           />
         </div>
 

@@ -11,6 +11,9 @@ const ProfileInfo = ({
   isConnected,
   handleConnect,
   isConnecting,
+  handleReport,
+  reported,
+  isReporting  
 }) => {
   const dispatch = useDispatch();
   const [showEditModeLocation, setShowEditModeLocation] = useState(false);
@@ -185,6 +188,9 @@ const ProfileInfo = ({
         handleConnect,
         isConnected,
         isConnecting,
+        handleReport,
+        reported,
+        isReporting
       }}
     />
   );
