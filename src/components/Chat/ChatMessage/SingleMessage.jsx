@@ -49,10 +49,17 @@ function SingleMessage({
     const longPressTimeout = useRef();
     const handleTouchStart = (e) => {
         longPressTimeout.current = setTimeout(() => {
-            e.preventDefault();
-            setIsLongPressed(true); // highlight or show overlay
+            setIsLongPressed(true);
+            let x, y;
+            if (e.touches && e.touches.length > 0) {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
             if (onMessageContextMenu) {
-                onMessageContextMenu(e, msg);
+                onMessageContextMenu(e, msg, x, y);
             }
         }, 500); // 500ms for long press
     };
