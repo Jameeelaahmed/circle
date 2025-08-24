@@ -371,7 +371,7 @@ const BackgroundHoverEffect = ({
                     <span className="text-sm font-medium tracking-wide text-white">
                       {circle.label}
                     </span>
-                    <span className="ml-auto text-text-400 transition-transform group-open:rotate-90">
+                    <span className="ltr:ml-auto rtl:mr-auto text-text-400 transition-transform group-open:rotate-90">
                       ▶
                     </span>
                   </summary>
@@ -390,7 +390,7 @@ const BackgroundHoverEffect = ({
                             style={{ backgroundColor: circle.colorName }}
                           />
                           <span className="truncate">{event.title}</span>
-                          <span className="ml-auto rounded-full bg-text-700/40 px-2 py-0.5 text-[10px] text-text-300">
+                          <span className="ltr:ml-auto rtl:mr-auto rounded-full bg-text-700/40 px-2 py-0.5 text-[10px] text-text-300">
                             {event.start?.slice(0, 10)}
                           </span>
                         </li>
@@ -409,7 +409,7 @@ const BackgroundHoverEffect = ({
 
         {/* Calendar Section */}
         <div
-          className="relative z-10 mt-7 flex-grow overflow-auto rounded-2xl shadow-md md:ml-6"
+          className="relative z-10 mt-7 flex-grow overflow-auto rounded-2xl shadow-md ltr:md:ml-6 rtl:md:mr-6"
           style={{
             background: `radial-gradient(ellipse at top, #17284f93 0%, transparent 60%)`,
             backdropFilter: "blur(10px)",
