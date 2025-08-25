@@ -9,6 +9,7 @@ import CircleDetailsContainer from "../../ui/Modal/CircleDetailsModal/CircleDeta
 import { useTranslation } from "react-i18next";
 import { ChevronLeft, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import DeleteCircleModalContainer from "../../ui/Modal/DeleteCircleModal/DeleteCircleModalContainer";
+import { Link } from "react-router";
 function ChatSidebarPresentational({
   isOpen,
   toggleSidebar,
@@ -318,6 +319,7 @@ function ChatSidebarPresentational({
               className="text-text flex items-center justify-between p-3 text-xs font-medium"
             >
               {t("Memories")}
+              <Link to={`/circles/${circleId}/memories`}>See Memories</Link>
               {openSections.memories ? (
                 <ChevronUp size={14} />
               ) : (

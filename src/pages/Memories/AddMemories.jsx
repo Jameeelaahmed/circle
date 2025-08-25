@@ -165,12 +165,12 @@ export default function MemoryUploadPage() {
   };
 
   return (
-    <div className="mt-[65px] min-h-screen">
+    <div className="mt-[65px] bg-gradient-to-b from-bg-primary to-bg-secondary min-h-screen">
       {/* Header */}
-      <div className="bg-main/15 border-primary border-b shadow-lg backdrop-blur-sm">
+      <div className="bg-gradient-to-b from-bg-primary to-bg-secondary border-primary border-b shadow-lg backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-8">
           <div className="mb-2 flex items-center gap-3">
-            <div className="from-primary to-secondary rounded-xl bg-gradient-to-r p-3 text-text">
+            <div className="from-primary to-secondary rounded-xl bg-gradient-to-r p-3 text-primary">
               <Heart className="h-6 w-6" />
             </div>
             <h1 className="from-primary to-secondary bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent">
@@ -183,18 +183,18 @@ export default function MemoryUploadPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-2xl px-6 py-8">
+      <div className="mx-auto bg-gradient-to-b from-bg-primary to-bg-secondary max-w-2xl px-6 py-8">
         {/* Upload Form */}
-        <div className="bg-main mb-8 rounded-2xl border border-text/50 p-8 shadow-xl backdrop-blur-sm">
+        <div className=" mb-8 rounded-2xl border border-text p-8 shadow-xl backdrop-blur-sm">
           <div className="mb-6 flex items-center gap-2">
             <Sparkles className="text-primary h-5 w-5" />
             <h2 className="text-text text-2xl font-semibold">Add New Memory</h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 bg-gradient-to-b from-bg-primary to-bg-secondary">
             {/* Image Upload */}
             <div>
-              <label className="mb-3 block text-sm font-medium text-text-700">
+              <label className="mb-3 block text-sm font-medium text-text">
                 Upload Pictures
               </label>
 
@@ -202,17 +202,17 @@ export default function MemoryUploadPage() {
                 <div
                   className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-300 ${isDragging
                     ? "scale-105 border-purple-400 bg-purple-50"
-                    : "border-text-300 hover:border-purple-400 hover:bg-purple-50"
+                    : "border-text hover:border-purple-400 "
                     }`}
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                 >
-                  <Camera className="mx-auto mb-4 h-12 w-12 text-text-400" />
-                  <p className="mb-2 text-lg font-medium text-text-600">
+                  <Camera className="mx-auto mb-4 h-12 w-12 text-text" />
+                  <p className="mb-2 text-lg font-medium text-text">
                     Drop your images here or click to browse
                   </p>
-                  <p className="text-sm text-text-500">
+                  <p className="text-sm text-text">
                     PNG, JPG, GIF up to 10MB each
                   </p>
                   <input
@@ -248,7 +248,7 @@ export default function MemoryUploadPage() {
 
                   <div className="flex items-center gap-2">
                     <label className="relative inline-block">
-                      <span className="cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium text-text-700 transition hover:bg-text-50">
+                      <span className="cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium text-text transition hover:bg-text-50">
                         Add more
                       </span>
                       <input
@@ -263,7 +263,7 @@ export default function MemoryUploadPage() {
                     <button
                       type="button"
                       onClick={clearAllImages}
-                      className="rounded-xl border px-4 py-2 text-sm font-medium text-text-700 transition hover:bg-text-50"
+                      className="rounded-xl border px-4 py-2 text-sm font-medium text-text transition hover:bg-text-50"
                     >
                       Clear all
                     </button>
@@ -274,7 +274,7 @@ export default function MemoryUploadPage() {
 
             {/* Memory Name */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-700">
+              <label className="mb-2 block text-sm font-medium text-text">
                 Memory Name
               </label>
               <input
@@ -287,14 +287,14 @@ export default function MemoryUploadPage() {
                   }))
                 }
                 placeholder="Give your memory a special name..."
-                className="w-full rounded-xl border border-text-300 px-4 py-3 text-lg transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                className="text-text w-full rounded-xl border border-text px-4 py-3 text-lg transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-700">
+              <label className="mb-2 block text-sm font-medium text-text">
                 Description
               </label>
               <textarea
@@ -307,7 +307,7 @@ export default function MemoryUploadPage() {
                 }
                 placeholder="Tell the story behind this memory..."
                 rows={4}
-                className="w-full resize-none rounded-xl border border-text-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
+                className="text-text w-full resize-none rounded-xl border border-text px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>

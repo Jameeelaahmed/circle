@@ -13,7 +13,7 @@ export default function Team() {
   const team = [
     {
       name: "Ahmed Gamal",
-      image: { jam },
+      image: jam,
       role: "Mobile Developer",
       description:
         "I am a UX designer with a passion for creating intuitive user experiences. I am a quick learner and I am always looking to improve my skills.",
@@ -21,7 +21,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Yasser",
-      image: { Yasser },
+      image: Yasser,
       role: "Frontend & Mobile Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications. I am a quick learner and I am always looking to improve my skills.",
@@ -29,7 +29,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Refaat",
-      image: { Refaat },
+      image: Refaat,
       role: "Frontend & Mobile Developer",
       description:
         "I am a quick learner and I am always looking to improve my skills.",
@@ -37,7 +37,7 @@ export default function Team() {
     },
     {
       name: "Jameela Ahmed",
-      image: { Jameela },
+      image: Jameela,
       role: "Frontend Developer",
       description:
         "Security expert ensuring your private circles and personal data remain protected.",
@@ -45,7 +45,7 @@ export default function Team() {
     },
     {
       name: "Hajar Ali",
-      image: { Hajar },
+      image: Hajar,
       role: "Frontend Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications.",
@@ -53,7 +53,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Adel",
-      image: { Adel },
+      image: Adel,
       role: "Frontend Developer",
       description:
         "Growth strategist helping Circle reach more people and create more meaningful connections.",
