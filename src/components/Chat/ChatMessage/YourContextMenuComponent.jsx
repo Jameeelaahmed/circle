@@ -22,12 +22,12 @@ export default function YourContextMenuComponent({
                 text-text bg-main/40 ${menuDirection === 'down' ? 'animate-dropdown' : 'animate-dropup'}`}
             style={{ left: `${menu.x}px`, top: `${menu.y}px` }}
         >
-            <button
+            {/* <button
                 className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                 onClick={() => handleAction('reply')}
             >
                 {t("Reply")}
-            </button>
+            </button> */}
 
             {/* Edit button - only for text messages within edit time limit */}
             {menu.message.user.userId === currentUser?.id &&
