@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet } from "react-router";
 import HeaderContainer from "../components/Header/HeaderContainer";
-import { useTheme } from "../hooks/useTheme";
+import { ThemeContext } from "../contexts/ThemeContext";
 function RootLayout() {
 
-  const {darkMode, setDarkMode} = useTheme();
+  const {darkMode, setDarkMode} = useContext(ThemeContext);
 
 // Save to localStorage on change
   useEffect(() => {

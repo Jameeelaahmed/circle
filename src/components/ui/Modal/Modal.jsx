@@ -1,11 +1,11 @@
-import { useRef, forwardRef, useImperativeHandle, useEffect } from "react";
+import { useRef, forwardRef, useImperativeHandle, useEffect, useContext } from "react";
 import { createPortal } from "react-dom";
-import { useTheme } from "../../../hooks/useTheme";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 const Modal = forwardRef(function Modal(props, ref) {
   let modalRef = useRef();
 
-  const { darkMode, setDarkMode } = useTheme();
+  const { darkMode, setDarkMode } = useContext(ThemeContext);
 
   // Save to localStorage on change
   useEffect(() => {
