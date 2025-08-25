@@ -1,13 +1,11 @@
 import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
-import jam from "@/assets/images/aboutus/Gamal.webp";
-import Yasser from "@/assets/images/aboutus/Yasser.webp";
-import Refaat from "@/assets/images/aboutus/Refaat.webp";
-import Jameela from "@/assets/images/aboutus/Jameela.webp";
-import Hajar from "@/assets/images/aboutus/Hajar.webp";
-import Adel from "@/assets/images/aboutus/Adel.webp";
-
+const jam = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
+const Yasser = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/yasser_m5e8qd.webp";
+const Refaat = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/refaat_w7utrz.webp";
+const Hajar = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Hajar_arknji.webp";
+const Adel = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Adel_kbkxxc.webp";
 export default function Team() {
   const { t } = useTranslation();
   const team = [
@@ -35,14 +33,7 @@ export default function Team() {
         "I am a quick learner and I am always looking to improve my skills.",
       cardColor: "#23f",
     },
-    {
-      name: "Jameela Ahmed",
-      image: Jameela,
-      role: "Frontend Developer",
-      description:
-        "Security expert ensuring your private circles and personal data remain protected.",
-      cardColor: "#257",
-    },
+
     {
       name: "Hajar Ali",
       image: Hajar,
