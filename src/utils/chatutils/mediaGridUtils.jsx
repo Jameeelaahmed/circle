@@ -2,6 +2,8 @@
 
 // Group consecutive media messages from the same sender
 export const groupConsecutiveMedia = (messages) => {
+  if (!Array.isArray(messages) || messages.length === 0) return [];
+
   const grouped = [];
   let currentGroup = null;
 
@@ -10,40 +12,32 @@ export const groupConsecutiveMedia = (messages) => {
     const prevMsg = messages[i - 1];
 
     if (msg.messageType === "system") {
-      if (currentGroup.length) {
-        grouped.push({
-          type: "media_group",
-          messages: currentGroup,
-          firstIndex: msg - currentGroup.length,
-          lastIndex: msg - 1,
-        });
-        currentGroup = [];
+      if (currentGroup && currentGroup.messages.length > 0) {
+        grouped.push(currentGroup);
+        currentGroup = null;
       }
       grouped.push({
         type: "system",
         message: msg,
-        index: msg,
+        index: i,
       });
-      return;
+      continue; // move to next message instead of exiting function
     }
 
-    // Check if this message should be grouped with the previous one
     const shouldGroup =
       msg.messageType === "image" &&
       prevMsg &&
       prevMsg.messageType === "image" &&
       msg.user.userId === prevMsg.user.userId &&
       Math.abs(
-        new Date(msg.timestamp?.toDate() || msg.timestamp) -
-        new Date(prevMsg.timestamp?.toDate() || prevMsg.timestamp),
-      ) < 60000; // Within 1 minute
+        new Date(msg.timestamp?.toDate?.() || msg.timestamp) -
+        new Date(prevMsg.timestamp?.toDate?.() || prevMsg.timestamp),
+      ) < 60000; // within 1 minute
 
     if (shouldGroup && currentGroup) {
-      // Add to current group
       currentGroup.messages.push(msg);
       currentGroup.lastIndex = i;
     } else if (msg.messageType === "image") {
-      // Start new group or single image
       currentGroup = {
         type: "media_group",
         messages: [msg],
@@ -54,7 +48,6 @@ export const groupConsecutiveMedia = (messages) => {
       };
       grouped.push(currentGroup);
     } else {
-      // Regular message
       grouped.push({ type: "regular", message: msg, index: i });
       currentGroup = null;
     }
@@ -62,6 +55,7 @@ export const groupConsecutiveMedia = (messages) => {
 
   return grouped;
 };
+
 
 // Render media grid based on number of images
 export const renderMediaGrid = (mediaMessages, openImageSlider) => {
