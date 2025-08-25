@@ -10,6 +10,7 @@ import BlockedModal from "./components/ui/Modal/BlockModal/BlockedModal";
 import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 import { useAuth } from "./hooks/useAuth";
 import { PendingRequestsProvider } from "./contexts/PendingRequests";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ function App() {
 
   return (
     <>
-
+      <ThemeProvider>
       <AuthProvider />
       <PendingRequestsProvider>
         <OnlinePresenceProvider>
@@ -62,7 +63,7 @@ function App() {
           />
         </OnlinePresenceProvider>
       </PendingRequestsProvider>
-
+    </ThemeProvider>
     </>
   );
 }
