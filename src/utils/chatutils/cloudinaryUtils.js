@@ -14,10 +14,11 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
             messageType: "image",
             user: {
                 userId: userId,
-                imageUrl: photoURL,
+                imageurl: photoURL || "",
                 userName: userName
             },
             sentTime: formatTime(),
+            imageUrl: uploadResult.secure_url, // <-- Add this line!
             publicId: uploadResult.public_id,
             fileName: file.name,
             fileSize: file.size,
@@ -29,8 +30,8 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
                 messageId: replyTo.messageId,
                 userName: replyTo.userName,
                 text: replyTo.text || null,
-                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
-                audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
+                messageType: replyTo.messageType || "text",
+                audioUrl: replyTo.audioUrl || null,
                 imageUrl: replyTo.imageUrl || null,
                 videoUrl: replyTo.videoUrl || null,
             } : null,
@@ -62,7 +63,7 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             messageType: "audio",
             user: {
                 userId: userId,
-                imageUrl: photoURL,
+                imageurl: photoURL || "",
                 userName: userName
             },
             sentTime: formatTime(),
@@ -108,7 +109,7 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
             messageType: "video",
             user: {
                 userId: userId,
-                imageUrl: photoURL,
+                imageurl: photoURL || "",
                 userName: userName
             },
             sentTime: formatTime(),
