@@ -1,17 +1,20 @@
 import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
-const jam = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
+
+const Gamal = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
 const Yasser = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/yasser_m5e8qd.webp";
 const Refaat = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/refaat_w7utrz.webp";
 const Hajar = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Hajar_arknji.webp";
 const Adel = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Adel_kbkxxc.webp";
+const Jameela = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
+
 export default function Team() {
   const { t } = useTranslation();
   const team = [
     {
       name: "Ahmed Gamal",
-      image: jam,
+      image: Gamal,
       role: "Mobile Developer",
       description:
         "I am a UX designer with a passion for creating intuitive user experiences. I am a quick learner and I am always looking to improve my skills.",
@@ -33,7 +36,14 @@ export default function Team() {
         "I am a quick learner and I am always looking to improve my skills.",
       cardColor: "#23f",
     },
-
+    {
+      name: "Jameela Ahmed",
+      image: Jameela,
+      role: "Frontend Developer",
+      description:
+        "Security expert ensuring your private circles and personal data remain protected.",
+      cardColor: "#257",
+    },
     {
       name: "Hajar Ali",
       image: Hajar,
@@ -121,7 +131,7 @@ export default function Team() {
                   border: "1px solid rgba(255, 255, 255, 0.08)",
                 }}
               >
-                <div className="mb-3  flex justify-center">
+                <div className="mb-3 flex justify-center">
                   <value.icon
                     size={24}
                     style={{ color: "var(--color-secondary)" }}
@@ -133,7 +143,9 @@ export default function Team() {
                 >
                   {value.title}
                 </h4>
-                <p className="text-xs text-secondary opacity-80">{value.description}</p>
+                <p className="text-xs text-secondary opacity-80">
+                  {value.description}
+                </p>
               </div>
             ))}
           </div>
