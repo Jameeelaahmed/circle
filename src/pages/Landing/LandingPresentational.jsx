@@ -6,10 +6,10 @@ import CreateCircleModalContainer from "../../components/ui/Modal/CreateCircleMo
 import Modal from "../../components/ui/Modal/Modal";
 import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
 import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import mainImg from '../../assets/image.png'
-import { useTheme } from "../../hooks/useTheme";
 import lightImg from '../../assets/light.png'
+import { ThemeContext } from "../../contexts/ThemeContext";
 export default function LandingPresentational({
   t,
   isLoggedIn,
@@ -18,7 +18,7 @@ export default function LandingPresentational({
   closeCCircleModal,
 }) {
   const [authFormType, setAuthFormType] = useState("login");
-  const { darkMode } = useTheme();
+  const { darkMode } = useContext(ThemeContext);
 
   const bgImage = darkMode ? lightImg : mainImg;
 

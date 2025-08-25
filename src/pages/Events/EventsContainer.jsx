@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useCalendarApp } from "@schedule-x/react";
 import {
   createViewDay,
@@ -19,12 +19,12 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { useAuth } from "../../hooks/useAuth";
-import { useTheme } from "../../hooks/useTheme";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 export default function EventsContainer() {
   const { userId } = useAuth();
- 
-  const { darkMode } = useTheme();
+
+  const { darkMode } = useContext(ThemeContext);
   useEffect(() => {
     
   }, [darkMode]);
