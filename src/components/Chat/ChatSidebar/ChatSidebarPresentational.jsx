@@ -29,11 +29,6 @@ function ChatSidebarPresentational({
   deleteCircleRef,
   currentCircle,
 }) {
-  const { t } = useTranslation();
-  const { circleId } = useParams();
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [direction, setDirection] = useState("ltr");
-
   // collapsible states
   const [openSections, setOpenSections] = useState({
     members: true,
@@ -92,26 +87,26 @@ function ChatSidebarPresentational({
       <button
         onClick={toggleSidebar}
         className={`from-bg-primary to-bg-secondary text-text hover:bg-primary/80 absolute top-1/2 z-50 -translate-y-1/2 rounded-lg bg-gradient-to-b p-1.5 backdrop-blur-sm transition-colors duration-200 ${isSmallScreen
-            ? isOpen
-              ? direction === "rtl"
-                ? "-left-3"
-                : "-right-3"
-              : direction === "rtl"
-                ? "right-0 translate-x-1/2"
-                : "left-0 -translate-x-1/2"
-            : direction === "rtl"
+          ? isOpen
+            ? direction === "rtl"
               ? "-left-3"
               : "-right-3"
+            : direction === "rtl"
+              ? "right-0 translate-x-1/2"
+              : "left-0 -translate-x-1/2"
+          : direction === "rtl"
+            ? "-left-3"
+            : "-right-3"
           } `}
       >
         <ChevronLeft
           className={`h-3 w-3 transition-transform duration-300 ${direction === "rtl"
-              ? isOpen
-                ? ""
-                : "rotate-180"
-              : isOpen
-                ? "rotate-180"
-                : ""
+            ? isOpen
+              ? ""
+              : "rotate-180"
+            : isOpen
+              ? "rotate-180"
+              : ""
             }`}
         />
       </button>
@@ -141,8 +136,8 @@ function ChatSidebarPresentational({
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`h-full overflow-hidden backdrop-blur-sm ltr:rounded-tl-3xl ltr:rounded-bl-3xl rtl:rounded-tr-3xl rtl:rounded-br-3xl ${isOpen
-            ? "bg-main/95 border-text/10"
-            : "border-transparent bg-transparent"
+          ? "bg-main/95 border-text/10"
+          : "border-transparent bg-transparent"
           }`}
       >
         <div className="flex h-full w-70 flex-col">
@@ -182,17 +177,27 @@ function ChatSidebarPresentational({
 
           {/* Members */}
           <div className="border-text/10 flex flex-col border-b">
-            <button
-              onClick={() => toggleSection("members")}
-              className="text-text flex items-center justify-between p-3 text-xs font-medium"
-            >
-              {t("Members")} ({members.length})
-              {openSections.members ? (
-                <ChevronUp size={14} />
-              ) : (
-                <ChevronDown size={14} />
-              )}
-            </button>
+            <div className="mb-2 flex items-center justify-between">
+              <button
+                onClick={() => toggleSection("members")}
+                className="text-text flex items-center p-3 text-xs font-medium"
+              >
+                {t("Members")} ({members.length})
+                <span className="ltr:ml-2 rtl:mr-2">
+                  {openSections.members ? (
+                    <ChevronUp size={14} />
+                  ) : (
+                    <ChevronDown size={14} />
+                  )}
+                </span>
+              </button>
+              <button
+                onClick={onShowAllMembers}
+                className="text-primary hover:text-primary/80 text-xs transition-colors mr-2 ml-1"
+              >
+                {t("See more")}
+              </button>
+            </div>
             <AnimatePresence>
               {openSections.members && (
                 <Motion.div
@@ -202,15 +207,7 @@ function ChatSidebarPresentational({
                   transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-3">
-                    <div className="mb-2 flex items-center justify-end">
-                      <button
-                        onClick={onShowAllMembers}
-                        className="text-primary hover:text-primary/80 text-xs transition-colors"
-                      >
-                        {t("See more")}
-                      </button>
-                    </div>
+                  <div>
                     <div className="space-y-1">
                       {loading ? (
                         <div className="space-y-2">
@@ -272,7 +269,7 @@ function ChatSidebarPresentational({
                               <div className="bg-primary relative flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
                                 {member.profileImage ? (
                                   <img
-                                    src={member.photoUrl}
+                                    src={member.photoURL}
                                     alt={member.username}
                                     className="h-full w-full object-cover"
                                   />
@@ -291,8 +288,8 @@ function ChatSidebarPresentational({
                                 </p>
                                 <p
                                   className={`text-xs ${member.isOnline
-                                      ? "text-green-400"
-                                      : "text-text-400"
+                                    ? "text-green-400"
+                                    : "text-text-400"
                                     }`}
                                 >
                                   {member.isOnline ? t("Online") : t("Offline")}

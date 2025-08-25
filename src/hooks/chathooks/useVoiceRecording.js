@@ -146,7 +146,6 @@ export function useVoiceRecording() {
 
             setRecordingTime(0);
             recordingTimeRef.current = 0;
-            console.log('Starting recording timer');
             recordingTimer.current = setInterval(() => {
                 recordingTimeRef.current += 1;
                 setRecordingTime(prev => prev + 1);
@@ -182,7 +181,9 @@ export function useVoiceRecording() {
                 userId,
                 userName,
                 replyTo,
-                formatTime
+                undefined,    // onProgress
+                formatTime    // formatTime
+                // photoURL (optional, add if needed)
             );
         } catch (error) {
             console.error('Error sending voice message:', error);
