@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { auth } from "../../firebase-config";
+import {  doc, updateDoc, arrayUnion, getDoc, increment } from "firebase/firestore";
+import { auth ,db } from "../../firebase-config";
 import { getUserInfo } from "../../features/user/userSlice";
 import ProfilePresentational from "./ProfilePresentational";
 import { updateUserProfile } from "../../fire_base/profileController/profileController";
@@ -28,6 +29,8 @@ const ProfileContainer = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isProfileMyProfile, setIsProfileMyProfile] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [isReporting, setIsReporting] = useState(false);
 
   // Fetch profile data
   useEffect(() => {
@@ -107,6 +110,68 @@ const ProfileContainer = () => {
     }
   };
 
+ 
+
+// Check if user already reported 
+useEffect(() => {
+  if (!profile?.reportedBy || !userInfo?.uid) {
+    setReported(false);
+    return;
+  }
+
+  const isCurrentUserReported = profile.reportedBy.some(
+    (reporter) =>
+      (typeof reporter === "object" ? reporter.uid : reporter) === userInfo.uid
+  );
+
+  setReported(isCurrentUserReported);
+}, [profile?.reportedBy, userInfo?.uid]);
+
+// Handle report/unreport
+const handleReport = async () => {
+  if (isReporting) return;
+
+  setIsReporting(true);
+
+  try {
+    const currentReports = profile.reportedBy || [];
+    let updatedReports;
+
+    if (reported) {
+      // User already reported → remove report (if you want toggle)
+      updatedReports = currentReports.filter((r) => {
+        const reporterId = typeof r === "object" ? r.uid : r;
+        return reporterId !== userInfo.uid;
+      });
+      setReported(false);
+    } else {
+      // Add report
+      updatedReports = [...currentReports, userInfo.uid];
+      setReported(true);
+    }
+
+    // Check if user should be blocked
+    const shouldBlock = updatedReports.length >= 2;
+
+    // Update user document
+    await updateUserProfile(profileId, {
+      reportedBy: updatedReports,
+      reports: updatedReports.length,
+      ...(shouldBlock && { isBlocked: true }), // add isBlocked when >= 2
+    });
+
+    // Refresh profile data
+    dispatch(fetchViewedProfile(profileId));
+  } catch (error) {
+    console.error("Error reporting user:", error);
+    setReported(!reported);
+  } finally {
+    setIsReporting(false);
+  }
+};
+
+
+
   return (
     <ProfilePresentational
       {...{
@@ -121,6 +186,9 @@ const ProfileContainer = () => {
         activeTab,
         setActiveTab,
         isConnecting,
+        handleReport,
+        reported,
+        isReporting
       }}
     />
   );

@@ -109,7 +109,7 @@ function ChatInputContainer({
           <div className="min-w-0 flex-1 overflow-hidden">
             <div className="max-w-[120px] truncate">
               <span className="text-primary truncate font-bold">
-                {replyTo.senderName || "User"}
+                {replyTo.userName || "User"}
               </span>
             </div>
             <div className="max-w-[180px] truncate">

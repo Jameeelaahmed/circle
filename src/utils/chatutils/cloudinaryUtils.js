@@ -1,8 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import cloudinaryService from "../../services/cloudinaryService";
-
-export async function uploadAndSendImage(file, circleId, userId, userName, replyTo, onProgress, formatTime) {
+export async function uploadAndSendImage(file, circleId, userId, userName, replyTo, onProgress, formatTime, photoURL) {
     try {
         // Upload to Cloudinary
         const uploadResult = await cloudinaryService.uploadImage(file, onProgress, {
@@ -13,10 +12,12 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
         // Send message to Firestore
         const messageData = {
             messageType: "image",
-            senderId: userId,
-            senderName: userName,
+            user: {
+                userId: userId,
+                imageUrl: photoURL,
+                userName: userName
+            },
             sentTime: formatTime(),
-            imageUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
             fileName: file.name,
             fileSize: file.size,
@@ -25,10 +26,8 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
             mimeType: file.type,
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                id: replyTo.id,
-                messageId: replyTo.messageId || replyTo.id,
-                senderId: replyTo.senderId,
-                senderName: replyTo.senderName,
+                messageId: replyTo.messageId,
+                userName: replyTo.userName,
                 text: replyTo.text || null,
                 messageType: replyTo.messageType || "text",  // ✅ keep original type if available
                 audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
@@ -50,7 +49,7 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
     }
 }
 
-export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, userName, replyTo, onProgress, formatTime) {
+export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, userName, replyTo, onProgress, formatTime, photoURL) {
     try {
         // Upload to Cloudinary
         const uploadResult = await cloudinaryService.uploadAudio(audioBlob, onProgress, {
@@ -61,8 +60,11 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
         // Send message to Firestore
         const messageData = {
             messageType: "audio",
-            senderId: userId,
-            senderName: userName,
+            user: {
+                userId: userId,
+                imageUrl: photoURL,
+                userName: userName
+            },
             sentTime: formatTime(),
             audioUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
@@ -71,10 +73,8 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             mimeType: uploadResult.format ? `audio/${uploadResult.format}` : 'audio/webm',
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                id: replyTo.id,
-                messageId: replyTo.messageId || replyTo.id,
-                senderId: replyTo.senderId,
-                senderName: replyTo.senderName,
+                messageId: replyTo.messageId,
+                userName: replyTo.userName,
                 text: replyTo.text || null,
                 messageType: replyTo.messageType || "text",  // ✅ keep original type if available
                 audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
@@ -94,7 +94,7 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
     }
 }
 
-export async function uploadAndSendVideo(file, circleId, userId, userName, replyTo, onProgress, formatTime) {
+export async function uploadAndSendVideo(file, circleId, userId, userName, replyTo, onProgress, formatTime, photoURL) {
     try {
         // Upload to Cloudinary
         const uploadResult = await cloudinaryService.uploadVideo(file, onProgress, {
@@ -106,8 +106,11 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
         // Send message to Firestore
         const messageData = {
             messageType: "video",
-            senderId: userId,
-            senderName: userName,
+            user: {
+                userId: userId,
+                imageUrl: photoURL,
+                userName: userName
+            },
             sentTime: formatTime(),
             videoUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
@@ -119,10 +122,8 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
             mimeType: file.type,
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                id: replyTo.id,
-                messageId: replyTo.messageId || replyTo.id,
-                senderId: replyTo.senderId,
-                senderName: replyTo.senderName,
+                messageId: replyTo.messageId,
+                userName: replyTo.userName,
                 text: replyTo.text || null,
                 messageType: replyTo.messageType || "text",  // ✅ keep original type if available
                 audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs

@@ -10,6 +10,7 @@ import BlockedModal from "./components/ui/Modal/BlockModal/BlockedModal";
 import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 import { useAuth } from "./hooks/useAuth";
 import { PendingRequestsProvider } from "./contexts/PendingRequests";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,18 +52,18 @@ function App() {
 
   return (
     <>
-
-      <AuthProvider />
-      <PendingRequestsProvider>
-        <OnlinePresenceProvider>
-          {!isUserBlocked && <RoutesPages />}
-          <BlockedModal
-            ref={blockedModalRef}
-            onConfirm={handleBlockedConfirm}
-          />
-        </OnlinePresenceProvider>
-      </PendingRequestsProvider>
-
+      <ThemeProvider>
+        <AuthProvider />
+        <PendingRequestsProvider>
+          <OnlinePresenceProvider>
+            {!isUserBlocked && <RoutesPages />}
+            <BlockedModal
+              ref={blockedModalRef}
+              onConfirm={handleBlockedConfirm}
+            />
+          </OnlinePresenceProvider>
+        </PendingRequestsProvider>
+      </ThemeProvider>
     </>
   );
 }

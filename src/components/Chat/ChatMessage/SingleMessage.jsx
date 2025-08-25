@@ -23,7 +23,7 @@ function SingleMessage({
 }) {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const isMe = currentUser && (msg.senderId === currentUser.id);
+    const isMe = currentUser && (msg.user.userId === currentUser.id);
     const radius = getMessageRadius({ messages, idx: originalIdx, isMe });
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
 
@@ -31,7 +31,7 @@ function SingleMessage({
     const prevItem = groupedMessages[idx - 1];
     const prevMessage = prevItem?.type === 'regular' ? prevItem.message :
         prevItem?.type === 'media_group' ? prevItem.messages[0] : null;
-    const isFirstInGroup = !prevMessage || prevMessage.senderId !== msg.senderId;
+    const isFirstInGroup = !prevMessage || prevMessage.user.userId !== msg.user.userId;
 
     // Check if we should show date separator
     const showDateSeparator = shouldShowDateSeparator(msg, prevMessage);
@@ -93,7 +93,7 @@ function SingleMessage({
     return (
         <div
             data-message-id={msg.messageId || msg.id}
-            data-sender-id={msg.senderId}
+            data-sender-id={msg.user.userId}
             ref={(ref) => {
                 if (ref && (msg.messageId || msg.id)) {
                     messageRefs.current[msg.messageId || msg.id] = ref;
@@ -119,15 +119,15 @@ function SingleMessage({
                             <div className={`h-8 w-1 rounded-full bg-secondary/70 ${isMe ? 'ltr:ml-2 rtl:mr-2' : 'ltr:mr-2 rtl:ml-2'}`} />
                             <div
                                 className="flex items-center px-2 py-1 rounded-2xl bg-black/30 border border-secondary/30 min-w-0 cursor-pointer hover:bg-black/40 transition-colors"
-                                onClick={() => scrollToMessage && scrollToMessage(msg.replyTo.messageId || msg.replyTo.id)}
+                                onClick={() => scrollToMessage && scrollToMessage(msg.replyTo.messageId)}
                             >
                                 <div className="flex flex-col min-w-0">
                                     <span className="font-semibold text-primary text-xs truncate max-w-[100px]">
-                                        {(msg.replyTo.senderId === msg.senderId)
-                                            ? (msg.senderId === currentUser?.id)
+                                        {(msg.replyTo.user.userId === msg.user.userId)
+                                            ? (msg.user.userId === currentUser?.id)
                                                 ? t('Replied to yourself')
-                                                : `${t("Replied to")} ${msg.senderName || 'User'}`
-                                            : (msg.replyTo.senderName || 'User')}
+                                                : `${t("Replied to")} ${msg.user.userName || 'User'}`
+                                            : (msg.replyTo.userName || 'User')}
                                     </span>
                                     <span
                                         className={`text-xs text-text/80 truncate max-w-[140px] ${msg.replyTo.text ? getTextDirectionClasses(msg.replyTo.text) : ''}`}
@@ -149,21 +149,21 @@ function SingleMessage({
                                 {isFirstInGroup ? (
                                     <div
                                         className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden select-none"
-                                        onClick={() => navigate(`/profile/${msg.senderId}`)}
-                                        title={msg.senderName}
+                                        onClick={() => navigate(`/profile/${msg.user.userId}`)}
+                                        title={msg.user.userName}
                                         style={{ userSelect: "none" }}
                                     >
                                         {msg.senderPhotoUrl ? (
                                             <img
                                                 src={msg.senderPhotoUrl}
-                                                alt={msg.senderName || "User"}
+                                                alt={msg.user.userName || "User"}
                                                 className="w-full h-full object-cover rounded-full select-none"
                                                 style={{ userSelect: "none" }}
                                                 draggable={false}
                                             />
                                         ) : (
                                             <span className="select-none" style={{ userSelect: "none" }}>
-                                                {msg.senderName?.[0]?.toUpperCase() || 'U'}
+                                                {msg.user.userName?.[0]?.toUpperCase() || 'U'}
                                             </span>
                                         )}
                                     </div>
@@ -179,9 +179,9 @@ function SingleMessage({
                                 <span
                                     className="text-xs font-semibold mb-1 text-accent truncate max-w-full cursor-pointer select-none"
                                     style={{ userSelect: "none" }}
-                                    onClick={() => navigate(`/profile/${msg.senderId}`)}
+                                    onClick={() => navigate(`/profile/${msg.user.userId}`)}
                                 >
-                                    {msg.senderName || 'User'}
+                                    {msg.user.userName || 'User'}
                                 </span>
                             )}
                             <div

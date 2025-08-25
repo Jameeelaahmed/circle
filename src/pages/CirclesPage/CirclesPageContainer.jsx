@@ -22,6 +22,9 @@ import CustomPaginationContainer from '../../components/Pagination/CustomPaginat
 import CirclesSkeltonCard from '../../components/CirclesSkeltonsCard/CirclesSkeltonCard';
 import Modal from '../../components/ui/Modal/Modal';
 import CreateCircleModalContainer from '../../components/ui/Modal/CreateCircleModal/CreateCircleModalContainer';
+import Select from 'react-select';
+import { Filter } from "lucide-react"; // Or your preferred icon
+import customSelectStyles from '../../components/ui/Modal/CreateCircleModal/customSelectStyles'; // Adjust path as needed
 function CirclesPageContainer() {
     const { t } = useTranslation();
     const membersByCircle = useSelector(state => state.members.membersByCircle);
@@ -42,6 +45,8 @@ function CirclesPageContainer() {
     const [selectedCircleToDelete, setSelectedCircleToDelete] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [sendingRequestId, setSendingRequestId] = useState(null);
+    const [showMutualOnly, setShowMutualOnly] = useState(false);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
 
     const { handleJoinRequest, pendingRequests, setPendingRequests } = useJoinCircleRequest({
         circles,
@@ -72,6 +77,7 @@ function CirclesPageContainer() {
         (user ? profileStatus === "succeeded" : true)
     ) {
         filteredCircles = circles;
+
         if (user && activeTab === 'my') {
             filteredCircles = circles.filter(circle => profile?.joinedCircles?.includes(circle.id));
             if (circlePrivacy === 'public') {
@@ -80,18 +86,21 @@ function CirclesPageContainer() {
                 filteredCircles = filteredCircles.filter(circle => circle.circlePrivacy === 'private');
             }
         } else if (user && profile?.interests && profile.interests.length > 0) {
-            filteredCircles = circles
-                .map(circle => ({
-                    ...circle,
-                    matchedInterests: circle.interests?.filter(interest =>
-                        profile.interests.includes(interest)
-                    ) || []
-                }))
-                .filter(circle =>
-                    (circle.matchedInterests.length > 0 && circle.circlePrivacy === 'public') &&
-                    !((membersByCircle?.[circle.id] || []).some(member => member.id === user.uid))
+            // Convert profile interests to lowercase once
+            const userInterestsLower = profile.interests.map(i => i.toLowerCase());
+
+            filteredCircles = circles.map(circle => ({
+                ...circle,
+                matchedInterests: (circle.interests || []).filter(interest =>
+                    userInterestsLower.includes(interest.toLowerCase())
                 )
-                .sort((a, b) => b.matchedInterests.length - a.matchedInterests.length);
+            }))
+                .sort((a, b) => b.matchedInterests.length - a.matchedInterests.length)
+                .filter(circle => circle.circlePrivacy === 'public');
+
+            if (showMutualOnly) {
+                filteredCircles = filteredCircles.filter(circle => circle.matchedInterests.length > 0);
+            }
         } else {
             filteredCircles = circles.filter(circle => (circle.circlePrivacy === 'public'));
         }
@@ -211,6 +220,38 @@ function CirclesPageContainer() {
                     <div className='bg-primary rounded-3xl p-2 ltr:ml-1.5 rtl:mr-1.5 cursor-pointer' onClick={openCCircleModal}>
                         <Plus size={20} />
                     </div>
+                    {activeTab === "forYou" && (
+                        <div className="relative flex items-center ml-2 min-w-[220px]">
+                            <button
+                                type="button"
+                                className="flex items-center justify-center bg-transparent border-none outline-none cursor-pointer"
+                                onClick={() => setShowFilterMenu((prev) => !prev)}
+                                aria-label={t("Filter circles")}
+                            >
+                                <Filter className="text-primary" size={20} />
+                            </button>
+                            {showFilterMenu && (
+                                <div className="absolute left-8 top-0 z-10 min-w-[200px]">
+                                    <Select
+                                        value={
+                                            showMutualOnly
+                                                ? { value: "mutual", label: t("Show Only Mutual Interests") }
+                                                : { value: "all", label: t("Show All Circles") }
+                                        }
+                                        onChange={option => setShowMutualOnly(option.value === "mutual")}
+                                        options={[
+                                            { value: "all", label: t("Show All Circles") },
+                                            { value: "mutual", label: t("Show Only Mutual Interests") }
+                                        ]}
+                                        styles={customSelectStyles}
+                                        classNamePrefix="custom-select"
+                                        isSearchable={false}
+                                        menuIsOpen={true}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <Modal ref={createCircleRef}>
                     <CreateCircleModalContainer closeModal={closeCCircleModal} />

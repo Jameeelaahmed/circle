@@ -33,7 +33,7 @@ const ConnectionNotificationItem = ({
       }
 
       // Get sender's profile first to get their current connections
-      const senderProfile = await getUserProfile(notification.senderId);
+      const senderProfile = await getUserProfile(notification.user.userId);
       if (!senderProfile) {
         console.error("Sender profile not found");
         return;
@@ -44,7 +44,7 @@ const ConnectionNotificationItem = ({
       const senderConnections = senderProfile?.connections || [];
 
       // Check if connection already exists to avoid duplicates
-      if (currentUserConnections.includes(notification.senderId)) {
+      if (currentUserConnections.includes(notification.user.userId)) {
         console.log("Connection already exists");
         setIsAccepted(true);
         markAsRead(notification.id);
@@ -55,7 +55,7 @@ const ConnectionNotificationItem = ({
       // Update current user's connections (add sender)
       const updatedCurrentUserConnections = [
         ...currentUserConnections,
-        notification.senderId,
+        notification.user.userId,
       ];
 
       // Update sender's connections (add current user)
@@ -66,17 +66,17 @@ const ConnectionNotificationItem = ({
         updateUserProfile(currentUser.uid, {
           connections: updatedCurrentUserConnections,
         }),
-        updateUserProfile(notification.senderId, {
+        updateUserProfile(notification.user.userId, {
           connections: updatedSenderConnections,
         }),
       ]);
 
       // Send acceptance notification to the requester
       await sendConnectionAcceptedNotification(
-        notification.senderId,
+        notification.user.userId,
         currentUserProfile?.displayName ||
-          currentUserProfile?.username ||
-          "Someone",
+        currentUserProfile?.username ||
+        "Someone",
         currentUser.uid,
         currentUserProfile?.photoUrl || "",
         currentUserProfile?.username || "",
@@ -116,7 +116,7 @@ const ConnectionNotificationItem = ({
 
       // Optionally, you might want to store rejection information
       // or send a rejection notification to the sender
-      // await sendConnectionRejectedNotification(notification.senderId, ...);
+      // await sendConnectionRejectedNotification(notification.user.userId, ...);
 
       // Remove the notification after showing rejection feedback
       setTimeout(() => {
@@ -197,11 +197,10 @@ const ConnectionNotificationItem = ({
                     <button
                       onClick={handleAcceptConnection}
                       disabled={isAccepting || isRejecting}
-                      className={`flex items-center justify-center space-x-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
-                        isAccepting || isRejecting
-                          ? "cursor-not-allowed opacity-50"
-                          : "hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
-                      }`}
+                      className={`flex items-center justify-center space-x-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all duration-200 ${isAccepting || isRejecting
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
+                        }`}
                       style={{
                         backgroundColor: "var(--color-primary)",
                         color: "white",
@@ -225,11 +224,10 @@ const ConnectionNotificationItem = ({
                     <button
                       onClick={handleRejectConnection}
                       disabled={isAccepting || isRejecting}
-                      className={`flex items-center justify-center space-x-2 rounded-lg border-2 px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
-                        isAccepting || isRejecting
-                          ? "cursor-not-allowed opacity-50"
-                          : "hover:scale-[1.02] active:scale-[0.98]"
-                      }`}
+                      className={`flex items-center justify-center space-x-2 rounded-lg border-2 px-6 py-2.5 text-sm font-medium transition-all duration-200 ${isAccepting || isRejecting
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:scale-[1.02] active:scale-[0.98]"
+                        }`}
                       style={{
                         borderColor: "#ef4444",
                         color: "#ef4444",
@@ -400,9 +398,8 @@ const ConnectionNotificationItem = ({
 
   return (
     <div
-      className={`group hover:bg-opacity-50 relative cursor-pointer border-b p-4 transition-all duration-200 ${
-        !notification.read ? "bg-opacity-30" : ""
-      }`}
+      className={`group hover:bg-opacity-50 relative cursor-pointer border-b p-4 transition-all duration-200 ${!notification.read ? "bg-opacity-30" : ""
+        }`}
       style={{
         borderColor: "color-mix(in srgb, var(--color-text) 10%, transparent)",
         backgroundColor: !notification.read

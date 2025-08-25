@@ -16,7 +16,7 @@ function MediaGroupMessage({
     dir,
 }) {
     const firstMessage = item.messages[0];
-    const isMe = currentUser && (firstMessage.senderId === currentUser.id);
+    const isMe = currentUser && (firstMessage.user.userId === currentUser.id);
     const bubbleColor = isMe ? 'bg-main/30' : 'bg-main';
 
     // Check if this is the first message in a group from the same sender
@@ -28,7 +28,7 @@ function MediaGroupMessage({
                 ? prevItem.messages[0]
                 : null;
     const isFirstInGroup =
-        !prevMessage || prevMessage.senderId !== firstMessage.senderId;
+        !prevMessage || prevMessage.user.userId !== firstMessage.user.userId;
 
     // Check if we should show date separator
     const showDateSeparator = shouldShowDateSeparator(firstMessage, prevMessage);
@@ -69,7 +69,7 @@ function MediaGroupMessage({
         <div
             key={`group-${item.firstIndex}-${item.lastIndex}`}
             data-message-id={firstMessage.messageId || firstMessage.id}
-            data-sender-id={firstMessage.senderId}
+            data-sender-id={firstMessage.user.userId}
             ref={(ref) => {
                 if (ref && (firstMessage.messageId || firstMessage.id)) {
                     messageRefs.current[firstMessage.messageId || firstMessage.id] = ref;
@@ -95,21 +95,21 @@ function MediaGroupMessage({
                         {isFirstInGroup ? (
                             <div
                                 className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-text cursor-pointer overflow-hidden select-none"
-                                onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
-                                title={firstMessage.senderName}
+                                onClick={() => navigate(`/profile/${firstMessage.user.userId}`)}
+                                title={firstMessage.user.userName}
                                 style={{ userSelect: "none" }}
                             >
                                 {firstMessage.senderPhotoUrl ? (
                                     <img
                                         src={firstMessage.senderPhotoUrl}
-                                        alt={firstMessage.senderName || "User"}
+                                        alt={firstMessage.user.userName || "User"}
                                         className="w-full h-full object-cover rounded-full select-none"
                                         style={{ userSelect: "none" }}
                                         draggable={false}
                                     />
                                 ) : (
                                     <span className="select-none" style={{ userSelect: "none" }}>
-                                        {firstMessage.senderName?.[0]?.toUpperCase() || 'U'}
+                                        {firstMessage.user.userName?.[0]?.toUpperCase() || 'U'}
                                     </span>
                                 )}
                             </div>
@@ -124,10 +124,10 @@ function MediaGroupMessage({
                         <span
                             className="text-accent mb-1 max-w-full truncate text-xs font-semibold cursor-pointer hover:underline select-none"
                             style={{ userSelect: "none" }}
-                            onClick={() => navigate(`/profile/${firstMessage.senderId}`)}
-                            title={firstMessage.senderName}
+                            onClick={() => navigate(`/profile/${firstMessage.user.userId}`)}
+                            title={firstMessage.user.userName}
                         >
-                            {firstMessage.senderName || "User"}
+                            {firstMessage.user.userName || "User"}
                         </span>
                     )}
                     <div
