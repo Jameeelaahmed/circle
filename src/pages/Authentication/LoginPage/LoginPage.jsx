@@ -4,7 +4,7 @@ import IrregularCirclePaths from "../../../components/ui/IrregularCirclePathes/I
 
 function LoginPage() {
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden lg:flex-row">
+    <div className="flex h-screen w-screen bg-gradient-to-b from-bg-primary to-bg-secondary flex-col overflow-hidden lg:flex-row">
       <div className="relative w-1/2 overflow-hidden">
         <IrregularCirclePaths />
         <FloatingAvatarContainer />
