@@ -42,7 +42,7 @@ function MessageContextMenu({
                 )}
 
             {/* Download button - only for image messages */}
-            {menu.message.messageType === 'image' && (
+            {/* {menu.message.messageType === 'image' && (
                 <button
                     className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                     onClick={() => {
@@ -56,7 +56,7 @@ function MessageContextMenu({
                 >
                     {t("Download")}
                 </button>
-            )}
+            )} */}
 
             {/* Info button - only for own messages */}
             {menu.message.user.userId === currentUser?.id && (
