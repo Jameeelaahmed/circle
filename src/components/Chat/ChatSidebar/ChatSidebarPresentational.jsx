@@ -30,6 +30,8 @@ function ChatSidebarPresentational({
     deleteCircleRef,
     currentCircle
 }) {
+    console.log(members);
+
     const { t } = useTranslation();
     const { circleId } = useParams();
     const [isSmallScreen, setIsSmallScreen] = useState(false);

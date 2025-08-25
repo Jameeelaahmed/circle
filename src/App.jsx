@@ -10,7 +10,6 @@ import BlockedModal from "./components/ui/Modal/BlockModal/BlockedModal";
 import { OnlinePresenceProvider } from "./contexts/OnlinePresenceContext";
 import { useAuth } from "./hooks/useAuth";
 import { PendingRequestsProvider } from "./contexts/PendingRequests";
-
 function App() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.circles.status);

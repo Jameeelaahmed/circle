@@ -30,7 +30,7 @@ export default function YourContextMenuComponent({
             </button>
 
             {/* Edit button - only for text messages within edit time limit */}
-            {menu.message.senderId === currentUser?.id &&
+            {menu.message.user.userId === currentUser?.id &&
                 (!menu.message.messageType || menu.message.messageType === 'text') &&
                 canEditMessage && canEditMessage(menu.message) && (
                     <button
@@ -61,7 +61,7 @@ export default function YourContextMenuComponent({
             )}
 
             {/* Info button - only for own messages */}
-            {menu.message.senderId === currentUser?.id && (
+            {menu.message.user.userId === currentUser?.id && (
                 <button
                     className="px-4 py-3 hover:bg-primary/30 ltr:text-left rtl:text-right transition-colors"
                     onClick={() => handleAction('info')}
@@ -77,7 +77,7 @@ export default function YourContextMenuComponent({
                     open(menu.message.id || menu.message.messageId);
                 }}
             >
-                {menu.message.senderId === currentUser?.id ? t('Delete') : t('Delete for me')}
+                {menu.message.user.userId === currentUser?.id ? t('Delete') : t('Delete for me')}
             </button>
 
             {/* Reactions */}

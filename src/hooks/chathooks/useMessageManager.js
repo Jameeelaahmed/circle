@@ -34,18 +34,18 @@ export function useMessageManager(circleId, circleName, userId, userName) {
       try {
         await addDoc(collection(db, "circles", circleId, "chat"), {
           messageType: "text",
-          senderId: userId,
-          senderName: userName,
-          senderPhotoUrl: photoURL,
+          user: {
+            userId: userId,
+            imageUrl: photoURL,
+            userName: userName
+          },
           sentTime: formatTime(),
           text: text.trim(),
           timestamp: serverTimestamp(),
           replyTo: replyTo
             ? {
-              id: replyTo.id,
-              messageId: replyTo.messageId || replyTo.id,
-              senderId: replyTo.senderId,
-              senderName: replyTo.senderName,
+              messageId: replyTo.messageId,
+              userName: replyTo.userName,
               text: replyTo.text,
               messageType: replyTo.messageType,
             }

@@ -6,7 +6,7 @@ function DeleteMessageModalContainer({ close, message, currentUser, onDelete }) 
 
     const canDeleteForEveryone = () => {
         if (!message || !currentUser) return false;
-        if (message.senderId !== currentUser.id) return false;
+        if (message.user.userId !== currentUser.id) return false;
 
         const messageTime = message.timestamp?.toDate() || new Date(message.timestamp);
         const now = new Date();

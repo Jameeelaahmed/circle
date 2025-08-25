@@ -22,7 +22,7 @@ export function getUserColor(userId) {
 }
 
 export function canEditMessage(message, userId) {
-    if (message.senderId !== userId) {
+    if (message.user.userId !== userId) {
         return false;
     }
 
