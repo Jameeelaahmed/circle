@@ -194,7 +194,7 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
     }
     if (action === "info") {
       // Show message info modal for own messages
-      if (targetMessage.senderId === userId) {
+      if (targetMessage.user.userId === userId) {
         setSelectedMessage(targetMessage);
         messageInfoModalRef.current?.open();
       }

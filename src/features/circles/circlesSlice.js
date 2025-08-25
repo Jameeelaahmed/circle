@@ -53,10 +53,24 @@ export const fetchCircleById = createAsyncThunk(
 export const listenToCircles = () => (dispatch) => {
     const db = getFirestore();
     const unsubscribe = onSnapshot(collection(db, "circles"), (snapshot) => {
-        const circlesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const circlesData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                ...data,
+                id: doc.id,
+                expiresAt: data.expiresAt && typeof data.expiresAt.toDate === "function"
+                    ? data.expiresAt.toDate().toISOString()
+                    : data.expiresAt || null,
+                updatedAt: data.updatedAt && typeof data.updatedAt.toDate === "function"
+                    ? data.updatedAt.toDate().toISOString()
+                    : data.updatedAt || null,
+                createdAt: data.createdAt && typeof data.createdAt.toDate === "function"
+                    ? data.createdAt.toDate().toISOString()
+                    : data.createdAt || null,
+            };
+        });
         dispatch(setCircles(circlesData));
     });
-    // Optionally return unsubscribe to clean up
     return unsubscribe;
 };
 

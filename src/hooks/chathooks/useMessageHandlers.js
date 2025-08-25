@@ -19,10 +19,17 @@ export function useMessageHandlers(
         useSelector(state =>
             state.members?.membersByCircle?.[circleId] || []
         );
-    const isMember = members.some(member => member.id === userId || member.uid === userId);
+    console.log("useHandler", members);
+
+    const isMember = members.some(member => member.id === userId);
+    console.log(isMember);
+    console.log(userId);
+
 
     const handleSendMsg = async (e) => {
         e.preventDefault();
+        console.log(isMember);
+
         if (!isMember) {
             if (onNotMember) onNotMember();
             return;

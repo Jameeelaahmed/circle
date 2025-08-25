@@ -64,13 +64,34 @@ function ChatSidebarPresentational({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  console.log(members);
+
+  const { t } = useTranslation();
+  const { circleId } = useParams();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [direction, setDirection] = useState("ltr");
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDirection(document.documentElement.dir || "ltr");
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["dir"] });
+    return () => observer.disconnect();
+  }, []);
+  // Detect screen size for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="relative h-full">
       <button
         onClick={toggleSidebar}
-        className={`from-bg-primary to-bg-secondary text-text hover:bg-primary/80 absolute top-1/2 z-50 -translate-y-1/2 rounded-lg bg-gradient-to-b p-1.5 backdrop-blur-sm transition-colors duration-200 ${
-          isSmallScreen
+        className={`from-bg-primary to-bg-secondary text-text hover:bg-primary/80 absolute top-1/2 z-50 -translate-y-1/2 rounded-lg bg-gradient-to-b p-1.5 backdrop-blur-sm transition-colors duration-200 ${isSmallScreen
             ? isOpen
               ? direction === "rtl"
                 ? "-left-3"
@@ -81,18 +102,17 @@ function ChatSidebarPresentational({
             : direction === "rtl"
               ? "-left-3"
               : "-right-3"
-        } `}
+          } `}
       >
         <ChevronLeft
-          className={`h-3 w-3 transition-transform duration-300 ${
-            direction === "rtl"
+          className={`h-3 w-3 transition-transform duration-300 ${direction === "rtl"
               ? isOpen
                 ? ""
                 : "rotate-180"
               : isOpen
                 ? "rotate-180"
                 : ""
-          }`}
+            }`}
         />
       </button>
 
@@ -120,11 +140,10 @@ function ChatSidebarPresentational({
           zIndex: isSmallScreen ? 50 : "auto",
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`h-full overflow-hidden backdrop-blur-sm ltr:rounded-tl-3xl ltr:rounded-bl-3xl rtl:rounded-tr-3xl rtl:rounded-br-3xl ${
-          isOpen
+        className={`h-full overflow-hidden backdrop-blur-sm ltr:rounded-tl-3xl ltr:rounded-bl-3xl rtl:rounded-tr-3xl rtl:rounded-br-3xl ${isOpen
             ? "bg-main/95 border-text/10"
             : "border-transparent bg-transparent"
-        }`}
+          }`}
       >
         <div className="flex h-full w-70 flex-col">
           {/* Header */}
@@ -271,11 +290,10 @@ function ChatSidebarPresentational({
                                   {member.username}
                                 </p>
                                 <p
-                                  className={`text-xs ${
-                                    member.isOnline
+                                  className={`text-xs ${member.isOnline
                                       ? "text-green-400"
                                       : "text-text-400"
-                                  }`}
+                                    }`}
                                 >
                                   {member.isOnline ? t("Online") : t("Offline")}
                                 </p>

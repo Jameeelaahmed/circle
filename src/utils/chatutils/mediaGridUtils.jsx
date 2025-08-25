@@ -1,7 +1,7 @@
 // Utility functions for media grid rendering
 
 // Group consecutive media messages from the same sender
-export const groupConsecutiveMedia = (messages = []) => {
+export const groupConsecutiveMedia = (messages) => {
   const grouped = [];
   let currentGroup = null;
 
@@ -10,60 +10,54 @@ export const groupConsecutiveMedia = (messages = []) => {
     const prevMsg = messages[i - 1];
 
     if (msg.messageType === "system") {
-      if (currentGroup && currentGroup.messages.length) {
-        grouped.push(currentGroup);
-        currentGroup = null;
+      if (currentGroup.length) {
+        grouped.push({
+          type: "media_group",
+          messages: currentGroup,
+          firstIndex: msg - currentGroup.length,
+          lastIndex: msg - 1,
+        });
+        currentGroup = [];
       }
       grouped.push({
         type: "system",
         message: msg,
-        index: i,
+        index: msg,
       });
-      continue;
+      return;
     }
 
-    // Group consecutive images from the same sender within 1 minute
+    // Check if this message should be grouped with the previous one
     const shouldGroup =
       msg.messageType === "image" &&
       prevMsg &&
       prevMsg.messageType === "image" &&
-      msg.senderId === prevMsg.senderId &&
+      msg.user.userId === prevMsg.user.userId &&
       Math.abs(
-        new Date(msg.timestamp?.toDate?.() || msg.timestamp) -
-        new Date(prevMsg.timestamp?.toDate?.() || prevMsg.timestamp)
-      ) < 60000;
+        new Date(msg.timestamp?.toDate() || msg.timestamp) -
+        new Date(prevMsg.timestamp?.toDate() || prevMsg.timestamp),
+      ) < 60000; // Within 1 minute
 
-    if (msg.messageType === "image") {
-      if (shouldGroup && currentGroup) {
-        currentGroup.messages.push(msg);
-        currentGroup.lastIndex = i;
-      } else {
-        // If there's an open group, push it before starting a new one
-        if (currentGroup && currentGroup.messages.length) {
-          grouped.push(currentGroup);
-        }
-        currentGroup = {
-          type: "media_group",
-          messages: [msg],
-          firstIndex: i,
-          lastIndex: i,
-          senderId: msg.senderId,
-          senderName: msg.senderName,
-        };
-      }
+    if (shouldGroup && currentGroup) {
+      // Add to current group
+      currentGroup.messages.push(msg);
+      currentGroup.lastIndex = i;
+    } else if (msg.messageType === "image") {
+      // Start new group or single image
+      currentGroup = {
+        type: "media_group",
+        messages: [msg],
+        firstIndex: i,
+        lastIndex: i,
+        senderId: msg.user.userId,
+        senderName: msg.senderName,
+      };
+      grouped.push(currentGroup);
     } else {
-      // If there's an open group, push it before handling non-image
-      if (currentGroup && currentGroup.messages.length) {
-        grouped.push(currentGroup);
-        currentGroup = null;
-      }
+      // Regular message
       grouped.push({ type: "regular", message: msg, index: i });
+      currentGroup = null;
     }
-  }
-
-  // Push any remaining media group at the end
-  if (currentGroup && currentGroup.messages.length) {
-    grouped.push(currentGroup);
   }
 
   return grouped;

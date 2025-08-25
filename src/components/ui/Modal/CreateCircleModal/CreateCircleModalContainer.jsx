@@ -155,7 +155,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
       imageUrl: "",
       circleType,
       expiresAt:
-        circleType === "Flash" && expireDate
+        circleType === "flash" && expireDate
           ? Timestamp.fromDate(new Date(expireDate))
           : null,
     };
@@ -163,7 +163,7 @@ export default function CreateCircleModalContainer({ closeModal }) {
     const validationErrors = validateForm(formFields);
 
     // Add custom validation for Flash circles
-    if (circleType === "Flash") {
+    if (circleType === "flash") {
       if (!expireDate) {
         validationErrors.expireDate =
           "Expire date is required for Flash circles";

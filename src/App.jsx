@@ -53,17 +53,17 @@ function App() {
   return (
     <>
       <ThemeProvider>
-      <AuthProvider />
-      <PendingRequestsProvider>
-        <OnlinePresenceProvider>
-          {!isUserBlocked && <RoutesPages />}
-          <BlockedModal
-            ref={blockedModalRef}
-            onConfirm={handleBlockedConfirm}
-          />
-        </OnlinePresenceProvider>
-      </PendingRequestsProvider>
-    </ThemeProvider>
+        <AuthProvider />
+        <PendingRequestsProvider>
+          <OnlinePresenceProvider>
+            {!isUserBlocked && <RoutesPages />}
+            <BlockedModal
+              ref={blockedModalRef}
+              onConfirm={handleBlockedConfirm}
+            />
+          </OnlinePresenceProvider>
+        </PendingRequestsProvider>
+      </ThemeProvider>
     </>
   );
 }
