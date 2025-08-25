@@ -1,12 +1,12 @@
 import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
-import jam from "/src/assets/images/aboutus/Gamal.webp"
-import Yasser from "/src/assets/images/aboutus/Yasser.webp"
-import Refaat from "/src/assets/images/aboutus/Refaat.webp"
-import Jameela from "/src/assets/images/aboutus/Jameela.webp"
-import Hajar from "/src/assets/images/aboutus/Hajar.webp"
-import Adel from "/src/assets/images/aboutus/Adel.webp"
+import jam from "@/assets/images/aboutus/Gamal.webp";
+import Yasser from "@/assets/images/aboutus/Yasser.webp";
+import Refaat from "@/assets/images/aboutus/Refaat.webp";
+import Jameela from "@/assets/images/aboutus/Jameela.webp";
+import Hajar from "@/assets/images/aboutus/Hajar.webp";
+import Adel from "@/assets/images/aboutus/Adel.webp";
 
 export default function Team() {
   const { t } = useTranslation();
