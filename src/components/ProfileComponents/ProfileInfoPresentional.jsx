@@ -1,7 +1,7 @@
 import {
   MapPin,
   Calendar,
-  MessageCircle,
+  UserRoundX,
   Camera,
   Edit3,
   Check,
@@ -33,6 +33,9 @@ const ProfileInfoPresentioal = ({
   handleConnect,
   isConnected,
   isConnecting,
+  handleReport,
+  reported,
+  isReporting
 }) => {
   return (
     <div className="bg-text/5 mb-10 rounded-b-[var(--rounded-rounded)] px-3 pb-4 shadow-[var(--shadow-glassCard)] sm:px-4 sm:pb-6 lg:px-6">
@@ -203,7 +206,7 @@ const ProfileInfoPresentioal = ({
               className={`flex transform items-center justify-center rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 sm:px-6 sm:text-base ${
                 isConnected
                   ? "border border-green-500/30 bg-green-500/20 text-green-400"
-                  : "bg-primary text-text shadow-btnPrimary"
+                  : "bg-primary cursor-pointer text-text shadow-btnPrimary"
               } ${isConnecting ? "cursor-not-allowed opacity-70" : ""}`}
               onMouseEnter={(e) => {
                 if (!isConnected && !isConnecting) {
@@ -233,17 +236,21 @@ const ProfileInfoPresentioal = ({
                 </>
               )}
             </button>
-            {/* 
+
             <button
-              className="bg-accent text-text rounded-[var(--rounded-pill)] px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base"
+              onClick={handleReport}
+              disabled={isReporting}
+              className={`${
+                reported ? "bg-[#091429] shadow-2xl shadow-black text-white" : "bg-accent cursor-pointer text-text"
+              } rounded-[var(--rounded-pill)] shadow-2xl shadow-black px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-6 sm:text-base`}
               onMouseEnter={(e) =>
                 handleHover(e, "var(--shadow-btnSecondaryHover)")
               }
               onMouseLeave={(e) => handleLeave(e)}
             >
-              <MessageCircle className="inline h-3 w-3 sm:h-4 sm:w-4 ltr:mr-2 rtl:ml-2" />
-              Message
-            </button> */}
+              <UserRoundX className="inline h-3 w-3 sm:h-4 sm:w-4 ltr:mr-2 rtl:ml-2" />
+              {reported ? "Reported" : "Report"}
+            </button>
           </div>
         )}
       </div>

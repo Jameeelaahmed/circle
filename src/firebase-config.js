@@ -21,18 +21,24 @@ export const auth = getAuth(app);
 export const GoogleProvider = new GoogleAuthProvider();
 
 export async function checkIfBlocked(user) {
-  if (!user) return false;
+  if (!user) {
+    console.log("No user provided");
+    return false;
+  }
 
   try {
     const userDocRef = doc(db, "users", user.uid);
     const userDocSnap = await getDoc(userDocRef);
 
-    if (userDocSnap.exists()) {
-      const userData = userDocSnap.data();
-      return userData.isBlocked === true;
+    if (!userDocSnap.exists()) {
+      console.log("User document does not exist");
+      return false;
     }
 
-    return false;
+    const userData = userDocSnap.data();
+    console.log("User data:", userData);
+
+    return userData.isBlocked === true;
   } catch (error) {
     console.error("Error checking blocked status:", error);
     return false;
