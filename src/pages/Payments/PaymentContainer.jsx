@@ -55,7 +55,7 @@ function PaymentContainer() {
       header: t("payment.More Circles, More Power"),
       price: (
         <p className="mb-10 text-center text-5xl font-bold">
-          $4.99 <span className="text-base">/ {t("payment.month")}</span>
+          50 EGP <span className="text-base">/ {t("payment.month")}</span>
         </p>
       ),
       services: [
@@ -80,7 +80,7 @@ function PaymentContainer() {
       header: t("payment.Circle+"),
       price: (
         <p className="mb-10 text-center text-5xl font-bold">
-          $9.99 <span className="text-base">/ {t("payment.month")}</span>
+          100 EGP <span className="text-base">/ {t("payment.month")}</span>
         </p>
       ),
       services: [
