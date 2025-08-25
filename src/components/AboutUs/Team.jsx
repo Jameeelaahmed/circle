@@ -2,7 +2,7 @@ import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
 
-const Gamal = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
+const Gamal = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Gamal_kyd1gl.webp";
 const Yasser = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/yasser_m5e8qd.webp";
 const Refaat = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/refaat_w7utrz.webp";
 const Hajar = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Hajar_arknji.webp";
