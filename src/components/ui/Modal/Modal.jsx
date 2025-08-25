@@ -5,7 +5,7 @@ import { ThemeContext } from "../../../contexts/ThemeContext";
 const Modal = forwardRef(function Modal(props, ref) {
   let modalRef = useRef();
 
-  const { darkMode, setDarkMode } = useContext(ThemeContext);
+  const { darkMode } = useContext(ThemeContext);
 
   // Save to localStorage on change
   useEffect(() => {

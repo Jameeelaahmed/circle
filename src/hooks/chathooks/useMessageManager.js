@@ -36,7 +36,7 @@ export function useMessageManager(circleId, circleName, userId, userName) {
           messageType: "text",
           user: {
             userId: userId,
-            imageUrl: photoURL,
+            imageurl: photoURL || "",
             userName: userName
           },
           sentTime: formatTime(),
