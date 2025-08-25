@@ -1,13 +1,19 @@
 import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
+import { jam } from "/src/assets/images/aboutus/Gamal.webp"
+import { Yasser } from "/src/assets/images/aboutus/Yasser.webp"
+import { Refaat } from "/src/assets/images/aboutus/Refaat.webp"
+import { Jameela } from "/src/assets/images/aboutus/Jameela.webp"
+import { Hajar } from "/src/assets/images/aboutus/Hajar.webp"
+import { Adel } from "/src/assets/images/aboutus/Adel.webp"
 
 export default function Team() {
   const { t } = useTranslation();
   const team = [
     {
       name: "Ahmed Gamal",
-      image: "/src/assets/images/aboutus/Gamal.webp",
+      image: { jam },
       role: "Mobile Developer",
       description:
         "I am a UX designer with a passion for creating intuitive user experiences. I am a quick learner and I am always looking to improve my skills.",
@@ -15,7 +21,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Yasser",
-      image: "/src/assets/images/aboutus/Yasser.webp",
+      image: { Yasser },
       role: "Frontend & Mobile Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications. I am a quick learner and I am always looking to improve my skills.",
@@ -23,7 +29,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Refaat",
-      image: "/src/assets/images/aboutus/Refaat.webp",
+      image: { Refaat },
       role: "Frontend & Mobile Developer",
       description:
         "I am a quick learner and I am always looking to improve my skills.",
@@ -31,7 +37,7 @@ export default function Team() {
     },
     {
       name: "Jameela Ahmed",
-      image: "/src/assets/images/aboutus/Jameela.webp",
+      image: { Jameela },
       role: "Frontend Developer",
       description:
         "Security expert ensuring your private circles and personal data remain protected.",
@@ -39,7 +45,7 @@ export default function Team() {
     },
     {
       name: "Hajar Ali",
-      image: "/src/assets/images/aboutus/Hajar.webp",
+      image: { Hajar },
       role: "Frontend Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications.",
@@ -47,7 +53,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Adel",
-      image: "/src/assets/images/aboutus/Adel.webp",
+      image: { Adel },
       role: "Frontend Developer",
       description:
         "Growth strategist helping Circle reach more people and create more meaningful connections.",
