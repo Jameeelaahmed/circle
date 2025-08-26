@@ -34,11 +34,17 @@ function ChatInputContainer({
   const voiceRecording = useVoiceRecording();
   const mediaUpload = useMediaUpload();
   const typing = useChatTypingIndicator(circleId, userId, userName);
+  const photoUrl = useSelector(
+    (state) => state.userProfile?.profile?.photoUrl
+  );
+  console.log(photoUrl);
+
   const messageManager = useMessageManager(
     circleId,
     circleName,
     userId,
     userName,
+    photoUrl // <-- add this argument
   );
 
   const pollModal = usePollModal();
@@ -102,6 +108,7 @@ function ChatInputContainer({
   function closeNotMemberModal() {
     notMemberModalRef.current.close();
   }
+
   return (
     <div className="flex max-w-full flex-col overflow-hidden px-2 py-2">
       {replyTo && (
