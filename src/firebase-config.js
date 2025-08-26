@@ -22,7 +22,6 @@ export const GoogleProvider = new GoogleAuthProvider();
 
 export async function checkIfBlocked(user) {
   if (!user) {
-    console.log("No user provided");
     return false;
   }
 
@@ -31,12 +30,10 @@ export async function checkIfBlocked(user) {
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
-      console.log("User document does not exist");
       return false;
     }
 
     const userData = userDocSnap.data();
-    console.log("User data:", userData);
 
     return userData.isBlocked === true;
   } catch (error) {

@@ -28,7 +28,7 @@ export const groupConsecutiveMedia = (messages) => {
       msg.messageType === "image" &&
       prevMsg &&
       prevMsg.messageType === "image" &&
-      msg.user.userId === prevMsg.user.userId &&
+      msg.user?.userId === prevMsg.user.userId &&
       Math.abs(
         new Date(msg.timestamp?.toDate?.() || msg.timestamp) -
         new Date(prevMsg.timestamp?.toDate?.() || prevMsg.timestamp),
@@ -43,7 +43,7 @@ export const groupConsecutiveMedia = (messages) => {
         messages: [msg],
         firstIndex: i,
         lastIndex: i,
-        senderId: msg.user.userId,
+        senderId: msg.user?.userId,
         senderName: msg.senderName,
       };
       grouped.push(currentGroup);

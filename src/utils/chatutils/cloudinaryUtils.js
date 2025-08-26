@@ -18,7 +18,7 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
                 userName: userName
             },
             sentTime: formatTime(),
-            imageUrl: uploadResult.secure_url, // <-- Add this line!
+            imageUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
             fileName: file.name,
             fileSize: file.size,
@@ -27,10 +27,10 @@ export async function uploadAndSendImage(file, circleId, userId, userName, reply
             mimeType: file.type,
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                messageId: replyTo.messageId,
-                userName: replyTo.userName,
-                text: replyTo.text || null,
-                messageType: replyTo.messageType || "text",
+                id: replyTo.id,
+                userName: replyTo.user?.userName ?? null,
+                text: replyTo.text ?? null, // Use null if text is missing
+                messageType: replyTo.messageType ?? null,
                 audioUrl: replyTo.audioUrl || null,
                 imageUrl: replyTo.imageUrl || null,
                 videoUrl: replyTo.videoUrl || null,
@@ -74,10 +74,10 @@ export async function uploadAndSendAudio(audioBlob, duration, circleId, userId, 
             mimeType: uploadResult.format ? `audio/${uploadResult.format}` : 'audio/webm',
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                messageId: replyTo.messageId,
-                userName: replyTo.userName,
-                text: replyTo.text || null,
-                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
+                id: replyTo.id,
+                userName: replyTo.user?.userName ?? null,
+                text: replyTo.text ?? null, // Use null if text is missing
+                messageType: replyTo.messageType ?? null,
                 audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
                 imageUrl: replyTo.imageUrl || null,
                 videoUrl: replyTo.videoUrl || null,
@@ -123,10 +123,10 @@ export async function uploadAndSendVideo(file, circleId, userId, userName, reply
             mimeType: file.type,
             timestamp: serverTimestamp(),
             replyTo: replyTo ? {
-                messageId: replyTo.messageId,
-                userName: replyTo.userName,
-                text: replyTo.text || null,
-                messageType: replyTo.messageType || "text",  // ✅ keep original type if available
+                id: replyTo.id,
+                userName: replyTo.user?.userName ?? null,
+                text: replyTo.text ?? null, // Use null if text is missing
+                messageType: replyTo.messageType ?? null,
                 audioUrl: replyTo.audioUrl || null,         // ✅ preserve media refs
                 imageUrl: replyTo.imageUrl || null,
                 videoUrl: replyTo.videoUrl || null,

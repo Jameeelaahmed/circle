@@ -6,12 +6,12 @@ export function getMessageRadius({ messages, idx, isMe, dir = 'ltr' }) {
         prevMsg &&
         prevMsg.user &&
         msg.user &&
-        prevMsg.user.userId === msg.user.userId;
+        prevMsg.user.userId === msg.user?.userId;
     const isNextSame =
         nextMsg &&
         nextMsg.user &&
         msg.user &&
-        nextMsg.user.userId === msg.user.userId;
+        nextMsg.user.userId === msg.user?.userId;
 
     // Helper to swap left/right classes for RTL
     function swapRadius(str) {
