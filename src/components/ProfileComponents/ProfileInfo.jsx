@@ -13,7 +13,7 @@ const ProfileInfo = ({
   isConnecting,
   handleReport,
   reported,
-  isReporting  
+  isReporting
 }) => {
   const dispatch = useDispatch();
   const [showEditModeLocation, setShowEditModeLocation] = useState(false);
@@ -84,7 +84,7 @@ const ProfileInfo = ({
       });
 
       // Update local state
-      dispatch(setProfileData({ photoUrl: photoUrl }));
+      dispatch(setProfileData({ profile: { ...profileData, photoUrl } }));
     } catch (error) {
       console.error("Error uploading avatar:", error);
       setUploadError("Failed to update profile picture. Please try again.");

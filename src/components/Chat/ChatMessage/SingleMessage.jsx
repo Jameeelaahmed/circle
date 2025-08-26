@@ -73,23 +73,6 @@ function SingleMessage({
         setIsLongPressed(false);
     };
 
-    // // Helper to open context menu at arrow position
-    // const openMenuAtArrow = (e) => {
-    //     // Get button position
-    //     const rect = e.currentTarget.getBoundingClientRect();
-    //     const x = rect.left + rect.width / 2;
-    //     const y = rect.top + rect.height;
-
-    //     // Use correct handler for device
-    //     if (window.matchMedia("(pointer: coarse)").matches && handleMessageContextMenu) {
-    //         // Mobile/touch
-    //         handleMessageContextMenu(e, msg, x, y);
-    //     } else if (onMessageContextMenu) {
-    //         // Desktop
-    //         onMessageContextMenu(e, msg, x, y);
-    //     }
-    // };
-
     return (
         <div
             data-message-id={msg.messageId || msg.id}
@@ -153,9 +136,9 @@ function SingleMessage({
                                         title={msg.user?.userName}
                                         style={{ userSelect: "none" }}
                                     >
-                                        {msg.senderPhotoUrl ? (
+                                        {msg.user.imageurl ? (
                                             <img
-                                                src={msg.senderPhotoUrl}
+                                                src={msg.user.imageurl}
                                                 alt={msg.user.userName || "User"}
                                                 className="w-full h-full object-cover rounded-full select-none"
                                                 style={{ userSelect: "none" }}

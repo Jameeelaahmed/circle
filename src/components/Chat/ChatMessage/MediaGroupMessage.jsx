@@ -99,9 +99,9 @@ function MediaGroupMessage({
                                 title={firstMessage.user.userName}
                                 style={{ userSelect: "none" }}
                             >
-                                {firstMessage.senderPhotoUrl ? (
+                                {firstMessage.user.imageurl ? (
                                     <img
-                                        src={firstMessage.senderPhotoUrl}
+                                        src={firstMessage.user.imageurl}
                                         alt={firstMessage.user.userName || "User"}
                                         className="w-full h-full object-cover rounded-full select-none"
                                         style={{ userSelect: "none" }}

@@ -55,7 +55,9 @@ const profileSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     setProfileData(state, action) {
-      Object.assign(state, action.payload);
+      if (action.payload.profile) {
+        state.profile = { ...state.profile, ...action.payload.profile };
+      }
     },
     setUserInfo(state, action) {
       const { email, username, photoURL, phoneNumber } = action.payload;
