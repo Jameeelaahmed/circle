@@ -32,6 +32,13 @@ export function useMessageManager(circleId, circleName, userId, userName) {
       if (!text.trim()) return;
 
       try {
+        if (replyTo) {
+          console.log("ReplyTo object:", replyTo);
+          console.log("messageId:", replyTo.messageId);
+          console.log("userName:", replyTo.userName);
+          console.log("text:", replyTo.text);
+          console.log("messageType:", replyTo.messageType);
+        }
         await addDoc(collection(db, "circles", circleId, "chat"), {
           messageType: "text",
           user: {
@@ -44,10 +51,10 @@ export function useMessageManager(circleId, circleName, userId, userName) {
           timestamp: serverTimestamp(),
           replyTo: replyTo
             ? {
-              messageId: replyTo.messageId,
-              userName: replyTo.userName,
-              text: replyTo.text,
-              messageType: replyTo.messageType,
+              id: replyTo.id,
+              userName: replyTo.user?.userName ?? null,
+              text: replyTo.text ?? null, // Use null if text is missing
+              messageType: replyTo.messageType ?? null,
             }
             : null,
         });

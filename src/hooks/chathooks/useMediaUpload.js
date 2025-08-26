@@ -29,6 +29,7 @@ export function useMediaUpload() {
                     userId,
                     userName,
                     replyTo,
+                    undefined,
                     formatTime
                 );
             } else {

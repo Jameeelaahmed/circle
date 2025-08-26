@@ -60,7 +60,6 @@ function ChatSidebarPresentational({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  console.log(members);
 
   const { t } = useTranslation();
   const { circleId } = useParams();

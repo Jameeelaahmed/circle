@@ -104,7 +104,6 @@ function ChatMessageContainer({ circleId, setReplyTo, setEditingMessage }) {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(allMessages);
 
         const filteredMessages = allMessages.filter((msg) => {
           const deletedFor = msg.deletedFor || [];
