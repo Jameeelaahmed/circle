@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'), // 👈 alias for /src
+    },
+  },
   build: {
     rollupOptions: {
       output: {
@@ -49,7 +55,6 @@ export default defineConfig({
         }
       }
     },
-    // Increase chunk size warning limit since we're optimizing chunks
     chunkSizeWarningLimit: 1000
   }
 })

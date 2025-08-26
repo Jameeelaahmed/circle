@@ -28,7 +28,7 @@ const NotificationList = ({
         >
           Notifications
         </h3>
-        {unreadCount > 0 && (
+        {/* {unreadCount > 0 && (
           <button
             onClick={markAllAsRead}
             className="text-sm font-medium transition-colors duration-200 hover:underline"
@@ -36,7 +36,7 @@ const NotificationList = ({
           >
             Mark all read
           </button>
-        )}
+        )} */}
       </div>
 
       {/* Notifications List */}

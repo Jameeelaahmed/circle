@@ -25,9 +25,9 @@ function MemoriesPresentational({
   const memoriesList = memories.map((m) => m.urls).flat();
   const memoriesLength = memoriesList.length;
   return (
-    <div className="mt-[64px] min-h-screen text-text">
+    <div className="mt-[64px] bg-gradient-to-b from-bg-primary to-bg-secondary min-h-screen text-text">
       {/* Header */}
-      <div className="bg-text sticky top-[64px] z-40 border-b border-text-700 shadow-sm backdrop-blur-sm">
+      <div className="bg-gradient-to-b from-bg-primary to-bg-secondary sticky top-[64px] z-40 border-b border-text-700 shadow-sm backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 py-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>

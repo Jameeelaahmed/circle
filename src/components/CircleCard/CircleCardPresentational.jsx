@@ -82,7 +82,7 @@ export default function CircleCardPresentational({
             )}
           </div>
           <p
-            className="mb-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm break-words max-w-[180px]"
+            className="mb-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm break-words max-w-[250px]"
             style={{ color: "rgba(173, 186, 199, 0.95)" }}
             title={circle.description}
           >
