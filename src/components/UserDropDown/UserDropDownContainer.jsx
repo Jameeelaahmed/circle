@@ -36,7 +36,12 @@ function UserDropDownContainer({ toggleDark, darkMode }) {
   }, [isDropdownOpen]);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    // Always close the dropdown if it's open
+    if (isDropdownOpen) {
+      setIsDropdownOpen(false);
+    } else {
+      setIsDropdownOpen(true);
+    }
   };
 
   const handleLogout = async () => {
@@ -60,8 +65,8 @@ function UserDropDownContainer({ toggleDark, darkMode }) {
       .changeLanguage(lang)
       .then(() => {
         setCurrentLang(lang);
-        // Store the selected language in localStorage
         localStorage.setItem("selectedLanguage", lang);
+        setIsDropdownOpen(false); // Close dropdown after language change
       })
       .catch((err) => console.error("Error changing language:", err));
   };
@@ -80,6 +85,10 @@ function UserDropDownContainer({ toggleDark, darkMode }) {
     document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
   }, [currentLang]);
 
+  const handleToggleDark = () => {
+    toggleDark();
+    setIsDropdownOpen(false);
+  };
 
   return (
     <UserDropdownPresentational
@@ -95,6 +104,7 @@ function UserDropDownContainer({ toggleDark, darkMode }) {
       handleLogout={handleLogout}
       toggleDark={toggleDark}
       darkMode={darkMode}
+      handleToggleDark={handleToggleDark}
     />
   );
 }
