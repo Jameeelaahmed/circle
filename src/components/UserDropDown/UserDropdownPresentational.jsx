@@ -13,8 +13,8 @@ export default function UserDropdownPresentational({
     currentLang,
     handleLanguageChange,
     handleLogout,
-    toggleDark,
-    darkMode
+    darkMode,
+    handleToggleDark
 }) {
     const { t } = useTranslation()
     return (
@@ -109,7 +109,7 @@ export default function UserDropdownPresentational({
                                 ? "bg-primary/60"
                                 : "bg-secondary/60"
                                 }`}
-                            onClick={toggleDark}
+                            onClick={handleToggleDark} // <-- use this instead of toggleDark
                             aria-label="Toggle theme"
                         >
                             <span
