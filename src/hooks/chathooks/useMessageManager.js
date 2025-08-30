@@ -6,12 +6,10 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { useAuth } from "../useAuth";
 import { db } from "../../firebase-config";
 import { sendNotificationMembers } from "../../fire_base/circleController/circleController";
 import { createNotification } from "../../fire_base/notificationController/notificationController";
-export function useMessageManager(circleId, circleName, userId, userName) {
-  const { photoURL } = useAuth();
+export function useMessageManager(circleId, circleName, userId, userName, photoUrl) {
   const [hasText, setHasText] = useState(false);
   const msgVal = useRef();
 
@@ -32,11 +30,13 @@ export function useMessageManager(circleId, circleName, userId, userName) {
       if (!text.trim()) return;
 
       try {
+        console.log(photoUrl);
+
         await addDoc(collection(db, "circles", circleId, "chat"), {
           messageType: "text",
           user: {
             userId: userId,
-            imageurl: photoURL || "",
+            imageurl: photoUrl || "",
             userName: userName
           },
           sentTime: formatTime(),
@@ -44,10 +44,10 @@ export function useMessageManager(circleId, circleName, userId, userName) {
           timestamp: serverTimestamp(),
           replyTo: replyTo
             ? {
-              messageId: replyTo.messageId,
-              userName: replyTo.userName,
-              text: replyTo.text,
-              messageType: replyTo.messageType,
+              id: replyTo.id,
+              userName: replyTo.user?.userName ?? null,
+              text: replyTo.text ?? null, // Use null if text is missing
+              messageType: replyTo.messageType ?? null,
             }
             : null,
         });
@@ -59,7 +59,7 @@ export function useMessageManager(circleId, circleName, userId, userName) {
           link: `circles/${circleId}`,
           message: text,
           senderId: userId,
-          avatar: photoURL,
+          avatar: photoUrl,
           isRead: false,
         });
         await sendNotificationMembers(circleId, userId, newNotification);
@@ -68,7 +68,7 @@ export function useMessageManager(circleId, circleName, userId, userName) {
         throw error;
       }
     },
-    [circleId, userId, userName],
+    [circleId, userId, userName, photoUrl],
   );
 
   const editMessage = useCallback(

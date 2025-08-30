@@ -89,12 +89,15 @@ function CirclesPageContainer() {
             // Convert profile interests to lowercase once
             const userInterestsLower = profile.interests.map(i => i.toLowerCase());
 
-            filteredCircles = circles.map(circle => ({
-                ...circle,
-                matchedInterests: (circle.interests || []).filter(interest =>
-                    userInterestsLower.includes(interest.toLowerCase())
-                )
-            }))
+            filteredCircles = circles
+                // Exclude circles the user is a member of
+                .filter(circle => !(profile?.joinedCircles?.includes(circle.id)))
+                .map(circle => ({
+                    ...circle,
+                    matchedInterests: (circle.interests || []).filter(interest =>
+                        userInterestsLower.includes(interest.toLowerCase())
+                    )
+                }))
                 .sort((a, b) => b.matchedInterests.length - a.matchedInterests.length)
                 .filter(circle => circle.circlePrivacy === 'public');
 

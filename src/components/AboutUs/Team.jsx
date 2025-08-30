@@ -2,12 +2,19 @@ import { Heart, Users2, Sparkles, Shield } from "lucide-react";
 import { ArcCard } from "./Card";
 import { useTranslation } from "react-i18next";
 
+const Gamal = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Gamal_kyd1gl.webp";
+const Yasser = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/yasser_m5e8qd.webp";
+const Refaat = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/refaat_w7utrz.webp";
+const Hajar = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Hajar_arknji.webp";
+const Adel = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Adel_kbkxxc.webp";
+const Jameela = "https://res.cloudinary.com/dwh8jhaot/image/upload/v1756114576/Jameela_g93fqf.webp";
+
 export default function Team() {
   const { t } = useTranslation();
   const team = [
     {
       name: "Ahmed Gamal",
-      image: "/src/assets/images/aboutus/Gamal.webp",
+      image: Gamal,
       role: "Mobile Developer",
       description:
         "I am a UX designer with a passion for creating intuitive user experiences. I am a quick learner and I am always looking to improve my skills.",
@@ -15,7 +22,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Yasser",
-      image: "/src/assets/images/aboutus/Yasser.webp",
+      image: Yasser,
       role: "Frontend & Mobile Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications. I am a quick learner and I am always looking to improve my skills.",
@@ -23,7 +30,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Refaat",
-      image: "/src/assets/images/aboutus/Refaat.webp",
+      image: Refaat,
       role: "Frontend & Mobile Developer",
       description:
         "I am a quick learner and I am always looking to improve my skills.",
@@ -31,7 +38,7 @@ export default function Team() {
     },
     {
       name: "Jameela Ahmed",
-      image: "/src/assets/images/aboutus/Jameela.webp",
+      image: Jameela,
       role: "Frontend Developer",
       description:
         "Security expert ensuring your private circles and personal data remain protected.",
@@ -39,7 +46,7 @@ export default function Team() {
     },
     {
       name: "Hajar Ali",
-      image: "/src/assets/images/aboutus/Hajar.webp",
+      image: Hajar,
       role: "Frontend Developer",
       description:
         "I am a Frontend Developer with a passion for building web applications.",
@@ -47,7 +54,7 @@ export default function Team() {
     },
     {
       name: "Ahmed Adel",
-      image: "/src/assets/images/aboutus/Adel.webp",
+      image: Adel,
       role: "Frontend Developer",
       description:
         "Growth strategist helping Circle reach more people and create more meaningful connections.",
@@ -124,7 +131,7 @@ export default function Team() {
                   border: "1px solid rgba(255, 255, 255, 0.08)",
                 }}
               >
-                <div className="mb-3  flex justify-center">
+                <div className="mb-3 flex justify-center">
                   <value.icon
                     size={24}
                     style={{ color: "var(--color-secondary)" }}
@@ -136,7 +143,9 @@ export default function Team() {
                 >
                   {value.title}
                 </h4>
-                <p className="text-xs text-secondary opacity-80">{value.description}</p>
+                <p className="text-xs text-secondary opacity-80">
+                  {value.description}
+                </p>
               </div>
             ))}
           </div>
