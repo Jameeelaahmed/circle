@@ -7,9 +7,12 @@ import Modal from "../../components/ui/Modal/Modal";
 import LoginFormContainer from "../../components/AuthForms/Login/LoginFormContainer";
 import RegisterFormContainer from "../../components/AuthForms/Register/RegisterFormContainer";
 import { useContext, useEffect, useState } from "react";
-import mainImg from '../../assets/image.png'
-import lightImg from '../../assets/light.png'
+import mainImg from "../../assets/image.png";
+import lightImg from "../../assets/light.png";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import Stepper, { Step } from "../../components/ui/Stepper/Stepper";
+import friends from "../../assets/images/friendsjpg.jpg";
+import DefaultState from "../../components/Voting/DefaultState/DefaultState";
 export default function LandingPresentational({
   t,
   isLoggedIn,
@@ -30,7 +33,8 @@ export default function LandingPresentational({
   // }, [darkMode]);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden"
+    <div
+      className="flex h-screen flex-col overflow-hidden"
       key={darkMode ? "dark" : "light"}
       style={{
         backgroundImage: `url(${bgImage})`,
@@ -39,7 +43,7 @@ export default function LandingPresentational({
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Motion.div
+      {/* <Motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -97,13 +101,57 @@ export default function LandingPresentational({
             </Modal>
           </Motion.div>
         </div>
+      </Motion.div> */}
+
+      <Motion.div>
+        <Stepper
+          initialStep={1}
+          onStepChange={(step) => {
+            console.log(step);
+          }}
+          onFinalStepCompleted={() => console.log("All steps completed!")}
+          backButtonText="Previous"
+          nextButtonText="Next"
+        >
+          <Step>
+            <h2>Welcome to <span className="ltr:font-secondary inline-block font-extrabold from-secondary to-primary bg-gradient-to-l bg-clip-text text-transparent ltr:bg-gradient-to-r rtl:bg-gradient-to-l">Circle</span> where events are made!</h2>
+            <p>Check out the next step!</p>
+          </Step>
+          <Step>
+            <h2>Step 2</h2>
+            <img
+              style={{
+                height: "100px",
+                width: "100%",
+                objectFit: "cover",
+                objectPosition: "center -70px",
+                borderRadius: "15px",
+                marginTop: "1em",
+              }}
+              src={friends}
+            />
+            <p>Create circles with your people!</p>
+          </Step>
+          <Step>
+           <div className="h-[150px]">
+             <h2>Where you can start poll and vote on it?</h2>
+           <div className="relative  left-[50%] top-[50%] translate-x-[-30%] ">
+            <DefaultState />
+           </div>
+           </div>
+          </Step>
+          <Step>
+            <h2>Final Step</h2>
+            <p>You made it!</p>
+          </Step>
+        </Stepper>
       </Motion.div>
 
       <Motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="z-10 hidden md:flex w-full justify-center p-8 md:w-1/2"
+        className="z-10 hidden w-full justify-center p-8 md:flex md:w-1/2"
       >
         <FloatingAvatarContainer />
       </Motion.div>
