@@ -220,9 +220,9 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
     >
       <motion.div
         variants={{
-          inactive: { scale: 1, backgroundColor: "#222", color: "#a3a3a3" },
-          active: { scale: 1, backgroundColor: "#5227FF", color: "#5227FF" },
-          complete: { scale: 1, backgroundColor: "#5227FF", color: "#3b82f6" },
+          inactive: { scale: 1, backgroundColor: "#7c6bca", color: "#a3a3a3" },
+          active: { scale: 1, backgroundColor: "#4ea7debf", color: "#5227FF" },
+          complete: { scale: 1, backgroundColor: " #17284f", color: "#3b82f6" },
         }}
         transition={{ duration: 0.3 }}
         className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
@@ -242,7 +242,7 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
 function StepConnector({ isComplete }) {
   const lineVariants = {
     incomplete: { width: 0, backgroundColor: "transparent" },
-    complete: { width: "100%", backgroundColor: "#5227FF" },
+    complete: { width: "100%", backgroundColor: "#7c6bca" },
   };
 
   return (
