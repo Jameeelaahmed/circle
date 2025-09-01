@@ -3,9 +3,16 @@ import Hero from "../../components/AboutUs/Hero";
 import Stats from "../../components/AboutUs/Stats";
 import VisionAndMission from "../../components/AboutUs/VisionAndMission";
 import Team from "../../components/AboutUs/Team";
+import { Helmet } from "react-helmet";
 
 const AboutUs = () => {
   return (
+    <>
+    <Helmet>
+      <title>about us</title>
+      <meta name="description" content="Learn more about our website, mission, and team." />
+    </Helmet>
+  
     <div className="text-color-text bg-gradient-to-b from-bg-primary to-bg-secondary relative min-h-screen pt-[64px]">
       <Hero />
       <Stats />
@@ -28,6 +35,7 @@ const AboutUs = () => {
         <Orb hue={280} hoverIntensity={0.2} />
       </div>
     </div>
+      </>
   );
 };
 

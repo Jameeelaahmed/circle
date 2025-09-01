@@ -4,6 +4,9 @@ import BackgroundHoverEffect from "./BackgroundHover";
 function EventsPresentional({ calendarApp, circlesInfo }) {
 
   return (
+    <>
+   
+    
     <BackgroundHoverEffect
       textAutoHide={true}
       enableStars={true}
@@ -17,6 +20,7 @@ function EventsPresentional({ calendarApp, circlesInfo }) {
       glowColor="132, 0, 255"
       calendarApp={calendarApp} circlesInfo={circlesInfo}
     ></BackgroundHoverEffect>
+    </>
   );
 }
 

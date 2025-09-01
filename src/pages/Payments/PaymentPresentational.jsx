@@ -1,12 +1,17 @@
 import { useTranslation } from "react-i18next";
 import GlowCardContainer from "../../components/ui/Payments/GlowCardContainer";
 import Aurora from "./Aurora";
+import { Helmet } from "react-helmet";
 
 function PaymentPresentational({ cards }) {
   const { t } = useTranslation();
 
   return (
     <>
+      <Helmet>
+        <title>Payment</title>
+        <meta name="description" content="Manage your payment methods and subscriptions." />
+      </Helmet>
       <section className="relative overflow-y-hidden min-h-screen bg-gradient-to-b from-bg-primary to-bg-secondary z-10 mt-[64px] mb-0 pb-20">
         <div 
           style={{

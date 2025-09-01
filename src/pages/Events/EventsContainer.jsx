@@ -25,9 +25,7 @@ export default function EventsContainer() {
   const { userId } = useAuth();
 
   const { darkMode } = useContext(ThemeContext);
-  useEffect(() => {
-    
-  }, [darkMode]);
+  useEffect(() => {}, [darkMode]);
   const [isDark, setDark] = useState(!darkMode);
 
   const [events, setEvents] = useState(() => {
@@ -142,8 +140,6 @@ export default function EventsContainer() {
     fetchCirclesAndEvents();
   }, [userId]);
 
-
-
   const calendarApp = useCalendarApp({
     isDark,
     views: [
@@ -190,20 +186,22 @@ export default function EventsContainer() {
   }
 
   return (
-    <div
-      style={{
-        backdropFilter: "blur(10px)",
-        minHeight: "100vh",
-        position: "relative",
-      }}
-    >
-      <EventsPresentional
-        calendarApp={calendarApp}
-        categoryColors={Object.fromEntries(
-          Object.entries(calendars).map(([id, c]) => [id, c.colorName]),
-        )}
-        circlesInfo={calendars}
-      />
-    </div>
+    <>
+      <div
+        style={{
+          backdropFilter: "blur(10px)",
+          minHeight: "100vh",
+          position: "relative",
+        }}
+      >
+        <EventsPresentional
+          calendarApp={calendarApp}
+          categoryColors={Object.fromEntries(
+            Object.entries(calendars).map(([id, c]) => [id, c.colorName]),
+          )}
+          circlesInfo={calendars}
+        />
+      </div>
+    </>
   );
 }
