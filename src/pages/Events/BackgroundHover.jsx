@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { useTranslation } from "react-i18next";
 import { ScheduleXCalendar } from "@schedule-x/react";
 import CalendarImg from "../../assets/images/calendar.png";
+import { Helmet } from "react-helmet";
 
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = "132, 0, 255";
@@ -239,6 +240,16 @@ const BackgroundHoverEffect = ({
   }, [enableStars, shouldDisableAnimations]);
 
   return (
+
+    <>
+     <Helmet>
+        <title>Events</title>
+        <meta
+          name="description"
+          content="Explore ur upcoming events and activities."
+        />
+      </Helmet>
+   
     <div
       ref={containerRef}
       className="from-bg-primary to-bg-secondary text-text relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b px-4 py-6"
@@ -426,6 +437,7 @@ const BackgroundHoverEffect = ({
         </div>
       </div>
     </div>
+     </>
   );
 };
 

@@ -9,6 +9,7 @@ import {
 import { auth, db } from "../../firebase-config";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 export default function MemoryUploadPage() {
   const [currentMemory, setCurrentMemory] = useState({
@@ -165,6 +166,12 @@ export default function MemoryUploadPage() {
   };
 
   return (
+    <>
+    <Helmet>
+     <title>Memory Keeper</title>
+     <meta name="description" content="Capture and preserve your memories with Memory Keeper." />
+    </Helmet>
+    
     <div className="mt-[65px] bg-gradient-to-b from-bg-primary to-bg-secondary min-h-screen">
       {/* Header */}
       <div className="bg-gradient-to-b from-bg-primary to-bg-secondary border-primary border-b shadow-lg backdrop-blur-sm">
@@ -332,5 +339,6 @@ export default function MemoryUploadPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

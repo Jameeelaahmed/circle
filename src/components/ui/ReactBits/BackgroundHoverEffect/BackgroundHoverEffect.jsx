@@ -348,7 +348,6 @@ const BackgroundHoverEffect = ({
           threshold={0.1}
           rootMargin="-100px"
           textAlign="center"
-          onLetterAnimationComplete={handleAnimationComplete}
         />
 
         {/* Gradient message */}

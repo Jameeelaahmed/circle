@@ -3,6 +3,7 @@ import LoginFormContainer from '../../components/AuthForms/Login/LoginFormContai
 import RegisterFormContainer from '../../components/AuthForms/Register/RegisterFormContainer';
 import CircleCardContainer from '../../components/CircleCard/CircleCardContainer';
 import DeleteCircleModalContainer from '../../components/ui/Modal/DeleteCircleModal/DeleteCircleModalContainer';
+import { Helmet } from 'react-helmet';
 function CirclesPagePresentational({
     circles,
     membersByCircle,
@@ -27,6 +28,10 @@ function CirclesPagePresentational({
 }) {
     return (
         <>
+        <Helmet>
+            <title>Circles Page</title>
+            <meta name="description" content="Explore and manage your circles" />
+        </Helmet>
             {!circles.length && <div className="text-center text-lg text-text-400 py-10">No circles to show.</div>}
             <div className='mx-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
                 {circles.map((circle) => (

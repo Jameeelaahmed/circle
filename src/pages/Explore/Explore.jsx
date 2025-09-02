@@ -7,6 +7,7 @@ import { customIcon } from "../../assets/icons/customIcon";
 import { useSelector } from "react-redux";
 import { getProfileData } from "../../features/userProfile/profileSlice";
 import { useCircleEvents } from "../../hooks/useCircleEvents";
+import { Helmet } from "react-helmet";
 
 const Explore = () => {
   const { position, isLoading, getPosition } = useGeolocation();
@@ -269,11 +270,19 @@ const Explore = () => {
   }, [profile, circles, eventsByCircle]);
 
   return (
-    <div className="relative z-40 mt-16 h-screen">
-      <MapContainer
-        center={myLocation}
-        zoom={12}
-        scrollWheelZoom={true}
+    <>
+      <Helmet>
+        <title>Explore Circles</title>
+        <meta
+          name="description"
+          content="Discover events happening in nearest circles."
+        />
+      </Helmet>
+      <div className="relative z-40 mt-16 h-screen">
+        <MapContainer
+          center={myLocation}
+          zoom={12}
+          scrollWheelZoom={true}
         className="h-full w-full"
         key={myLocation.toString()}
       >
@@ -338,6 +347,7 @@ const Explore = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
